@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="bg-background-secondary border-t border-border">
       <div className="container-custom py-12">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
+        <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
               <img src="/logo.png" alt="NeutralAI" className="w-10 h-10 rounded-lg" />
@@ -49,7 +49,7 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-sm">
             © 2026 NeutralAI Ltd. All rights reserved.
           </p>
