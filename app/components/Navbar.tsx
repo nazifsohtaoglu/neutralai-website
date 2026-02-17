@@ -1,0 +1,88 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { Shield, Menu, X } from 'lucide-react'
+
+const navLinks = [
+  { name: 'Product', href: '/' },
+  { name: 'How It Works', href: '/#how-it-works' },
+  { name: 'Features', href: '/#features' },
+  { name: 'Pricing', href: '/#pricing' },
+  { name: 'About', href: '/about' },
+]
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'py-5'}`}>
+      <div className="container-custom flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
+          <img src="/logo.png" alt="NeutralAI" className="w-10 h-10 rounded-lg" />
+          <span className="font-heading font-bold text-xl">NeutralAI</span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <Link 
+              key={link.name} 
+              href={link.href}
+              className="text-slate-300 hover:text-primary transition-colors"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+
+        <div className="hidden md:flex items-center gap-4">
+          <Link href="/contact" className="text-slate-300 hover:text-white transition-colors">
+            Contact
+          </Link>
+          <Link href="/#pricing" className="btn btn-cta">
+            Get Started
+          </Link>
+        </div>
+
+        <button 
+          className="md:hidden text-slate-300"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden absolute top-full left-0 right-0 glass border-t border-border p-4"
+        >
+          {navLinks.map((link) => (
+            <Link 
+              key={link.name} 
+              href={link.href}
+              className="block py-3 text-slate-300 hover:text-primary transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <Link href="/#pricing" className="btn btn-cta w-full mt-4">
+            Get Started
+          </Link>
+        </motion.div>
+      )}
+    </nav>
+  )
+}
