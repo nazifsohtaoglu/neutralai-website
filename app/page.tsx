@@ -243,6 +243,31 @@ function Hero() {
             ))}
           </motion.div>
         </div>
+
+        {/* Floating cards - positioned outside content to prevent overlap */}
+        <div className="absolute top-40 left-4 xl:left-0 hidden lg:block pointer-events-none">
+          <div className="card p-4 w-56 -translate-x-full mr-8">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-accent-success/20 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-accent-success" />
+              </div>
+              <span className="font-medium text-sm">PII Detected</span>
+            </div>
+            <div className="text-xs text-slate-500">john@company.com → &lt;EMAIL_1&gt;</div>
+          </div>
+        </div>
+
+        <div className="absolute top-56 right-4 xl:right-0 hidden lg:block pointer-events-none">
+          <div className="card p-4 w-56 translate-x-full ml-8">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Lock className="w-4 h-4 text-primary" />
+              </div>
+              <span className="font-medium text-sm">Data Secured</span>
+            </div>
+            <div className="text-xs text-slate-500">+12 items protected this session</div>
+          </div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
