@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   Shield, 
   Lock, 
@@ -167,10 +167,6 @@ const logos = [
 ]
 
 function Hero() {
-  const { scrollY } = useScroll()
-  const y1 = useTransform(scrollY, [0, 500], [0, 200])
-  const y2 = useTransform(scrollY, [0, 500], [0, -150])
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-32">
       {/* Background */}
@@ -247,37 +243,6 @@ function Hero() {
             ))}
           </motion.div>
         </div>
-
-        {/* Floating cards */}
-        <motion.div 
-          style={{ y: y1 }}
-          className="absolute top-1/4 left-10 md:left-20 hidden lg:block"
-        >
-          <div className="card p-4 w-64 animate-float">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-accent-success/20 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-accent-success" />
-              </div>
-              <span className="font-medium">PII Detected</span>
-            </div>
-            <div className="text-xs text-slate-500">john@company.com → &lt;EMAIL_1&gt;</div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          style={{ y: y2 }}
-          className="absolute top-1/3 right-10 md:right-20 hidden lg:block"
-        >
-          <div className="card p-4 w-64 animate-float" style={{ animationDelay: '1s' }}>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <Lock className="w-4 h-4 text-primary" />
-              </div>
-              <span className="font-medium">Data Secured</span>
-            </div>
-            <div className="text-xs text-slate-500">+12 items protected this session</div>
-          </div>
-        </motion.div>
       </div>
 
       {/* Scroll indicator */}
