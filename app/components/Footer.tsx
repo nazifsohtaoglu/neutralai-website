@@ -49,8 +49,8 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
+        <div className="pt-4 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-slate-500 text-sm mt-4 md:mt-0">
             © 2026 NeutralAI Ltd. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
