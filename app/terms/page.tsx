@@ -4,7 +4,18 @@ import { motion } from 'framer-motion'
 import { FileText, Shield, AlertTriangle, Ban, Scale, Flag, Globe } from 'lucide-react'
 import BackButton from '../components/BackButton'
 
-const sections = [
+type TermsContentItem =
+  | { label: string; value: string }
+  | { value: string }
+  | { list: string[] }
+
+type TermsSection = {
+  icon: typeof FileText
+  title: string
+  content: TermsContentItem[]
+}
+
+const sections: TermsSection[] = [
   {
     icon: FileText,
     title: '1. Service Description',
@@ -113,16 +124,16 @@ export default function TermsPage() {
                 <div className="space-y-4">
                   {section.content.map((item, j) => (
                     <div key={j}>
-                      {item.label && (
+                      {'label' in item && (
                         <div className="mb-4">
                           <span className="text-slate-500 font-medium">{item.label}: </span>
                           <span className="text-slate-300">{item.value}</span>
                         </div>
                       )}
-                      {item.value && !item.label && (
+                      {'value' in item && !('label' in item) && (
                         <p className="text-slate-400">{item.value}</p>
                       )}
-                      {item.list && (
+                      {'list' in item && (
                         <ul className="space-y-2 ml-4 mt-4">
                           {item.list.map((listItem, k) => (
                             <li key={k} className="text-slate-400 flex items-start gap-2">

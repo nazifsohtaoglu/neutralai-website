@@ -4,7 +4,18 @@ import { motion } from 'framer-motion'
 import { Shield, Lock, Database, Share2, UserCheck, Mail } from 'lucide-react'
 import BackButton from '../components/BackButton'
 
-const sections = [
+type PolicyContentItem =
+  | { label: string; value: string }
+  | { value: string }
+  | { list: string[] }
+
+type PolicySection = {
+  icon: typeof Shield
+  title: string
+  content: PolicyContentItem[]
+}
+
+const sections: PolicySection[] = [
   {
     icon: Shield,
     title: '1. Data Controller',
@@ -108,16 +119,16 @@ export default function PrivacyPage() {
                 <div className="space-y-4">
                   {section.content.map((item, j) => (
                     <div key={j}>
-                      {item.label && (
+                      {'label' in item && (
                         <div className="flex gap-2">
                           <span className="text-slate-500 min-w-[140px]">{item.label}:</span>
                           <span className="text-slate-300">{item.value}</span>
                         </div>
                       )}
-                      {item.value && !item.label && (
+                      {'value' in item && !('label' in item) && (
                         <p className="text-slate-400">{item.value}</p>
                       )}
-                      {item.list && (
+                      {'list' in item && (
                         <ul className="space-y-2 ml-4">
                           {item.list.map((listItem, k) => (
                             <li key={k} className="text-slate-400 flex items-start gap-2">
