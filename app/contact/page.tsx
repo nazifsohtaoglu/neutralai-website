@@ -8,8 +8,8 @@ import { contactLinks, siteConfig } from '../site'
 const contactCards = [
   {
     icon: Mail,
-    title: 'Beta access',
-    description: 'Use this route for pilot requests, rollout questions, and early commercial conversations.',
+    title: 'General enquiries',
+    description: 'Use this route for pilot requests, rollout questions, browser extension pilots, and early commercial conversations.',
     label: siteConfig.contactEmail,
     href: contactLinks.betaAccessMailto,
   },
@@ -55,7 +55,7 @@ export default function ContactPage() {
               Start the conversation before you start the rollout
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              NeutralAI is currently onboarding pilots directly. Reach out with your use case, target models, and compliance expectations so the right launch path can be scoped.
+              NeutralAI is currently onboarding pilots directly. Reach out with your target workflow, model usage, browser extension needs, and compliance expectations so we can scope the right starting point.
             </p>
           </motion.div>
         </div>
@@ -109,7 +109,7 @@ export default function ContactPage() {
               <ul className="mt-6 space-y-4 text-slate-300">
                 <li className="flex items-start gap-3">
                   <span className="mt-1 h-2.5 w-2.5 rounded-full bg-primary" />
-                  <span>Your target AI workflows or model providers</span>
+                  <span>Your target AI workflows, web apps, or model providers</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1 h-2.5 w-2.5 rounded-full bg-primary" />
@@ -117,7 +117,7 @@ export default function ContactPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1 h-2.5 w-2.5 rounded-full bg-primary" />
-                  <span>Whether you are validating a pilot or preparing a stricter production path</span>
+                  <span>Whether you are validating a pilot, rolling out the extension, or planning a stricter production path</span>
                 </li>
               </ul>
             </motion.div>

@@ -49,6 +49,13 @@ export default function PrivacyPage() {
             <p className="mt-6 text-xl text-slate-400">
               This privacy page exists for browser store review and public reference. It explains how NeutralAI Interceptor operates on supported AI web apps, what service endpoints it contacts, and what telemetry posture the product is designed to maintain.
             </p>
+            <p className="mt-4 text-sm text-slate-500">
+              Privacy questions can be sent to{' '}
+              <a href={`mailto:${siteConfig.privacyEmail}`} className="text-primary-light hover:text-primary">
+                {siteConfig.privacyEmail}
+              </a>
+              .
+            </p>
           </div>
         </div>
       </section>

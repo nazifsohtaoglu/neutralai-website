@@ -95,7 +95,7 @@ export default function TermsPage() {
               Terms of <span className="gradient-text">Service</span>
             </h1>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Welcome to NeutralAI. These Terms of Service govern your access to and use of our services.
+              These Terms of Service govern access to NeutralAI beta services, including the gateway, browser extension support surfaces, and related onboarding conversations.
             </p>
           </motion.div>
         </div>
@@ -166,6 +166,9 @@ export default function TermsPage() {
               <h2 className="font-heading text-xl font-bold mb-4">Agreement to Terms</h2>
               <p className="text-slate-400">
                 By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
+              </p>
+              <p className="text-slate-500 text-sm mt-4">
+                Questions about these terms can be sent to hello@neutralai.co.uk.
               </p>
               <p className="text-slate-500 text-sm mt-6">
                 Last updated: March 29, 2026

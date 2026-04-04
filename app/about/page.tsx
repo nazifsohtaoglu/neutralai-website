@@ -57,7 +57,7 @@ export default function AboutPage() {
               Building a safer way to adopt AI
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              NeutralAI is focused on one job: helping teams use modern AI systems without turning sensitive data handling into an afterthought.
+              NeutralAI is focused on one job: helping teams use modern AI systems without treating sensitive data handling as an afterthought or leaving rollout decisions to guesswork.
             </p>
           </motion.div>
         </div>
@@ -78,10 +78,10 @@ export default function AboutPage() {
               <h2 className="mt-5 font-heading text-3xl font-bold">What we are building</h2>
               <div className="mt-5 space-y-4 text-slate-400">
                 <p>
-                  NeutralAI is being shaped as a gateway layer that stands between customer applications and external AI providers. The goal is straightforward: let teams adopt AI while applying policy before sensitive data moves beyond the trusted boundary.
+                  NeutralAI is being shaped as a gateway layer that stands between customer applications, browser-based AI usage, and external model providers. The goal is straightforward: let teams adopt AI while applying policy before sensitive data moves beyond the trusted boundary.
                 </p>
                 <p>
-                  That means the product story has to be credible. We prefer explicit launch posture, beta-oriented onboarding, and visible hardening milestones over generic promises.
+                  That means the product story has to stay credible. We prefer explicit launch posture, beta-oriented onboarding, and visible hardening milestones over generic enterprise promises.
                 </p>
               </div>
             </motion.div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
           >
             <h2 className="font-heading text-3xl font-bold md:text-4xl">Want to evaluate the gateway?</h2>
             <p className="mt-5 text-lg text-slate-400">
-              The best next step is a pilot conversation that matches your current deployment stage and review requirements.
+              The best next step is a pilot conversation that matches your current deployment stage, browser-extension needs, and review requirements.
             </p>
             <a href="/contact" className="btn btn-cta mt-8 px-8 py-4 text-lg">
               Contact NeutralAI

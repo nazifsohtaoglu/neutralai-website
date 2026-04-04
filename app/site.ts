@@ -8,9 +8,11 @@ export const siteConfig = {
   apiHealthUrl: 'https://api.neutralai.co.uk/health',
   apiReadyUrl: 'https://api.neutralai.co.uk/ready',
   appBaseUrl: 'https://app.neutralai.co.uk',
-  contactEmail: 'privacy@neutralai.co.uk',
-  securityEmail: 'security@neutralai.ai',
-  supportEmail: 'support@neutralai.io',
+  contactEmail: 'hello@neutralai.co.uk',
+  privacyEmail: 'privacy@neutralai.co.uk',
+  securityEmail: 'security@neutralai.co.uk',
+  supportEmail: 'support@neutralai.co.uk',
+  salesEmail: 'sales@neutralai.co.uk',
   securityTxtPath: '/.well-known/security.txt',
   chromeExtensionUrl: '',
   edgeExtensionUrl: '',
@@ -20,6 +22,9 @@ export const contactLinks = {
   betaAccessMailto: `mailto:${siteConfig.contactEmail}?subject=NeutralAI%20beta%20access`,
   launchReviewMailto: `mailto:${siteConfig.contactEmail}?subject=NeutralAI%20launch%20readiness%20review`,
   securityMailto: `mailto:${siteConfig.securityEmail}?subject=Security%20enquiry%20for%20NeutralAI`,
+  supportMailto: `mailto:${siteConfig.supportEmail}?subject=NeutralAI%20support`,
+  privacyMailto: `mailto:${siteConfig.privacyEmail}?subject=NeutralAI%20privacy%20query`,
+  salesMailto: `mailto:${siteConfig.salesEmail}?subject=NeutralAI%20commercial%20enquiry`,
 } as const
 
 export const homeSections = {

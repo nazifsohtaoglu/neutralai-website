@@ -66,6 +66,17 @@ export default function Footer() {
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
               Public beta with live health endpoints
             </div>
+            <div className="mt-5 space-y-2 text-sm text-slate-400">
+              <a href={contactLinks.betaAccessMailto} className="block hover:text-primary transition-colors">
+                {siteConfig.contactEmail}
+              </a>
+              <a href={contactLinks.supportMailto} className="block hover:text-primary transition-colors">
+                {siteConfig.supportEmail}
+              </a>
+              <a href={contactLinks.securityMailto} className="block hover:text-primary transition-colors">
+                {siteConfig.securityEmail}
+              </a>
+            </div>
           </div>
 
           <div>
@@ -109,6 +120,9 @@ export default function Footer() {
           <div className="flex flex-col gap-2 text-sm text-slate-500 md:flex-row md:items-center md:gap-6">
             <a href={contactLinks.betaAccessMailto} className="hover:text-primary transition-colors">
               {siteConfig.contactEmail}
+            </a>
+            <a href={contactLinks.privacyMailto} className="hover:text-primary transition-colors">
+              {siteConfig.privacyEmail}
             </a>
             <a href={contactLinks.securityMailto} className="hover:text-primary transition-colors">
               {siteConfig.securityEmail}
