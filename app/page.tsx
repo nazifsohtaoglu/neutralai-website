@@ -87,11 +87,11 @@ const trustCards: Card[] = [
 const pricingPlans = [
   {
     name: 'Pilot',
-    summary: 'For teams validating prompt protection in a live workflow',
+    summary: 'Best for a focused proof of value',
     features: [
-      'Browser extension rollout for a focused team',
-      'Shared beta support and implementation guidance',
-      'Initial policy and deployment fit review',
+      'Focused browser extension rollout',
+      'Shared beta guidance',
+      'Initial deployment fit review',
     ],
     href: '/install-extension',
     cta: 'Start Pilot Path',
@@ -99,11 +99,11 @@ const pricingPlans = [
   },
   {
     name: 'Team Rollout',
-    summary: 'For companies moving from pilot to approved internal usage',
+    summary: 'Best for moving from pilot to internal approval',
     features: [
-      'Security and rollout planning session',
-      'Support for app, extension, or mixed deployment paths',
-      'Operational guidance before broader adoption',
+      'Security and rollout planning',
+      'App, extension, or mixed deployment support',
+      'Operational guidance before wider rollout',
     ],
     href: contactLinks.launchReviewMailto,
     cta: 'Book Rollout Review',
@@ -111,11 +111,11 @@ const pricingPlans = [
   },
   {
     name: 'Enterprise',
-    summary: 'For regulated environments with stricter deployment needs',
+    summary: 'Best for regulated deployment requirements',
     features: [
-      'Private cloud or on-prem deployment discussion',
-      'Security questionnaire and architecture support',
-      'Custom rollout scope for governance-heavy teams',
+      'Private cloud or on-prem planning',
+      'Security questionnaire support',
+      'Custom scope for governance-heavy teams',
     ],
     href: '/contact',
     cta: 'Talk to Sales',
