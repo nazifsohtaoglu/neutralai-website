@@ -334,7 +334,7 @@ body {
 }
 
 .prompt-editor-shell {
-  min-height: clamp(272px, 28vw, 332px);
+  min-height: clamp(236px, 24vw, 292px);
   width: 100%;
   min-width: 0;
   overflow: hidden;
@@ -488,7 +488,7 @@ body {
 
 @media (min-width: 1280px) {
   .prompt-editor-shell {
-    min-height: 348px;
+    min-height: 308px;
   }
 }
 

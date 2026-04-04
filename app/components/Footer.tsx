@@ -15,8 +15,6 @@ const launchLinks = [
   { label: 'Readiness Check', href: siteConfig.apiReadyUrl },
   { label: 'Install Extension', href: '/install-extension' },
   { label: 'Extension Support', href: '/support/browser-extension' },
-  { label: 'Security Overview', href: '/security' },
-  { label: 'Beta Access', href: contactLinks.betaAccessMailto },
 ] as const
 
 const legalLinks = [
@@ -51,36 +49,26 @@ function FooterLink({ href, label }: { href: string; label: string }) {
 
 export default function Footer() {
   return (
-    <footer className="bg-background-secondary border-t border-border">
-      <div className="container-custom py-12">
-        <div className="grid gap-8 md:grid-cols-[1.3fr_repeat(3,minmax(0,1fr))] mb-10">
+    <footer className="relative mt-10 overflow-hidden border-t border-border/80 bg-background-secondary md:mt-14">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.08),transparent_22%),radial-gradient(circle_at_top_right,rgba(249,115,22,0.08),transparent_18%)]" />
+      <div className="container-custom relative py-8 md:py-10">
+        <div className="mb-6 grid gap-6 md:grid-cols-[1.15fr_repeat(3,minmax(0,1fr))]">
           <div>
-            <Link href="/" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="mb-2 flex items-center gap-2">
               <img src="/logo.png" alt="NeutralAI" className="w-10 h-10 rounded-lg" />
               <span className="font-heading font-bold text-xl">NeutralAI</span>
             </Link>
             <p className="text-slate-400 text-sm max-w-xs">
               A security gateway for teams that need AI productivity without exposing regulated or sensitive data.
             </p>
-            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs text-primary-light">
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
               Public beta with live health endpoints
-            </div>
-            <div className="mt-5 space-y-2 text-sm text-slate-400">
-              <a href={contactLinks.betaAccessMailto} className="block hover:text-primary transition-colors">
-                {siteConfig.contactEmail}
-              </a>
-              <a href={contactLinks.supportMailto} className="block hover:text-primary transition-colors">
-                {siteConfig.supportEmail}
-              </a>
-              <a href={contactLinks.securityMailto} className="block hover:text-primary transition-colors">
-                {siteConfig.securityEmail}
-              </a>
             </div>
           </div>
 
           <div>
-            <h4 className="font-heading font-semibold mb-4">Product</h4>
+            <h4 className="mb-2 font-heading font-semibold">Product</h4>
             <ul className="space-y-2 text-sm text-slate-500">
               {productLinks.map((link) => (
                 <li key={link.label}>
@@ -91,7 +79,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-heading font-semibold mb-4">Launch</h4>
+            <h4 className="mb-2 font-heading font-semibold">Launch</h4>
             <ul className="space-y-2 text-sm text-slate-500">
               {launchLinks.map((link) => (
                 <li key={link.label}>
@@ -102,7 +90,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-heading font-semibold mb-4">Company</h4>
+            <h4 className="mb-2 font-heading font-semibold">Company</h4>
             <ul className="space-y-2 text-sm text-slate-500">
               {legalLinks.map((link) => (
                 <li key={link.label}>
@@ -113,16 +101,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 border-t border-border flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 border-t border-border/80 pt-4 md:flex-row md:items-center md:justify-between">
           <p className="text-slate-500 text-sm">
             © {new Date().getFullYear()} NeutralAI Ltd. Built for compliant AI adoption.
           </p>
-          <div className="flex flex-col gap-2 text-sm text-slate-500 md:flex-row md:items-center md:gap-6">
+          <div className="flex flex-col gap-2 text-sm text-slate-500 md:flex-row md:flex-wrap md:items-center md:justify-end md:gap-4">
             <a href={contactLinks.betaAccessMailto} className="hover:text-primary transition-colors">
               {siteConfig.contactEmail}
             </a>
-            <a href={contactLinks.privacyMailto} className="hover:text-primary transition-colors">
-              {siteConfig.privacyEmail}
+            <a href={contactLinks.supportMailto} className="hover:text-primary transition-colors">
+              {siteConfig.supportEmail}
             </a>
             <a href={contactLinks.securityMailto} className="hover:text-primary transition-colors">
               {siteConfig.securityEmail}
