@@ -30,21 +30,21 @@ type Card = {
 const importanceCards: Card[] = [
   {
     icon: AlertTriangle,
-    title: 'Sensitive data can leave too early',
+    title: 'Sensitive data leaves first',
     description:
-      'Prompts often contain names, emails, claim references, transcripts, and internal business context before anyone has applied policy.',
+      'Names, emails, claim references, transcripts, and internal context often leave the boundary before policy is applied.',
   },
   {
     icon: Gauge,
-    title: 'AI adoption slows down',
+    title: 'Security becomes the blocker',
     description:
-      'Without a control point, security and legal teams have no clean way to approve usage, so rollout stalls.',
+      'Without a visible control point, legal and security teams have no safe way to say yes.',
   },
   {
     icon: Lock,
-    title: 'Workarounds create more risk',
+    title: 'Shadow AI becomes normal',
     description:
-      'When approved workflows lag behind demand, teams improvise with unmanaged tools and trust erodes fast.',
+      'When approved workflows lag behind demand, people improvise with unmanaged tools and risk compounds fast.',
   },
 ] as const
 
@@ -52,35 +52,35 @@ const steps = [
   {
     icon: Network,
     title: 'Intercept',
-    description: 'Your app sends AI traffic through NeutralAI before it reaches any external model.',
+    description: 'Traffic hits NeutralAI before it reaches the external model.',
   },
   {
     icon: KeyRound,
     title: 'Neutralize',
-    description: 'PII is detected and rewritten into safer tokens or sanitized references.',
+    description: 'Sensitive values become safer tokens or sanitized references.',
   },
   {
     icon: ShieldCheck,
-    title: 'Forward safely',
-    description: 'Only the cleaned request continues, with a clearer path for review and rollout.',
+    title: 'Forward',
+    description: 'Only the cleaned request continues downstream.',
   },
 ] as const
 
 const trustCards: Card[] = [
   {
     icon: ShieldCheck,
-    title: 'A real gateway architecture',
-    description: 'The story is concrete: a security boundary between your application and model vendors.',
+    title: 'A real boundary',
+    description: 'NeutralAI sits between user workflows and external model vendors.',
   },
   {
     icon: FileCheck2,
-    title: 'Live operational signals',
-    description: 'Health and readiness endpoints provide stronger proof than placeholder testimonials or vanity stats.',
+    title: 'Live operational proof',
+    description: 'Public health and readiness endpoints say more than placeholder testimonials.',
   },
   {
     icon: Sparkles,
-    title: 'Honest beta positioning',
-    description: 'The site is explicit about pilot readiness now and production hardening still in progress.',
+    title: 'Honest launch posture',
+    description: 'Pilot-ready now, with production hardening called out explicitly.',
   },
 ] as const
 
@@ -446,7 +446,7 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background" />
 
       <div className="container-custom relative z-10">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.84fr_1.16fr] xl:grid-cols-[0.8fr_1.2fr]">
+        <div className="grid items-start gap-10 lg:grid-cols-[0.84fr_1.16fr] xl:grid-cols-[0.8fr_1.2fr]">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
@@ -500,7 +500,9 @@ function Hero() {
             </div>
           </div>
 
-          <ProductVisual />
+          <div className="lg:-mt-3 xl:-mt-4">
+            <ProductVisual />
+          </div>
         </div>
       </div>
     </section>
@@ -511,29 +513,40 @@ function WhyItMatters() {
   return (
     <section id="problem" className="section">
       <div className="container-custom">
-        <SectionIntro
-          eyebrow="Why It Matters"
-          title="Without a control layer, AI adoption creates new failure modes"
-          description="The issue is not just privacy. Uncontrolled AI usage slows internal approval, creates shadow workflows, and makes security teams the team saying no by default."
-        />
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {importanceCards.map((card, index) => (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.08 }}
-              className="card p-6"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
-                <card.icon className="h-6 w-6 text-primary" />
+        <div className="accent-panel rounded-[32px] p-6 md:p-8">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Why It Matters</p>
+              <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+                AI usage grows faster than <span className="gradient-text-warm">approval paths.</span>
+              </h2>
+              <p className="mt-5 max-w-2xl text-lg text-slate-300">
+                The real problem is not just privacy. It is losing the ability to approve AI usage with confidence before shadow workflows become normal.
+              </p>
+              <div className="mt-6 inline-flex rounded-full border border-accent-cta/20 bg-[rgba(249,115,22,0.12)] px-4 py-2 text-sm text-[#fdba74]">
+                NeutralAI creates the yes-path, not just another warning.
               </div>
-              <h3 className="mt-5 font-heading text-2xl font-semibold">{card.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{card.description}</p>
-            </motion.div>
-          ))}
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-2">
+              {importanceCards.map((card, index) => (
+                <motion.div
+                  key={card.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className={`accent-card rounded-[24px] p-6 ${index === 1 ? 'border-accent-cta/25 bg-[radial-gradient(circle_at_top_right,rgba(249,115,22,0.16),transparent_24%),linear-gradient(180deg,rgba(15,23,42,0.94),rgba(2,6,23,0.94))]' : ''} ${index === 2 ? 'md:col-span-2 lg:col-span-2' : ''}`}
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5">
+                    <card.icon className={`h-6 w-6 ${index === 1 ? 'text-[#fdba74]' : 'text-primary-light'}`} />
+                  </div>
+                  <h3 className="mt-5 font-heading text-2xl font-semibold">{card.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{card.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -674,31 +687,39 @@ function HowItWorks() {
   return (
     <section id="how-it-works" className="section bg-background-secondary">
       <div className="container-custom">
-        <SectionIntro
-          eyebrow="How It Works"
-          title="Intercept. Neutralize. Forward."
-          description="NeutralAI sits between the user workflow and the model endpoint, rewriting or masking sensitive values before the request keeps moving."
-          centered
-        />
+        <div className="rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.96)),radial-gradient(circle_at_top_left,rgba(34,211,238,0.1),transparent_26%),radial-gradient(circle_at_top_right,rgba(249,115,22,0.12),transparent_24%)] p-6 shadow-[0_28px_70px_rgba(2,8,23,0.42)] md:p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">How It Works</p>
+            <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+              Three steps. <span className="gradient-text-warm">One control layer.</span>
+            </h2>
+            <p className="mt-5 text-lg text-slate-300">
+              NeutralAI sits between the workflow and the model, intercepting traffic before raw sensitive values continue downstream.
+            </p>
+          </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.08 }}
-              className="card p-6"
-            >
-              <div className="text-5xl font-heading font-bold text-primary/15">0{index + 1}</div>
-              <div className="mt-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
-                <step.icon className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="mt-5 font-heading text-2xl font-semibold">{step.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{step.description}</p>
-            </motion.div>
-          ))}
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="relative overflow-hidden rounded-[24px] border border-white/10 bg-background/85 p-6"
+              >
+                <div className="absolute right-5 top-5 font-mono text-[11px] uppercase tracking-[0.24em] text-slate-600">
+                  0{index + 1}
+                </div>
+                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${index === 1 ? 'bg-[rgba(249,115,22,0.14)]' : 'bg-primary/10'}`}>
+                  <step.icon className={`h-6 w-6 ${index === 1 ? 'text-[#fdba74]' : 'text-primary-light'}`} />
+                </div>
+                <h3 className="mt-5 font-heading text-2xl font-semibold">{step.title}</h3>
+                <p className="mt-3 text-base leading-7 text-slate-300">{step.description}</p>
+                <div className={`mt-6 h-1 w-16 rounded-full ${index === 1 ? 'bg-[linear-gradient(90deg,#f97316,#fdba74)]' : 'bg-[linear-gradient(90deg,#22d3ee,#7dd3fc)]'}`} />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -709,42 +730,48 @@ function Trust() {
   return (
     <section id="trust" className="section">
       <div className="container-custom">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <SectionIntro
-            eyebrow="Why Trust NeutralAI"
-            title="Trust comes from architecture, proof, and honesty"
-            description="The message here is simple: a real product boundary, live operational proof, and a launch posture that says exactly what is ready today and what is still being hardened."
-          />
+        <div className="rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.96)),radial-gradient(circle_at_18%_18%,rgba(34,211,238,0.14),transparent_24%),radial-gradient(circle_at_86%_12%,rgba(249,115,22,0.14),transparent_22%)] p-6 shadow-[0_28px_70px_rgba(2,8,23,0.42)] md:p-8">
+          <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Why Trust NeutralAI</p>
+              <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+                Visible proof, not <span className="gradient-text-warm">security theatre.</span>
+              </h2>
+              <p className="mt-5 max-w-2xl text-lg text-slate-300">
+                The trust story should stay simple: a real product boundary, live operational proof, and a launch posture that says exactly what is ready now.
+              </p>
+            </div>
 
-          <div className="space-y-4">
-            {trustCards.map((card, index) => (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-                className="card p-5"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10">
-                    <card.icon className="h-5 w-5 text-primary" />
+            <div className="grid gap-4">
+              {trustCards.map((card, index) => (
+                <motion.div
+                  key={card.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className={`rounded-[22px] border p-5 ${index === 1 ? 'border-accent-cta/25 bg-[rgba(249,115,22,0.08)]' : 'border-white/10 bg-background/80'}`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${index === 1 ? 'bg-[rgba(249,115,22,0.14)]' : 'bg-primary/10'}`}>
+                      <card.icon className={`h-5 w-5 ${index === 1 ? 'text-[#fdba74]' : 'text-primary-light'}`} />
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-xl font-semibold">{card.title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-300">{card.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-heading text-xl font-semibold">{card.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-400">{card.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="mt-10 rounded-[28px] border border-primary/20 bg-primary/10 p-6">
+        <div className="mt-10 rounded-[28px] border border-accent-cta/20 bg-[linear-gradient(180deg,rgba(249,115,22,0.08),rgba(15,23,42,0.92))] p-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Launch Signals</p>
-              <h3 className="mt-4 font-heading text-3xl font-semibold">Live beta endpoints. Clear production path.</h3>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Launch Signals</p>
+              <h3 className="mt-4 font-heading text-3xl font-semibold">Live beta runtime. Clear next step.</h3>
               <p className="mt-4 max-w-3xl text-slate-300">
                 The public signal is simple: the beta runtime is live on <span className="text-primary-light">api.neutralai.co.uk</span>, while production hardening is still being completed openly and deliberately.
               </p>
@@ -819,15 +846,16 @@ function FinalCta() {
     <section className="section relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background-secondary to-background" />
       <div className="absolute left-1/2 top-1/2 h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/12 blur-3xl" />
+      <div className="absolute right-[10%] top-[18%] h-52 w-52 rounded-full bg-[rgba(249,115,22,0.14)] blur-3xl" />
 
       <div className="container-custom relative z-10">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Final CTA</p>
+        <div className="mx-auto max-w-4xl rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.95),rgba(2,6,23,0.97)),radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(249,115,22,0.18),transparent_22%)] px-6 py-10 text-center shadow-[0_32px_80px_rgba(2,8,23,0.5)] md:px-10 md:py-12">
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Final CTA</p>
           <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
-            If AI usage is already happening, put the control layer in place now
+            Put the <span className="gradient-text-warm">control layer</span> in place before the rollout gets messy
           </h2>
-          <p className="mt-5 text-lg text-slate-400">
-            NeutralAI is for teams that need a credible answer to one practical question: how do we let people use AI without sending raw sensitive data out first?
+          <p className="mx-auto mt-5 max-w-3xl text-lg text-slate-300">
+            NeutralAI is for teams that already know AI usage is happening and want a credible way to reduce prompt risk without slowing everyone down.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a href="/install-extension" className="btn btn-cta w-full px-8 py-4 text-lg sm:w-auto">
@@ -838,7 +866,7 @@ function FinalCta() {
               Book Rollout Review
             </a>
           </div>
-          <p className="mt-4 text-sm text-slate-500">
+          <p className="mt-4 text-sm text-slate-400">
             Need a security or commercial conversation first?{' '}
             <a href="/contact" className="text-primary-light hover:text-primary">
               Contact NeutralAI
