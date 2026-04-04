@@ -2,10 +2,53 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import { siteConfig } from './site'
 
 export const metadata: Metadata = {
-  title: 'NeutralAI | AI Security Gateway - Protect Your Data',
-  description: 'Enterprise-grade PII protection for AI systems. Detect, mask, and control sensitive data before it reaches AI models.',
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: `${siteConfig.name} | AI Security Gateway`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
+  keywords: [
+    'NeutralAI',
+    'AI security gateway',
+    'PII masking',
+    'privacy gateway',
+    'LLM security',
+    'UK GDPR',
+  ],
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: siteConfig.url,
+    title: `${siteConfig.name} | AI Security Gateway`,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: '/logo.png',
+        width: 512,
+        height: 512,
+        alt: `${siteConfig.name} logo`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${siteConfig.name} | AI Security Gateway`,
+    description: siteConfig.description,
+    images: ['/logo.png'],
+  },
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 }
 
 export default function RootLayout({

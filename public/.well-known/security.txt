@@ -1,0 +1,6 @@
+Contact: mailto:security@neutralai.io
+Contact: mailto:support@neutralai.io
+Canonical: https://neutralai.co.uk/.well-known/security.txt
+Policy: https://neutralai.co.uk/support/browser-extension
+Preferred-Languages: en
+Expires: 2027-12-31T23:59:59Z

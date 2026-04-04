@@ -168,7 +168,7 @@ export default function TermsPage() {
                 By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
               </p>
               <p className="text-slate-500 text-sm mt-6">
-                Last updated: February 2026
+                Last updated: March 29, 2026
               </p>
             </div>
           </motion.div>

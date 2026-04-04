@@ -1,457 +1,640 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Shield, 
-  Lock, 
-  Brain, 
-  Zap, 
-  CheckCircle, 
-  ArrowRight, 
-  Play, 
-  ChevronRight,
+import {
+  AlertTriangle,
+  ArrowRight,
+  Building2,
+  CheckCircle2,
+  FileCheck2,
+  Gauge,
   Globe,
-  Database,
-  Eye,
-  FileCheck,
-  Clock,
-  Star,
-  Activity
+  KeyRound,
+  Lock,
+  Monitor,
+  Network,
+  Server,
+  ShieldCheck,
+  Sparkles,
+  type LucideIcon,
 } from 'lucide-react'
+import { contactLinks, siteConfig } from './site'
 
-const features = [
+type Card = {
+  icon: LucideIcon
+  title: string
+  description: string
+}
+
+const importanceCards: Card[] = [
   {
-    icon: Shield,
-    title: 'Real-time PII Detection',
-    description: 'Detect and mask sensitive data in milliseconds before it reaches any AI model.'
+    icon: AlertTriangle,
+    title: 'Sensitive data can leave too early',
+    description:
+      'Prompts often contain names, emails, claim references, transcripts, and internal business context before anyone has applied policy.',
   },
   {
-    icon: Brain,
-    title: 'AI-Powered Recognition',
-    description: 'Powered by Microsoft Presidio and advanced NLP for accurate entity recognition.'
+    icon: Gauge,
+    title: 'AI adoption slows down',
+    description:
+      'Without a control point, security and legal teams have no clean way to approve usage, so rollout stalls.',
   },
   {
     icon: Lock,
-    title: 'Reversible Masking',
-    description: 'Secure vault system allows authorized users to detokenize when needed.'
+    title: 'Workarounds create more risk',
+    description:
+      'When approved workflows lag behind demand, teams improvise with unmanaged tools and trust erodes fast.',
   },
-  {
-    icon: Database,
-    title: 'Semantic Validation',
-    description: 'Vector database integration catches context-sensitive data leaks.'
-  },
-  {
-    icon: FileCheck,
-    title: 'Audit & Compliance',
-    description: 'Complete audit trails for GDPR, HIPAA, and SOC2 compliance.'
-  },
-  {
-    icon: Zap,
-    title: 'Low Latency',
-    description: 'Sub-50ms processing time ensures seamless user experience.'
-  }
-]
+] as const
 
 const steps = [
   {
-    number: '01',
-    title: 'Data Ingestion',
-    description: 'User prompt enters the gateway with full metadata preservation.',
-    icon: Database
+    icon: Network,
+    title: 'Intercept',
+    description: 'Your app sends AI traffic through NeutralAI before it reaches any external model.',
   },
   {
-    number: '02',
-    title: 'AI Analysis',
-    description: 'Microsoft Presidio + NLP engine scans for 15+ PII entity types.',
-    icon: Brain
+    icon: KeyRound,
+    title: 'Neutralize',
+    description: 'PII is detected and rewritten into safer tokens or sanitized references.',
   },
   {
-    number: '03',
-    title: 'Smart Masking',
-    description: 'Identified PII is replaced with secure tokens or custom masks.',
-    icon: Shield
+    icon: ShieldCheck,
+    title: 'Forward safely',
+    description: 'Only the cleaned request continues, with a clearer path for review and rollout.',
+  },
+] as const
+
+const trustCards: Card[] = [
+  {
+    icon: ShieldCheck,
+    title: 'A real gateway architecture',
+    description: 'The story is concrete: a security boundary between your application and model vendors.',
   },
   {
-    number: '04',
-    title: 'Safe Output',
-    description: 'Clean prompt flows to AI models. Original data stays protected.',
-    icon: Lock
-  }
-]
+    icon: FileCheck2,
+    title: 'Live operational signals',
+    description: 'Health and readiness endpoints provide stronger proof than placeholder testimonials or vanity stats.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Honest beta positioning',
+    description: 'The site is explicit about pilot readiness now and production hardening still in progress.',
+  },
+] as const
 
 const pricingPlans = [
   {
-    name: 'Starter',
-    price: '$99',
-    period: '/month',
-    description: 'Perfect for startups and small teams',
-    features: [
-      '10,000 requests/month',
-      '5 PII entity types',
-      'Standard masking',
-      'Email support',
-      'Basic audit logs'
-    ],
-    cta: 'Start Free Trial',
-    popular: false
+    name: 'Pilot',
+    summary: 'For proving the control layer in a real workflow',
+    features: ['Guided onboarding', 'Single environment rollout', 'Shared beta support'],
+    href: '/contact',
+    cta: 'Request Pilot Access',
+    featured: false,
   },
   {
-    name: 'Professional',
-    price: '$299',
-    period: '/month',
-    description: 'For growing companies with compliance needs',
-    features: [
-      '100,000 requests/month',
-      'All PII entity types',
-      'Reversible masking',
-      'Priority support',
-      'Full audit logs',
-      'Custom rules',
-      'API access'
-    ],
-    cta: 'Start Free Trial',
-    popular: true
+    name: 'Launch',
+    summary: 'For internal rollout and security alignment',
+    features: ['Policy baseline review', 'Architecture review', 'Production planning conversation'],
+    href: contactLinks.launchReviewMailto,
+    cta: 'Book Launch Review',
+    featured: true,
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
-    period: '',
-    description: 'For large organizations with advanced needs',
-    features: [
-      'Unlimited requests',
-      'All features included',
-      'Dedicated support',
-      'On-premise deployment',
-      'SLA guarantee',
-      'Custom integrations',
-      'Security review'
-    ],
-    cta: 'Contact Sales',
-    popular: false
-  }
-]
+    summary: 'For deeper security and deployment planning',
+    features: ['Security questionnaire support', 'BYOK alignment', 'Custom rollout scope'],
+    href: '/contact',
+    cta: 'Talk to NeutralAI',
+    featured: false,
+  },
+] as const
 
-const stats = [
-  { value: '15+', label: 'PII Entity Types' },
-  { value: '99.9%', label: 'Detection Accuracy' },
-  { value: '<50ms', label: 'Processing Time' },
-  { value: '100K+', label: 'Requests Protected' }
-]
+type DeploymentCard = {
+  icon: LucideIcon
+  title: string
+  audience: string
+  description: string
+}
 
-const testimonials = [
+const deploymentCards: DeploymentCard[] = [
   {
-    quote: "NeutralAI saved us from a potential GDPR violation. Their real-time PII detection is remarkable.",
-    author: "Sarah Chen",
-    role: "CTO",
-    company: "FinTech Global",
-    avatar: "SC"
+    icon: Globe,
+    title: 'SaaS',
+    audience: 'Fastest path for teams that want managed rollout',
+    description:
+      'Use NeutralAI as a managed service when you want speed, lower operational overhead, and a simpler path into protected AI usage.',
   },
   {
-    quote: "Finally, we can use AI confidently knowing our customer data is fully protected.",
-    author: "Michael Roberts",
-    role: "CISO",
-    company: "HealthSecure",
-    avatar: "MR"
+    icon: Building2,
+    title: 'Private Cloud',
+    audience: 'For teams that need stronger environment control',
+    description:
+      'Run NeutralAI in a customer-controlled cloud environment when governance, network boundaries, or data posture require more separation.',
   },
   {
-    quote: "The audit capabilities alone are worth the investment. Compliance has never been easier.",
-    author: "Emma Williams",
-    role: "Data Officer",
-    company: "BankCorp",
-    avatar: "EW"
-  }
-]
+    icon: Server,
+    title: 'On-Prem',
+    audience: 'For regulated deployments with strict infrastructure requirements',
+    description:
+      'Deploy NeutralAI inside your own infrastructure when policy, compliance, or customer obligations demand the highest level of control.',
+  },
+] as const
 
-const logos = [
-  'OpenAI', 'Anthropic', 'Google', 'Microsoft', 'AWS', 'Azure'
-]
+type PromptPart = {
+  text: string
+  tone?: 'danger' | 'safe'
+}
+
+type PromptLine = PromptPart[]
+
+const rawPromptLines: PromptLine[] = [
+  [{ text: 'Draft a reply to ' }, { text: 'emma@client.com', tone: 'danger' }],
+  [{ text: 'about claim ' }, { text: 'POL-44918', tone: 'danger' }],
+  [{ text: 'and include phone ' }, { text: '+44 07...', tone: 'danger' }],
+] as const
+
+const sanitizedPromptLines: PromptLine[] = [
+  [{ text: 'Draft a reply to ' }, { text: 'EMAIL_TOKEN', tone: 'safe' }],
+  [{ text: 'about claim ' }, { text: 'CLAIM_REFERENCE', tone: 'safe' }],
+  [{ text: 'and include phone ' }, { text: 'PHONE_TOKEN', tone: 'safe' }],
+] as const
+
+function countPromptChars(lines: readonly PromptLine[]) {
+  return lines.reduce(
+    (total, line) => total + line.reduce((lineTotal, part) => lineTotal + part.text.length, 0),
+    0
+  )
+}
+
+const rawPromptCharCount = countPromptChars(rawPromptLines)
+const sanitizedPromptCharCount = countPromptChars(sanitizedPromptLines)
+
+function renderPromptLines({
+  lines,
+  typedChars,
+  highlightTokens,
+  showCaret,
+}: {
+  lines: readonly PromptLine[]
+  typedChars: number
+  highlightTokens: boolean
+  showCaret: boolean
+}) {
+  let consumedChars = 0
+
+  return lines.map((line, lineIndex) => {
+    const lineLength = line.reduce((total, part) => total + part.text.length, 0)
+    const lineVisibleChars = Math.max(0, Math.min(lineLength, typedChars - consumedChars))
+    const isCurrentLine =
+      showCaret &&
+      typedChars > consumedChars &&
+      typedChars <= consumedChars + lineLength &&
+      typedChars < countPromptChars(lines)
+
+    consumedChars += lineLength
+
+    if (lineVisibleChars <= 0) {
+      return <div key={`line-${lineIndex}`} className="min-h-[1.9rem] md:min-h-[2.1rem]" />
+    }
+
+    let remainingChars = lineVisibleChars
+    const parts = line.map((part, partIndex) => {
+      if (remainingChars <= 0) {
+        return null
+      }
+
+      const visibleLength = Math.min(remainingChars, part.text.length)
+      const visibleText = part.text.slice(0, visibleLength)
+      const partIsComplete = visibleLength === part.text.length
+      remainingChars -= visibleLength
+
+      if (part.tone && partIsComplete && highlightTokens) {
+        return (
+          <span
+            key={`part-${lineIndex}-${partIndex}`}
+            className={part.tone === 'danger' ? 'token-danger' : 'token-safe'}
+          >
+            {part.text}
+          </span>
+        )
+      }
+
+      return <span key={`part-${lineIndex}-${partIndex}`}>{visibleText}</span>
+    })
+
+    return (
+      <div key={`line-${lineIndex}`} className="min-h-[1.9rem] break-words md:min-h-[2.1rem]">
+        {parts}
+        {isCurrentLine ? <span className="typing-caret ml-1" /> : null}
+      </div>
+    )
+  })
+}
+
+function SectionIntro({
+  eyebrow,
+  title,
+  description,
+  centered = false,
+}: {
+  eyebrow: string
+  title: string
+  description: string
+  centered?: boolean
+}) {
+  return (
+    <div className={centered ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'}>
+      <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">{eyebrow}</p>
+      <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">{title}</h2>
+      <p className="mt-5 text-lg text-slate-400">{description}</p>
+    </div>
+  )
+}
+
+function ProductVisual() {
+  const [phase, setPhase] = useState<'typingRaw' | 'highlightRaw' | 'sending' | 'typingSanitized' | 'pauseSanitized'>('typingRaw')
+  const [rawTypedChars, setRawTypedChars] = useState(0)
+  const [sanitizedTypedChars, setSanitizedTypedChars] = useState(0)
+
+  useEffect(() => {
+    const typingSpeedMs = 34
+    let timer: ReturnType<typeof setTimeout> | undefined
+
+    if (phase === 'typingRaw') {
+      if (rawTypedChars < rawPromptCharCount) {
+        timer = setTimeout(() => {
+          setRawTypedChars((current) => current + 1)
+        }, typingSpeedMs)
+      } else {
+        timer = setTimeout(() => {
+          setPhase('highlightRaw')
+        }, 550)
+      }
+    }
+
+    if (phase === 'highlightRaw') {
+      timer = setTimeout(() => {
+        setPhase('sending')
+      }, 650)
+    }
+
+    if (phase === 'sending') {
+      timer = setTimeout(() => {
+        setPhase('typingSanitized')
+      }, 1550)
+    }
+
+    if (phase === 'typingSanitized') {
+      if (sanitizedTypedChars < sanitizedPromptCharCount) {
+        timer = setTimeout(() => {
+          setSanitizedTypedChars((current) => current + 1)
+        }, typingSpeedMs)
+      } else {
+        timer = setTimeout(() => {
+          setPhase('pauseSanitized')
+        }, 900)
+      }
+    }
+
+    if (phase === 'pauseSanitized') {
+      timer = setTimeout(() => {
+        setRawTypedChars(0)
+        setSanitizedTypedChars(0)
+        setPhase('typingRaw')
+      }, 1200)
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer)
+      }
+    }
+  }, [phase, rawTypedChars, sanitizedTypedChars])
+
+  const rawHighlightVisible = phase !== 'typingRaw' && rawTypedChars === rawPromptCharCount
+  const showFlights = phase === 'sending'
+
+  return (
+    <div className="signal-simple-shell rounded-[30px] p-4 md:p-6 xl:p-7">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-3 md:pb-4">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Live Narrative</p>
+          <h2 className="mt-2 font-heading text-2xl font-semibold">How NeutralAI works in one view</h2>
+        </div>
+        <div className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs text-primary-light">
+          api.neutralai.co.uk
+        </div>
+      </div>
+
+      <div className="relative mt-5 overflow-hidden md:mt-6">
+        <div className="pointer-events-none absolute inset-0 z-20 hidden md:block">
+          <motion.div
+            className="token-flight token-flight-danger"
+            style={{ top: '37%', left: '10%' }}
+            animate={showFlights ? { x: [0, 42, 96, 148], opacity: [0, 1, 1, 0] } : { x: 0, opacity: 0 }}
+            transition={{ duration: 1.3, ease: 'easeInOut' }}
+          >
+            emma@client.com
+          </motion.div>
+          <motion.div
+            className="token-flight token-flight-danger"
+            style={{ top: '51%', left: '10%' }}
+            animate={showFlights ? { x: [0, 42, 96, 148], opacity: [0, 1, 1, 0] } : { x: 0, opacity: 0 }}
+            transition={{ duration: 1.3, delay: 0.18, ease: 'easeInOut' }}
+          >
+            POL-44918
+          </motion.div>
+          <motion.div
+            className="token-flight token-flight-danger"
+            style={{ top: '65%', left: '10%' }}
+            animate={showFlights ? { x: [0, 42, 96, 148], opacity: [0, 1, 1, 0] } : { x: 0, opacity: 0 }}
+            transition={{ duration: 1.3, delay: 0.36, ease: 'easeInOut' }}
+          >
+            +44 07...
+          </motion.div>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_118px_minmax(0,1.16fr)] md:items-stretch md:gap-3 xl:grid-cols-[minmax(0,1.03fr)_132px_minmax(0,1.2fr)] xl:gap-4">
+        <motion.div
+          animate={{ y: [0, -4, 0] }}
+          transition={{ duration: 4.4, repeat: Infinity, ease: 'easeInOut' }}
+          className="grid min-w-0 grid-rows-[auto_1fr] rounded-[22px] border border-red-500/20 bg-red-950/10 p-3 md:p-4"
+        >
+          <p className="text-sm font-semibold text-slate-100">Raw input</p>
+          <div className="prompt-editor-shell mt-3 min-w-0 font-mono text-sm text-slate-300 md:mt-4 md:text-[15px]">
+            <div className="mb-4 flex gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+            </div>
+            <div className="space-y-3 leading-7 md:leading-8">
+              {renderPromptLines({
+                lines: rawPromptLines,
+                typedChars: rawTypedChars,
+                highlightTokens: rawHighlightVisible,
+                showCaret: phase === 'typingRaw',
+              })}
+            </div>
+          </div>
+        </motion.div>
+
+          <div className="flex items-center justify-center py-2 md:py-0">
+          <div className="beam-wrapper">
+            <div className="beam-line" />
+            <motion.div
+              animate={showFlights ? { x: ['-64%', '64%'], opacity: [0.35, 1, 0.35] } : { x: '-64%', opacity: 0.2 }}
+              transition={{ duration: 1.1, repeat: showFlights ? Infinity : 0, ease: 'easeInOut' }}
+              className="beam-dot"
+            />
+            <motion.div
+              animate={showFlights ? { scale: [1, 1.08, 1], boxShadow: ['0 0 0 rgba(34,211,238,0.0)', '0 0 30px rgba(34,211,238,0.2)', '0 0 0 rgba(34,211,238,0.0)'] } : { scale: 1 }}
+              transition={{ duration: 1.1, repeat: showFlights ? Infinity : 0, ease: 'easeInOut' }}
+              className="gateway-core"
+            >
+              <ShieldCheck className="h-8 w-8 text-primary-light" />
+              <p className="mt-3 font-heading text-base font-semibold text-slate-50">NeutralAI</p>
+            </motion.div>
+          </div>
+        </div>
+
+        <motion.div
+          animate={{ y: [0, 4, 0] }}
+          transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="grid min-w-0 grid-rows-[auto_1fr] rounded-[22px] border border-emerald-500/20 bg-emerald-950/10 p-3 md:p-4"
+        >
+          <p className="text-sm font-semibold text-slate-100">Sanitized prompt</p>
+          <div className="prompt-editor-shell prompt-editor-shell-safe mt-3 min-w-0 font-mono text-sm text-slate-300 md:mt-4 md:text-[15px]">
+            <div className="mb-4 flex gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-800/70" />
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-800/70" />
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-800/70" />
+            </div>
+            <div className="space-y-3 leading-7 md:leading-8">
+              {renderPromptLines({
+                lines: sanitizedPromptLines,
+                typedChars: sanitizedTypedChars,
+                highlightTokens: true,
+                showCaret: phase === 'typingSanitized',
+              })}
+            </div>
+          </div>
+        </motion.div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-32">
-      {/* Background */}
-      <div className="absolute inset-0 grid-bg" />
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
-      
-      {/* Animated grid lines */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-        <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-        <div className="absolute top-3/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-      </div>
+    <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-24">
+      <div className="absolute inset-0 hero-mesh" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background" />
 
       <div className="container-custom relative z-10">
-        <div className="max-w-4xl mx-auto text-center stagger-children">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8"
-          >
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm text-primary-light">Now in Public Beta</span>
-          </motion.div>
-
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-          >
-            Protect Your Data. <br />
-            <span className="gradient-text">Empower Your AI.</span>
-          </motion.h1>
-
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto"
-          >
-            Enterprise-grade PII protection for AI systems. Detect, mask, and control sensitive data before it reaches AI models.
-          </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <a href="#pricing" className="btn btn-cta text-lg px-8 py-4">
-              Start Free Trial
-              <ArrowRight className="w-5 h-5" />
-            </a>
-            <button className="btn btn-secondary text-lg px-8 py-4">
-              <Play className="w-5 h-5" />
-              Watch Demo
-            </button>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-wrap items-center justify-center gap-8 md:gap-16 mt-16"
-          >
-            {stats.map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="font-heading text-3xl md:text-4xl font-bold text-primary-light">{stat.value}</div>
-                <div className="text-slate-500 text-sm">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Floating cards - positioned outside content to prevent overlap */}
-        <motion.div 
-          animate={{ y: [0, -15, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-          className="absolute top-40 left-4 xl:left-0 hidden lg:block pointer-events-none"
-        >
-          <div className="card p-4 w-56 -translate-x-full mr-8">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-accent-success/20 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-accent-success" />
-              </div>
-              <span className="font-medium text-sm">PII Detected</span>
+        <div className="grid items-center gap-12 lg:grid-cols-[0.84fr_1.16fr] xl:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary-light">
+              <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
+              AI gateway for sensitive workflows
             </div>
-            <div className="text-xs text-slate-500">john@company.com → &lt;EMAIL_1&gt;</div>
+
+            <h1 className="mt-6 max-w-4xl font-heading text-4xl font-bold leading-tight md:text-6xl xl:text-7xl">
+              Use AI without <span className="gradient-text-warm">leaking sensitive data.</span>
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-lg text-slate-300 md:text-xl">
+              NeutralAI sits between your app and external models to detect, mask, and govern sensitive data before it leaves your boundary.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <a href="/contact" className="btn btn-cta px-8 py-4 text-base">
+                Request Beta Access
+                <ArrowRight className="h-5 w-5" />
+              </a>
+              <a
+                href={siteConfig.apiHealthUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-secondary px-8 py-4 text-base"
+              >
+                View Live Health
+              </a>
+            </div>
+
+            <div className="mt-10 space-y-3">
+              {[
+                'Stops raw PII from reaching external models',
+                'Browser extension protects usage without changing daily habits',
+                'Gives security a clear control point',
+                'Makes AI rollout easier to approve internally',
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </motion.div>
 
-        <motion.div 
-          animate={{ y: [0, -15, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
-          className="absolute top-56 right-4 xl:right-0 hidden lg:block pointer-events-none"
-        >
-          <div className="card p-4 w-56 translate-x-full ml-8">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <Lock className="w-4 h-4 text-primary" />
-              </div>
-              <span className="font-medium text-sm">Data Secured</span>
-            </div>
-            <div className="text-xs text-slate-500">+12 items protected this session</div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div 
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="w-6 h-10 rounded-full border-2 border-slate-600 flex items-start justify-center p-2"
-        >
-          <motion.div 
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-1 h-2 rounded-full bg-primary"
-          />
-        </motion.div>
-      </motion.div>
-    </section>
-  )
-}
-
-function Problem() {
-  return (
-    <section className="section relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background-secondary to-background" />
-      
-      <div className="container-custom relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-6">
-            Your Sensitive Data is <span className="text-red-500">Leaking</span> to AI
-          </h2>
-          <p className="text-slate-400 text-lg">
-            Every day, organizations unknowingly expose customer PII, financial data, and secrets to AI models. The risk is real and growing.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="card p-8 text-center"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-red-500/10 flex items-center justify-center mx-auto mb-4">
-              <Eye className="w-8 h-8 text-red-500" />
-            </div>
-            <div className="text-4xl font-heading font-bold text-red-500 mb-2">73%</div>
-            <p className="text-slate-400">of companies using AI have experienced data leaks</p>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="card p-8 text-center"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center mx-auto mb-4">
-              <Activity className="w-8 h-8 text-orange-500" />
-            </div>
-            <div className="text-4xl font-heading font-bold text-orange-500 mb-2">$4.5M</div>
-            <p className="text-slate-400">average cost of a data breach in 2024</p>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="card p-8 text-center"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-              <Clock className="w-8 h-8 text-primary" />
-            </div>
-            <div className="text-4xl font-heading font-bold text-primary mb-2">280 days</div>
-            <p className="text-slate-400">average time to detect and contain a breach</p>
-          </motion.div>
+          <ProductVisual />
         </div>
       </div>
     </section>
   )
 }
 
-function Story() {
+function WhyItMatters() {
   return (
-    <section className="section relative">
+    <section id="problem" className="section">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading text-3xl md:text-5xl font-bold mb-6">
-              Built by Those Who <span className="gradient-text">Lived It</span>
-            </h2>
-            
-            <div className="space-y-6 text-slate-400">
-              <p>
-                We founded NeutralAI after witnessing something troubling: organizations rushing to adopt AI while unknowingly exposing their most sensitive data.
-              </p>
-              <p>
-                Our team has worked in cybersecurity for 15+ years. We've seen the aftermath of data breaches — careers ended, companies fined, trust destroyed.
-              </p>
-              <p>
-                When AI exploded, we saw the same pattern repeating. Companies were so eager to leverage AI that they skipped the most critical step: protecting their data.
-              </p>
-              <p className="text-primary-light font-medium">
-                That's why we built NeutralAI — to make AI safe for everyone.
-              </p>
-            </div>
+        <SectionIntro
+          eyebrow="Why It Matters"
+          title="Without a control layer, AI adoption creates new failure modes"
+          description="If the site has one job after the hero, it is making the customer feel the cost of not having this layer in place."
+        />
 
-            <div className="flex items-center gap-4 mt-8">
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary border-2 border-background flex items-center justify-center text-xs font-bold">
-                    {['NR', 'MS', 'JK', 'AL'][i-1]}
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {importanceCards.map((card, index) => (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.08 }}
+              className="card p-6"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+                <card.icon className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="mt-5 font-heading text-2xl font-semibold">{card.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{card.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ProductSurface() {
+  return (
+    <section className="section bg-background-secondary">
+      <div className="container-custom">
+        <div className="accent-panel rounded-[32px] p-6 md:p-8">
+          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Adoption Without Friction</p>
+              <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+                Secure AI usage <span className="gradient-text-warm">without changing habits</span>
+              </h2>
+              <p className="mt-5 max-w-2xl text-lg text-slate-300">
+                The browser extension is a strong part of the NeutralAI story. Teams can keep using familiar browser-based AI tools while NeutralAI adds protection in the background.
+              </p>
+
+              <div className="mt-7 space-y-3">
+                {[
+                  'No retraining project just to start using AI more safely',
+                  'No forced portal switch for teams already working in browser-based tools',
+                  'A better rollout story because security arrives without workflow drag',
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3 text-slate-200">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
+                    <span>{item}</span>
                   </div>
                 ))}
               </div>
-              <div className="text-sm">
-                <span className="text-slate-300">Founded by security experts from</span>
-                <span className="text-primary ml-1">Google, Microsoft, Palantir</span>
-              </div>
             </div>
-          </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl blur-3xl" />
-            <div className="relative card p-8 border-animate">
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                    <Globe className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-heading font-semibold mb-1">The Problem</h4>
-                    <p className="text-slate-400 text-sm">AI models memorize training data, including sensitive information.</p>
-                  </div>
-                </div>
-                
-                <div className="w-full h-px bg-border" />
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center flex-shrink-0">
-                    <Brain className="w-5 h-5 text-secondary" />
-                  </div>
-                  <div>
-                    <h4 className="font-heading font-semibold mb-1">Our Solution</h4>
-                    <p className="text-slate-400 text-sm">Real-time PII detection and masking before data reaches AI.</p>
+            <div className="accent-card rounded-[28px] p-5 md:p-6">
+              <div className="flex items-center gap-2 text-xs text-primary-light">
+                <span className="h-2.5 w-2.5 rounded-full bg-accent-cta" />
+                Browser extension
+              </div>
+
+              <div className="mt-4">
+                <h3 className="font-heading text-2xl font-semibold text-slate-50">
+                  Same tab. <span className="gradient-text-warm">Same prompt box.</span> Protected underneath.
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  NeutralAI can protect browser-based AI usage in the flow people already know, which is exactly why adoption can move faster.
+                </p>
+              </div>
+
+              <div className="mt-5 rounded-[24px] border border-white/10 bg-background/85 p-4 md:p-5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+                  <div className="ml-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-primary-light">
+                    Extension active
                   </div>
                 </div>
-                
-                <div className="w-full h-px bg-border" />
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-accent-success/20 flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-5 h-5 text-accent-success" />
+
+                <div className="mt-5 rounded-2xl border border-primary/15 bg-background-secondary/70 p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-primary-light">User Experience</p>
+                  <p className="mt-3 text-lg text-slate-100">People keep the workflow. NeutralAI adds the protection layer.</p>
+                </div>
+
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  <div className="rounded-2xl border border-primary/15 bg-background-secondary/70 p-4">
+                    <div className="flex items-center gap-2">
+                      <Monitor className="h-4 w-4 text-primary-light" />
+                      <p className="text-xs uppercase tracking-[0.2em] text-primary-light">What Users Feel</p>
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                      No workflow disruption, no extra friction, and no new daily habit to learn.
+                    </p>
                   </div>
-                  <div>
-                    <h4 className="font-heading font-semibold mb-1">The Result</h4>
-                    <p className="text-slate-400 text-sm">Safe AI adoption with full compliance and audit capabilities.</p>
+                  <div className="rounded-2xl border border-accent-cta/20 bg-[rgba(249,115,22,0.08)] p-4">
+                    <p className="text-xs uppercase tracking-[0.2em] text-[#fdba74]">What Security Gets</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-200">
+                      A real control point over browser-based AI usage instead of hoping people self-police prompts.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
+        </div>
+
+        <div className="mt-14">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Deployment Options</p>
+            <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+              One product, <span className="gradient-text-warm">multiple deployment paths</span>
+            </h2>
+            <p className="mt-5 text-lg text-slate-400">
+              NeutralAI is not a single hosting story. Teams can choose the operating model that fits their risk posture, infrastructure constraints, and rollout speed.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {deploymentCards.map((card, index) => (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="accent-card rounded-[24px] p-6"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5">
+                    <card.icon className="h-6 w-6 text-primary-light" />
+                  </div>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-slate-300">
+                    NeutralAI
+                  </span>
+                </div>
+                <h3 className="mt-5 font-heading text-2xl font-semibold">{card.title}</h3>
+                <p className="mt-3 text-sm font-medium text-[#fdba74]">{card.audience}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{card.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -460,148 +643,93 @@ function Story() {
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="section bg-background-secondary relative">
-      <div className="absolute inset-0 grid-bg opacity-30" />
-      
-      <div className="container-custom relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4">
-            How It Works
-          </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Four simple steps to secure your AI deployments
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="relative"
-            >
-              <div className="card p-6 h-full">
-                <div className="text-6xl font-heading font-bold text-primary/20 mb-4">
-                  {step.number}
-                </div>
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                  <step.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-heading font-semibold text-lg mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-slate-400 text-sm">
-                  {step.description}
-                </p>
-              </div>
-              
-              {i < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                  <ChevronRight className="w-6 h-6 text-primary/50" />
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function Features() {
-  return (
-    <section id="features" className="section">
+    <section id="how-it-works" className="section bg-background-secondary">
       <div className="container-custom">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4">
-            Enterprise-Grade <span className="gradient-text">Features</span>
-          </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Everything you need to secure AI deployments at scale
-          </p>
-        </div>
+        <SectionIntro
+          eyebrow="How It Works"
+          title="Intercept. Neutralize. Forward."
+          description="The explanation should stay fast. NeutralAI is the layer between your app and the model endpoint."
+          centered
+        />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, i) => (
-            <motion.div 
-              key={i}
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="card p-6 group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <feature.icon className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-heading font-semibold text-lg mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-slate-400 text-sm">
-                {feature.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function Testimonials() {
-  return (
-    <section className="section bg-background-secondary relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
-      </div>
-      
-      <div className="container-custom relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4">
-            Trusted by Industry Leaders
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {testimonials.map((testimonial, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: index * 0.08 }}
               className="card p-6"
             >
-              <div className="flex gap-1 mb-4">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                ))}
+              <div className="text-5xl font-heading font-bold text-primary/15">0{index + 1}</div>
+              <div className="mt-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+                <step.icon className="h-6 w-6 text-primary" />
               </div>
-              <p className="text-slate-300 mb-6 italic">"{testimonial.quote}"</p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-sm">
-                  {testimonial.avatar}
-                </div>
-                <div>
-                  <div className="font-medium">{testimonial.author}</div>
-                  <div className="text-sm text-slate-500">{testimonial.role}, {testimonial.company}</div>
-                </div>
-              </div>
+              <h3 className="mt-5 font-heading text-2xl font-semibold">{step.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{step.description}</p>
             </motion.div>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
 
-        {/* Logos */}
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-50">
-          {logos.map((logo, i) => (
-            <div key={i} className="text-xl font-heading font-bold text-slate-500">
-              {logo}
+function Trust() {
+  return (
+    <section id="trust" className="section">
+      <div className="container-custom">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <SectionIntro
+            eyebrow="Why Trust NeutralAI"
+            title="Trust comes from architecture, proof, and honesty"
+            description="The goal is not to overwhelm people. It is to show a believable product, a believable deployment story, and a believable reason to engage."
+          />
+
+          <div className="space-y-4">
+            {trustCards.map((card, index) => (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="card p-5"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10">
+                    <card.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading text-xl font-semibold">{card.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-400">{card.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10 rounded-[28px] border border-primary/20 bg-primary/10 p-6">
+          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Launch Signals</p>
+              <h3 className="mt-4 font-heading text-3xl font-semibold">Live beta endpoints. Clear production path.</h3>
+              <p className="mt-4 max-w-3xl text-slate-300">
+                The public signal is simple: the beta runtime is live on <span className="text-primary-light">api.neutralai.co.uk</span>, while production hardening is still being completed openly and deliberately.
+              </p>
             </div>
-          ))}
+
+            <div className="grid gap-3 text-sm">
+              <div className="rounded-2xl border border-border bg-background/80 px-4 py-3 text-slate-200">
+                GET {siteConfig.apiHealthUrl.replace('https://', '')}
+              </div>
+              <div className="rounded-2xl border border-border bg-background/80 px-4 py-3 text-slate-200">
+                GET {siteConfig.apiReadyUrl.replace('https://', '')}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -610,55 +738,36 @@ function Testimonials() {
 
 function Pricing() {
   return (
-    <section id="pricing" className="section">
+    <section id="pricing" className="section bg-background-secondary">
       <div className="container-custom">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="text-slate-400 text-lg">
-            Start free, scale as you grow
-          </p>
-        </div>
+        <SectionIntro
+          eyebrow="Commercial Motion"
+          title="A simpler beta pricing story"
+          description="The pricing section should invite the right conversation, not force users into a self-serve story that does not match the current stage."
+          centered
+        />
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {pricingPlans.map((plan, i) => (
-            <motion.div 
-              key={i}
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {pricingPlans.map((plan, index) => (
+            <motion.div
+              key={plan.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={`card p-6 relative ${plan.popular ? 'border-primary glow-primary' : ''}`}
+              transition={{ delay: index * 0.08 }}
+              className={`card p-6 ${plan.featured ? 'border-primary shadow-[0_0_40px_rgba(6,182,212,0.12)]' : ''}`}
             >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-background text-sm font-bold rounded-full">
-                  Most Popular
-                </div>
-              )}
-              
-              <div className="text-center mb-6">
-                <h3 className="font-heading font-semibold text-xl mb-2">{plan.name}</h3>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="font-heading text-4xl font-bold">{plan.price}</span>
-                  <span className="text-slate-500">{plan.period}</span>
-                </div>
-                <p className="text-slate-400 text-sm mt-2">{plan.description}</p>
-              </div>
-
-              <ul className="space-y-3 mb-6">
-                {plan.features.map((feature, j) => (
-                  <li key={j} className="flex items-center gap-2 text-sm">
-                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span className="text-slate-300">{feature}</span>
+              <h3 className="text-center font-heading text-2xl font-semibold">{plan.name}</h3>
+              <p className="mt-3 text-center text-sm text-slate-400">{plan.summary}</p>
+              <ul className="mt-8 space-y-3">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-sm text-slate-300">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                    <span>{feature}</span>
                   </li>
                 ))}
               </ul>
-
-              <a 
-                href="#"
-                className={`btn w-full ${plan.popular ? 'btn-cta' : 'btn-secondary'}`}
-              >
+              <a href={plan.href} className={`btn mt-8 w-full ${plan.featured ? 'btn-cta' : 'btn-secondary'}`}>
                 {plan.cta}
               </a>
             </motion.div>
@@ -669,45 +778,29 @@ function Pricing() {
   )
 }
 
-function CTA() {
+function FinalCta() {
   return (
     <section className="section relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background-secondary to-background" />
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-3xl" />
-      </div>
-      
+      <div className="absolute left-1/2 top-1/2 h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/12 blur-3xl" />
+
       <div className="container-custom relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-6">
-            Ready to Secure Your AI?
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Final CTA</p>
+          <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+            If AI matters to your roadmap, the control layer matters too
           </h2>
-          <p className="text-slate-400 text-lg mb-8">
-            Join 100+ companies already protecting their data with NeutralAI. Start your free trial today.
+          <p className="mt-5 text-lg text-slate-400">
+            NeutralAI is for teams that want an approved path to AI usage instead of hoping sensitive data never leaves the prompt.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#" className="btn btn-cta text-lg px-8 py-4">
-              Start Free Trial
-              <ArrowRight className="w-5 h-5" />
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a href="/contact" className="btn btn-cta px-8 py-4 text-lg">
+              Request Beta Access
+              <ArrowRight className="h-5 w-5" />
             </a>
-            <a href="/demo" className="btn btn-secondary text-lg px-8 py-4">
-              Schedule Demo
+            <a href={contactLinks.launchReviewMailto} className="btn btn-secondary px-8 py-4 text-lg">
+              Book Launch Review
             </a>
-          </div>
-          
-          <div className="flex items-center justify-center gap-6 mt-12 text-sm text-slate-500">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-accent-success" />
-              <span>No credit card required</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-accent-success" />
-              <span>14-day free trial</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-accent-success" />
-              <span>Cancel anytime</span>
-            </div>
           </div>
         </div>
       </div>
@@ -719,13 +812,12 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Problem />
-      <Story />
+      <ProductSurface />
+      <WhyItMatters />
       <HowItWorks />
-      <Features />
-      <Testimonials />
+      <Trust />
       <Pricing />
-      <CTA />
+      <FinalCta />
     </main>
   )
 }

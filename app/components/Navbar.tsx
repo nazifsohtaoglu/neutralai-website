@@ -3,13 +3,14 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Shield, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
+import { homeSections } from '../site'
 
 const navLinks = [
-  { name: 'Product', href: '/' },
-  { name: 'How It Works', href: '/#how-it-works' },
-  { name: 'Features', href: '/#features' },
-  { name: 'Pricing', href: '/#pricing' },
+  { name: 'Problem', href: homeSections.problem },
+  { name: 'How It Works', href: homeSections.howItWorks },
+  { name: 'Why Trust Us', href: homeSections.trust },
+  { name: 'Pricing', href: homeSections.pricing },
   { name: 'About', href: '/about' },
 ]
 
@@ -49,8 +50,8 @@ export default function Navbar() {
           <Link href="/contact" className="text-slate-300 hover:text-white transition-colors">
             Contact
           </Link>
-          <Link href="/#pricing" className="btn btn-cta">
-            Get Started
+          <Link href="/contact" className="btn btn-cta">
+            Request Access
           </Link>
         </div>
 
@@ -78,8 +79,15 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Link href="/#pricing" className="btn btn-cta w-full mt-4">
-            Get Started
+          <Link
+            href="/contact"
+            className="block py-3 text-slate-300 hover:text-primary transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Contact
+          </Link>
+          <Link href="/contact" className="btn btn-cta w-full mt-4" onClick={() => setIsOpen(false)}>
+            Request Access
           </Link>
         </motion.div>
       )}
