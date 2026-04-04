@@ -461,21 +461,27 @@ function Hero() {
               NeutralAI adds a control layer for browser-based AI usage and application traffic so teams can keep moving without sending raw sensitive data straight to external models.
             </p>
 
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a href="/install-extension" className="btn btn-cta px-8 py-4 text-base">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href="/install-extension" className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto">
                 Install Extension
                 <ArrowRight className="h-5 w-5" />
               </a>
-              <a href="/contact" className="btn btn-secondary px-8 py-4 text-base">
+              <a href="/contact" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
                 Book Demo
               </a>
+            </div>
+            <div className="mt-4 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:flex-wrap sm:items-center">
+              <a href="/contact" className="text-primary-light transition-colors hover:text-primary">
+                Planning a broader rollout? Talk to NeutralAI
+              </a>
+              <span className="hidden text-slate-600 sm:inline">•</span>
               <a
                 href={siteConfig.apiHealthUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="btn btn-secondary px-8 py-4 text-base"
+                className="transition-colors hover:text-slate-200"
               >
-                View Live Health
+                View live API health
               </a>
             </div>
 
@@ -508,7 +514,7 @@ function WhyItMatters() {
         <SectionIntro
           eyebrow="Why It Matters"
           title="Without a control layer, AI adoption creates new failure modes"
-          description="If the site has one job after the hero, it is making the customer feel the cost of not having this layer in place."
+          description="The issue is not just privacy. Uncontrolled AI usage slows internal approval, creates shadow workflows, and makes security teams the team saying no by default."
         />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -576,6 +582,14 @@ function ProductSurface() {
                 <p className="mt-3 text-sm leading-6 text-slate-300">
                   NeutralAI can protect browser-based AI usage in the flow people already know, which is exactly why adoption can move faster.
                 </p>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <a href="/install-extension" className="btn btn-cta w-full sm:w-auto">
+                    Install Extension
+                  </a>
+                  <a href="/contact" className="btn btn-secondary w-full sm:w-auto">
+                    Enterprise Rollout
+                  </a>
+                </div>
               </div>
 
               <div className="mt-5 rounded-[24px] border border-white/10 bg-background/85 p-4 md:p-5">
@@ -663,7 +677,7 @@ function HowItWorks() {
         <SectionIntro
           eyebrow="How It Works"
           title="Intercept. Neutralize. Forward."
-          description="The explanation should stay fast. NeutralAI is the layer between your app and the model endpoint."
+          description="NeutralAI sits between the user workflow and the model endpoint, rewriting or masking sensitive values before the request keeps moving."
           centered
         />
 
@@ -699,7 +713,7 @@ function Trust() {
           <SectionIntro
             eyebrow="Why Trust NeutralAI"
             title="Trust comes from architecture, proof, and honesty"
-            description="The goal is not to overwhelm people. It is to show a believable product, a believable deployment story, and a believable reason to engage."
+            description="The message here is simple: a real product boundary, live operational proof, and a launch posture that says exactly what is ready today and what is still being hardened."
           />
 
           <div className="space-y-4">
@@ -769,8 +783,8 @@ function Pricing() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.08 }}
-              className={`card p-6 ${plan.featured ? 'border-primary shadow-[0_0_40px_rgba(6,182,212,0.12)]' : ''}`}
+            transition={{ delay: index * 0.08 }}
+              className={`card flex h-full flex-col p-6 ${plan.featured ? 'border-primary shadow-[0_0_40px_rgba(6,182,212,0.12)]' : ''}`}
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className="font-heading text-2xl font-semibold">{plan.name}</h3>
@@ -781,7 +795,7 @@ function Pricing() {
                 ) : null}
               </div>
               <p className="mt-3 text-sm text-slate-400">{plan.summary}</p>
-              <ul className="mt-8 space-y-3">
+              <ul className="mt-8 flex-1 space-y-3">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3 text-sm text-slate-300">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
@@ -816,14 +830,21 @@ function FinalCta() {
             NeutralAI is for teams that need a credible answer to one practical question: how do we let people use AI without sending raw sensitive data out first?
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="/install-extension" className="btn btn-cta px-8 py-4 text-lg">
+            <a href="/install-extension" className="btn btn-cta w-full px-8 py-4 text-lg sm:w-auto">
               Install Extension
               <ArrowRight className="h-5 w-5" />
             </a>
-            <a href={contactLinks.launchReviewMailto} className="btn btn-secondary px-8 py-4 text-lg">
+            <a href={contactLinks.launchReviewMailto} className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto">
               Book Rollout Review
             </a>
           </div>
+          <p className="mt-4 text-sm text-slate-500">
+            Need a security or commercial conversation first?{' '}
+            <a href="/contact" className="text-primary-light hover:text-primary">
+              Contact NeutralAI
+            </a>
+            .
+          </p>
         </div>
       </div>
     </section>
