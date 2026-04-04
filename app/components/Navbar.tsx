@@ -50,8 +50,8 @@ export default function Navbar() {
           <Link href="/contact" className="text-slate-300 hover:text-white transition-colors">
             Contact
           </Link>
-          <Link href="/contact" className="btn btn-cta">
-            Request Access
+          <Link href="/install-extension" className="btn btn-cta">
+            Install Extension
           </Link>
         </div>
 
@@ -86,8 +86,8 @@ export default function Navbar() {
           >
             Contact
           </Link>
-          <Link href="/contact" className="btn btn-cta w-full mt-4" onClick={() => setIsOpen(false)}>
-            Request Access
+          <Link href="/install-extension" className="btn btn-cta w-full mt-4" onClick={() => setIsOpen(false)}>
+            Install Extension
           </Link>
         </motion.div>
       )}

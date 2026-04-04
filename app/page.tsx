@@ -87,26 +87,38 @@ const trustCards: Card[] = [
 const pricingPlans = [
   {
     name: 'Pilot',
-    summary: 'For proving the control layer in a real workflow',
-    features: ['Guided onboarding', 'Single environment rollout', 'Shared beta support'],
-    href: '/contact',
-    cta: 'Request Pilot Access',
+    summary: 'For teams validating prompt protection in a live workflow',
+    features: [
+      'Browser extension rollout for a focused team',
+      'Shared beta support and implementation guidance',
+      'Initial policy and deployment fit review',
+    ],
+    href: '/install-extension',
+    cta: 'Start Pilot Path',
     featured: false,
   },
   {
-    name: 'Launch',
-    summary: 'For internal rollout and security alignment',
-    features: ['Policy baseline review', 'Architecture review', 'Production planning conversation'],
+    name: 'Team Rollout',
+    summary: 'For companies moving from pilot to approved internal usage',
+    features: [
+      'Security and rollout planning session',
+      'Support for app, extension, or mixed deployment paths',
+      'Operational guidance before broader adoption',
+    ],
     href: contactLinks.launchReviewMailto,
-    cta: 'Book Launch Review',
+    cta: 'Book Rollout Review',
     featured: true,
   },
   {
     name: 'Enterprise',
-    summary: 'For deeper security and deployment planning',
-    features: ['Security questionnaire support', 'BYOK alignment', 'Custom rollout scope'],
+    summary: 'For regulated environments with stricter deployment needs',
+    features: [
+      'Private cloud or on-prem deployment discussion',
+      'Security questionnaire and architecture support',
+      'Custom rollout scope for governance-heavy teams',
+    ],
     href: '/contact',
-    cta: 'Talk to NeutralAI',
+    cta: 'Talk to Sales',
     featured: false,
   },
 ] as const
@@ -438,21 +450,24 @@ function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
-              AI gateway for sensitive workflows
+              Browser extension and gateway beta
             </div>
 
             <h1 className="mt-6 max-w-4xl font-heading text-4xl font-bold leading-tight md:text-6xl xl:text-7xl">
-              Use AI without <span className="gradient-text-warm">leaking sensitive data.</span>
+              Mask sensitive prompt data <span className="gradient-text-warm">before it leaves AI apps.</span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg text-slate-300 md:text-xl">
-              NeutralAI sits between your app and external models to detect, mask, and govern sensitive data before it leaves your boundary.
+              NeutralAI adds a control layer for browser-based AI usage and application traffic so teams can keep moving without sending raw sensitive data straight to external models.
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a href="/contact" className="btn btn-cta px-8 py-4 text-base">
-                Request Beta Access
+              <a href="/install-extension" className="btn btn-cta px-8 py-4 text-base">
+                Install Extension
                 <ArrowRight className="h-5 w-5" />
+              </a>
+              <a href="/contact" className="btn btn-secondary px-8 py-4 text-base">
+                Book Demo
               </a>
               <a
                 href={siteConfig.apiHealthUrl}
@@ -466,10 +481,10 @@ function Hero() {
 
             <div className="mt-10 space-y-3">
               {[
-                'Stops raw PII from reaching external models',
-                'Browser extension protects usage without changing daily habits',
-                'Gives security a clear control point',
-                'Makes AI rollout easier to approve internally',
+                'Stops raw PII and business identifiers from reaching external models first',
+                'Browser extension supports familiar AI workflows without forcing a portal switch',
+                'Gives security and legal a visible control point for rollout decisions',
+                'Creates a clearer path from experimentation to approved internal use',
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3 text-slate-300">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
@@ -531,7 +546,7 @@ function ProductSurface() {
                 Secure AI usage <span className="gradient-text-warm">without changing habits</span>
               </h2>
               <p className="mt-5 max-w-2xl text-lg text-slate-300">
-                The browser extension is a strong part of the NeutralAI story. Teams can keep using familiar browser-based AI tools while NeutralAI adds protection in the background.
+                NeutralAI works best when adoption does not require a behaviour reset. Teams keep familiar browser-based AI tools while NeutralAI adds prompt protection, auth context, and policy support in the background.
               </p>
 
               <div className="mt-7 space-y-3">
@@ -741,9 +756,9 @@ function Pricing() {
     <section id="pricing" className="section bg-background-secondary">
       <div className="container-custom">
         <SectionIntro
-          eyebrow="Commercial Motion"
-          title="A simpler beta pricing story"
-          description="The pricing section should invite the right conversation, not force users into a self-serve story that does not match the current stage."
+          eyebrow="Engagement Paths"
+          title="Pick the right starting point"
+          description="NeutralAI is still in a guided rollout phase. These options are designed to move the right conversation forward without pretending this is a finished self-serve security product."
           centered
         />
 
@@ -757,8 +772,15 @@ function Pricing() {
               transition={{ delay: index * 0.08 }}
               className={`card p-6 ${plan.featured ? 'border-primary shadow-[0_0_40px_rgba(6,182,212,0.12)]' : ''}`}
             >
-              <h3 className="text-center font-heading text-2xl font-semibold">{plan.name}</h3>
-              <p className="mt-3 text-center text-sm text-slate-400">{plan.summary}</p>
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="font-heading text-2xl font-semibold">{plan.name}</h3>
+                {plan.featured ? (
+                  <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-primary-light">
+                    Recommended
+                  </span>
+                ) : null}
+              </div>
+              <p className="mt-3 text-sm text-slate-400">{plan.summary}</p>
               <ul className="mt-8 space-y-3">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3 text-sm text-slate-300">
@@ -788,18 +810,18 @@ function FinalCta() {
         <div className="mx-auto max-w-3xl text-center">
           <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Final CTA</p>
           <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
-            If AI matters to your roadmap, the control layer matters too
+            If AI usage is already happening, put the control layer in place now
           </h2>
           <p className="mt-5 text-lg text-slate-400">
-            NeutralAI is for teams that want an approved path to AI usage instead of hoping sensitive data never leaves the prompt.
+            NeutralAI is for teams that need a credible answer to one practical question: how do we let people use AI without sending raw sensitive data out first?
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="/contact" className="btn btn-cta px-8 py-4 text-lg">
-              Request Beta Access
+            <a href="/install-extension" className="btn btn-cta px-8 py-4 text-lg">
+              Install Extension
               <ArrowRight className="h-5 w-5" />
             </a>
             <a href={contactLinks.launchReviewMailto} className="btn btn-secondary px-8 py-4 text-lg">
-              Book Launch Review
+              Book Rollout Review
             </a>
           </div>
         </div>
