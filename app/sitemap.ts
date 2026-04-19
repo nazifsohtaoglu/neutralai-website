@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { siteConfig } from './site'
 
+export const dynamic = 'force-static'
+
 const routes = [
   '',
   '/about',
