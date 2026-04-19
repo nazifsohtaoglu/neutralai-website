@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { contactLinks, homeSections, siteConfig } from '../site'
 
 const productLinks = [
@@ -55,7 +56,7 @@ export default function Footer() {
         <div className="mb-6 grid gap-6 md:grid-cols-[1.15fr_repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="mb-2 flex items-center gap-2">
-              <img src="/logo.png" alt="NeutralAI" className="w-10 h-10 rounded-lg" />
+              <Image src="/logo.png" alt="NeutralAI" width={40} height={40} className="w-10 h-10 rounded-lg" />
               <span className="font-heading font-bold text-xl">NeutralAI</span>
             </Link>
             <p className="text-slate-400 text-sm max-w-xs">
