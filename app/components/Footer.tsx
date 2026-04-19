@@ -103,7 +103,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-3 border-t border-border/80 pt-4 md:flex-row md:items-center md:justify-between">
           <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} NeutralAI Ltd. Built for compliant AI adoption.
+            © {new Date().getFullYear()} NeutralAI Ltd. Built for security-conscious AI adoption.
           </p>
           <div className="flex flex-col gap-2 text-sm text-slate-500 md:flex-row md:flex-wrap md:items-center md:justify-end md:gap-4">
             <a href={contactLinks.betaAccessMailto} className="hover:text-primary transition-colors">
