@@ -83,9 +83,9 @@ Making AI safe for regulated industries by preventing sensitive data from reachi
 - Hover effects
 
 ### 7. Social Proof
-- Client logos (trusted by)
-- Testimonials
-- Security certifications
+- Only customer logos or testimonials that are real and approved for public use
+- Operational proof such as live endpoints, screenshots, or concrete rollout artifacts
+- Security posture language grounded in documented controls, not certifications we do not yet hold
 
 ### 8. Pricing
 - Simple 3-tier pricing
@@ -93,7 +93,7 @@ Making AI safe for regulated industries by preventing sensitive data from reachi
 
 ### 9. CTA Section
 - Final conversion push
-- Trust badges
+- Clear trust signals backed by public facts
 
 ### 10. Footer
 - Links, social, legal
