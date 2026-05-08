@@ -477,15 +477,15 @@ function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
-              AI security gateway - now available
+              Use AI. Stay compliant. Prove it.
             </div>
 
             <h1 className="mt-6 max-w-4xl font-heading text-4xl font-bold leading-tight md:text-6xl xl:text-7xl">
-              Use AI. Stay compliant. <span className="gradient-text-warm">Prove it.</span>
+              Mask sensitive prompt data <span className="gradient-text-warm">before it leaves AI apps.</span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg text-slate-300 md:text-xl">
-              NeutralAI is the compliance-first AI privacy gateway that masks sensitive prompt data, keeps a governed token vault, and gives security teams proof that AI usage is controlled.
+              NeutralAI adds a compliance-first control layer for browser AI and app traffic, with masking, encrypted tokenization, and audit-ready proof for regulated teams.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
