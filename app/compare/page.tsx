@@ -95,6 +95,9 @@ export default function ComparePage() {
               <Link href="/contact" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
                 Talk to Sales
               </Link>
+              <Link href="/presidio-alternative" className="text-primary-light transition hover:text-primary">
+                Presidio alternative
+              </Link>
             </div>
           </div>
         </div>
@@ -150,6 +153,9 @@ export default function ComparePage() {
             <BadgeCheck className="mb-3 h-5 w-5 text-primary-light" />
             NeutralAI uses proven detection primitives where they make sense, but the product value is the full compliance
             gateway around them: policy, vaulting, evidence, deployment, and browser coverage.
+            <Link href="/presidio-alternative" className="ml-2 font-semibold text-primary-light hover:text-primary">
+              See the Presidio-specific build-vs-buy analysis.
+            </Link>
           </div>
         </div>
       </section>
