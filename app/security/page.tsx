@@ -2,9 +2,13 @@
 
 import { motion } from 'framer-motion'
 import {
+  ArrowRight,
   Database,
   ExternalLink,
+  FileText,
+  KeyRound,
   Lock,
+  Network,
   Scale,
   ServerCog,
   Shield,
@@ -42,8 +46,41 @@ const securitySections = [
 const readinessItems = [
   'Public endpoints are live behind TLS on api.neutralai.co.uk.',
   'Docker-based deployment and reverse proxy setup are already in place.',
-  'The current public website intentionally avoids presenting the product as unrestricted production-ready.',
+  'The current public website describes production controls without implying unsupported certification status.',
   'Production go-live discussions should include the immutable storage roadmap and security review scope.',
+] as const
+
+const securitySpecs = [
+  {
+    icon: Lock,
+    title: 'Encryption and token vault',
+    description:
+      'Sensitive values can be replaced with reversible tokens backed by an AES-256-GCM vault, then restored only through governed paths.',
+  },
+  {
+    icon: Network,
+    title: 'Detection pipeline',
+    description:
+      'Detection combines Presidio NER, pattern matching, semantic validation with Qdrant, and configurable confidence thresholds.',
+  },
+  {
+    icon: FileText,
+    title: 'Entity coverage',
+    description:
+      'Coverage includes EMAIL, PHONE, PERSON, CREDIT_CARD, IBAN, SSN, TR_ID, UK_NHS, IP_ADDRESS, and tenant-specific rules.',
+  },
+  {
+    icon: KeyRound,
+    title: 'Governed restore path',
+    description:
+      'Reversible masking is separated from normal model traffic so restored values can remain behind explicit authorization and audit controls.',
+  },
+] as const
+
+const architectureSteps = [
+  'Client app or browser extension',
+  'NeutralAI policy and masking gateway',
+  'Sanitized request to external LLM provider',
 ] as const
 
 export default function SecurityPage() {
@@ -91,6 +128,42 @@ export default function SecurityPage() {
                 <p className="mt-3 text-sm leading-6 text-slate-400">{section.description}</p>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-10 rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.96)),radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_24%)] p-6 md:p-8">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Technical controls</p>
+                <h2 className="mt-4 font-heading text-3xl font-bold">Mask first, then route the sanitized request</h2>
+                <p className="mt-4 text-slate-400">
+                  NeutralAI adds a policy gateway before external model providers so sensitive values can be detected, tokenized, and audited before prompt egress.
+                </p>
+
+                <div className="mt-6 grid gap-3">
+                  {architectureSteps.map((step, index) => (
+                    <div key={step} className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-primary/10 font-mono text-sm text-primary-light">
+                        0{index + 1}
+                      </div>
+                      <div className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-background/80 px-4 py-3 text-sm text-slate-200">
+                        {step}
+                      </div>
+                      {index < architectureSteps.length - 1 ? <ArrowRight className="hidden h-5 w-5 text-primary-light sm:block" /> : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                {securitySpecs.map((spec) => (
+                  <div key={spec.title} className="rounded-[22px] border border-white/10 bg-white/[0.035] p-5">
+                    <spec.icon className="h-5 w-5 text-primary-light" />
+                    <h3 className="mt-4 font-heading text-xl font-semibold">{spec.title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-slate-400">{spec.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -142,6 +215,15 @@ export default function SecurityPage() {
                   className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-4 text-slate-200 transition-colors hover:border-primary"
                 >
                   <span>Public readiness endpoint</span>
+                  <ExternalLink className="h-4 w-4 text-primary" />
+                </a>
+                <a
+                  href={`${siteConfig.url}${siteConfig.securityTxtPath}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-4 text-slate-200 transition-colors hover:border-primary"
+                >
+                  <span>Public security.txt</span>
                   <ExternalLink className="h-4 w-4 text-primary" />
                 </a>
                 <a
