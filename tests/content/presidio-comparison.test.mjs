@@ -27,8 +27,12 @@ test('roi calculator remains client-side and exposes expected controls', () => {
 
   assert.match(source, /'use client'/)
   assert.match(source, /Build vs buy ROI calculator/)
+  assert.match(source, /currency:\s*'GBP'/)
+  assert.match(source, /useState\(8500\)/)
+  assert.match(source, /useState\(399\)/)
   assert.match(source, /Engineers assigned/)
   assert.match(source, /Build timeline/)
+  assert.match(source, /Loaded monthly cost per engineer, GBP/)
   assert.match(source, /Estimated savings/)
   assert.match(source, /SpaCy and NLP model updates/)
 })
