@@ -37,7 +37,7 @@ export default function Navbar() {
           <span className="font-heading font-bold text-xl">NeutralAI</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden xl:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
@@ -49,7 +49,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden xl:flex items-center gap-4">
           <Link href="/contact" className="text-slate-300 hover:text-white transition-colors">
             Contact
           </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
         </div>
 
         <button 
-          className="md:hidden text-slate-300"
+          className="xl:hidden text-slate-300"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -70,7 +70,7 @@ export default function Navbar() {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden absolute top-full left-0 right-0 glass border-t border-border p-4"
+          className="xl:hidden absolute top-full left-0 right-0 glass border-t border-border p-4"
         >
           {navLinks.map((link) => (
             <Link 
