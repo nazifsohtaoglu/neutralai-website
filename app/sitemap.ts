@@ -8,7 +8,9 @@ const routes = [
   '/about',
   '/compare',
   '/contact',
+  '/insights/presidio-alone-regulated-industries',
   '/install-extension',
+  '/presidio-alternative',
   '/privacy',
   '/security',
   '/support/browser-extension',
@@ -19,8 +21,10 @@ const routes = [
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route) => ({
     url: `${siteConfig.url}${route}`,
-    lastModified: route === '/trust-center' ? '2026-05-08' : '2026-03-29',
+    lastModified: route === '/trust-center' || route === '/presidio-alternative' || route.startsWith('/insights/')
+      ? '2026-05-08'
+      : '2026-03-29',
     changeFrequency: route === '' ? 'weekly' : 'monthly',
-    priority: route === '' ? 1 : 0.7,
+    priority: route === '' ? 1 : route === '/presidio-alternative' ? 0.85 : 0.7,
   }))
 }
