@@ -573,7 +573,7 @@ function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
-              Use AI. Stay compliant. Prove it.
+              AI Security Gateway - Now Available
             </div>
 
             <h1 className="mt-6 max-w-4xl font-heading text-4xl font-bold leading-tight md:text-6xl xl:text-7xl">

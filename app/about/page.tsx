@@ -7,15 +7,15 @@ import BackButton from '../components/BackButton'
 const principles = [
   {
     icon: Shield,
-    title: 'Security before convenience',
+    title: 'Production readiness with transparency',
     description:
-      'We would rather explain a staged rollout honestly than present a product as more mature than it is.',
+      'We explain deployment posture, control coverage, and review expectations clearly so teams can approve AI usage with confidence.',
   },
   {
     icon: Lock,
     title: 'Sensitive data deserves boundaries',
     description:
-      'NeutralAI is being built around the idea that AI enablement should not require teams to surrender control of regulated data.',
+      'NeutralAI is designed around the idea that AI enablement should not require teams to surrender control of regulated data.',
   },
   {
     icon: Scale,
@@ -34,7 +34,7 @@ const principles = [
 const focusAreas = [
   'Helping teams place a security gateway in front of external model providers',
   'Making production rollouts easier to validate with health and readiness checks',
-  'Building toward stronger production controls, including immutable evidence paths',
+  'Operating stronger production controls, including evidence paths for governance review',
 ] as const
 
 export default function AboutPage() {
@@ -78,10 +78,10 @@ export default function AboutPage() {
               <h2 className="mt-5 font-heading text-3xl font-bold">What we are building</h2>
               <div className="mt-5 space-y-4 text-slate-400">
                 <p>
-                  NeutralAI is being shaped as a gateway layer that stands between customer applications, browser-based AI usage, and external model providers. The goal is straightforward: let teams adopt AI while applying policy before sensitive data moves beyond the trusted boundary.
+                  NeutralAI operates as a gateway layer that stands between customer applications, browser-based AI usage, and external model providers. The goal is straightforward: let teams adopt AI while applying policy before sensitive data moves beyond the trusted boundary.
                 </p>
                 <p>
-                  That means the product story has to stay credible. We prefer clear operating posture, guided onboarding, and visible hardening milestones over generic enterprise promises.
+                  That means the product story has to stay credible. We prefer clear operating posture, governed onboarding, and visible controls over generic enterprise promises.
                 </p>
               </div>
             </motion.div>
@@ -146,9 +146,9 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="mx-auto max-w-3xl text-center"
           >
-            <h2 className="font-heading text-3xl font-bold md:text-4xl">Want to evaluate the gateway?</h2>
+            <h2 className="font-heading text-3xl font-bold md:text-4xl">Ready to deploy the gateway?</h2>
             <p className="mt-5 text-lg text-slate-400">
-              The best next step is a rollout conversation that matches your current deployment stage, browser-extension needs, and review requirements.
+              The best next step is a deployment conversation that matches your current environment, browser-extension needs, and review requirements.
             </p>
             <a href="/contact" className="btn btn-cta mt-8 px-8 py-4 text-lg">
               Contact NeutralAI
