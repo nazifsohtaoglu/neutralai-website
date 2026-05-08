@@ -8,12 +8,15 @@ import {
   Building2,
   CheckCircle2,
   ClipboardCheck,
+  FileText,
   Gauge,
   Globe,
   KeyRound,
+  Languages,
   Lock,
   Monitor,
   Network,
+  ScanSearch,
   Server,
   ShieldCheck,
   Timer,
@@ -222,10 +225,46 @@ const pricingFaqs = [
 const trustBadges = [
   'AES-256-GCM vault',
   'SOC2 readiness',
-  'GDPR aligned',
+  'GDPR-aligned controls',
   'Cyber Essentials evidence',
   '20+ PII entity types',
   '5+ language benchmark',
+] as const
+
+const technicalTrustDetails = [
+  {
+    icon: ScanSearch,
+    title: 'Two-stage detection',
+    detail: 'Presidio NER and pattern matching with semantic validation using Qdrant.',
+  },
+  {
+    icon: Lock,
+    title: 'Encrypted token vault',
+    detail: 'AES-256-GCM-backed reversible tokenization for governed restore paths.',
+  },
+  {
+    icon: FileText,
+    title: 'Entity coverage',
+    detail: 'EMAIL, PHONE, PERSON, CREDIT_CARD, IBAN, SSN, TR_ID, UK_NHS, and custom rules.',
+  },
+  {
+    icon: Languages,
+    title: 'Policy tuning',
+    detail: 'Configurable confidence thresholds per entity type and multilingual detection coverage.',
+  },
+] as const
+
+const entityTypes = [
+  'EMAIL',
+  'PHONE',
+  'PERSON',
+  'CREDIT_CARD',
+  'IBAN',
+  'SSN',
+  'TR_ID',
+  'UK_NHS',
+  'IP_ADDRESS',
+  'Custom rules',
 ] as const
 
 const complianceProofs = [
@@ -866,6 +905,40 @@ function HowItWorks() {
                 <div className={`mt-6 h-1 w-16 rounded-full ${index === 1 ? 'bg-[linear-gradient(90deg,#f97316,#fdba74)]' : 'bg-[linear-gradient(90deg,#22d3ee,#7dd3fc)]'}`} />
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-[24px] border border-white/10 bg-background/85 p-5 md:p-6">
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-primary-light">Under the hood</p>
+              <h3 className="mt-3 font-heading text-2xl font-semibold">Detection, tokenization, and policy controls</h3>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {technicalTrustDetails.map((item) => (
+                  <div key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                    <item.icon className="h-5 w-5 text-primary-light" />
+                    <h4 className="mt-3 font-heading text-lg font-semibold text-slate-100">{item.title}</h4>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-primary/15 bg-primary/10 p-5 md:p-6">
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-primary-light">Entity types</p>
+              <h3 className="mt-3 font-heading text-2xl font-semibold">20+ sensitive data classes</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                Core recognizers cover common personal, financial, network, and regional identifiers, with tenant-specific rules available for regulated workflows.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {entityTypes.map((entity) => (
+                  <span
+                    key={entity}
+                    className="rounded-full border border-white/10 bg-background/80 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-200"
+                  >
+                    {entity}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
