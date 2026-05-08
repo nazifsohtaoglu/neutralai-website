@@ -1066,6 +1066,9 @@ function Pricing() {
                     </span>
                     {plan.name !== 'Enterprise' ? <span className="pb-1 text-sm text-slate-400">GBP</span> : null}
                   </div>
+                  <p className="mt-1 text-sm text-slate-400">
+                    {annualBilling && 'annualBilled' in plan ? plan.annualBilled : plan.priceNote}
+                  </p>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{plan.summary}</p>
                   <div className="mt-4 flex flex-wrap gap-2 text-sm">
                     <span className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1.5 text-primary-light">

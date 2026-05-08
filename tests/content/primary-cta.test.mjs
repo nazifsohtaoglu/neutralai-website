@@ -107,6 +107,10 @@ test('homepage pricing keeps primary plan cards scannable on desktop', () => {
   assert.match(homeSource, /advancedPricingPlans/)
   assert.match(homeSource, /Advanced controls/)
   assert.match(homeSource, /Business and Enterprise add governed rollout features/)
+  assert.match(
+    homeSource,
+    /advancedPricingPlans\.map[\s\S]*annualBilling && 'annualBilled' in plan \? plan\.annualBilled : plan\.priceNote/
+  )
   assert.match(homeSource, /Policy controls and evidence exports/)
   assert.match(homeSource, /Full API key lifecycle controls/)
   assert.match(homeSource, /Required SSO and SIEM export posture/)
