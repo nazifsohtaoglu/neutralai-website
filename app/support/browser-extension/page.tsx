@@ -68,7 +68,7 @@ export default function BrowserExtensionSupportPage() {
               Public support reference for NeutralAI Interceptor
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              This is the canonical support page for browser store review, pilot installs, and enterprise rollout conversations. It explains the extension’s limited purpose, requested permissions, and the NeutralAI-owned app and API surfaces it interacts with.
+              This is the canonical support page for browser store review, self-serve installs, and enterprise rollout conversations. It explains the extension’s limited purpose, requested permissions, and the NeutralAI-owned app and API surfaces it interacts with.
             </p>
           </div>
         </div>
@@ -157,7 +157,7 @@ export default function BrowserExtensionSupportPage() {
                   Enterprise customers can deploy NeutralAI Interceptor with managed browser policies so the extension is force-installed, pinned, and locked to organization-controlled NeutralAI endpoints.
                 </p>
                 <p>
-                  That rollout path is separate from self-serve sign-in and is the recommended approach for larger pilots, regulated teams, or centrally managed browser fleets.
+                  That rollout path is separate from self-serve sign-in and is the recommended approach for regulated teams or centrally managed browser fleets.
                 </p>
               </div>
               <Link

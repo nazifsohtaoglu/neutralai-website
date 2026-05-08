@@ -95,7 +95,7 @@ export default function TermsPage() {
               Terms of <span className="gradient-text">Service</span>
             </h1>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              These Terms of Service govern access to NeutralAI beta services, including the gateway, browser extension support surfaces, and related onboarding conversations.
+              These Terms of Service govern access to NeutralAI services, including the gateway, browser extension support surfaces, and related onboarding conversations.
             </p>
           </motion.div>
         </div>

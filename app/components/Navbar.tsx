@@ -5,12 +5,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
-import { homeSections } from '../site'
+import { homeSections, siteConfig } from '../site'
 
 const navLinks = [
   { name: 'Problem', href: homeSections.problem },
   { name: 'How It Works', href: homeSections.howItWorks },
   { name: 'Why Trust Us', href: homeSections.trust },
+  { name: 'Compare', href: homeSections.compare },
   { name: 'Pricing', href: homeSections.pricing },
   { name: 'About', href: '/about' },
 ]
@@ -51,8 +52,8 @@ export default function Navbar() {
           <Link href="/contact" className="text-slate-300 hover:text-white transition-colors">
             Contact
           </Link>
-          <Link href="/install-extension" className="btn btn-cta">
-            Install Extension
+          <Link href={siteConfig.signupUrl} className="btn btn-cta">
+            Try Free
           </Link>
         </div>
 
@@ -87,8 +88,12 @@ export default function Navbar() {
           >
             Contact
           </Link>
-          <Link href="/install-extension" className="btn btn-cta w-full mt-4" onClick={() => setIsOpen(false)}>
-            Install Extension
+          <Link
+            href={siteConfig.signupUrl}
+            className="btn btn-cta w-full mt-4"
+            onClick={() => setIsOpen(false)}
+          >
+            Try Free
           </Link>
         </motion.div>
       )}

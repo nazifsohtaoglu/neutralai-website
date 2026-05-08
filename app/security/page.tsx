@@ -23,7 +23,7 @@ const securitySections = [
     icon: ServerCog,
     title: 'Operational checks',
     description:
-      'The public beta runtime exposes health and readiness endpoints to support smoke tests, deployment checks, and simple launch monitoring.',
+      'The live runtime exposes health and readiness endpoints to support smoke tests, deployment checks, and simple launch monitoring.',
   },
   {
     icon: Lock,
@@ -40,7 +40,7 @@ const securitySections = [
 ] as const
 
 const readinessItems = [
-  'Public beta endpoints are live behind TLS on api.neutralai.co.uk.',
+  'Public endpoints are live behind TLS on api.neutralai.co.uk.',
   'Docker-based deployment and reverse proxy setup are already in place.',
   'The current public website intentionally avoids presenting the product as unrestricted production-ready.',
   'Production go-live discussions should include the immutable storage roadmap and security review scope.',
@@ -66,7 +66,7 @@ export default function SecurityPage() {
               Launch trust starts with an accurate posture
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              This page summarizes the current public security story for NeutralAI: what is live, what is suitable for pilots, and what is still part of the production-hardening path.
+              This page summarizes the current public security story for NeutralAI: what is live, what is suitable for evaluation, and what is still part of the production-hardening path.
             </p>
           </motion.div>
         </div>

@@ -7,7 +7,7 @@ import {
   ArrowRight,
   Building2,
   CheckCircle2,
-  FileCheck2,
+  ClipboardCheck,
   Gauge,
   Globe,
   KeyRound,
@@ -16,10 +16,10 @@ import {
   Network,
   Server,
   ShieldCheck,
-  Sparkles,
+  Timer,
   type LucideIcon,
 } from 'lucide-react'
-import { contactLinks, siteConfig } from './site'
+import { siteConfig } from './site'
 
 type Card = {
   icon: LucideIcon
@@ -69,44 +69,44 @@ const steps = [
 const trustCards: Card[] = [
   {
     icon: ShieldCheck,
-    title: 'A real boundary',
-    description: 'NeutralAI sits between user workflows and external model vendors.',
+    title: 'Compliance evidence automation',
+    description: 'NeutralAI gives teams a control point that can produce audit-ready proof instead of leaving AI usage invisible.',
   },
   {
-    icon: FileCheck2,
-    title: 'Live operational proof',
-    description: 'Public health and readiness endpoints say more than placeholder testimonials.',
+    icon: KeyRound,
+    title: 'Reversible vault tokenization',
+    description: 'Sensitive values can be replaced with encrypted tokens before model egress, then restored only through governed paths.',
   },
   {
-    icon: Sparkles,
-    title: 'Honest launch posture',
-    description: 'Pilot-ready now, with production hardening called out explicitly.',
+    icon: Building2,
+    title: 'Managed, private cloud, or on-prem',
+    description: 'Teams can start with managed SaaS and move toward stricter deployment models as governance demands increase.',
   },
 ] as const
 
 const pricingPlans = [
   {
-    name: 'Pilot',
-    summary: 'Best for a focused proof of value',
+    name: 'Free evaluation',
+    summary: 'Best for testing the product with a controlled trial',
     features: [
-      'Focused browser extension rollout',
-      'Shared beta guidance',
-      'Initial deployment fit review',
+      'Starter quota for hands-on evaluation',
+      'Chat and browser extension workflows',
+      'Clear upgrade path when limits are reached',
     ],
-    href: '/install-extension',
-    cta: 'Start Pilot Path',
+    href: siteConfig.signupUrl,
+    cta: 'Try Free',
     featured: false,
   },
   {
-    name: 'Team Rollout',
-    summary: 'Best for moving from pilot to internal approval',
+    name: 'Team rollout',
+    summary: 'Best for getting approved AI usage into a team',
     features: [
-      'Security and rollout planning',
+      'Usage controls and billing readiness',
       'App, extension, or mixed deployment support',
-      'Operational guidance before wider rollout',
+      'Security review and rollout guidance',
     ],
-    href: contactLinks.launchReviewMailto,
-    cta: 'Book Rollout Review',
+    href: '/contact',
+    cta: 'Talk to Sales',
     featured: true,
   },
   {
@@ -120,6 +120,33 @@ const pricingPlans = [
     href: '/contact',
     cta: 'Talk to Sales',
     featured: false,
+  },
+] as const
+
+const trustBadges = [
+  'AES-256-GCM vault',
+  'SOC2 readiness',
+  'GDPR aligned',
+  'Cyber Essentials evidence',
+  '20+ PII entity types',
+  '5+ language benchmark',
+] as const
+
+const complianceProofs = [
+  {
+    icon: ClipboardCheck,
+    label: 'Auto evidence',
+    value: 'SOC2 / ISO / CE',
+  },
+  {
+    icon: Lock,
+    label: 'Token vault',
+    value: 'AES-256-GCM',
+  },
+  {
+    icon: Timer,
+    label: 'Measured overhead',
+    value: '~41 ms',
   },
 ] as const
 
@@ -450,7 +477,7 @@ function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
-              Browser extension and gateway beta
+              Use AI. Stay compliant. Prove it.
             </div>
 
             <h1 className="mt-6 max-w-4xl font-heading text-4xl font-bold leading-tight md:text-6xl xl:text-7xl">
@@ -458,21 +485,21 @@ function Hero() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg text-slate-300 md:text-xl">
-              NeutralAI adds a control layer for browser-based AI usage and application traffic so teams can keep moving without sending raw sensitive data straight to external models.
+              NeutralAI adds a compliance-first control layer for browser AI and app traffic, with masking, encrypted tokenization, and audit-ready proof for regulated teams.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <a href="/install-extension" className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto">
-                Install Extension
+              <a href={siteConfig.signupUrl} className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto">
+                Try Free
                 <ArrowRight className="h-5 w-5" />
               </a>
               <a href="/contact" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
-                Book Demo
+                Talk to Sales
               </a>
             </div>
             <div className="mt-4 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:flex-wrap sm:items-center">
-              <a href="/contact" className="text-primary-light transition-colors hover:text-primary">
-                Planning a broader rollout? Talk to NeutralAI
+              <a href="/install-extension" className="text-primary-light transition-colors hover:text-primary">
+                Install browser extension
               </a>
               <span className="hidden text-slate-600 sm:inline">•</span>
               <a
@@ -487,10 +514,10 @@ function Hero() {
 
             <div className="mt-10 space-y-3">
               {[
-                'Stops raw PII and business identifiers from reaching external models first',
-                'Browser extension supports familiar AI workflows without forcing a portal switch',
-                'Gives security and legal a visible control point for rollout decisions',
-                'Creates a clearer path from experimentation to approved internal use',
+                'Stops raw PII and business identifiers before they reach external models',
+                'Generates compliance evidence for AI usage instead of relying on manual screenshots',
+                'Supports browser extension, managed gateway, private cloud, and on-prem rollout paths',
+                'Helps legal and security approve AI adoption without blocking everyday workflows',
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3 text-slate-300">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
@@ -498,10 +525,34 @@ function Hero() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {complianceProofs.map((proof) => (
+                <div key={proof.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                  <proof.icon className="h-5 w-5 text-primary-light" />
+                  <p className="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500">{proof.label}</p>
+                  <p className="mt-1 font-heading text-lg font-semibold text-slate-100">{proof.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="lg:-mt-3 xl:-mt-4">
             <ProductVisual />
+          </div>
+        </div>
+      </div>
+      <div className="container-custom relative z-10 mt-12">
+        <div className="marquee rounded-full border border-white/10 bg-white/[0.04] px-4 py-3">
+          <div className="marquee-track gap-3">
+            {[...trustBadges, ...trustBadges].map((badge, index) => (
+              <span
+                key={`${badge}-${index}`}
+                className="inline-flex whitespace-nowrap rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-light"
+              >
+                {badge}
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -735,10 +786,10 @@ function Trust() {
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Why Trust NeutralAI</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
-                Visible proof, not <span className="gradient-text-warm">security theatre.</span>
+                Proof your security team <span className="gradient-text-warm">can trust.</span>
               </h2>
               <p className="mt-5 max-w-2xl text-lg text-slate-300">
-                The trust story should stay simple: a real product boundary, live operational proof, and a launch posture that says exactly what is ready now.
+                NeutralAI goes beyond masking by combining policy enforcement, encrypted tokenization, audit-ready evidence, and deployment options built for regulated AI adoption.
               </p>
             </div>
 
@@ -770,10 +821,10 @@ function Trust() {
         <div className="mt-10 rounded-[28px] border border-accent-cta/20 bg-[linear-gradient(180deg,rgba(249,115,22,0.08),rgba(15,23,42,0.92))] p-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Launch Signals</p>
-              <h3 className="mt-4 font-heading text-3xl font-semibold">Live beta runtime. Clear next step.</h3>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Operational Signals</p>
+              <h3 className="mt-4 font-heading text-3xl font-semibold">Live runtime. Measured product proof.</h3>
               <p className="mt-4 max-w-3xl text-slate-300">
-                The public signal is simple: the beta runtime is live on <span className="text-primary-light">api.neutralai.co.uk</span>, while production hardening is still being completed openly and deliberately.
+                The public signal is simple: the runtime is live on <span className="text-primary-light">api.neutralai.co.uk</span>, the benchmark pages are published, and the gateway overhead is measured separately from model generation time.
               </p>
             </div>
 
@@ -799,7 +850,7 @@ function Pricing() {
         <SectionIntro
           eyebrow="Engagement Paths"
           title="Pick the right starting point"
-          description="NeutralAI is still in a guided rollout phase. These options are designed to move the right conversation forward without pretending this is a finished self-serve security product."
+          description="Start with a free evaluation, move into a team rollout when the control model is clear, or bring NeutralAI into a stricter enterprise deployment path."
           centered
         />
 
@@ -858,12 +909,12 @@ function FinalCta() {
             NeutralAI is for teams that already know AI usage is happening and want a credible way to reduce prompt risk without slowing everyone down.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="/install-extension" className="btn btn-cta w-full px-8 py-4 text-lg sm:w-auto">
-              Install Extension
+            <a href={siteConfig.signupUrl} className="btn btn-cta w-full px-8 py-4 text-lg sm:w-auto">
+              Try Free
               <ArrowRight className="h-5 w-5" />
             </a>
-            <a href={contactLinks.launchReviewMailto} className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto">
-              Book Rollout Review
+            <a href="/contact" className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto">
+              Talk to Sales
             </a>
           </div>
           <p className="mt-4 text-sm text-slate-400">
