@@ -86,40 +86,136 @@ const trustCards: Card[] = [
 
 const pricingPlans = [
   {
-    name: 'Free evaluation',
-    summary: 'Best for testing the product with a controlled trial',
+    name: 'Free',
+    eyebrow: 'Sandbox',
+    summary: 'Free sandbox access for teams validating the masking flow.',
+    monthlyPrice: '£0',
+    annualPrice: '£0',
+    priceNote: 'per month',
+    usage: '1,000 masking requests per month',
+    managedAiCredit: '£1 managed AI trial credit',
+    modelUsage: 'Managed sandbox only',
     features: [
-      'Starter quota for hands-on evaluation',
-      'Chat and browser extension workflows',
-      'Clear upgrade path when limits are reached',
+      'Browser extension and chat workflow access',
+      'Sandbox signup into the app',
+      'Core masking behaviour preview',
+      'Cheap model allowlist with hard caps',
     ],
     href: siteConfig.signupUrl,
-    cta: 'Try Free',
+    cta: 'Start Free',
     featured: false,
   },
   {
-    name: 'Team rollout',
-    summary: 'Best for getting approved AI usage into a team',
+    name: 'Starter',
+    eyebrow: 'Start controlled',
+    summary: 'Low-friction paid plan for founders and small regulated teams.',
+    monthlyPrice: '£29',
+    annualPrice: '£23.20',
+    annualBilled: '£278.40 billed yearly',
+    priceNote: 'per month',
+    usage: '10K masking requests per month',
+    managedAiCredit: '£3 managed AI credit',
+    modelUsage: 'Managed evaluation only',
     features: [
-      'Usage controls and billing readiness',
-      'App, extension, or mixed deployment support',
-      'Security review and rollout guidance',
+      '10K monthly masking requests',
+      'Basic API key management',
+      'Browser extension and app workflows',
+      'Managed AI limited to cheap models',
+      '20% annual billing discount',
     ],
-    href: '/contact',
-    cta: 'Talk to Sales',
+    href: 'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=starter&src=website_get_started&callbackUrl=%2Fbilling',
+    cta: 'Get Started',
+    featured: false,
+  },
+  {
+    name: 'Team',
+    eyebrow: 'Most popular',
+    summary: 'Team plan for real usage with audit history and BYOK guidance.',
+    monthlyPrice: '£99',
+    annualPrice: '£79.20',
+    annualBilled: '£950.40 billed yearly',
+    priceNote: 'per month',
+    usage: '100K masking requests per month',
+    managedAiCredit: '£10 managed AI credit',
+    modelUsage: 'BYOK recommended',
+    features: [
+      '100K monthly masking requests',
+      'Team usage and audit history',
+      'BYOK handoff for production AI spend',
+      'Top-up path for managed AI credits',
+      '20% annual billing discount',
+    ],
+    href: 'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=team&src=website_get_started&callbackUrl=%2Fbilling',
+    cta: 'Get Started',
     featured: true,
   },
   {
-    name: 'Enterprise',
-    summary: 'Best for regulated deployment requirements',
+    name: 'Business',
+    eyebrow: 'Scale safely',
+    summary: 'Higher-volume governance plan for teams ready to run provider spend through BYOK.',
+    monthlyPrice: '£299',
+    annualPrice: '£239.20',
+    annualBilled: '£2,870.40 billed yearly',
+    priceNote: 'per month',
+    usage: '500K masking requests per month',
+    managedAiCredit: '£25 managed AI credit',
+    modelUsage: 'BYOK or customer provider expected',
     features: [
+      '500K monthly masking requests',
+      'BYOK support for model routing',
+      'Policy controls and evidence exports',
+      'Full API key lifecycle controls',
+      '20% annual billing discount',
+    ],
+    href: 'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=business&src=website_get_started&callbackUrl=%2Fbilling',
+    cta: 'Get Started',
+    featured: false,
+  },
+  {
+    name: 'Enterprise',
+    eyebrow: 'Governed rollout',
+    summary: 'Dedicated enterprise onboarding with commercial review.',
+    monthlyPrice: 'Custom',
+    annualPrice: 'Custom',
+    priceNote: 'commercial review and rollout planning',
+    usage: 'Custom masking volume',
+    managedAiCredit: 'Customer-owned model spend',
+    modelUsage: 'BYOK, private endpoint, or on-prem',
+    features: [
+      'Custom commercial agreement',
+      'Required SSO and SIEM export posture',
+      'Managed browser extension rollout',
       'Private cloud or on-prem planning',
-      'Security questionnaire support',
-      'Custom scope for governance-heavy teams',
     ],
     href: '/contact',
     cta: 'Talk to Sales',
     featured: false,
+  },
+] as const
+
+const primaryPricingPlans = pricingPlans.filter((plan) => ['Free', 'Starter', 'Team'].includes(plan.name))
+const advancedPricingPlans = pricingPlans.filter((plan) => ['Business', 'Enterprise'].includes(plan.name))
+
+const pricingFaqs = [
+  {
+    question: 'Why show pricing before a sales call?',
+    answer:
+      'Security buyers still want a fast commercial read. Public pricing makes the self-serve path clear before procurement or security review begins.',
+  },
+  {
+    question: 'What does Starter include?',
+    answer:
+      'Starter includes NeutralAI masking usage, basic controls, and a small managed AI credit for evaluation. It is not an unlimited model-usage bundle.',
+  },
+  {
+    question: 'What happens when managed AI credit runs out?',
+    answer:
+      'Managed generation pauses until the team connects BYOK, moves to a customer-owned provider, or buys prepaid managed AI credit. Masking usage is tracked separately.',
+  },
+  {
+    question: 'When should a team move from Business to Enterprise?',
+    answer:
+      'Enterprise is the right fit when rollout requires managed extension deployment, required SSO posture, SIEM export, private endpoint routing, on-prem deployment, or custom commercial review.',
   },
 ] as const
 
@@ -844,37 +940,91 @@ function Trust() {
 }
 
 function Pricing() {
+  const [annualBilling, setAnnualBilling] = useState(false)
+
   return (
     <section id="pricing" className="section bg-background-secondary">
       <div className="container-custom">
         <SectionIntro
-          eyebrow="Engagement Paths"
-          title="Pick the right starting point"
-          description="Start with a free evaluation, move into a team rollout when the control model is clear, or bring NeutralAI into a stricter enterprise deployment path."
+          eyebrow="Pricing"
+          title="Public pricing for secure AI rollout"
+          description="Plans include NeutralAI masking and governance usage. Managed AI credits are intentionally small for evaluation, while production model usage can run through BYOK or customer-owned provider accounts."
           centered
         />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {pricingPlans.map((plan, index) => (
+        <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-[24px] border border-white/10 bg-white/[0.04] p-3 sm:flex-row">
+          <div className="text-center text-sm text-slate-300 sm:text-left">
+            <span className="font-semibold text-slate-100">Annual billing saves 20%</span>
+            <span className="block text-slate-400">Compare monthly list price with annual monthly equivalent.</span>
+          </div>
+          <div className="inline-flex rounded-full border border-white/10 bg-background/80 p-1">
+            <button
+              type="button"
+              onClick={() => setAnnualBilling(false)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                annualBilling ? 'text-slate-300 hover:text-slate-100' : 'bg-white text-background'
+              }`}
+            >
+              Monthly
+            </button>
+            <button
+              type="button"
+              onClick={() => setAnnualBilling(true)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                annualBilling ? 'bg-primary text-background' : 'text-slate-300 hover:text-slate-100'
+              }`}
+            >
+              Annual
+            </button>
+          </div>
+        </div>
+
+        <p className="mx-auto mt-5 max-w-4xl text-center text-sm leading-6 text-slate-400">
+          Plans include masking requests. Managed AI usage is covered by small included credits for evaluation. Production model usage can run through BYOK, customer provider accounts, or prepaid top-ups.
+        </p>
+
+        <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-3">
+          {primaryPricingPlans.map((plan, index) => (
             <motion.div
               key={plan.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-            transition={{ delay: index * 0.08 }}
+              transition={{ delay: index * 0.08 }}
               className={`card flex h-full flex-col p-6 ${plan.featured ? 'border-primary shadow-[0_0_40px_rgba(6,182,212,0.12)]' : ''}`}
             >
-              <div className="flex items-center justify-between gap-3">
-                <h3 className="font-heading text-2xl font-semibold">{plan.name}</h3>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-light">{plan.eyebrow}</p>
+                  <h3 className="mt-2 font-heading text-2xl font-semibold">{plan.name}</h3>
+                </div>
                 {plan.featured ? (
                   <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-primary-light">
-                    Recommended
+                    Most Popular
                   </span>
                 ) : null}
               </div>
               <p className="mt-3 text-sm text-slate-400">{plan.summary}</p>
+              <div className="mt-6">
+                <div className="flex items-end gap-2">
+                  <span className="font-heading text-4xl font-bold text-slate-50">
+                    {annualBilling ? plan.annualPrice : plan.monthlyPrice}
+                  </span>
+                  {plan.name !== 'Enterprise' ? <span className="pb-1 text-sm text-slate-400">GBP</span> : null}
+                </div>
+                <p className="mt-2 text-sm text-slate-300">
+                  {annualBilling && 'annualBilled' in plan ? plan.annualBilled : plan.priceNote}
+                </p>
+                <p className="mt-3 rounded-2xl border border-primary/15 bg-primary/10 px-3 py-2 text-sm text-primary-light">
+                  {plan.usage}
+                </p>
+                <div className="mt-3 space-y-2 text-sm text-slate-300">
+                  <p className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2">{plan.managedAiCredit}</p>
+                  <p className="rounded-2xl border border-white/10 bg-background/70 px-3 py-2">{plan.modelUsage}</p>
+                </div>
+              </div>
               <ul className="mt-8 flex-1 space-y-3">
-                {plan.features.map((feature) => (
+                {plan.features.slice(0, 3).map((feature) => (
                   <li key={feature} className="flex items-start gap-3 text-sm text-slate-300">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                     <span>{feature}</span>
@@ -886,6 +1036,107 @@ function Pricing() {
               </a>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mx-auto mt-8 max-w-6xl">
+          <div className="flex flex-col gap-2 border-t border-white/10 pt-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-primary-light">Advanced controls</p>
+              <h3 className="mt-2 font-heading text-2xl font-semibold">Business and Enterprise add governed rollout features</h3>
+            </div>
+            <p className="max-w-2xl text-sm leading-6 text-slate-400">
+              Higher tiers are where provider routing, evidence export, SSO/SIEM posture, and managed deployment planning become part of the buying decision.
+            </p>
+          </div>
+        </div>
+
+        <div className="mx-auto mt-5 grid max-w-6xl gap-4 lg:grid-cols-2">
+          {advancedPricingPlans.map((plan) => (
+            <div
+              key={plan.name}
+              className="rounded-[24px] border border-white/10 bg-white/[0.035] p-5"
+            >
+              <div className="grid h-full gap-5 lg:grid-rows-[auto_1fr_auto]">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-light">{plan.eyebrow}</p>
+                  <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-1">
+                    <h3 className="font-heading text-2xl font-semibold">{plan.name}</h3>
+                    <span className="font-heading text-2xl font-bold text-slate-50">
+                      {annualBilling ? plan.annualPrice : plan.monthlyPrice}
+                    </span>
+                    {plan.name !== 'Enterprise' ? <span className="pb-1 text-sm text-slate-400">GBP</span> : null}
+                  </div>
+                  <p className="mt-1 text-sm text-slate-400">
+                    {annualBilling && 'annualBilled' in plan ? plan.annualBilled : plan.priceNote}
+                  </p>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{plan.summary}</p>
+                  <div className="mt-4 flex flex-wrap gap-2 text-sm">
+                    <span className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1.5 text-primary-light">
+                      {plan.usage}
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-slate-300">
+                      {plan.managedAiCredit}
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-background/70 px-3 py-1.5 text-slate-300">
+                      {plan.modelUsage}
+                    </span>
+                  </div>
+                </div>
+                <ul className="grid gap-2 text-sm text-slate-300 sm:grid-cols-2">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a href={plan.href} className="btn btn-secondary w-full">
+                  {plan.cta}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 overflow-x-auto rounded-[28px] border border-white/10 bg-white/[0.04]">
+          <div className="min-w-[1040px]">
+            <div className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300">
+              <div className="px-4 py-3 font-semibold text-slate-100">Capability</div>
+              <div className="px-4 py-3 font-semibold text-slate-100">Free</div>
+              <div className="px-4 py-3 font-semibold text-slate-100">Starter</div>
+              <div className="px-4 py-3 font-semibold text-slate-100">Team</div>
+              <div className="px-4 py-3 font-semibold text-slate-100">Business</div>
+              <div className="px-4 py-3 font-semibold text-slate-100">Enterprise</div>
+            </div>
+            {[
+              ['Masking requests', '1k', '10K', '100K', '500K', 'Custom'],
+              ['Managed AI credit', '£1 trial', '£3', '£10', '£25', 'Custom'],
+              ['Provider spend model', 'Managed sandbox', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
+              ['API key management', 'Basic', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
+              ['SSO / SIEM path', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
+            ].map(([label, free, starter, team, business, enterprise]) => (
+              <div key={label} className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300 last:border-b-0">
+                <div className="px-4 py-3 text-slate-100">{label}</div>
+                <div className="px-4 py-3">{free}</div>
+                <div className="px-4 py-3">{starter}</div>
+                <div className="px-4 py-3">{team}</div>
+                <div className="px-4 py-3">{business}</div>
+                <div className="px-4 py-3">{enterprise}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10">
+          <h3 className="font-heading text-2xl font-semibold">FAQ</h3>
+          <div className="mt-5 grid gap-4 lg:grid-cols-3">
+            {pricingFaqs.map((item) => (
+              <div key={item.question} className="rounded-[24px] border border-white/10 bg-background/75 p-5">
+                <h4 className="font-heading text-lg font-semibold text-slate-50">{item.question}</h4>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{item.answer}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
