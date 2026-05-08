@@ -786,10 +786,10 @@ function Trust() {
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Why Trust NeutralAI</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
-                Visible proof, not <span className="gradient-text-warm">security theatre.</span>
+                Proof your security team <span className="gradient-text-warm">can trust.</span>
               </h2>
               <p className="mt-5 max-w-2xl text-lg text-slate-300">
-                NeutralAI is not just a masking wrapper. It combines a policy boundary, encrypted tokenization, audit evidence, and deployment choices that match regulated teams.
+                NeutralAI goes beyond masking by combining policy enforcement, encrypted tokenization, audit-ready evidence, and deployment options built for regulated AI adoption.
               </p>
             </div>
 
