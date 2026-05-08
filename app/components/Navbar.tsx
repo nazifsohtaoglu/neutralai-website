@@ -12,6 +12,7 @@ const navLinks = [
   { name: 'How It Works', href: homeSections.howItWorks },
   { name: 'Why Trust Us', href: homeSections.trust },
   { name: 'Compare', href: homeSections.compare },
+  { name: 'Trust Center', href: '/trust-center' },
   { name: 'Pricing', href: homeSections.pricing },
   { name: 'About', href: '/about' },
 ]
