@@ -32,7 +32,7 @@ const contactCards = [
 const onboardingSteps = [
   'Share the models, applications, or workflows you want to protect.',
   'We align on scope, data handling expectations, and rollout posture.',
-  'If the fit is right, we move into guided onboarding with the right deployment and review path.',
+  'If the fit is right, we move into governed onboarding with the right deployment and review path.',
 ] as const
 
 export default function ContactPage() {
@@ -52,10 +52,10 @@ export default function ContactPage() {
           >
             <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Contact NeutralAI</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
-              Start the conversation before you start the rollout
+              Schedule a demo for your AI security rollout
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              NeutralAI is ready for guided evaluation and team rollout conversations. Reach out with your target workflow, model usage, browser extension needs, and compliance expectations so we can scope the right starting point.
+              See NeutralAI in action with your target workflow, model usage, browser extension needs, and compliance expectations so we can scope the right deployment path.
             </p>
           </motion.div>
         </div>

@@ -86,10 +86,10 @@ const trustCards: Card[] = [
 
 const pricingPlans = [
   {
-    name: 'Free evaluation',
-    summary: 'Best for testing the product with a controlled trial',
+    name: 'Free sandbox',
+    summary: 'Best for validating the gateway with a controlled workspace',
     features: [
-      'Starter quota for hands-on evaluation',
+      'Starter quota for hands-on validation',
       'Chat and browser extension workflows',
       'Clear upgrade path when limits are reached',
     ],
@@ -98,12 +98,12 @@ const pricingPlans = [
     featured: false,
   },
   {
-    name: 'Team rollout',
-    summary: 'Best for getting approved AI usage into a team',
+    name: 'Team deployment',
+    summary: 'Best for getting approved AI usage into daily workflows',
     features: [
       'Usage controls and billing readiness',
       'App, extension, or mixed deployment support',
-      'Security review and rollout guidance',
+      'Security review and deployment guidance',
     ],
     href: '/contact',
     cta: 'Talk to Sales',
@@ -477,7 +477,7 @@ function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
-              Use AI. Stay compliant. Prove it.
+              AI Security Gateway - Now Available
             </div>
 
             <h1 className="mt-6 max-w-4xl font-heading text-4xl font-bold leading-tight md:text-6xl xl:text-7xl">
@@ -848,9 +848,9 @@ function Pricing() {
     <section id="pricing" className="section bg-background-secondary">
       <div className="container-custom">
         <SectionIntro
-          eyebrow="Engagement Paths"
-          title="Pick the right starting point"
-          description="Start with a free evaluation, move into a team rollout when the control model is clear, or bring NeutralAI into a stricter enterprise deployment path."
+          eyebrow="Deployment Paths"
+          title="Start small, expand with control"
+          description="Start with a free sandbox, expand into team deployment when the control model is clear, or bring NeutralAI into a stricter enterprise environment."
           centered
         />
 

@@ -56,3 +56,27 @@ test('final CTA keeps Try Free as the primary action and sales as secondary', ()
   assert.match(homeSource, /function FinalCta\(\)[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
   assert.match(homeSource, /function FinalCta\(\)[\s\S]*href="\/contact"[\s\S]{0,180}>\s*Talk to Sales/)
 })
+
+test('public positioning avoids beta and pilot language', () => {
+  const publicPositioningSources = [
+    'app/page.tsx',
+    'app/about/page.tsx',
+    'app/contact/page.tsx',
+    'app/components/Footer.tsx',
+  ]
+
+  for (const path of publicPositioningSources) {
+    const source = readSource(path)
+
+    assert.doesNotMatch(source, /\b(beta|pilot|pilots)\b/i, `${path} should not use beta or pilot language`)
+  }
+})
+
+test('homepage uses confident availability and deployment framing', () => {
+  const homeSource = readSource('app/page.tsx')
+
+  assert.match(homeSource, /AI Security Gateway - Now Available/)
+  assert.match(homeSource, /eyebrow="Deployment Paths"/)
+  assert.doesNotMatch(homeSource, /Engagement Paths/)
+  assert.doesNotMatch(homeSource, /guided rollout phase/i)
+})
