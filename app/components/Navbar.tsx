@@ -54,7 +54,7 @@ export default function Navbar() {
             Contact
           </Link>
           <Link href={siteConfig.signupUrl} className="btn btn-cta">
-            Try Free
+            Get Started Free
           </Link>
         </div>
 
@@ -94,7 +94,7 @@ export default function Navbar() {
             className="btn btn-cta w-full mt-4"
             onClick={() => setIsOpen(false)}
           >
-            Try Free
+            Get Started Free
           </Link>
         </motion.div>
       )}
