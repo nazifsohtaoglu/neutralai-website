@@ -494,7 +494,7 @@ function Hero() {
                 <ArrowRight className="h-5 w-5" />
               </a>
               <a href="/contact" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
-                Talk to Sales
+                Book Demo
               </a>
             </div>
             <div className="mt-4 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:flex-wrap sm:items-center">
@@ -647,11 +647,11 @@ function ProductSurface() {
                   NeutralAI can protect browser-based AI usage in the flow people already know, which is exactly why adoption can move faster.
                 </p>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                  <a href="/install-extension" className="btn btn-cta w-full sm:w-auto">
-                    Install Extension
+                  <a href={siteConfig.signupUrl} className="btn btn-cta w-full sm:w-auto">
+                    Try Free
                   </a>
-                  <a href="/contact" className="btn btn-secondary w-full sm:w-auto">
-                    Enterprise Rollout
+                  <a href="/install-extension" className="btn btn-secondary w-full sm:w-auto">
+                    Install Browser Extension
                   </a>
                 </div>
               </div>

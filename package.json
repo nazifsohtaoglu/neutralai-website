@@ -6,6 +6,7 @@
     "dev": "next dev -p 3200",
     "build": "next build",
     "start": "next start",
+    "test:content": "node --test tests/content/*.test.mjs",
     "lint": "eslint .",
     "audit:prod": "npm audit --omit=dev --audit-level=critical"
   },

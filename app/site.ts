@@ -8,7 +8,8 @@ export const siteConfig = {
   apiHealthUrl: 'https://api.neutralai.co.uk/health',
   apiReadyUrl: 'https://api.neutralai.co.uk/ready',
   appBaseUrl: 'https://app.neutralai.co.uk',
-  signupUrl: 'https://app.neutralai.co.uk/auth/signin?callbackUrl=%2Fchat',
+  signupUrl:
+    'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=starter&src=website_start_free_trial&callbackUrl=%2Fchat',
   contactEmail: 'hello@neutralai.co.uk',
   privacyEmail: 'privacy@neutralai.co.uk',
   securityEmail: 'security@neutralai.co.uk',
