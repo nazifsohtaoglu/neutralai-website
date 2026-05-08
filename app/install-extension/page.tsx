@@ -16,18 +16,18 @@ const installOptions = [
   {
     title: 'Install for Chrome',
     description:
-      'Use this route for Chrome Web Store rollout once the public listing is approved. Until then, we will route pilots through direct support.',
+      'Use this route for the Chrome Web Store listing and managed browser rollout conversations.',
     href: siteConfig.chromeExtensionUrl || extensionLinks.supportMailto,
-    label: siteConfig.chromeExtensionUrl ? 'Open Chrome listing' : 'Request Chrome pilot access',
+    label: siteConfig.chromeExtensionUrl ? 'Open Chrome listing' : 'Request Chrome rollout support',
     external: true,
     icon: Chrome,
   },
   {
     title: 'Install for Edge',
     description:
-      'Use this route for Microsoft Edge Add-ons rollout. If the public listing is not yet live, we will guide pilot installs directly.',
+      'Use this route for the Microsoft Edge Add-ons listing and managed browser rollout conversations.',
     href: siteConfig.edgeExtensionUrl || extensionLinks.supportMailto,
-    label: siteConfig.edgeExtensionUrl ? 'Open Edge listing' : 'Request Edge pilot access',
+    label: siteConfig.edgeExtensionUrl ? 'Open Edge listing' : 'Request Edge rollout support',
     external: true,
     icon: Download,
   },
@@ -62,7 +62,7 @@ export default function InstallExtensionPage() {
               Install the browser extension without guessing the rollout path
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              NeutralAI Interceptor masks sensitive prompt data before it leaves supported AI web applications. This page is the public install reference for pilots, browser store review, and managed enterprise rollout.
+              NeutralAI Interceptor masks sensitive prompt data before it leaves supported AI web applications. This page is the public install reference for browser store review and managed enterprise rollout.
             </p>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function InstallExtensionPage() {
               <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Self-serve sign-in</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">How unmanaged installs authenticate</h2>
               <p className="mt-4 text-slate-400">
-                The extension uses the NeutralAI app domain for sign-in, session checks, and short-lived auth context retrieval. During store review or pilot onboarding, these public URLs should be reachable and documented.
+                The extension uses the NeutralAI app domain for sign-in, session checks, and short-lived auth context retrieval. During store review or guided onboarding, these public URLs should be reachable and documented.
               </p>
               <ul className="mt-6 space-y-4">
                 {signInSteps.map((step) => (
@@ -131,7 +131,7 @@ export default function InstallExtensionPage() {
               </p>
               <div className="mt-8 rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-slate-200">
                 <ShieldCheck className="mb-3 h-5 w-5 text-primary-light" />
-                Need a managed rollout instead of a self-serve pilot? Use the enterprise route from the support page and we will help with policy-based deployment.
+                Need a managed rollout instead of self-serve install? Use the enterprise route from the support page and we will help with policy-based deployment.
               </div>
             </div>
           </div>

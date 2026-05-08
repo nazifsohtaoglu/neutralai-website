@@ -9,9 +9,9 @@ const contactCards = [
   {
     icon: Mail,
     title: 'General enquiries',
-    description: 'Use this route for pilot requests, rollout questions, browser extension pilots, and early commercial conversations.',
-    label: siteConfig.contactEmail,
-    href: contactLinks.betaAccessMailto,
+    description: 'Use this route for demo requests, rollout questions, browser extension planning, and commercial conversations.',
+    label: siteConfig.salesEmail,
+    href: contactLinks.demoMailto,
   },
   {
     icon: ShieldCheck,
@@ -23,7 +23,7 @@ const contactCards = [
   {
     icon: Waypoints,
     title: 'Live endpoint checks',
-    description: 'Validate the public beta runtime before reaching out, including simple health and readiness checks.',
+    description: 'Validate the live runtime before reaching out, including simple health and readiness checks.',
     label: 'api.neutralai.co.uk/health',
     href: siteConfig.apiHealthUrl,
   },
@@ -31,8 +31,8 @@ const contactCards = [
 
 const onboardingSteps = [
   'Share the models, applications, or workflows you want to protect.',
-  'We align on pilot scope, data handling expectations, and launch posture.',
-  'If the fit is right, we move into beta onboarding with the right deployment and review path.',
+  'We align on scope, data handling expectations, and rollout posture.',
+  'If the fit is right, we move into guided onboarding with the right deployment and review path.',
 ] as const
 
 export default function ContactPage() {
@@ -55,7 +55,7 @@ export default function ContactPage() {
               Start the conversation before you start the rollout
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              NeutralAI is currently onboarding pilots directly. Reach out with your target workflow, model usage, browser extension needs, and compliance expectations so we can scope the right starting point.
+              NeutralAI is ready for guided evaluation and team rollout conversations. Reach out with your target workflow, model usage, browser extension needs, and compliance expectations so we can scope the right starting point.
             </p>
           </motion.div>
         </div>
@@ -117,7 +117,7 @@ export default function ContactPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1 h-2.5 w-2.5 rounded-full bg-primary" />
-                  <span>Whether you are validating a pilot, rolling out the extension, or planning a stricter production path</span>
+                  <span>Whether you are validating the product, rolling out the extension, or planning a stricter production path</span>
                 </li>
               </ul>
             </motion.div>
@@ -129,7 +129,7 @@ export default function ContactPage() {
               transition={{ delay: 0.08 }}
               className="card p-8"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Beta flow</p>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Evaluation flow</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">What happens next</h2>
               <ol className="mt-6 space-y-5">
                 {onboardingSteps.map((step, index) => (

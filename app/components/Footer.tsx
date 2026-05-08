@@ -8,12 +8,14 @@ const productLinks = [
   { label: 'Problem', href: homeSections.problem },
   { label: 'How It Works', href: homeSections.howItWorks },
   { label: 'Why Trust Us', href: homeSections.trust },
+  { label: 'Compare', href: homeSections.compare },
   { label: 'Pricing', href: homeSections.pricing },
 ] as const
 
 const launchLinks = [
   { label: 'API Health', href: siteConfig.apiHealthUrl },
   { label: 'Readiness Check', href: siteConfig.apiReadyUrl },
+  { label: 'Try Free', href: siteConfig.signupUrl },
   { label: 'Install Extension', href: '/install-extension' },
   { label: 'Extension Support', href: '/support/browser-extension' },
 ] as const
@@ -64,7 +66,7 @@ export default function Footer() {
             </p>
             <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] text-primary-light">
               <span className="h-2 w-2 rounded-full bg-accent-success animate-pulse" />
-              Public beta with live health endpoints
+              Live and operational
             </div>
           </div>
 
@@ -107,8 +109,8 @@ export default function Footer() {
             © {new Date().getFullYear()} NeutralAI Ltd. Built for security-conscious AI adoption.
           </p>
           <div className="flex flex-col gap-2 text-sm text-slate-500 md:flex-row md:flex-wrap md:items-center md:justify-end md:gap-4">
-            <a href={contactLinks.betaAccessMailto} className="hover:text-primary transition-colors">
-              {siteConfig.contactEmail}
+            <a href={contactLinks.demoMailto} className="hover:text-primary transition-colors">
+              {siteConfig.salesEmail}
             </a>
             <a href={contactLinks.supportMailto} className="hover:text-primary transition-colors">
               {siteConfig.supportEmail}

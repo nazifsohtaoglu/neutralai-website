@@ -6,6 +6,7 @@ export const dynamic = 'force-static'
 const routes = [
   '',
   '/about',
+  '/compare',
   '/contact',
   '/install-extension',
   '/privacy',

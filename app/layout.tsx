@@ -38,6 +38,17 @@ export const metadata: Metadata = {
     'privacy gateway',
     'LLM security',
     'UK GDPR',
+    'presidio alternative',
+    'pii detection api',
+    'ai compliance gateway',
+    'llm data protection',
+    'sensitive data masking for ai',
+    'enterprise ai privacy',
+    'ai data loss prevention',
+    'pii redaction for llm',
+    'gdpr compliant ai',
+    'hipaa ai gateway',
+    'ai privacy gateway',
   ],
   alternates: {
     canonical: '/',
@@ -75,9 +86,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: siteConfig.name,
+    applicationCategory: 'SecurityApplication',
+    operatingSystem: 'Web',
+    url: siteConfig.url,
+    description: siteConfig.description,
+    offers: {
+      '@type': 'Offer',
+      category: 'SaaS',
+      url: siteConfig.signupUrl,
+    },
+  }
+
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${dmSans.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable} font-body bg-background text-slate-50 antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <Navbar />
         <main className="min-h-screen">
           {children}

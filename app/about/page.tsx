@@ -33,7 +33,7 @@ const principles = [
 
 const focusAreas = [
   'Helping teams place a security gateway in front of external model providers',
-  'Making pilot deployments easier to validate with health and readiness checks',
+  'Making production rollouts easier to validate with health and readiness checks',
   'Building toward stronger production controls, including immutable evidence paths',
 ] as const
 
@@ -81,7 +81,7 @@ export default function AboutPage() {
                   NeutralAI is being shaped as a gateway layer that stands between customer applications, browser-based AI usage, and external model providers. The goal is straightforward: let teams adopt AI while applying policy before sensitive data moves beyond the trusted boundary.
                 </p>
                 <p>
-                  That means the product story has to stay credible. We prefer explicit launch posture, beta-oriented onboarding, and visible hardening milestones over generic enterprise promises.
+                  That means the product story has to stay credible. We prefer clear operating posture, guided onboarding, and visible hardening milestones over generic enterprise promises.
                 </p>
               </div>
             </motion.div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
           >
             <h2 className="font-heading text-3xl font-bold md:text-4xl">Want to evaluate the gateway?</h2>
             <p className="mt-5 text-lg text-slate-400">
-              The best next step is a pilot conversation that matches your current deployment stage, browser-extension needs, and review requirements.
+              The best next step is a rollout conversation that matches your current deployment stage, browser-extension needs, and review requirements.
             </p>
             <a href="/contact" className="btn btn-cta mt-8 px-8 py-4 text-lg">
               Contact NeutralAI
