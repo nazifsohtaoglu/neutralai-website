@@ -7,8 +7,12 @@ export const metadata: Metadata = {
   title: 'Contact Request Sent',
   description:
     'Confirmation page for NeutralAI contact requests about AI compliance gateway deployment, PII masking, and security review conversations.',
+  robots: {
+    index: false,
+    follow: false,
+  },
   alternates: {
-    canonical: '/contact/thanks',
+    canonical: '/contact',
   },
 }
 
