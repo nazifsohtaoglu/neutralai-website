@@ -82,7 +82,7 @@ function ContactForm() {
           <input
             required
             type="email"
-            name="work_email"
+            name="email"
             autoComplete="email"
             className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
             placeholder="jane@company.com"
