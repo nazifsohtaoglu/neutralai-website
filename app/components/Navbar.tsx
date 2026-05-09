@@ -12,6 +12,7 @@ const navLinks = [
   { name: 'How It Works', href: homeSections.howItWorks },
   { name: 'Why Trust Us', href: homeSections.trust },
   { name: 'Compare', href: homeSections.compare },
+  { name: 'Playground', href: '/playground' },
   { name: 'Blog', href: '/blog' },
   { name: 'Trust Center', href: '/trust-center' },
   { name: 'Pricing', href: homeSections.pricing },
@@ -31,30 +32,30 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'py-5'}`}>
-      <div className="container-custom flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'py-4'}`}>
+      <div className="mx-auto flex w-full max-w-[1760px] items-center justify-between gap-5 px-6 lg:px-8">
+        <Link href="/" className="flex flex-shrink-0 items-center gap-2">
           <Image src="/logo.png" alt="NeutralAI" width={40} height={40} className="w-10 h-10 rounded-lg" />
-          <span className="font-heading font-bold text-xl">NeutralAI</span>
+          <span className="whitespace-nowrap font-heading text-xl font-bold">NeutralAI</span>
         </Link>
 
-        <div className="hidden xl:flex items-center gap-8">
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-5 xl:flex 2xl:gap-7">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
               href={link.href}
-              className="text-slate-300 hover:text-primary transition-colors"
+              className="whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-primary 2xl:text-base"
             >
               {link.name}
             </Link>
           ))}
         </div>
 
-        <div className="hidden xl:flex items-center gap-4">
-          <Link href="/contact" className="text-slate-300 hover:text-white transition-colors">
+        <div className="hidden flex-shrink-0 items-center gap-4 xl:flex">
+          <Link href="/contact" className="whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-white 2xl:text-base">
             Contact
           </Link>
-          <Link href={siteConfig.signupUrl} className="btn btn-cta">
+          <Link href={siteConfig.signupUrl} className="btn btn-cta whitespace-nowrap px-5 py-3 text-sm 2xl:text-base">
             Get Started Free
           </Link>
         </div>

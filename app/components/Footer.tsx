@@ -9,6 +9,7 @@ const productLinks = [
   { label: 'How It Works', href: homeSections.howItWorks },
   { label: 'Why Trust Us', href: homeSections.trust },
   { label: 'Compare', href: homeSections.compare },
+  { label: 'Playground', href: '/playground' },
   { label: 'Blog', href: '/blog' },
   { label: 'Presidio Alternative', href: '/presidio-alternative' },
   { label: 'Pricing', href: homeSections.pricing },
@@ -17,6 +18,7 @@ const productLinks = [
 const launchLinks = [
   { label: 'API Health', href: siteConfig.apiHealthUrl },
   { label: 'Readiness Check', href: siteConfig.apiReadyUrl },
+  { label: 'Playground', href: '/playground' },
   { label: 'Try Free', href: siteConfig.signupUrl },
   { label: 'Install Extension', href: '/install-extension' },
   { label: 'Extension Support', href: '/support/browser-extension' },
