@@ -258,7 +258,7 @@ const technicalTrustDetails = [
   {
     icon: FileText,
     title: 'Entity coverage',
-    detail: 'EMAIL, PHONE, PERSON, CREDIT_CARD, IBAN, SSN, TR_ID, UK_NHS, and custom rules.',
+    detail: 'EMAIL, PHONE_NUMBER, PERSON, CREDIT_CARD, IBAN, SSN, TR_ID_NUMBER, UK_NHS_NUMBER, and custom rules.',
   },
   {
     icon: Languages,

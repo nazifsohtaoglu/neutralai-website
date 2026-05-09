@@ -22,7 +22,7 @@ test('homepage exposes concrete trust badges and detection details', () => {
   assert.match(homeSource, /Configurable confidence thresholds per entity type/)
   assert.match(homeSource, /EMAIL/)
   assert.match(homeSource, /CREDIT_CARD/)
-  assert.match(homeSource, /UK_NHS/)
+  assert.match(homeSource, /PHONE_NUMBER, PERSON, CREDIT_CARD, IBAN, SSN, TR_ID_NUMBER, UK_NHS_NUMBER/)
 })
 
 test('homepage adds a scannable detection engine deep dive', () => {
