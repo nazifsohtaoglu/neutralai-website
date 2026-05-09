@@ -222,6 +222,19 @@ const pricingFaqs = [
   },
 ] as const
 
+const pricingFaqStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: pricingFaqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+} as const
+
 const trustBadges = [
   'AES-256-GCM vault',
   'SOC2 readiness',
@@ -1257,6 +1270,10 @@ function FinalCta() {
 export default function Home() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqStructuredData) }}
+      />
       <Hero />
       <ProductSurface />
       <WhyItMatters />

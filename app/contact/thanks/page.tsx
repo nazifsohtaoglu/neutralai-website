@@ -1,6 +1,16 @@
+import type { Metadata } from 'next'
 import { CheckCircle2 } from 'lucide-react'
 import BackButton from '../../components/BackButton'
 import { contactLinks, siteConfig } from '../../site'
+
+export const metadata: Metadata = {
+  title: 'Contact Request Sent',
+  description:
+    'Confirmation page for NeutralAI contact requests about AI compliance gateway deployment, PII masking, and security review conversations.',
+  alternates: {
+    canonical: '/contact/thanks',
+  },
+}
 
 export default function ContactThanksPage() {
   return (

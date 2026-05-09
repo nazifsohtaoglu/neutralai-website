@@ -88,17 +88,47 @@ export default function RootLayout({
 }) {
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: siteConfig.name,
-    applicationCategory: 'SecurityApplication',
-    operatingSystem: 'Web',
-    url: siteConfig.url,
-    description: siteConfig.description,
-    offers: {
-      '@type': 'Offer',
-      category: 'SaaS',
-      url: siteConfig.signupUrl,
-    },
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${siteConfig.url}/#organization`,
+        name: siteConfig.name,
+        url: siteConfig.url,
+        logo: `${siteConfig.url}/logo.png`,
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            contactType: 'sales',
+            email: siteConfig.salesEmail,
+            url: `${siteConfig.url}/contact`,
+          },
+          {
+            '@type': 'ContactPoint',
+            contactType: 'security',
+            email: siteConfig.securityEmail,
+            url: `${siteConfig.url}/security`,
+          },
+        ],
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': `${siteConfig.url}/#software`,
+        name: `${siteConfig.name} Gateway`,
+        applicationCategory: 'SecurityApplication',
+        applicationSubCategory: 'AI compliance gateway',
+        operatingSystem: 'Web',
+        url: siteConfig.url,
+        description: siteConfig.description,
+        publisher: {
+          '@id': `${siteConfig.url}/#organization`,
+        },
+        offers: {
+          '@type': 'Offer',
+          category: 'SaaS',
+          url: siteConfig.signupUrl,
+        },
+      },
+    ],
   }
 
   return (
