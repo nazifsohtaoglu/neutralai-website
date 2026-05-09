@@ -12,6 +12,7 @@ const routes = [
   '/contact',
   '/insights/presidio-alone-regulated-industries',
   '/install-extension',
+  '/playground',
   '/presidio-alternative',
   '/privacy',
   '/security',
