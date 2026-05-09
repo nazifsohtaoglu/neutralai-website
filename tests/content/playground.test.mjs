@@ -23,6 +23,8 @@ test('playground page exposes an interactive PII masking workflow', () => {
   assert.match(page, /Entities and confidence/)
   assert.match(page, /reversible/)
   assert.match(page, /samplePrompts/)
+  assert.match(page, /requestVersionRef/)
+  assert.match(page, /\[A-Z_\]\+\(\?:_\[A-Za-z0-9-\]\+\)\*\>/)
 })
 
 test('playground is discoverable from nav, footer, and sitemap', () => {

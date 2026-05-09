@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
@@ -245,7 +245,7 @@ function tokenEntityType(token: string): EntityType {
 }
 
 function detectTokens(text: string): TokenFinding[] {
-  return Array.from(text.matchAll(/<[A-Z_]+(?:_[A-Za-z0-9-]+)?>/g)).map((match, index) => ({
+  return Array.from(text.matchAll(/<[A-Z_]+(?:_[A-Za-z0-9-]+)*>/g)).map((match, index) => ({
     id: `token-${index}-${match.index ?? 0}`,
     entityType: tokenEntityType(match[0]),
     text: match[0],
@@ -309,6 +309,7 @@ export default function PlaygroundPage() {
   const [statusText, setStatusText] = useState('Waiting for prompt')
   const [isLoading, setIsLoading] = useState(false)
   const [isInCooldown, setIsInCooldown] = useState(false)
+  const requestVersionRef = useRef(0)
 
   const localPreview = useMemo(() => maskLocally(prompt, mode === 'reversible'), [prompt, mode])
   const hasResult = maskedText.length > 0
@@ -319,11 +320,22 @@ export default function PlaygroundPage() {
   const isOverLimit = prompt.length > MAX_PROMPT_LENGTH
   const canSubmit = prompt.trim().length > 0 && !isLoading && !isOverLimit && !isInCooldown
 
+  function clearMaskResult(nextStatus: string) {
+    requestVersionRef.current += 1
+    setMaskedText('')
+    setSource('demo')
+    setStatusText(nextStatus)
+    setIsLoading(false)
+  }
+
   async function runMasking() {
     if (!canSubmit) {
       return
     }
 
+    const requestVersion = requestVersionRef.current + 1
+    const requestPreview = localPreview
+    requestVersionRef.current = requestVersion
     setIsLoading(true)
     setStatusText('Masking prompt')
     setIsInCooldown(true)
@@ -331,7 +343,11 @@ export default function PlaygroundPage() {
 
     if (!shouldCallLiveApi()) {
       window.setTimeout(() => {
-        setMaskedText(localPreview.maskedText)
+        if (requestVersionRef.current !== requestVersion) {
+          return
+        }
+
+        setMaskedText(requestPreview.maskedText)
         setSource('demo')
         setStatusText('Demo preview ready')
         setIsLoading(false)
@@ -360,24 +376,32 @@ export default function PlaygroundPage() {
       }
 
       const payload = (await response.json()) as ApiMaskResponse
-      setMaskedText(payload.masked_text || localPreview.maskedText)
+      if (requestVersionRef.current !== requestVersion) {
+        return
+      }
+
+      setMaskedText(payload.masked_text || requestPreview.maskedText)
       setSource(payload.masked_text ? 'live' : 'demo')
       setStatusText(payload.masked_text ? 'Masked by live API' : 'Demo preview ready')
     } catch {
-      setMaskedText(localPreview.maskedText)
+      if (requestVersionRef.current !== requestVersion) {
+        return
+      }
+
+      setMaskedText(requestPreview.maskedText)
       setSource('demo')
       setStatusText('Demo preview ready')
     } finally {
       window.clearTimeout(timeout)
-      setIsLoading(false)
+      if (requestVersionRef.current === requestVersion) {
+        setIsLoading(false)
+      }
     }
   }
 
   function resetPrompt() {
     setPrompt('')
-    setMaskedText('')
-    setSource('demo')
-    setStatusText('Waiting for prompt')
+    clearMaskResult('Waiting for prompt')
   }
 
   return (
@@ -457,8 +481,7 @@ export default function PlaygroundPage() {
                       type="button"
                       onClick={() => {
                         setMode(option)
-                        setMaskedText('')
-                        setStatusText('Ready to mask')
+                        clearMaskResult('Ready to mask')
                       }}
                       className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
                         mode === option ? 'bg-primary text-slate-950' : 'text-slate-400 hover:text-white'
@@ -474,8 +497,7 @@ export default function PlaygroundPage() {
                 value={prompt}
                 onChange={(event) => {
                   setPrompt(event.target.value)
-                  setMaskedText('')
-                  setStatusText('Ready to mask')
+                  clearMaskResult('Ready to mask')
                 }}
                 rows={10}
                 maxLength={MAX_PROMPT_LENGTH + 200}
@@ -506,8 +528,7 @@ export default function PlaygroundPage() {
                     type="button"
                     onClick={() => {
                       setPrompt(sample.value)
-                      setMaskedText('')
-                      setStatusText('Ready to mask')
+                      clearMaskResult('Ready to mask')
                     }}
                     className="rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3 text-left text-sm text-slate-300 transition hover:border-primary/50 hover:text-white"
                   >
