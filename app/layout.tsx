@@ -61,10 +61,10 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     images: [
       {
-        url: '/logo.png',
-        width: 512,
-        height: 512,
-        alt: `${siteConfig.name} logo`,
+        url: '/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} AI Security Gateway preview`,
       },
     ],
   },
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${siteConfig.name} | AI Security Gateway`,
     description: siteConfig.description,
-    images: ['/logo.png'],
+    images: ['/og-default.png'],
   },
   icons: {
     icon: '/logo.png',
