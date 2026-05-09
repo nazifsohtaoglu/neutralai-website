@@ -9,6 +9,7 @@ const productLinks = [
   { label: 'How It Works', href: homeSections.howItWorks },
   { label: 'Why Trust Us', href: homeSections.trust },
   { label: 'Compare', href: homeSections.compare },
+  { label: 'Blog', href: '/blog' },
   { label: 'Presidio Alternative', href: '/presidio-alternative' },
   { label: 'Pricing', href: homeSections.pricing },
 ] as const
