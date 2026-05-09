@@ -6,6 +6,8 @@ export const dynamic = 'force-static'
 const routes = [
   '',
   '/about',
+  '/blog',
+  '/blog/why-pii-masking-matters-for-enterprise-ai-adoption',
   '/compare',
   '/contact',
   '/insights/presidio-alone-regulated-industries',
@@ -21,7 +23,9 @@ const routes = [
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route) => ({
     url: `${siteConfig.url}${route}`,
-    lastModified: route === '/trust-center' || route === '/presidio-alternative' || route.startsWith('/insights/')
+    lastModified: route.startsWith('/blog')
+      ? '2026-05-09'
+      : route === '/trust-center' || route === '/presidio-alternative' || route.startsWith('/insights/')
       ? '2026-05-08'
       : '2026-03-29',
     changeFrequency: route === '' ? 'weekly' : 'monthly',
