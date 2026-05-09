@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Mail, ShieldCheck, Waypoints } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Mail, ShieldCheck, Waypoints } from 'lucide-react'
 import BackButton from '../components/BackButton'
 import { contactLinks, siteConfig } from '../site'
 
@@ -35,6 +35,135 @@ const onboardingSteps = [
   'If the fit is right, we move into governed onboarding with the right deployment and review path.',
 ] as const
 
+const companySizes = ['1-10', '11-50', '51-200', '200+'] as const
+
+const referralOptions = [
+  'Search',
+  'LinkedIn',
+  'Referral',
+  'GitHub',
+  'Security review',
+  'Other',
+] as const
+
+function ContactForm() {
+  return (
+    <form action={siteConfig.contactFormUrl} method="POST" className="card p-6 md:p-8">
+      <input type="hidden" name="_subject" value="NeutralAI website contact request" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value={`${siteConfig.url}/contact/thanks/`} />
+      <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+
+      <div className="flex flex-col gap-4 border-b border-white/10 pb-6 md:flex-row md:items-start md:justify-between">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Demo request</p>
+          <h2 className="mt-3 font-heading text-3xl font-bold">Tell us what you want to protect</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+            Share the workflow, data types, and deployment context so the first response can be useful.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-5 md:grid-cols-2">
+        <label className="block">
+          <span className="text-sm font-medium text-slate-200">Full name</span>
+          <input
+            required
+            name="full_name"
+            autoComplete="name"
+            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
+            placeholder="Jane Smith"
+          />
+        </label>
+
+        <label className="block">
+          <span className="text-sm font-medium text-slate-200">Work email</span>
+          <input
+            required
+            type="email"
+            name="email"
+            autoComplete="email"
+            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
+            placeholder="jane@company.com"
+          />
+        </label>
+
+        <label className="block">
+          <span className="text-sm font-medium text-slate-200">Company name</span>
+          <input
+            required
+            name="company_name"
+            autoComplete="organization"
+            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
+            placeholder="Company Ltd"
+          />
+        </label>
+
+        <label className="block">
+          <span className="text-sm font-medium text-slate-200">Company size</span>
+          <select
+            required
+            name="company_size"
+            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors focus:border-primary"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select size
+            </option>
+            {companySizes.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="block md:col-span-2">
+          <span className="text-sm font-medium text-slate-200">Message / use case</span>
+          <textarea
+            required
+            name="message"
+            rows={6}
+            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
+            placeholder="Tell us which AI workflows, models, and sensitive data types you need to protect."
+          />
+        </label>
+
+        <label className="block md:col-span-2">
+          <span className="text-sm font-medium text-slate-200">How did you hear about us?</span>
+          <select
+            name="referral_source"
+            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors focus:border-primary"
+            defaultValue=""
+          >
+            <option value="">Optional</option>
+            {referralOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm leading-6 text-slate-500">
+          Prefer email? Reach us at{' '}
+          <a href={contactLinks.salesMailto} className="text-primary-light transition-colors hover:text-primary">
+            {siteConfig.salesEmail}
+          </a>
+          .
+        </p>
+        <button type="submit" className="btn btn-cta w-full px-8 py-4 sm:w-auto">
+          Send Message
+          <ArrowRight className="h-5 w-5" />
+        </button>
+      </div>
+    </form>
+  )
+}
+
 export default function ContactPage() {
   return (
     <main className="min-h-screen pt-24">
@@ -63,6 +192,16 @@ export default function ContactPage() {
 
       <section className="section">
         <div className="container-custom">
+          <ContactForm />
+        </div>
+      </section>
+
+      <section className="section bg-background-secondary">
+        <div className="container-custom">
+          <div className="mx-auto mb-8 max-w-3xl text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Other routes</p>
+            <h2 className="mt-4 font-heading text-3xl font-bold">Email and runtime checks</h2>
+          </div>
           <div className="grid gap-6 lg:grid-cols-3">
             {contactCards.map((card, index) => {
               const isExternal = card.href.startsWith('http')
@@ -95,7 +234,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="section bg-background-secondary">
+      <section className="section">
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[1fr_0.95fr] lg:items-start">
             <motion.div

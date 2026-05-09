@@ -15,6 +15,7 @@ export const siteConfig = {
   securityEmail: 'security@neutralai.co.uk',
   supportEmail: 'support@neutralai.co.uk',
   salesEmail: 'sales@neutralai.co.uk',
+  contactFormUrl: 'https://formsubmit.co/sales@neutralai.co.uk',
   securityTxtPath: '/.well-known/security.txt',
   chromeExtensionUrl:
     'https://chromewebstore.google.com/detail/neutralai-interceptor/gpdjigfhopjabaodmnombeoldieoobnh',
