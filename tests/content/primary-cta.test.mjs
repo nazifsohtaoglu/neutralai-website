@@ -9,6 +9,19 @@ function readSource(path) {
   return readFileSync(join(root, path), 'utf8')
 }
 
+function readHomepageSource() {
+  return [
+    'app/page.tsx',
+    'app/data/homepage.ts',
+    'app/components/home/CtaSection.tsx',
+    'app/components/home/Hero.tsx',
+    'app/components/home/PricingSection.tsx',
+    'app/components/home/ProductSurface.tsx',
+  ]
+    .map(readSource)
+    .join('\n')
+}
+
 test('site config exposes a working app signup/sandbox destination instead of a mailto fallback', () => {
   const siteSource = readSource('app/site.ts')
 
@@ -28,7 +41,7 @@ test('navbar primary CTA invites users to get started free', () => {
 })
 
 test('homepage hero uses Try Free, Book Demo, and a demoted extension install link', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
   assert.match(homeSource, /href="\/contact"[\s\S]{0,180}>\s*Book Demo/)
@@ -37,7 +50,7 @@ test('homepage hero uses Try Free, Book Demo, and a demoted extension install li
 })
 
 test('extension-focused homepage card keeps Try Free primary and install secondary', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(
     homeSource,
@@ -51,15 +64,20 @@ test('extension-focused homepage card keeps Try Free primary and install seconda
 })
 
 test('final CTA keeps Try Free as the primary action and sales as secondary', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
-  assert.match(homeSource, /function FinalCta\(\)[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
-  assert.match(homeSource, /function FinalCta\(\)[\s\S]*href="\/contact"[\s\S]{0,180}>\s*Talk to Sales/)
+  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
+  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href="\/contact"[\s\S]{0,180}>\s*Talk to Sales/)
 })
 
 test('public positioning avoids beta and pilot language', () => {
   const publicPositioningSources = [
     'app/page.tsx',
+    'app/data/homepage.ts',
+    'app/components/home/CtaSection.tsx',
+    'app/components/home/Hero.tsx',
+    'app/components/home/PricingSection.tsx',
+    'app/components/home/ProductSurface.tsx',
     'app/about/page.tsx',
     'app/contact/page.tsx',
     'app/components/Footer.tsx',
@@ -73,7 +91,7 @@ test('public positioning avoids beta and pilot language', () => {
 })
 
 test('homepage uses confident availability and deployment framing', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /AI Security Gateway - Now Available/)
   assert.doesNotMatch(homeSource, /Engagement Paths/)
@@ -81,7 +99,7 @@ test('homepage uses confident availability and deployment framing', () => {
 })
 
 test('homepage pricing shows approved GBP pricing and self-serve handoff URLs', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /eyebrow="Pricing"/)
   assert.doesNotMatch(homeSource, /Engagement Paths/)
@@ -112,7 +130,7 @@ test('homepage pricing shows approved GBP pricing and self-serve handoff URLs', 
 })
 
 test('homepage pricing includes annual billing context and buyer FAQ copy', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /Annual billing saves 20%/)
   assert.match(homeSource, /Plans include masking requests/)
@@ -124,7 +142,7 @@ test('homepage pricing includes annual billing context and buyer FAQ copy', () =
 })
 
 test('homepage pricing keeps primary plan cards scannable on desktop', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /primaryPricingPlans/)
   assert.match(homeSource, /advancedPricingPlans/)

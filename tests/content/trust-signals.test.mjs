@@ -9,8 +9,20 @@ function readSource(path) {
   return readFileSync(join(root, path), 'utf8')
 }
 
+function readHomepageSource() {
+  return [
+    'app/page.tsx',
+    'app/data/homepage.ts',
+    'app/components/home/DetectionEngine.tsx',
+    'app/components/home/Hero.tsx',
+    'app/components/home/TrustSection.tsx',
+  ]
+    .map(readSource)
+    .join('\n')
+}
+
 test('homepage exposes concrete trust badges and detection details', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /AES-256-GCM vault/)
   assert.match(homeSource, /SOC2 readiness/)
@@ -26,7 +38,7 @@ test('homepage exposes concrete trust badges and detection details', () => {
 })
 
 test('homepage adds a scannable detection engine deep dive', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /function DetectionEngine/)
   assert.match(homeSource, /<DetectionEngine \/>/)
@@ -67,7 +79,7 @@ test('homepage adds a scannable detection engine deep dive', () => {
 })
 
 test('homepage carries benchmark proof without overclaiming independence', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /Source of truth: nazifsohtaoglu\/neutralai-gateway benchmark artifacts/)
   assert.match(homeSource, /id="benchmark-proof"/)
@@ -87,7 +99,7 @@ test('homepage carries benchmark proof without overclaiming independence', () =>
 })
 
 test('homepage carries healthcare trust copy without blanket HIPAA claims', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /Source of truth: nazifsohtaoglu\/neutralai-gateway#779 healthcare pack artifacts/)
   assert.match(homeSource, /id="healthcare-trust"/)
@@ -104,7 +116,7 @@ test('homepage carries healthcare trust copy without blanket HIPAA claims', () =
 })
 
 test('homepage carries document redaction proof without overclaiming OCR or PDF coverage', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = readHomepageSource()
 
   assert.match(homeSource, /Source of truth: nazifsohtaoglu\/neutralai-gateway#782 document redaction artifacts/)
   assert.match(homeSource, /id="document-redaction-proof"/)
