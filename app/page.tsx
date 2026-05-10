@@ -370,6 +370,31 @@ const healthcareTrustPoints = [
   },
 ] as const
 
+// Source of truth: nazifsohtaoglu/neutralai-gateway#782 document redaction artifacts.
+const documentRedactionProof = {
+  benchmarkLabel: 'Live canary smoke',
+  benchmarkValue: 'Dense 10-page text PDF in ~3.1s',
+  sourceNote: 'Live gateway canary run found 835 sensitive spans; simple 10-page text PDF smoke measured ~153ms. Product smoke, not a third-party evaluation.',
+} as const
+
+const documentRedactionPoints = [
+  {
+    icon: FileText,
+    label: 'PDF redaction',
+    body: 'Supports simple text PDFs today and returns generated PDF output with visual blackout marks.',
+  },
+  {
+    icon: ScanSearch,
+    label: 'Office and images',
+    body: 'Extracts Office document text and supports OCR-backed image detection when OCR is configured.',
+  },
+  {
+    icon: ClipboardCheck,
+    label: 'Audit-safe metadata',
+    body: 'Records file hash, page count, finding counts, and approximate locations without raw sensitive text in standard logs.',
+  },
+] as const
+
 type DeploymentCard = {
   icon: LucideIcon
   title: string
@@ -1231,6 +1256,39 @@ function Trust() {
                   <p className="mt-3 text-sm leading-6 text-slate-300">{point.body}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+
+        <div id="document-redaction-proof" className="mt-10 scroll-mt-28 overflow-hidden rounded-[28px] border border-cyan-300/20 bg-[linear-gradient(135deg,rgba(14,165,233,0.12),rgba(15,23,42,0.96)_48%,rgba(148,163,184,0.10))] p-6">
+          <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyan-200">Document proof</p>
+              <h3 className="mt-4 font-heading text-3xl font-semibold">Protect files before document content reaches AI workflows.</h3>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
+                NeutralAI document handling extends PII protection beyond chat prompts, with document-aware extraction, redaction output, and audit-safe finding metadata for supported upload flows.
+              </p>
+              <p className="mt-3 text-xs leading-6 text-slate-500">
+                Supports simple text PDFs today. OCR-backed image detection depends on configured OCR runtime.
+              </p>
+            </div>
+
+            <div className="grid gap-4">
+              <div className="rounded-2xl border border-white/10 bg-background/80 p-5">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{documentRedactionProof.benchmarkLabel}</p>
+                <p className="mt-2 font-heading text-2xl font-semibold text-white">{documentRedactionProof.benchmarkValue}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{documentRedactionProof.sourceNote}</p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                {documentRedactionPoints.map((point) => (
+                  <div key={point.label} className="rounded-2xl border border-white/10 bg-background/70 p-5">
+                    <point.icon className="h-5 w-5 text-cyan-200" />
+                    <p className="mt-3 font-mono text-xs uppercase tracking-[0.18em] text-cyan-200">{point.label}</p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">{point.body}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

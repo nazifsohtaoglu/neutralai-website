@@ -22,3 +22,4 @@ Use this file for unknowns. Do not guess silently.
 - Should content tests cover every public route or only the homepage?
 - Should a Playwright visual smoke script be added to `package.json`?
 - Should `next build` be treated as the canonical typecheck, or should a separate TypeScript check be added?
+- Should gateway add a documented, non-secret live document redaction smoke script for internal canary tenants so website proof claims can be refreshed without ad hoc SSH commands?
