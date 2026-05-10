@@ -66,6 +66,26 @@ test('homepage adds a scannable detection engine deep dive', () => {
   assert.match(homeSource, /encrypted vault/)
 })
 
+test('homepage carries benchmark proof without overclaiming independence', () => {
+  const homeSource = readSource('app/page.tsx')
+
+  assert.match(homeSource, /Source of truth: nazifsohtaoglu\/neutralai-gateway benchmark artifacts/)
+  assert.match(homeSource, /id="benchmark-proof"/)
+  assert.match(homeSource, /Benchmark proof/)
+  assert.match(homeSource, /reproducible Presidio-vanilla baseline/)
+  assert.match(homeSource, /multilingual calibration, masking, and enforcement layers/)
+  assert.match(homeSource, /Public overall F1/)
+  assert.match(homeSource, /99\.8%/)
+  assert.match(homeSource, /Holdout overall F1/)
+  assert.match(homeSource, /98\.4%/)
+  assert.match(homeSource, /Holdout PERSON F1/)
+  assert.match(homeSource, /92\.7%/)
+  assert.match(homeSource, /Product benchmark, not a third-party independent evaluation/)
+  assert.match(homeSource, /benchmarkProof\.appBenchmarkUrl/)
+  assert.match(homeSource, /\/presidio-alternative/)
+  assert.doesNotMatch(homeSource, /independent third-party evaluation/)
+})
+
 test('security page describes architecture, encryption, and public trust links', () => {
   const securitySource = readSource('app/security/page.tsx')
 
