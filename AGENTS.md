@@ -20,6 +20,7 @@ Short repository guide for Codex. Longer working context lives under `docs/ai/`.
 - Add unknown or unclear points to `docs/ai/OPEN_QUESTIONS.md`.
 - Do not revert unrelated user changes.
 - Keep changes small and focused.
+- If a public claim, metric, benchmark, pricing point, UI element, or copy choice seems weak, confusing, risky, or unlikely to add value, say so proactively before or while implementing it. Do not wait for the user to challenge it.
 - When creating PRs, open ready-for-review PRs unless the user explicitly asks for draft. Do not prefix PR titles with `codex`.
 
 ## Common Commands

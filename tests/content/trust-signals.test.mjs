@@ -103,6 +103,31 @@ test('homepage carries healthcare trust copy without blanket HIPAA claims', () =
   assert.doesNotMatch(homeSource, /BAA included/)
 })
 
+test('homepage carries document redaction proof without overclaiming OCR or PDF coverage', () => {
+  const homeSource = readSource('app/page.tsx')
+
+  assert.match(homeSource, /Source of truth: nazifsohtaoglu\/neutralai-gateway#782 document redaction artifacts/)
+  assert.match(homeSource, /id="document-redaction-proof"/)
+  assert.match(homeSource, /Document proof/)
+  assert.match(homeSource, /Protect files before document content reaches AI workflows/)
+  assert.match(homeSource, /document-aware extraction, redaction output, and audit-safe finding metadata/)
+  assert.match(homeSource, /Supports simple text PDFs today/)
+  assert.match(homeSource, /OCR-backed image detection depends on configured OCR runtime/)
+  assert.match(homeSource, /Live canary smoke/)
+  assert.match(homeSource, /Dense 10-page text PDF in ~3\.1s/)
+  assert.match(homeSource, /Live gateway canary run found 835 sensitive spans/)
+  assert.match(homeSource, /simple 10-page text PDF smoke measured ~153ms/)
+  assert.match(homeSource, /not a third-party evaluation/)
+  assert.match(homeSource, /PDF redaction/)
+  assert.match(homeSource, /visual blackout marks/)
+  assert.match(homeSource, /Office document text/)
+  assert.match(homeSource, /OCR-backed image detection when OCR is configured/)
+  assert.match(homeSource, /file hash, page count, finding counts, and approximate locations/)
+  assert.doesNotMatch(homeSource, /universal PDF layout-preserving redaction/)
+  assert.doesNotMatch(homeSource, /perfect OCR coverage/)
+  assert.doesNotMatch(homeSource, /independent third-party benchmark/)
+})
+
 test('security page describes architecture, encryption, and public trust links', () => {
   const securitySource = readSource('app/security/page.tsx')
 
