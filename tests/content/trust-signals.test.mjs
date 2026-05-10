@@ -86,6 +86,23 @@ test('homepage carries benchmark proof without overclaiming independence', () =>
   assert.doesNotMatch(homeSource, /independent third-party evaluation/)
 })
 
+test('homepage carries healthcare trust copy without blanket HIPAA claims', () => {
+  const homeSource = readSource('app/page.tsx')
+
+  assert.match(homeSource, /Source of truth: nazifsohtaoglu\/neutralai-gateway#779 healthcare pack artifacts/)
+  assert.match(homeSource, /id="healthcare-trust"/)
+  assert.match(homeSource, /HIPAA-ready deployment support without blanket claims/)
+  assert.match(homeSource, /PHI-aware controls/)
+  assert.match(homeSource, /medical record numbers, health plan\/member IDs, and device\/UDI-style identifiers/)
+  assert.match(homeSource, /Minimum-necessary posture/)
+  assert.match(homeSource, /evidence pack are available under review\/NDA/)
+  assert.match(homeSource, /BAA review is available for eligible healthcare deployments/)
+  assert.match(homeSource, /href="\/contact"/)
+  assert.match(homeSource, /href="\/use-cases\/healthcare"/)
+  assert.doesNotMatch(homeSource, /NeutralAI is HIPAA compliant/)
+  assert.doesNotMatch(homeSource, /BAA included/)
+})
+
 test('security page describes architecture, encryption, and public trust links', () => {
   const securitySource = readSource('app/security/page.tsx')
 

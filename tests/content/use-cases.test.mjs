@@ -22,6 +22,8 @@ test('vertical use-case pages exist for finance and healthcare', () => {
   assert.match(content, /CREDIT_CARD/)
   assert.match(content, /UK_NHS/)
   assert.match(content, /MRN/)
+  assert.match(content, /HEALTH_PLAN_ID/)
+  assert.match(content, /DEVICE_UDI/)
 })
 
 test('healthcare copy avoids blanket HIPAA claims while supporting BAA review language', () => {
@@ -29,6 +31,9 @@ test('healthcare copy avoids blanket HIPAA claims while supporting BAA review la
 
   assert.match(content, /PHI-aware masking/)
   assert.match(content, /BAA review/)
+  assert.match(content, /health plan\/member IDs/)
+  assert.match(content, /device or UDI-style identifiers/)
+  assert.match(content, /evidence pack materials under review\/NDA/)
   assert.match(content, /not presenting this page as legal advice or a blanket HIPAA compliance claim/)
   assert.doesNotMatch(content, /is HIPAA compliant/)
   assert.doesNotMatch(content, /BAA included/)

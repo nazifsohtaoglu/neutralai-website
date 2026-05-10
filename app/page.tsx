@@ -350,6 +350,26 @@ const benchmarkProof = {
   appBenchmarkUrl: `${siteConfig.appBaseUrl}/pii-benchmark`,
 } as const
 
+// Source of truth: nazifsohtaoglu/neutralai-gateway#779 healthcare pack artifacts.
+const healthcareTrustPoints = [
+  {
+    label: 'PHI-aware masking',
+    body: 'Patient names, contact details, medical record numbers, health plan/member IDs, and device/UDI-style identifiers can be handled before model routing.',
+  },
+  {
+    label: 'Minimum-necessary posture',
+    body: 'Prompts keep useful clinical or operational context while direct identifiers are reduced before they leave the approved workflow.',
+  },
+  {
+    label: 'Review-ready evidence',
+    body: 'Audit metadata, breach workflow support, and an evidence pack are available under review/NDA without putting raw PHI into standard reports.',
+  },
+  {
+    label: 'BAA review support',
+    body: 'BAA review is available for eligible healthcare deployments, with final terms and deployment responsibilities reviewed commercially.',
+  },
+] as const
+
 type DeploymentCard = {
   icon: LucideIcon
   title: string
@@ -1178,6 +1198,40 @@ function Trust() {
             <a href="/presidio-alternative" className="btn btn-secondary justify-center px-6 py-3 text-sm">
               Read Presidio comparison
             </a>
+          </div>
+        </div>
+
+        <div id="healthcare-trust" className="mt-10 scroll-mt-28 overflow-hidden rounded-[28px] border border-emerald-400/20 bg-[linear-gradient(135deg,rgba(16,185,129,0.12),rgba(15,23,42,0.96)_46%,rgba(6,182,212,0.10))] p-6">
+          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-emerald-300">Healthcare trust</p>
+              <h3 className="mt-4 font-heading text-3xl font-semibold">HIPAA-ready deployment support without blanket claims.</h3>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
+                NeutralAI helps healthcare and healthtech teams protect PHI before prompts reach AI providers, with PHI-aware controls, audit evidence, and BAA review support for eligible deployments.
+              </p>
+              <p className="mt-3 text-xs leading-6 text-slate-500">
+                Not legal advice. BAA terms, deployment model, and customer obligations require review.
+              </p>
+
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <a href="/contact" className="btn btn-cta justify-center px-6 py-3 text-sm">
+                  Discuss healthcare deployment
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+                <a href="/use-cases/healthcare" className="btn btn-secondary justify-center px-6 py-3 text-sm">
+                  View healthcare use case
+                </a>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {healthcareTrustPoints.map((point) => (
+                <div key={point.label} className="rounded-2xl border border-white/10 bg-background/80 p-5">
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-emerald-300">{point.label}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{point.body}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
