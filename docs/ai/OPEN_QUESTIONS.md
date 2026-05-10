@@ -10,6 +10,7 @@ Use this file for unknowns. Do not guess silently.
 - Which claims are approved for public use around GDPR, UK regulated industries, zero retention, and on-prem deployment?
 - Are there real customers, pilots, certifications, or benchmarks that can be referenced publicly?
 - What is the preferred ICP for the website copy: legal, finance, healthcare, insurance, SaaS support, or broader regulated teams?
+- WEB-103 asks for at least 3 articles targeting keywords with search volume >100/mo, but this repo has no approved SEO data source or keyword-volume export. Which SEO tool/export should be treated as the canonical volume source?
 
 ## Architecture / Deployment
 

@@ -1,0 +1,66 @@
+---
+title: "How UK Financial Services Teams Use AI Safely Under FCA Guidance"
+description: "A practical AI governance pattern for UK financial services teams adopting LLMs while protecting customer data and sensitive records."
+date: "2026-05-11"
+author: "NeutralAI Team"
+category: "Financial Services"
+---
+
+UK financial services teams are not waiting for AI to become theoretical. The FCA says many firms have already adopted some form of AI, and its public AI material focuses on safe, responsible adoption rather than a blanket ban.
+
+That creates a very practical challenge: employees want to use AI now, but customer identifiers, claim notes, payment details, and internal records cannot be treated like ordinary prompt text.
+
+## The governance question
+
+For financial services, the question is not just “can we use AI?” It is:
+
+- What sensitive data leaves the firm?
+- Which AI tools are approved?
+- What evidence proves the control ran?
+- Who owns the policy when a prompt contains regulated or customer data?
+- What happens when staff use browser-based AI outside a central app?
+
+If those questions are unanswered, AI adoption drifts into shadow workflows.
+
+## FCA direction in plain English
+
+The FCA says it wants safe and responsible AI adoption in UK financial markets. It also describes AI Live Testing as a supported place for firms to test AI systems in real-world conditions with oversight. That posture is important: the direction is not “never use AI,” but “use it with accountable systems and controls.”
+
+For teams building AI workflows, that means governance needs to show up before model calls, not only in policy documents after the fact.
+
+## A safer workflow pattern
+
+A practical pattern is:
+
+1. The user writes a prompt in a browser AI tool, internal assistant, or product workflow.
+2. NeutralAI detects personal, financial, and business identifiers before the request reaches the model.
+3. Sensitive values are masked or tokenized.
+4. The sanitized request continues to the model provider.
+5. Audit-safe metadata records that the control ran without putting raw sensitive text into standard reports.
+
+This pattern helps teams keep useful business context while reducing unnecessary exposure of names, emails, phone numbers, IBANs, claim references, and other identifiers.
+
+## Where to start
+
+Financial services teams should start with workflows where sensitive data and AI demand already meet:
+
+- claims summaries
+- customer-support draft replies
+- complaint triage
+- policy or case note summarization
+- internal analysis of payment or account records
+- browser-based AI use by non-technical teams
+
+These are good candidates because they are common, understandable, and easier to explain to security reviewers than a broad “AI transformation” program.
+
+## Why a control point matters
+
+Training people to “never paste sensitive data” is not enough. People work under time pressure, prompts are copied from real cases, and browser tools are easy to access.
+
+A control point gives security and compliance teams a place to enforce policy, monitor usage, and collect evidence. That is what turns AI from a shadow risk into an approved workflow.
+
+## Sources and next steps
+
+Start with the FCA’s pages on [AI in financial services](https://www.fca.org.uk/firms/ai-financial-services) and its [AI update](https://www.fca.org.uk/publications/corporate-documents/artificial-intelligence-ai-update-further-governments-response-ai-white-paper). Then map your highest-risk prompt paths and decide where masking, tokenization, and audit evidence should sit.
+
+NeutralAI is designed for that boundary: the point before sensitive prompt data leaves approved workflows.

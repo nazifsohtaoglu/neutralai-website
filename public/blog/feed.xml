@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>NeutralAI Blog</title>
+    <link>https://neutralai.co.uk/blog</link>
+    <description>Practical guidance for PII-safe LLM adoption, privacy engineering, and AI governance.</description>
+    <language>en-gb</language>
+    <lastBuildDate>Mon, 11 May 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>NeutralAI vs Private AI vs Nightfall: PII Detection Benchmark 2026</title>
+      <link>https://neutralai.co.uk/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026</link>
+      <guid>https://neutralai.co.uk/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026</guid>
+      <description>A sales-safe comparison of public PII detection evidence, benchmark claims, and the questions buyers should ask before trusting vendor accuracy numbers.</description>
+      <pubDate>Mon, 11 May 2026 00:00:00 GMT</pubDate>
+      <category>Benchmarks</category>
+    </item>
+    <item>
+      <title>How UK Financial Services Teams Use AI Safely Under FCA Guidance</title>
+      <link>https://neutralai.co.uk/blog/how-uk-financial-services-teams-use-ai-safely-under-fca-guidance</link>
+      <guid>https://neutralai.co.uk/blog/how-uk-financial-services-teams-use-ai-safely-under-fca-guidance</guid>
+      <description>A practical AI governance pattern for UK financial services teams adopting LLMs while protecting customer data and sensitive records.</description>
+      <pubDate>Mon, 11 May 2026 00:00:00 GMT</pubDate>
+      <category>Financial Services</category>
+    </item>
+    <item>
+      <title>The Hidden Cost of Shadow AI: Why Security Teams Need a Control Point</title>
+      <link>https://neutralai.co.uk/blog/hidden-cost-of-shadow-ai-security-control-point</link>
+      <guid>https://neutralai.co.uk/blog/hidden-cost-of-shadow-ai-security-control-point</guid>
+      <description>Shadow AI is not only a policy problem. It creates review cost, incident uncertainty, and adoption drag unless teams add a visible control point.</description>
+      <pubDate>Mon, 11 May 2026 00:00:00 GMT</pubDate>
+      <category>AI Governance</category>
+    </item>
+    <item>
+      <title>PII Detection Accuracy: Regex vs NER vs LLM-Based Approaches</title>
+      <link>https://neutralai.co.uk/blog/pii-detection-accuracy-regex-vs-ner-vs-llm</link>
+      <guid>https://neutralai.co.uk/blog/pii-detection-accuracy-regex-vs-ner-vs-llm</guid>
+      <description>A technical comparison of regex, named entity recognition, and LLM-based PII detection for teams protecting prompts before model routing.</description>
+      <pubDate>Mon, 11 May 2026 00:00:00 GMT</pubDate>
+      <category>Technical</category>
+    </item>
+    <item>
+      <title>From Presidio to Production: What Regulated Teams Actually Need</title>
+      <link>https://neutralai.co.uk/blog/from-presidio-to-production-regulated-teams</link>
+      <guid>https://neutralai.co.uk/blog/from-presidio-to-production-regulated-teams</guid>
+      <description>Presidio is a useful PII detection foundation, but regulated AI workflows need policy, routing, tokenization, and audit evidence around detection.</description>
+      <pubDate>Mon, 11 May 2026 00:00:00 GMT</pubDate>
+      <category>Presidio Alternative</category>
+    </item>
+    <item>
+      <title>Why PII Masking Matters for Enterprise AI Adoption</title>
+      <link>https://neutralai.co.uk/blog/why-pii-masking-matters-for-enterprise-ai-adoption</link>
+      <guid>https://neutralai.co.uk/blog/why-pii-masking-matters-for-enterprise-ai-adoption</guid>
+      <description>A practical guide to why regulated teams need PII masking before prompts reach external AI providers.</description>
+      <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
+      <category>AI Governance</category>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,62 @@
+---
+title: "NeutralAI vs Private AI vs Nightfall: PII Detection Benchmark 2026"
+description: "A sales-safe comparison of public PII detection evidence, benchmark claims, and the questions buyers should ask before trusting vendor accuracy numbers."
+date: "2026-05-11"
+author: "NeutralAI Team"
+category: "Benchmarks"
+---
+
+Buyers often ask for a single leaderboard: NeutralAI vs Private AI vs Nightfall, sorted by PII detection accuracy. That sounds useful, but it can easily become misleading.
+
+The hard truth is that public PII detection numbers are rarely apples-to-apples. Vendors use different datasets, entity definitions, thresholds, scoring rules, and document types. A precision claim from one vendor is not the same thing as a span-level F1 score from another.
+
+## What public evidence exists
+
+NeutralAI publishes a reproducible product benchmark and explicitly frames it as a product benchmark, not an independent third-party certification. The current public benchmark position is overall F1 of 99.8% on the published benchmark, 98.4% on holdout, and 92.7% holdout PERSON F1. The useful part is not just the number; it is the ability to inspect methodology and compare against a Presidio-vanilla baseline.
+
+Private AI has published its own benchmark narrative comparing its purpose-built PII detection with general cloud tools. The post describes a dataset of about 45,000 words and reports precision, recall, and F1 as the evaluation measures. That is useful evidence, but it is still vendor-published and not directly comparable with NeutralAI unless the same dataset and scorer are used.
+
+Nightfall’s public documentation describes machine-learning powered detectors across text, images, files, and source code, and says its detectors identify sensitive data with 90%-95% precision out of the box. Its marketing site also claims 95% accuracy for AI-based detectors and file classifiers. Those claims are helpful context, but precision and accuracy are not the same metric as F1.
+
+## Why a simple leaderboard would be weak
+
+If a buyer sees three numbers side by side, they may assume the test conditions were equal. Usually they were not.
+
+- Entity scope may differ: one tool may count more entity types than another.
+- Span matching may differ: exact offsets are harder than loose entity presence.
+- Thresholds may differ: high recall often creates more false positives.
+- Input types may differ: clean text, OCR, tables, files, and code behave differently.
+- Evaluation ownership may differ: vendor-published benchmarks are not the same as independent tests.
+
+This is why NeutralAI should avoid pretending that a public web page proves it beats every named vendor in every setting.
+
+## The comparison that matters
+
+For regulated teams, the better comparison is operational:
+
+- Can the tool mask sensitive prompt data before it reaches an external model?
+- Can it support browser workflows, API workflows, and document workflows?
+- Can it produce audit-safe evidence without writing raw PII into standard logs?
+- Can policies fail closed when a route, model, tenant, or cost state is unsafe?
+- Can the team tune entity thresholds by use case instead of accepting one generic policy?
+
+NeutralAI is positioned around that control point. Detection accuracy matters, but the product value is the combination of detection, masking, token handling, policy enforcement, and audit evidence.
+
+## What buyers should ask vendors
+
+Before relying on any PII detection benchmark, ask:
+
+- Is the benchmark public enough to reproduce?
+- Are precision, recall, and F1 reported separately?
+- Are false positives and false negatives shown by entity type?
+- Are names, addresses, financial IDs, health IDs, and multilingual cases separated?
+- Is the comparison against a baseline, a competitor, or only a vendor’s own prior version?
+- Does the result cover live prompt traffic, uploaded documents, or both?
+
+The answer will often be more useful than the headline number.
+
+## Sources and careful reading
+
+For public context, review the [NeutralAI benchmark surface](https://app.neutralai.co.uk/pii-benchmark), [Private AI/Limina benchmark article](https://www.getlimina.ai/en/blog/pii-solutions-benchmark), [Nightfall detector documentation](https://help.nightfall.ai/detection_platform/detectors), and [Microsoft Presidio documentation](https://microsoft.github.io/presidio/).
+
+The practical conclusion: do not buy a PII detection product from a leaderboard alone. Buy the control model you can explain to security, legal, and the teams actually using AI.
