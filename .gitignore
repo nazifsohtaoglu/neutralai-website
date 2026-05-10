@@ -38,3 +38,11 @@ next-env.d.ts
 # Local automation artifacts
 .playwright-cli/
 .playwright-mcp/
+
+# Local Codex/workflow scratch artifacts
+/templates/
+/web-*.png
+/web-*.md
+/web[0-9]*-*.png
+/homepage-*.png
+/pricing-*.png
