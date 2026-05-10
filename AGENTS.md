@@ -22,6 +22,7 @@ Short repository guide for Codex. Longer working context lives under `docs/ai/`.
 - Keep changes small and focused.
 - If a public claim, metric, benchmark, pricing point, UI element, or copy choice seems weak, confusing, risky, or unlikely to add value, say so proactively before or while implementing it. Do not wait for the user to challenge it.
 - When creating PRs, open ready-for-review PRs unless the user explicitly asks for draft. Do not prefix PR titles with `codex`.
+- When a ticket implementation is complete and local checks pass, commit and push the branch proactively unless the user explicitly asks to keep the work local.
 
 ## Common Commands
 
@@ -53,7 +54,8 @@ npm run audit:prod
 3. Read the relevant architecture/risk docs.
 4. Make the smallest focused change.
 5. Run targeted checks from `docs/ai/TESTING_AND_COMMANDS.md`.
-6. Summarize changed files, validation, risks, and follow-ups.
+6. Commit and push the branch when changes are ready, unless the user explicitly asks not to.
+7. Summarize changed files, validation, risks, and follow-ups.
 
 ## AI Repo Map Files
 

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 const root = process.cwd()
@@ -31,8 +31,34 @@ test('site metadata uses the branded large social preview image', () => {
   assert.doesNotMatch(layoutSource, /images:\s*\[\s*\{\s*url:\s*'\/logo\.png'/)
 })
 
+test('site chrome uses the small optimized logo asset', () => {
+  for (const path of ['app/components/Navbar.tsx', 'app/components/Footer.tsx']) {
+    const source = readSource(path)
+
+    assert.match(source, /src="\/logo-sm\.webp"/)
+    assert.doesNotMatch(source, /<Image[^>]+src="\/logo\.png"/)
+  }
+})
+
 test('branded OG assets exist at 1200 by 630', () => {
   for (const path of ['public/og-default.png', 'public/og-home.png']) {
     assert.deepEqual(readPngSize(path), { width: 1200, height: 630 })
+  }
+})
+
+test('brand image assets stay within the public performance budget', () => {
+  const budgets = [
+    ['public/logo.png', 100_000],
+    ['public/logo.webp', 100_000],
+    ['public/logo-sm.webp', 10_000],
+    ['public/og-default.png', 150_000],
+    ['public/og-home.png', 150_000],
+  ]
+
+  for (const [path, maxBytes] of budgets) {
+    assert.ok(
+      statSync(join(root, path)).size <= maxBytes,
+      `${path} should be <= ${maxBytes} bytes`,
+    )
   }
 })
