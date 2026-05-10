@@ -47,9 +47,12 @@ test('root layout publishes Organization and SoftwareApplication structured data
 })
 
 test('homepage pricing FAQ renders FAQPage structured data', () => {
-  const homeSource = readSource('app/page.tsx')
+  const homeSource = [
+    readSource('app/page.tsx'),
+    readSource('app/data/homepage.ts'),
+  ].join('\n')
 
-  assert.match(homeSource, /const pricingFaqStructuredData = \{/)
+  assert.match(homeSource, /export const pricingFaqStructuredData = \{/)
   assert.match(homeSource, /'@type': 'FAQPage'/)
   assert.match(homeSource, /mainEntity: pricingFaqs\.map/)
   assert.match(homeSource, /'@type': 'Question'/)
