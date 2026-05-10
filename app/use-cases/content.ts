@@ -57,7 +57,7 @@ export const healthcareUseCase: UseCasePageContent = {
   eyebrow: 'Healthcare use case',
   title: 'Protect PHI before healthcare prompts reach AI providers.',
   description:
-    'NeutralAI helps healthcare and healthtech teams mask patient names, NHS numbers, medical record references, member IDs, and contact details before AI processing.',
+    'NeutralAI helps healthcare and healthtech teams mask patient names, NHS numbers, medical record references, health plan/member IDs, device identifiers, and contact details before AI processing.',
   primaryCta: 'Discuss healthcare deployment',
   secondaryCta: 'Try a PHI demo',
   proofLabel: 'PHI-aware controls',
@@ -72,7 +72,7 @@ export const healthcareUseCase: UseCasePageContent = {
   workflow: [
     {
       title: 'Detect PHI-style identifiers',
-      body: 'Identify patient names, contact data, NHS numbers, medical record references, health plan IDs, and other sensitive values in prompts.',
+      body: 'Identify patient names, contact data, NHS numbers, medical record references, health plan/member IDs, device or UDI-style identifiers, and other sensitive values in prompts.',
     },
     {
       title: 'Apply minimum-necessary masking',
@@ -80,10 +80,10 @@ export const healthcareUseCase: UseCasePageContent = {
     },
     {
       title: 'Prepare for compliance review',
-      body: 'Use audit-safe metadata and deployment review materials to support healthcare security and BAA conversations.',
+      body: 'Use audit-safe metadata, breach workflow support, and evidence pack materials under review/NDA to support healthcare security and BAA conversations.',
     },
   ],
-  entities: ['PERSON', 'EMAIL', 'PHONE', 'UK_NHS', 'MRN', 'HEALTH_PLAN_ID', 'DATE_TIME'],
+  entities: ['PERSON', 'EMAIL', 'PHONE', 'UK_NHS', 'MRN', 'HEALTH_PLAN_ID', 'DEVICE_UDI', 'DATE_TIME'],
   trustSignals: [
     {
       icon: HeartPulse,
