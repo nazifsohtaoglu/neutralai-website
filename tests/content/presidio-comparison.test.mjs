@@ -20,6 +20,8 @@ test('presidio alternative page carries SEO and build-vs-buy content', () => {
   assert.match(source, /Buy NeutralAI/)
   assert.match(source, /Presidio is a library/)
   assert.match(source, /not positioned as a from-scratch recognizer model/)
+  assert.match(source, /Source of truth: nazifsohtaoglu\/neutralai-gateway benchmark artifacts/)
+  assert.match(source, /neutralaiF1: '99\.8%'/)
 })
 
 test('roi calculator remains client-side and exposes expected controls', () => {

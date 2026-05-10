@@ -37,7 +37,8 @@ const benchmark = {
   generatedAt: '2026-05-08',
   caseCount: 1000,
   languages: ['DE', 'EN', 'ES', 'FR', 'TR'],
-  neutralaiF1: '99.2%',
+  // Source of truth: nazifsohtaoglu/neutralai-gateway benchmark artifacts listed in website issue #16.
+  neutralaiF1: '99.8%',
   presidioF1: '57.5%',
   neutralaiRecall: '98.4%',
   presidioRecall: '40.3%',

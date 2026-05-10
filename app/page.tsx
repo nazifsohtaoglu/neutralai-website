@@ -342,6 +342,14 @@ const complianceProofs = [
   },
 ] as const
 
+// Source of truth: nazifsohtaoglu/neutralai-gateway benchmark artifacts listed in website issue #16.
+const benchmarkProof = {
+  publicOverallF1: '99.8%',
+  holdoutOverallF1: '98.4%',
+  personHoldoutF1: '92.7%',
+  appBenchmarkUrl: `${siteConfig.appBaseUrl}/pii-benchmark`,
+} as const
+
 type DeploymentCard = {
   icon: LucideIcon
   title: string
@@ -1132,6 +1140,44 @@ function Trust() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </div>
+
+        <div id="benchmark-proof" className="mt-10 scroll-mt-28 overflow-hidden rounded-[28px] border border-primary/20 bg-[linear-gradient(135deg,rgba(6,182,212,0.12),rgba(15,23,42,0.94)_42%,rgba(249,115,22,0.10))] p-6">
+          <div className="grid gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Benchmark proof</p>
+              <h3 className="mt-4 font-heading text-3xl font-semibold">Measured against a reproducible Presidio-vanilla baseline.</h3>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
+                NeutralAI combines proven open-source detection primitives with multilingual calibration, masking, and enforcement layers. The gateway repo remains the measurement source of truth, while the website links buyers to the published methodology and benchmark surface.
+              </p>
+              <p className="mt-3 text-xs leading-6 text-slate-500">
+                Product benchmark, not a third-party independent evaluation.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                ['Public overall F1', benchmarkProof.publicOverallF1],
+                ['Holdout overall F1', benchmarkProof.holdoutOverallF1],
+                ['Holdout PERSON F1', benchmarkProof.personHoldoutF1],
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-2xl border border-white/10 bg-background/80 p-5">
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{label}</p>
+                  <p className="mt-2 font-heading text-3xl font-semibold text-white">{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a href={benchmarkProof.appBenchmarkUrl} className="btn btn-cta justify-center px-6 py-3 text-sm">
+              Open benchmark
+              <ArrowRight className="h-4 w-4" />
+            </a>
+            <a href="/presidio-alternative" className="btn btn-secondary justify-center px-6 py-3 text-sm">
+              Read Presidio comparison
+            </a>
           </div>
         </div>
 
