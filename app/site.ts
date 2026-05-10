@@ -36,7 +36,7 @@ export const homeSections = {
   problem: '/#problem',
   howItWorks: '/#how-it-works',
   trust: '/#trust',
-  pricing: '/#pricing',
+  pricing: '/pricing',
   compare: '/compare',
 } as const
 

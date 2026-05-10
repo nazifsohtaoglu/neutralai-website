@@ -46,15 +46,13 @@ test('root layout publishes Organization and SoftwareApplication structured data
   assert.match(layoutSource, /publisher:[\s\S]*'@id': `\$\{siteConfig\.url\}\/#organization`/)
 })
 
-test('homepage pricing FAQ renders FAQPage structured data', () => {
+test('homepage does not duplicate pricing FAQ structured data', () => {
   const homeSource = readSource('app/page.tsx')
 
-  assert.match(homeSource, /const pricingFaqStructuredData = \{/)
-  assert.match(homeSource, /'@type': 'FAQPage'/)
-  assert.match(homeSource, /mainEntity: pricingFaqs\.map/)
-  assert.match(homeSource, /'@type': 'Question'/)
-  assert.match(homeSource, /'@type': 'Answer'/)
-  assert.match(homeSource, /JSON\.stringify\(pricingFaqStructuredData\)/)
+  assert.doesNotMatch(homeSource, /const pricingFaqStructuredData = \{/)
+  assert.doesNotMatch(homeSource, /'@type': 'FAQPage'/)
+  assert.doesNotMatch(homeSource, /JSON\.stringify\(pricingFaqStructuredData\)/)
+  assert.match(homeSource, /A quick pricing snapshot, not the full catalog/)
 })
 
 test('client-heavy routes receive unique segment metadata descriptions', () => {

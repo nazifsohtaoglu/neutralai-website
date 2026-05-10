@@ -14,6 +14,7 @@ const routes = [
   '/install-extension',
   '/playground',
   '/presidio-alternative',
+  '/pricing',
   '/privacy',
   '/security',
   '/support/browser-extension',
