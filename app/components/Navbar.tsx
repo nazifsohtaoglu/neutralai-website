@@ -62,7 +62,7 @@ export default function Navbar() {
               Use Cases
               <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
             </button>
-            <div className="invisible absolute left-1/2 top-full z-50 mt-3 w-56 -translate-x-1/2 rounded-2xl border border-white/10 bg-background-secondary/95 p-2 opacity-0 shadow-[0_20px_60px_rgba(2,6,23,0.5)] backdrop-blur transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+            <div className="invisible absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 rounded-2xl border border-white/10 bg-background-secondary/95 p-2 opacity-0 shadow-[0_20px_60px_rgba(2,6,23,0.5)] backdrop-blur transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
               {useCaseLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -97,7 +97,7 @@ export default function Navbar() {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="xl:hidden absolute top-full left-0 right-0 glass border-t border-border p-4"
+          className="xl:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-72px)] overflow-y-auto glass border-t border-border p-4"
         >
           {navLinks.map((link) => (
             <Link 
