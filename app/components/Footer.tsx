@@ -65,7 +65,7 @@ export default function Footer() {
         <div className="mb-6 grid gap-6 md:grid-cols-[1.15fr_repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="mb-2 flex items-center gap-2">
-              <Image src="/logo.png" alt="NeutralAI" width={40} height={40} className="w-10 h-10 rounded-lg" />
+              <Image src="/logo-sm.webp" alt="NeutralAI" width={40} height={40} className="w-10 h-10 rounded-lg" />
               <span className="font-heading font-bold text-xl">NeutralAI</span>
             </Link>
             <p className="text-slate-400 text-sm max-w-xs">

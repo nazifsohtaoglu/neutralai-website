@@ -40,7 +40,7 @@ export default function Navbar() {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'py-4'}`}>
       <div className="mx-auto flex w-full max-w-[1760px] items-center justify-between gap-5 px-6 lg:px-8">
         <Link href="/" className="flex flex-shrink-0 items-center gap-2">
-          <Image src="/logo.png" alt="NeutralAI" width={40} height={40} className="w-10 h-10 rounded-lg" />
+          <Image src="/logo-sm.webp" alt="NeutralAI" width={40} height={40} className="w-10 h-10 rounded-lg" priority />
           <span className="whitespace-nowrap font-heading text-xl font-bold">NeutralAI</span>
         </Link>
 
