@@ -371,12 +371,6 @@ const healthcareTrustPoints = [
 ] as const
 
 // Source of truth: nazifsohtaoglu/neutralai-gateway#782 document redaction artifacts.
-const documentRedactionProof = {
-  benchmarkLabel: 'Live canary smoke',
-  benchmarkValue: 'Dense 10-page text PDF in ~3.1s',
-  sourceNote: 'Live gateway canary run found 835 sensitive spans; simple 10-page text PDF smoke measured ~153ms. Product smoke, not a third-party evaluation.',
-} as const
-
 const documentRedactionPoints = [
   {
     icon: FileText,
@@ -1273,22 +1267,14 @@ function Trust() {
               </p>
             </div>
 
-            <div className="grid gap-4">
-              <div className="rounded-2xl border border-white/10 bg-background/80 p-5">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{documentRedactionProof.benchmarkLabel}</p>
-                <p className="mt-2 font-heading text-2xl font-semibold text-white">{documentRedactionProof.benchmarkValue}</p>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{documentRedactionProof.sourceNote}</p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                {documentRedactionPoints.map((point) => (
-                  <div key={point.label} className="rounded-2xl border border-white/10 bg-background/70 p-5">
-                    <point.icon className="h-5 w-5 text-cyan-200" />
-                    <p className="mt-3 font-mono text-xs uppercase tracking-[0.18em] text-cyan-200">{point.label}</p>
-                    <p className="mt-3 text-sm leading-6 text-slate-300">{point.body}</p>
-                  </div>
-                ))}
-              </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {documentRedactionPoints.map((point) => (
+                <div key={point.label} className="rounded-2xl border border-white/10 bg-background/70 p-5">
+                  <point.icon className="h-5 w-5 text-cyan-200" />
+                  <p className="mt-3 font-mono text-xs uppercase tracking-[0.18em] text-cyan-200">{point.label}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{point.body}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
