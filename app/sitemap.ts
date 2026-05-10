@@ -19,6 +19,8 @@ const routes = [
   '/support/browser-extension',
   '/terms',
   '/trust-center',
+  '/use-cases/finance',
+  '/use-cases/healthcare',
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {

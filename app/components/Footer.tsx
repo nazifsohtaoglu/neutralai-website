@@ -10,6 +10,8 @@ const productLinks = [
   { label: 'Why Trust Us', href: homeSections.trust },
   { label: 'Compare', href: homeSections.compare },
   { label: 'Playground', href: '/playground' },
+  { label: 'Finance Use Case', href: '/use-cases/finance' },
+  { label: 'Healthcare Use Case', href: '/use-cases/healthcare' },
   { label: 'Blog', href: '/blog' },
   { label: 'Presidio Alternative', href: '/presidio-alternative' },
   { label: 'Pricing', href: homeSections.pricing },

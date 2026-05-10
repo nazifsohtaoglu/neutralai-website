@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X } from 'lucide-react'
 import { homeSections, siteConfig } from '../site'
 
 const navLinks = [
@@ -18,6 +18,11 @@ const navLinks = [
   { name: 'Pricing', href: homeSections.pricing },
   { name: 'About', href: '/about' },
 ]
+
+const useCaseLinks = [
+  { name: 'Finance', href: '/use-cases/finance' },
+  { name: 'Healthcare', href: '/use-cases/healthcare' },
+] as const
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -49,6 +54,26 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
+          <div className="group relative">
+            <button
+              type="button"
+              className="flex items-center gap-1 whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-primary 2xl:text-base"
+            >
+              Use Cases
+              <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+            </button>
+            <div className="invisible absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 rounded-2xl border border-white/10 bg-background-secondary/95 p-2 opacity-0 shadow-[0_20px_60px_rgba(2,6,23,0.5)] backdrop-blur transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+              {useCaseLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="block rounded-xl px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.06] hover:text-primary"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="hidden flex-shrink-0 items-center gap-4 xl:flex">
@@ -72,11 +97,22 @@ export default function Navbar() {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="xl:hidden absolute top-full left-0 right-0 glass border-t border-border p-4"
+          className="xl:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-72px)] overflow-y-auto glass border-t border-border p-4"
         >
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
+              href={link.href}
+              className="block py-3 text-slate-300 hover:text-primary transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <div className="pt-2 font-mono text-xs uppercase tracking-[0.2em] text-slate-500">Use Cases</div>
+          {useCaseLinks.map((link) => (
+            <Link
+              key={link.name}
               href={link.href}
               className="block py-3 text-slate-300 hover:text-primary transition-colors"
               onClick={() => setIsOpen(false)}
