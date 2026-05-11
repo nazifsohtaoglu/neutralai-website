@@ -106,7 +106,7 @@ function parseInline(text: string) {
 
       if (isExternal) {
         return (
-          <a key={index} href={href} target="_blank" rel="noreferrer" className="text-primary-light hover:text-primary">
+          <a key={index} href={href} target="_blank" rel="nofollow noreferrer" className="text-primary-light hover:text-primary">
             {linkMatch[1]}
           </a>
         )
