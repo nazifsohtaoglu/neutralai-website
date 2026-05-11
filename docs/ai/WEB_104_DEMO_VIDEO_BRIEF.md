@@ -21,6 +21,7 @@ Create a short walkthrough that helps enterprise buyers understand NeutralAI bef
 - Captions: `public/demo/neutralai-product-walkthrough.vtt`
 - Poster: `public/demo/neutralai-product-walkthrough-poster.png`
 - Recorder: `scripts/record-neutralai-demo-video.mjs`
+- Audio: generated from a concise caption-derived script with macOS `say`, then muxed into the WebM with `ffmpeg-static`.
 
 Run the local site first, then refresh the assets with:
 

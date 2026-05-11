@@ -1,7 +1,10 @@
 import { chromium } from 'playwright'
-import { copyFile, mkdir, readdir, unlink, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
+import ffmpegPath from 'ffmpeg-static'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const baseUrl = process.env.DEMO_BASE_URL ?? 'http://localhost:3200'
@@ -10,6 +13,8 @@ const recordingDir = path.join(root, 'output/playwright/neutralai-demo-video')
 const videoPath = path.join(assetDir, 'neutralai-product-walkthrough.webm')
 const captionsPath = path.join(assetDir, 'neutralai-product-walkthrough.vtt')
 const posterPath = path.join(assetDir, 'neutralai-product-walkthrough-poster.png')
+const narrationPath = path.join(recordingDir, 'neutralai-product-walkthrough-narration.aiff')
+const runFile = promisify(execFile)
 
 await mkdir(assetDir, { recursive: true })
 await mkdir(recordingDir, { recursive: true })
@@ -51,6 +56,30 @@ function renderVtt(cues) {
       '',
     ]),
   ].join('\n')
+}
+
+async function addNarrationTrack(inputVideoPath, outputVideoPath, cues) {
+  const narrationText = `${cues.map((cue) => cue.text.split('.')[0]).join('. ')}.`
+
+  await runFile('/usr/bin/say', ['-v', 'Daniel', '-r', '170', '-o', narrationPath, narrationText])
+  await runFile(ffmpegPath, [
+    '-y',
+    '-i',
+    inputVideoPath,
+    '-i',
+    narrationPath,
+    '-map',
+    '0:v:0',
+    '-map',
+    '1:a:0',
+    '-c:v',
+    'copy',
+    '-c:a',
+    'libopus',
+    '-b:a',
+    '96k',
+    outputVideoPath,
+  ])
 }
 
 await assertLocalServer()
@@ -355,7 +384,7 @@ await context.close()
 await browser.close()
 
 if (rawVideo) {
-  await copyFile(rawVideo, videoPath)
+  await addNarrationTrack(rawVideo, videoPath, cues)
   if (path.basename(rawVideo).startsWith('page@')) {
     await unlink(rawVideo).catch(() => {})
   }
