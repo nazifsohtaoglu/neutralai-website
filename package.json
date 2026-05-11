@@ -6,6 +6,7 @@
     "dev": "next dev -p 3200",
     "build": "next build",
     "start": "next start",
+    "record:demo-video": "node scripts/record-neutralai-demo-video.mjs",
     "test:content": "node --test tests/content/*.test.mjs",
     "lint": "eslint .",
     "audit:prod": "npm audit --omit=dev --audit-level=critical"
@@ -26,6 +27,7 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
+    "playwright": "^1.59.1",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4"

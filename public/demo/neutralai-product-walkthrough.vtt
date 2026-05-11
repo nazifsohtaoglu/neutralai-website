@@ -1,0 +1,29 @@
+WEBVTT
+
+1
+00:00:00.735 --> 00:00:04.064
+Control sensitive data before AI sees it. This short demo uses the public website and playground surfaces, with safe sample data only.
+
+2
+00:00:04.694 --> 00:00:07.495
+Buyers can test the control model immediately. The playground shows the masking path before anyone needs to book a live call.
+
+3
+00:00:08.493 --> 00:00:11.198
+Start with a regulated workflow prompt. This sample includes an IBAN and payment card so the masking behavior is obvious.
+
+4
+00:00:11.996 --> 00:00:15.498
+Original and sanitized outputs sit side by side. The raw prompt remains visible for review while the outbound version uses typed tokens.
+
+5
+00:00:16.235 --> 00:00:19.338
+Teams can inspect what was found. Entity type, matched text, and confidence context make the control easier to review.
+
+6
+00:00:24.255 --> 00:00:27.759
+Reversible mode creates scoped demo tokens. That explains the restore model without sending raw identifiers through normal AI traffic.
+
+7
+00:00:27.760 --> 00:00:31.962
+Use the video before a sales call. It gives a buyer enough context to decide whether a live walkthrough is worth their time.

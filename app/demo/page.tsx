@@ -42,7 +42,8 @@ const walkthroughChapters = [
   },
 ] as const
 
-const videoIsConfigured = siteConfig.demoVideoEmbedUrl.length > 0
+const hostedVideoIsConfigured = siteConfig.demoVideoEmbedUrl.length > 0
+const localVideoIsConfigured = siteConfig.demoVideoSrc.length > 0
 
 export default function DemoPage() {
   return (
@@ -77,7 +78,7 @@ export default function DemoPage() {
       <section className="bg-background-secondary py-12 md:py-16">
         <div className="container-custom">
           <div className="mx-auto max-w-5xl overflow-hidden rounded-[32px] border border-white/10 bg-[#020617] shadow-[0_32px_90px_rgba(2,8,23,0.55)]">
-            {videoIsConfigured ? (
+            {hostedVideoIsConfigured ? (
               <div className="aspect-video bg-black">
                 <iframe
                   src={siteConfig.demoVideoEmbedUrl}
@@ -88,6 +89,23 @@ export default function DemoPage() {
                   allowFullScreen
                 />
               </div>
+            ) : localVideoIsConfigured ? (
+              <video
+                className="aspect-video w-full bg-black object-cover"
+                controls
+                preload="metadata"
+                playsInline
+                poster={siteConfig.demoVideoPosterSrc}
+              >
+                <source src={siteConfig.demoVideoSrc} type="video/webm" />
+                <track
+                  kind="captions"
+                  src={siteConfig.demoVideoCaptionsSrc}
+                  srcLang="en"
+                  label="English"
+                  default
+                />
+              </video>
             ) : (
               <div className="grid min-h-[420px] place-items-center bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.16),transparent_34%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))] px-6 py-12 text-center">
                 <div className="max-w-2xl">
