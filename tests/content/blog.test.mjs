@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync, readdirSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 const root = process.cwd()
@@ -48,37 +48,30 @@ test('blog content hub publishes the WEB-103 article set', () => {
   assert.doesNotMatch(combinedPosts, /guaranteed independent benchmark/i)
 })
 
-test('blog articles include visual diagrams with accessible alt text', () => {
+test('blog articles include editorial hero visuals with accessible alt text', () => {
   const posts = blogPostFiles()
   const combinedPosts = posts.map((filename) => readSource(`content/blog/${filename}`)).join('\n')
   const expectedVisuals = [
-    'vendor-benchmark-evidence.svg',
-    'fca-ai-control-point.svg',
-    'shadow-ai-control-point.svg',
-    'pii-detection-stack.svg',
-    'presidio-production-layers.svg',
-    'pii-masking-flow.svg',
+    'vendor-benchmark-evidence.webp',
+    'fca-ai-control-point.webp',
+    'shadow-ai-control-point.webp',
+    'pii-detection-stack.webp',
+    'presidio-production-layers.webp',
+    'pii-masking-flow.webp',
   ]
 
   for (const visual of expectedVisuals) {
-    const visualSource = readSource(`public/blog/visuals/${visual}`)
-
     assert.match(combinedPosts, new RegExp(`!\\[[^\\]]+\\]\\(/blog/visuals/${visual.replace('.', '\\.')}`))
-    assert.match(visualSource, /<title id="title">/)
-    assert.match(visualSource, /<desc id="desc">/)
   }
 })
 
-test('blog visual SVGs avoid long unwrapped text runs', () => {
-  const visualFiles = readdirSync(join(root, 'public/blog/visuals')).filter((filename) => filename.endsWith('.svg'))
+test('blog hero visuals use optimized raster assets', () => {
+  const visualFiles = readdirSync(join(root, 'public/blog/visuals')).filter((filename) => filename.endsWith('.webp'))
 
   for (const visual of visualFiles) {
-    const visualSource = readSource(`public/blog/visuals/${visual}`)
-    const textRuns = [...visualSource.matchAll(/<text[^>]*>([^<]+)<\/text>/g)].map((match) => match[1])
+    const { size } = statSync(join(root, 'public/blog/visuals', visual))
 
-    for (const text of textRuns) {
-      assert.ok(text.length <= 58, `${visual} has an SVG text run that may overflow: "${text}"`)
-    }
+    assert.ok(size < 150_000, `${visual} should stay lightweight enough for blog pages`)
   }
 })
 
