@@ -1,56 +1,65 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">Vendor benchmark evidence map</title>
-  <desc id="desc">An editorial evidence board comparing benchmark claims with sticky notes, a magnifier, and buyer questions.</desc>
+  <desc id="desc">A research desk with benchmark claims, measurement tools, and evidence notes arranged like an investigation board.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
       <stop stop-color="#07111f"/>
-      <stop offset=".55" stop-color="#102033"/>
-      <stop offset="1" stop-color="#20131b"/>
+      <stop offset=".55" stop-color="#111827"/>
+      <stop offset="1" stop-color="#24130d"/>
     </linearGradient>
+    <radialGradient id="spot" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(700 282) rotate(90) scale(360 460)">
+      <stop stop-color="#22d3ee" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#020617" flood-opacity=".45"/>
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#020617" flood-opacity=".45"/>
     </filter>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#spot)"/>
   <g font-family="Arial, sans-serif">
-    <text x="72" y="88" fill="#22d3ee" font-size="18" font-weight="700" letter-spacing="3">BENCHMARK BUYER GUIDE</text>
-    <text x="72" y="134" fill="#f8fafc" font-size="38" font-weight="800">Read the evidence, not the headline number.</text>
+    <text x="70" y="86" fill="#22d3ee" font-size="18" font-weight="700" letter-spacing="3">BENCHMARK EVIDENCE</text>
+    <text x="70" y="132" fill="#f8fafc" font-size="38" font-weight="800">A claim is not proof until the method is visible.</text>
   </g>
-  <rect x="92" y="172" width="746" height="366" rx="34" fill="#0f1b2c" stroke="#2d4561" filter="url(#shadow)"/>
-  <path d="M138 242H790M138 326H790M138 410H790" stroke="#21344d" stroke-width="2"/>
-  <path d="M302 196V514M522 196V514" stroke="#21344d" stroke-width="2"/>
-  <g font-family="Arial, sans-serif" font-weight="800">
-    <text x="138" y="224" fill="#f8fafc" font-size="22">Claim</text>
-    <text x="340" y="224" fill="#f8fafc" font-size="22">Dataset</text>
-    <text x="560" y="224" fill="#f8fafc" font-size="22">Metric</text>
+  <g filter="url(#shadow)">
+    <rect x="110" y="176" width="690" height="354" rx="34" fill="#0f1b2c" stroke="#314862"/>
+    <path d="M160 252H750M160 334H750M160 416H750" stroke="#243a54" stroke-width="2"/>
+    <path d="M330 202V502M536 202V502" stroke="#243a54" stroke-width="2"/>
+    <rect x="168" y="272" width="108" height="36" rx="12" fill="#123544" stroke="#22d3ee"/>
+    <rect x="374" y="272" width="108" height="36" rx="12" fill="#172238" stroke="#64748b"/>
+    <rect x="578" y="272" width="118" height="36" rx="12" fill="#172238" stroke="#64748b"/>
+    <rect x="168" y="354" width="108" height="36" rx="12" fill="#2b1d13" stroke="#f97316"/>
+    <rect x="374" y="354" width="108" height="36" rx="12" fill="#172238" stroke="#64748b"/>
+    <rect x="578" y="354" width="118" height="36" rx="12" fill="#172238" stroke="#64748b"/>
+    <rect x="168" y="436" width="108" height="36" rx="12" fill="#13251f" stroke="#34d399"/>
+    <rect x="374" y="436" width="108" height="36" rx="12" fill="#172238" stroke="#64748b"/>
+    <rect x="578" y="436" width="118" height="36" rx="12" fill="#172238" stroke="#64748b"/>
+    <g font-family="Arial, sans-serif" font-size="17" font-weight="800">
+      <text x="174" y="238" fill="#f8fafc">Claim</text>
+      <text x="372" y="238" fill="#f8fafc">Dataset</text>
+      <text x="578" y="238" fill="#f8fafc">Metric</text>
+      <text x="190" y="297" fill="#a5f3fc">F1</text>
+      <text x="392" y="297" fill="#cbd5e1">scope?</text>
+      <text x="596" y="297" fill="#cbd5e1">recall?</text>
+      <text x="184" y="379" fill="#fed7aa">99%</text>
+      <text x="392" y="379" fill="#cbd5e1">sample?</text>
+      <text x="596" y="379" fill="#cbd5e1">error?</text>
+      <text x="184" y="461" fill="#bbf7d0">wide</text>
+      <text x="392" y="461" fill="#cbd5e1">domain?</text>
+      <text x="596" y="461" fill="#cbd5e1">cost?</text>
+    </g>
   </g>
-  <g>
-    <rect x="128" y="262" width="138" height="44" rx="14" fill="#123544" stroke="#22d3ee"/>
-    <rect x="336" y="262" width="124" height="44" rx="14" fill="#172238" stroke="#64748b"/>
-    <rect x="560" y="262" width="176" height="44" rx="14" fill="#172238" stroke="#64748b"/>
-    <rect x="128" y="348" width="138" height="44" rx="14" fill="#2c1d13" stroke="#f97316"/>
-    <rect x="336" y="348" width="124" height="44" rx="14" fill="#172238" stroke="#64748b"/>
-    <rect x="560" y="348" width="176" height="44" rx="14" fill="#172238" stroke="#64748b"/>
-    <rect x="128" y="434" width="138" height="44" rx="14" fill="#13251f" stroke="#34d399"/>
-    <rect x="336" y="434" width="124" height="44" rx="14" fill="#172238" stroke="#64748b"/>
-    <rect x="560" y="434" width="176" height="44" rx="14" fill="#172238" stroke="#64748b"/>
+  <g filter="url(#shadow)">
+    <circle cx="886" cy="294" r="102" fill="#081525" stroke="#22d3ee" stroke-width="10"/>
+    <circle cx="886" cy="294" r="62" fill="#122238" stroke="#5eead4" stroke-opacity=".75"/>
+    <path d="M956 364L1062 470" stroke="#22d3ee" stroke-width="24" stroke-linecap="round"/>
+    <rect x="824" y="462" width="236" height="68" rx="22" fill="#211827" stroke="#f97316"/>
+    <path d="M858 496H1024" stroke="#fed7aa" stroke-width="10" stroke-linecap="round"/>
   </g>
-  <g font-family="Arial, sans-serif" font-size="17" font-weight="700">
-    <text x="152" y="291" fill="#a5f3fc">F1 score</text>
-    <text x="362" y="291" fill="#cbd5e1">public?</text>
-    <text x="586" y="291" fill="#cbd5e1">entity scope</text>
-    <text x="152" y="377" fill="#fed7aa">accuracy</text>
-    <text x="362" y="377" fill="#cbd5e1">sample?</text>
-    <text x="586" y="377" fill="#cbd5e1">precision?</text>
-    <text x="152" y="463" fill="#bbf7d0">coverage</text>
-    <text x="362" y="463" fill="#cbd5e1">domain?</text>
-    <text x="586" y="463" fill="#cbd5e1">recall?</text>
-  </g>
-  <g transform="translate(835 210)" filter="url(#shadow)">
-    <circle cx="112" cy="112" r="92" fill="#091525" stroke="#22d3ee" stroke-width="10"/>
-    <circle cx="112" cy="112" r="56" fill="#0f2534" stroke="#5eead4" stroke-opacity=".6"/>
-    <path d="M178 178L276 276" stroke="#22d3ee" stroke-width="22" stroke-linecap="round"/>
-    <rect x="34" y="286" width="250" height="72" rx="22" fill="#211827" stroke="#f97316"/>
-    <text x="62" y="331" fill="#fed7aa" font-family="Arial, sans-serif" font-size="22" font-weight="800">Ask for context</text>
+  <g opacity=".7">
+    <path d="M842 190L804 158L760 186" stroke="#f97316" stroke-width="4" stroke-linecap="round"/>
+    <path d="M1040 220L1084 186L1128 220" stroke="#34d399" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="804" cy="158" r="8" fill="#f97316"/>
+    <circle cx="1084" cy="186" r="8" fill="#34d399"/>
   </g>
 </svg>
