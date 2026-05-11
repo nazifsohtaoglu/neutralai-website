@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     'NeutralAI articles on PII masking, AI governance, privacy engineering, and secure enterprise AI adoption.',
   alternates: {
     canonical: '/blog',
+    types: {
+      'application/rss+xml': '/blog/feed.xml',
+    },
   },
   openGraph: {
     title: 'NeutralAI Blog',

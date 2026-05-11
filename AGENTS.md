@@ -21,6 +21,7 @@ Short repository guide for Codex. Longer working context lives under `docs/ai/`.
 - Do not revert unrelated user changes.
 - Keep changes small and focused.
 - If a public claim, metric, benchmark, pricing point, UI element, or copy choice seems weak, confusing, risky, or unlikely to add value, say so proactively before or while implementing it. Do not wait for the user to challenge it.
+- For blog visuals, do not default to generic diagrams, stock-like screenshots, or literal decorative images. First define the article's visual story and art-direction prompt, then generate or source a professional editorial hero that supports the product narrative. Prefer scenes, metaphors, and product-motion storytelling over labels and boxes.
 - When creating PRs, open ready-for-review PRs unless the user explicitly asks for draft. Do not prefix PR titles with `codex`.
 - When a ticket implementation is complete and local checks pass, commit, push, and open a ready-for-review PR proactively unless the user explicitly asks to keep the work local or skip PR creation.
 

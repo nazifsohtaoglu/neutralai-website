@@ -1,0 +1,60 @@
+---
+title: "From Presidio to Production: What Regulated Teams Actually Need"
+description: "Presidio is a useful PII detection foundation, but regulated AI workflows need policy, routing, tokenization, and audit evidence around detection."
+date: "2026-05-11"
+author: "NeutralAI Team"
+category: "Presidio Alternative"
+---
+
+Microsoft Presidio is a strong starting point for PII detection and de-identification. It is open-source, extensible, and transparent enough for engineering teams to understand what is happening.
+
+But production AI governance needs more than a detector.
+
+![Presidio production construction illustration](/blog/visuals/presidio-production-layers.webp "Presidio can be the foundation, but regulated teams still need the production layers around detection to operate safely.")
+
+## What Presidio gives you
+
+Presidio can identify and anonymize private entities in text and images. Its recognizers can combine NER, regular expressions, rule-based logic, checksums, and context. It also supports custom recognizers and image redaction workflows.
+
+That makes it a useful foundation for privacy engineering.
+
+## What production adds
+
+Regulated teams usually need an operating layer around detection:
+
+- tenant policy
+- model routing controls
+- reversible or irreversible masking modes
+- encrypted token handling
+- audit-safe evidence
+- browser and API workflow support
+- failure behavior when detection or provider routing is uncertain
+- clear ownership for security review
+
+Without that layer, teams still need to build a gateway, policy model, logs, admin views, and deployment process.
+
+## Why prompt workflows are different
+
+Prompt data moves fast. It may come from a browser, internal assistant, support tool, or product feature. The control needs to run before the prompt reaches the model provider, and it needs to be usable by teams that are not privacy engineers.
+
+That is where a gateway pattern helps.
+
+## A production checklist
+
+Before moving from a detection library to regulated AI rollout, ask:
+
+- Where does prompt traffic enter the control boundary?
+- What happens if detection confidence is low?
+- Which identifiers are masked, tokenized, or blocked?
+- Are raw values kept out of standard logs?
+- Can policy differ by tenant, route, role, or model?
+- Can security review evidence without reading raw sensitive text?
+- Can the deployment model match the customer’s risk posture?
+
+These questions are often more important than the first demo.
+
+## NeutralAI’s position
+
+NeutralAI builds on the idea that detection should be part of a larger control layer. The product focuses on masking sensitive prompt data before model egress, producing audit-ready proof, and giving regulated teams a path from browser adoption to governed rollout.
+
+For a deeper comparison, see the [Presidio alternative page](/presidio-alternative) and Microsoft’s [Presidio documentation](https://microsoft.github.io/presidio/).

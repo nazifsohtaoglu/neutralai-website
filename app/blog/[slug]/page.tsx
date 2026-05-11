@@ -36,6 +36,20 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       type: 'article',
       publishedTime: post.date,
       authors: [post.author],
+      images: [
+        {
+          url: '/og-default.png',
+          width: 1200,
+          height: 630,
+          alt: `${post.title} | ${siteConfig.name}`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: ['/og-default.png'],
     },
   }
 }
@@ -73,48 +87,50 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <article className="container-custom max-w-4xl py-16 md:py-20">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-medium text-primary-light hover:text-primary">
-          <ArrowLeft className="h-4 w-4" />
-          Back to blog
-        </Link>
+      <article className="container-custom py-16 md:py-20">
+        <div className="mx-auto max-w-4xl">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-medium text-primary-light hover:text-primary">
+            <ArrowLeft className="h-4 w-4" />
+            Back to blog
+          </Link>
 
-        <header className="mt-10 border-b border-border pb-10">
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">{post.category}</p>
-          <h1 className="mt-5 font-heading text-4xl font-bold leading-tight md:text-6xl">{post.title}</h1>
-          <p className="mt-5 text-lg leading-8 text-slate-300">{post.description}</p>
-          <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-400">
-            <span>{post.author}</span>
-            <span className="inline-flex items-center gap-1.5">
-              <CalendarDays className="h-4 w-4" />
-              {post.date}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Clock3 className="h-4 w-4" />
-              {post.readingTime}
-            </span>
+          <header className="mt-10 border-b border-border pb-10">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">{post.category}</p>
+            <h1 className="mt-5 font-heading text-4xl font-bold leading-tight md:text-6xl">{post.title}</h1>
+            <p className="mt-5 text-lg leading-8 text-slate-300">{post.description}</p>
+            <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-400">
+              <span>{post.author}</span>
+              <span className="inline-flex items-center gap-1.5">
+                <CalendarDays className="h-4 w-4" />
+                {post.date}
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Clock3 className="h-4 w-4" />
+                {post.readingTime}
+              </span>
+            </div>
+          </header>
+
+          <div className="mt-10">
+            <BlogPostBody content={post.content} />
           </div>
-        </header>
 
-        <div className="mt-10">
-          <BlogPostBody content={post.content} />
+          <section className="mt-12 rounded-[30px] border border-primary/20 bg-primary/10 p-6 md:p-8">
+            <h2 className="font-heading text-2xl font-semibold text-white">Want to make AI safer for your team?</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300">
+              NeutralAI helps regulated teams mask sensitive prompt data before it reaches external model providers.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href={siteConfig.signupUrl} className="btn btn-cta justify-center px-8 py-4">
+                Try Free
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+              <Link href="/contact" className="btn btn-secondary justify-center px-8 py-4">
+                Talk to Sales
+              </Link>
+            </div>
+          </section>
         </div>
-
-        <section className="mt-12 rounded-[30px] border border-primary/20 bg-primary/10 p-6 md:p-8">
-          <h2 className="font-heading text-2xl font-semibold text-white">Want to make AI safer for your team?</h2>
-          <p className="mt-3 text-sm leading-7 text-slate-300">
-            NeutralAI helps regulated teams mask sensitive prompt data before it reaches external model providers.
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link href={siteConfig.signupUrl} className="btn btn-cta justify-center px-8 py-4">
-              Try Free
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link href="/contact" className="btn btn-secondary justify-center px-8 py-4">
-              Talk to Sales
-            </Link>
-          </div>
-        </section>
       </article>
     </main>
   )

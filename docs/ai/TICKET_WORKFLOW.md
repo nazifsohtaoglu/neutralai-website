@@ -37,6 +37,17 @@ For non-trivial work, write a short plan:
 5. Run targeted verification.
 6. Summarize residual risk.
 
+### Blog Visual Workflow
+
+For blog articles or content hub work:
+
+- Define the visual story before creating the image: audience, tension, product role, and desired emotional takeaway.
+- Write an art-direction prompt for each hero visual before generating or sourcing assets.
+- Avoid generic diagrams, stock-photo filler, literal dashboards, and images that only repeat article text.
+- Prefer professional editorial scenes, metaphors, and product-motion storytelling that make NeutralAI's role clear without overclaiming capabilities.
+- Keep generated visuals free of readable text, customer logos, credentials, invented metrics, and unsupported compliance claims.
+- Verify final images for mobile/desktop framing, caption quality, and visual consistency across the blog series.
+
 ## 3. Implementation Rules
 
 - Prefer existing components and styles over new abstractions.

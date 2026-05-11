@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export type BlogPostMeta = {
@@ -105,7 +106,7 @@ function parseInline(text: string) {
 
       if (isExternal) {
         return (
-          <a key={index} href={href} target="_blank" rel="noreferrer" className="text-primary-light hover:text-primary">
+          <a key={index} href={href} target="_blank" rel="nofollow noreferrer" className="text-primary-light hover:text-primary">
             {linkMatch[1]}
           </a>
         )
@@ -170,6 +171,29 @@ export function BlogPostBody({ content }: { content: string }) {
             <code>{codeLines.join('\n')}</code>
           </pre>
         </div>
+      )
+      index += 1
+      continue
+    }
+
+    const imageMatch = line.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)$/)
+    if (imageMatch) {
+      flushParagraph(paragraph, blocks, 'paragraph')
+      blocks.push(
+        <figure key={`figure-${blocks.length}`} className="mx-auto max-w-3xl overflow-hidden rounded-[24px] border border-white/10 bg-background-secondary/80">
+          <Image
+            src={imageMatch[2]}
+            alt={imageMatch[1]}
+            width={1200}
+            height={630}
+            className="h-auto w-full"
+          />
+          {imageMatch[3] ? (
+            <figcaption className="border-t border-white/10 px-4 py-3 text-xs leading-5 text-slate-400 md:px-5 md:text-sm md:leading-6">
+              {imageMatch[3]}
+            </figcaption>
+          ) : null}
+        </figure>
       )
       index += 1
       continue

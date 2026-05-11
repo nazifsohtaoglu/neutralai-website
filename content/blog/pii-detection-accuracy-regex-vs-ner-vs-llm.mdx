@@ -1,0 +1,78 @@
+---
+title: "PII Detection Accuracy: Regex vs NER vs LLM-Based Approaches"
+description: "A technical comparison of regex, named entity recognition, and LLM-based PII detection for teams protecting prompts before model routing."
+date: "2026-05-11"
+author: "NeutralAI Team"
+category: "Technical"
+---
+
+PII detection sounds simple until the first real prompt arrives.
+
+An email address is easy. A person’s name inside a messy support note is harder. A claim reference, account identifier, or healthcare member ID may be obvious to the business and invisible to a generic detector.
+
+That is why serious PII protection usually combines several detection approaches.
+
+![PII detection evidence lens illustration](/blog/visuals/pii-detection-stack.webp "Accurate PII detection comes from layered evidence: patterns, entities, context, and policy decisions working together.")
+
+## Regex and rules
+
+Regex works well when the pattern is stable:
+
+- email addresses
+- phone numbers
+- credit card formats
+- IBAN-like strings
+- internal IDs with predictable prefixes
+
+Rules are fast, explainable, and easy to test. They are also brittle when formats vary or when context matters.
+
+## Named entity recognition
+
+NER models can identify entities that do not follow a strict pattern, especially names, locations, and organizations. Microsoft Presidio uses recognizers that can combine named entity recognition, regular expressions, rule-based logic, checksum validation, and contextual signals.
+
+NER helps with natural language, but it is not perfect. Presidio’s own documentation warns that automated detection mechanisms do not guarantee every sensitive value will be found.
+
+## LLM-based detection
+
+LLMs can reason about context in ways that rules cannot. They may help identify sensitive meaning in messy text, classify documents, or spot business-specific context.
+
+But LLM-based detection has tradeoffs:
+
+- latency may be higher
+- cost may be harder to control
+- outputs need deterministic validation
+- sending raw sensitive text to another model can defeat the purpose unless the architecture is carefully designed
+
+For prompt protection, an LLM should not be the only control unless the data flow is clearly safe.
+
+## Why two-stage detection is useful
+
+NeutralAI uses a two-stage pattern:
+
+1. Recognizers catch likely sensitive values.
+2. Semantic validation and policy rules help decide what should be masked before egress.
+
+That does not mean every entity is magically solved. It means the product can combine speed, explainability, and context-aware tuning instead of relying on one fragile detector.
+
+## Accuracy is not one number
+
+When evaluating PII detection, ask for:
+
+- precision by entity type
+- recall by entity type
+- F1 by entity type
+- multilingual results
+- false positive examples
+- false negative examples
+- exact-span scoring rules
+- performance on your own data formats
+
+The right answer depends on the workflow. A finance team may care about IBANs and claim references. A healthcare team may care about member IDs and MRNs. A customer-support team may care about names, emails, and phone numbers.
+
+## Practical recommendation
+
+Use regex and validation where formats are known. Use NER where natural language entities matter. Use semantic checks where context decides whether a value is sensitive.
+
+Then put the detection inside a control point that can mask, enforce policy, and produce audit evidence.
+
+For more technical background, read the [Microsoft Presidio documentation](https://microsoft.github.io/presidio/) and try a simple masking workflow in the [NeutralAI playground](/playground).
