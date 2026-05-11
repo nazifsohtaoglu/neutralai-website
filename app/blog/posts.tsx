@@ -180,7 +180,7 @@ export function BlogPostBody({ content }: { content: string }) {
     if (imageMatch) {
       flushParagraph(paragraph, blocks, 'paragraph')
       blocks.push(
-        <figure key={`figure-${blocks.length}`} className="overflow-hidden rounded-[28px] border border-white/10 bg-background-secondary/80">
+        <figure key={`figure-${blocks.length}`} className="mx-auto max-w-3xl overflow-hidden rounded-[24px] border border-white/10 bg-background-secondary/80">
           <Image
             src={imageMatch[2]}
             alt={imageMatch[1]}
@@ -189,7 +189,7 @@ export function BlogPostBody({ content }: { content: string }) {
             className="h-auto w-full"
           />
           {imageMatch[3] ? (
-            <figcaption className="border-t border-white/10 px-5 py-3 text-sm leading-6 text-slate-400">
+            <figcaption className="border-t border-white/10 px-4 py-3 text-xs leading-5 text-slate-400 md:px-5 md:text-sm md:leading-6">
               {imageMatch[3]}
             </figcaption>
           ) : null}
