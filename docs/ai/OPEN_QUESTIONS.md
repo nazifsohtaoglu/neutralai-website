@@ -11,6 +11,7 @@ Use this file for unknowns. Do not guess silently.
 - Are there real customers, pilots, certifications, or benchmarks that can be referenced publicly?
 - What is the preferred ICP for the website copy: legal, finance, healthcare, insurance, SaaS support, or broader regulated teams?
 - WEB-103 asks for at least 3 articles targeting keywords with search volume >100/mo, but this repo has no approved SEO data source or keyword-volume export. Which SEO tool/export should be treated as the canonical volume source?
+- WEB-104 needs an approved hosted demo video URL, captions/transcript, and confirmation that browser extension/admin dashboard footage may be shown publicly. Until then, `/demo` can only provide a video-ready page with a safe fallback.
 
 ## Architecture / Deployment
 

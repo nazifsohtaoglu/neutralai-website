@@ -30,7 +30,7 @@ export default function Hero() {
                 Try Free
                 <ArrowRight className="h-5 w-5" />
               </a>
-              <a href="/contact" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
+              <a href={siteConfig.demoUrl} className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
                 Book Demo
               </a>
             </div>
