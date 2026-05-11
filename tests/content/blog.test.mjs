@@ -25,6 +25,8 @@ test('blog infrastructure renders index and MDX-backed post pages', () => {
   assert.match(blogPost, /BlogPosting/)
   assert.match(blogPosts, /content\/blog/)
   assert.match(blogPosts, /\.mdx/)
+  assert.match(blogPosts, /next\/image/)
+  assert.match(blogPosts, /<figure/)
   assert.match(post, /Why PII Masking Matters for Enterprise AI Adoption/)
   assert.match(post, /```text/)
 })
@@ -44,6 +46,27 @@ test('blog content hub publishes the WEB-103 article set', () => {
   assert.match(combinedPosts, /AI compliance gateway|AI governance/i)
   assert.match(combinedPosts, /Presidio alternative|Presidio to Production/i)
   assert.doesNotMatch(combinedPosts, /guaranteed independent benchmark/i)
+})
+
+test('blog articles include visual diagrams with accessible alt text', () => {
+  const posts = blogPostFiles()
+  const combinedPosts = posts.map((filename) => readSource(`content/blog/${filename}`)).join('\n')
+  const expectedVisuals = [
+    'vendor-benchmark-evidence.svg',
+    'fca-ai-control-point.svg',
+    'shadow-ai-control-point.svg',
+    'pii-detection-stack.svg',
+    'presidio-production-layers.svg',
+    'pii-masking-flow.svg',
+  ]
+
+  for (const visual of expectedVisuals) {
+    const visualSource = readSource(`public/blog/visuals/${visual}`)
+
+    assert.match(combinedPosts, new RegExp(`!\\[[^\\]]+\\]\\(/blog/visuals/${visual.replace('.', '\\.')}`))
+    assert.match(visualSource, /<title id="title">/)
+    assert.match(visualSource, /<desc id="desc">/)
+  }
 })
 
 test('blog route is discoverable from navigation, footer, and sitemap', () => {

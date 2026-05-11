@@ -10,6 +10,8 @@ Buyers often ask for a single leaderboard: NeutralAI vs Private AI vs Nightfall,
 
 The hard truth is that public PII detection numbers are rarely apples-to-apples. Vendors use different datasets, entity definitions, thresholds, scoring rules, and document types. A precision claim from one vendor is not the same thing as a span-level F1 score from another.
 
+![Vendor benchmark evidence map](/blog/visuals/vendor-benchmark-evidence.svg "Public vendor claims are useful, but only comparable when dataset, scorer, entity scope, and metric definitions match.")
+
 ## What public evidence exists
 
 NeutralAI publishes a reproducible product benchmark and explicitly frames it as a product benchmark, not an independent third-party certification. The current public benchmark position is overall F1 of 99.8% on the published benchmark, 98.4% on holdout, and 92.7% holdout PERSON F1. The useful part is not just the number; it is the ability to inspect methodology and compare against a Presidio-vanilla baseline.

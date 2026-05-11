@@ -1,0 +1,31 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Shadow AI control point diagram</title>
+  <desc id="desc">A diagram showing unmanaged AI prompts becoming governed AI usage through a central control point.</desc>
+  <rect width="1200" height="630" fill="#07111f"/>
+  <rect x="36" y="36" width="1128" height="558" rx="36" fill="#0b1526" stroke="#24415f"/>
+  <text x="78" y="94" fill="#f97316" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">SHADOW AI COST MODEL</text>
+  <text x="78" y="140" fill="#f8fafc" font-family="Arial, sans-serif" font-size="40" font-weight="800">Turn invisible prompt risk into a visible control path.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="86" y="220" width="265" height="250" rx="28" fill="#2a1420" stroke="#fb7185" stroke-opacity=".75"/>
+    <text x="122" y="270" fill="#fecdd3" font-size="28" font-weight="800">Unmanaged AI</text>
+    <text x="122" y="318" fill="#f8fafc" font-size="20">copied customer data</text>
+    <text x="122" y="354" fill="#f8fafc" font-size="20">unknown tools</text>
+    <text x="122" y="390" fill="#f8fafc" font-size="20">no audit trail</text>
+    <text x="122" y="426" fill="#f8fafc" font-size="20">review after the fact</text>
+    <path d="M380 345H482" stroke="#fb7185" stroke-width="5" stroke-linecap="round" stroke-dasharray="12 14"/>
+    <rect x="506" y="198" width="250" height="294" rx="32" fill="#062b3a" stroke="#22d3ee"/>
+    <text x="548" y="252" fill="#f8fafc" font-size="28" font-weight="800">Control point</text>
+    <text x="548" y="304" fill="#a7f3d0" font-size="20">detect</text>
+    <text x="548" y="340" fill="#a7f3d0" font-size="20">mask</text>
+    <text x="548" y="376" fill="#a7f3d0" font-size="20">route</text>
+    <text x="548" y="412" fill="#a7f3d0" font-size="20">prove</text>
+    <path d="M782 345H884" stroke="#22d3ee" stroke-width="5" stroke-linecap="round"/>
+    <path d="M870 326L892 345L870 364" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="910" y="220" width="205" height="250" rx="28" fill="#102116" stroke="#34d399" stroke-opacity=".75"/>
+    <text x="942" y="270" fill="#bbf7d0" font-size="28" font-weight="800">Approved AI</text>
+    <text x="942" y="318" fill="#f8fafc" font-size="20">masked prompts</text>
+    <text x="942" y="354" fill="#f8fafc" font-size="20">policy context</text>
+    <text x="942" y="390" fill="#f8fafc" font-size="20">evidence</text>
+    <text x="942" y="426" fill="#f8fafc" font-size="20">faster approval</text>
+  </g>
+</svg>
