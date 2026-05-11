@@ -1,29 +1,62 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">Financial services AI control point</title>
-  <desc id="desc">A financial services AI workflow showing prompt traffic routed through masking, policy, and audit evidence before model delivery.</desc>
-  <rect width="1200" height="630" fill="#07111f"/>
-  <rect x="42" y="42" width="1116" height="546" rx="36" fill="#0b1526" stroke="#1f3b57"/>
-  <text x="84" y="96" fill="#22d3ee" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">UK FINANCIAL SERVICES AI FLOW</text>
-  <text x="84" y="142" fill="#f8fafc" font-family="Arial, sans-serif" font-size="40" font-weight="800">Useful AI, with customer data controlled before egress.</text>
+  <desc id="desc">An editorial illustration of a bank operations desk routing customer notes through a controlled AI gateway with audit evidence.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111f"/>
+      <stop offset=".58" stop-color="#0b1728"/>
+      <stop offset="1" stop-color="#163016"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="426" y1="170" x2="760" y2="394" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0d3a4b"/>
+      <stop offset="1" stop-color="#061525"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1030" cy="122" r="150" fill="#22d3ee" opacity=".08"/>
+  <circle cx="194" cy="510" r="190" fill="#f97316" opacity=".07"/>
   <g font-family="Arial, sans-serif">
-    <rect x="84" y="230" width="210" height="118" rx="24" fill="#111c2f" stroke="#334155"/>
-    <text x="116" y="276" fill="#f8fafc" font-size="24" font-weight="800">Prompt</text>
-    <text x="116" y="314" fill="#cbd5e1" font-size="18">claim notes</text>
-    <text x="116" y="340" fill="#cbd5e1" font-size="18">IBAN / phone</text>
-    <path d="M310 289H424" stroke="#22d3ee" stroke-width="5" stroke-linecap="round"/>
-    <path d="M410 270L432 289L410 308" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="452" y="204" width="296" height="170" rx="28" fill="#062b3a" stroke="#22d3ee"/>
-    <text x="496" y="252" fill="#f8fafc" font-size="26" font-weight="800">NeutralAI</text>
-    <text x="496" y="292" fill="#a7f3d0" font-size="19">mask sensitive values</text>
-    <text x="496" y="322" fill="#a7f3d0" font-size="19">apply policy</text>
-    <text x="496" y="352" fill="#a7f3d0" font-size="19">record evidence</text>
-    <path d="M772 289H886" stroke="#22d3ee" stroke-width="5" stroke-linecap="round"/>
-    <path d="M872 270L894 289L872 308" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="914" y="230" width="210" height="118" rx="24" fill="#111c2f" stroke="#334155"/>
-    <text x="946" y="276" fill="#f8fafc" font-size="24" font-weight="800">AI provider</text>
-    <text x="946" y="314" fill="#cbd5e1" font-size="18">sanitized</text>
-    <text x="946" y="340" fill="#cbd5e1" font-size="18">request only</text>
-    <rect x="238" y="430" width="724" height="74" rx="22" fill="#1f2937" stroke="#f97316" stroke-opacity=".8"/>
-    <text x="280" y="476" fill="#fed7aa" font-size="22" font-weight="700">Governance output: who used AI, what control ran, what evidence exists.</text>
+    <text x="78" y="88" fill="#22d3ee" font-size="18" font-weight="700" letter-spacing="3">FINANCIAL SERVICES</text>
+    <text x="78" y="134" fill="#f8fafc" font-size="38" font-weight="800">Customer notes enter AI through a control desk.</text>
+    <text x="78" y="170" fill="#b6c2d4" font-size="20">Mask first, route second, keep audit evidence.</text>
+  </g>
+  <path d="M94 478C206 410 280 402 408 468C516 524 660 538 806 492C922 455 1000 460 1120 514" stroke="#27415f" stroke-width="3" opacity=".65"/>
+  <rect x="398" y="168" width="404" height="256" rx="32" fill="url(#screen)" stroke="#22d3ee" stroke-opacity=".55"/>
+  <rect x="432" y="206" width="136" height="28" rx="14" fill="#172238"/>
+  <rect x="432" y="258" width="250" height="18" rx="9" fill="#fda4af" opacity=".9"/>
+  <rect x="432" y="292" width="196" height="18" rx="9" fill="#fda4af" opacity=".72"/>
+  <rect x="432" y="342" width="286" height="34" rx="17" fill="#22d3ee" opacity=".18" stroke="#22d3ee"/>
+  <text x="456" y="364" fill="#a7f3d0" font-family="Arial, sans-serif" font-size="18" font-weight="700">Sanitized AI request</text>
+  <g filter="url(#glow)">
+    <path d="M338 298H398" stroke="#22d3ee" stroke-width="8" stroke-linecap="round"/>
+    <path d="M374 274L402 298L374 322" stroke="#22d3ee" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M802 298H862" stroke="#22d3ee" stroke-width="8" stroke-linecap="round"/>
+    <path d="M838 274L866 298L838 322" stroke="#22d3ee" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g>
+    <rect x="96" y="236" width="234" height="174" rx="28" fill="#101827" stroke="#35506f"/>
+    <path d="M154 322H274" stroke="#f8fafc" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+    <path d="M154 352H246" stroke="#f8fafc" stroke-width="10" stroke-linecap="round" opacity=".6"/>
+    <path d="M154 382H286" stroke="#fda4af" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="148" cy="276" r="24" fill="#fed7aa"/>
+    <path d="M188 278H282" stroke="#22d3ee" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <g>
+    <rect x="874" y="220" width="230" height="210" rx="28" fill="#0d1a2c" stroke="#36526f"/>
+    <path d="M934 279H1048" stroke="#bbf7d0" stroke-width="10" stroke-linecap="round"/>
+    <path d="M934 322H1030" stroke="#f8fafc" stroke-width="10" stroke-linecap="round" opacity=".68"/>
+    <path d="M934 365H1060" stroke="#f8fafc" stroke-width="10" stroke-linecap="round" opacity=".68"/>
+    <rect x="914" y="462" width="154" height="52" rx="18" fill="#13251f" stroke="#34d399"/>
+    <path d="M944 488L967 510L1028 466" stroke="#34d399" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g>
+    <rect x="498" y="454" width="204" height="84" rx="24" fill="#1f2937" stroke="#f97316" stroke-opacity=".75"/>
+    <circle cx="548" cy="496" r="18" fill="#fed7aa"/>
+    <path d="M586 485H668" stroke="#fed7aa" stroke-width="9" stroke-linecap="round"/>
+    <path d="M586 512H650" stroke="#fed7aa" stroke-width="9" stroke-linecap="round" opacity=".6"/>
   </g>
 </svg>

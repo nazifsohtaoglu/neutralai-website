@@ -1,31 +1,55 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Shadow AI control point diagram</title>
-  <desc id="desc">A diagram showing unmanaged AI prompts becoming governed AI usage through a central control point.</desc>
-  <rect width="1200" height="630" fill="#07111f"/>
-  <rect x="36" y="36" width="1128" height="558" rx="36" fill="#0b1526" stroke="#24415f"/>
-  <text x="78" y="94" fill="#f97316" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">SHADOW AI COST MODEL</text>
-  <text x="78" y="140" fill="#f8fafc" font-family="Arial, sans-serif" font-size="40" font-weight="800">Turn invisible prompt risk into a visible control path.</text>
+  <title id="title">Shadow AI control point</title>
+  <desc id="desc">A split scene showing unmanaged AI copy-paste risk turning into an approved, masked AI workflow through a visible control point.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#120b18"/>
+      <stop offset=".48" stop-color="#07111f"/>
+      <stop offset="1" stop-color="#061f22"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(304 246) rotate(78) scale(230 170)">
+      <stop stop-color="#fb7185" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#fb7185" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="approved" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(920 250) rotate(90) scale(260 210)">
+      <stop stop-color="#22d3ee" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="600" height="630" fill="url(#lamp)"/>
+  <rect x="600" width="600" height="630" fill="url(#approved)"/>
   <g font-family="Arial, sans-serif">
-    <rect x="86" y="220" width="265" height="250" rx="28" fill="#2a1420" stroke="#fb7185" stroke-opacity=".75"/>
-    <text x="122" y="270" fill="#fecdd3" font-size="28" font-weight="800">Unmanaged AI</text>
-    <text x="122" y="318" fill="#f8fafc" font-size="20">copied customer data</text>
-    <text x="122" y="354" fill="#f8fafc" font-size="20">unknown tools</text>
-    <text x="122" y="390" fill="#f8fafc" font-size="20">no audit trail</text>
-    <text x="122" y="426" fill="#f8fafc" font-size="20">review after the fact</text>
-    <path d="M380 345H482" stroke="#fb7185" stroke-width="5" stroke-linecap="round" stroke-dasharray="12 14"/>
-    <rect x="506" y="198" width="250" height="294" rx="32" fill="#062b3a" stroke="#22d3ee"/>
-    <text x="548" y="252" fill="#f8fafc" font-size="28" font-weight="800">Control point</text>
-    <text x="548" y="304" fill="#a7f3d0" font-size="20">detect</text>
-    <text x="548" y="340" fill="#a7f3d0" font-size="20">mask</text>
-    <text x="548" y="376" fill="#a7f3d0" font-size="20">route</text>
-    <text x="548" y="412" fill="#a7f3d0" font-size="20">prove</text>
-    <path d="M782 345H884" stroke="#22d3ee" stroke-width="5" stroke-linecap="round"/>
-    <path d="M870 326L892 345L870 364" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="910" y="220" width="205" height="250" rx="28" fill="#102116" stroke="#34d399" stroke-opacity=".75"/>
-    <text x="942" y="270" fill="#bbf7d0" font-size="28" font-weight="800">Approved AI</text>
-    <text x="942" y="318" fill="#f8fafc" font-size="20">masked prompts</text>
-    <text x="942" y="354" fill="#f8fafc" font-size="20">policy context</text>
-    <text x="942" y="390" fill="#f8fafc" font-size="20">evidence</text>
-    <text x="942" y="426" fill="#f8fafc" font-size="20">faster approval</text>
+    <text x="72" y="86" fill="#fb7185" font-size="18" font-weight="700" letter-spacing="3">SHADOW AI</text>
+    <text x="72" y="132" fill="#f8fafc" font-size="36" font-weight="800">Risk hides in copy and paste.</text>
+    <text x="738" y="86" fill="#22d3ee" font-size="18" font-weight="700" letter-spacing="3">CONTROLLED AI</text>
+    <text x="738" y="132" fill="#f8fafc" font-size="36" font-weight="800">Approvals need a path.</text>
+  </g>
+  <path d="M600 92V548" stroke="#2c3f58" stroke-width="2" stroke-dasharray="10 12"/>
+  <g>
+    <rect x="112" y="228" width="318" height="212" rx="30" fill="#150f1b" stroke="#7f1d1d"/>
+    <circle cx="180" cy="300" r="34" fill="#fed7aa"/>
+    <path d="M150 382C176 336 220 336 246 382" stroke="#fed7aa" stroke-width="18" stroke-linecap="round"/>
+    <rect x="278" y="280" width="106" height="82" rx="15" fill="#0f172a" stroke="#fb7185"/>
+    <path d="M302 314H360M302 340H346" stroke="#fb7185" stroke-width="9" stroke-linecap="round"/>
+    <path d="M160 482H386" stroke="#fb7185" stroke-width="12" stroke-linecap="round" opacity=".6"/>
+  </g>
+  <g>
+    <rect x="464" y="278" width="144" height="84" rx="26" fill="#061525" stroke="#f97316"/>
+    <path d="M506 320H566" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+    <path d="M548 296L576 320L548 344" stroke="#fed7aa" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g>
+    <rect x="666" y="226" width="156" height="216" rx="30" fill="#062b3a" stroke="#22d3ee"/>
+    <rect x="704" y="268" width="82" height="98" rx="20" fill="#0f172a" stroke="#5eead4"/>
+    <path d="M728 318L744 334L770 296" stroke="#34d399" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M714 396H774" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <g>
+    <rect x="886" y="214" width="210" height="236" rx="28" fill="#0d1a2c" stroke="#2f4c68"/>
+    <rect x="930" y="256" width="128" height="30" rx="15" fill="#22d3ee" opacity=".24"/>
+    <rect x="926" y="316" width="132" height="22" rx="11" fill="#34d399" opacity=".75"/>
+    <rect x="926" y="354" width="108" height="22" rx="11" fill="#34d399" opacity=".5"/>
+    <rect x="926" y="394" width="142" height="22" rx="11" fill="#f8fafc" opacity=".36"/>
   </g>
 </svg>

@@ -69,6 +69,19 @@ test('blog articles include visual diagrams with accessible alt text', () => {
   }
 })
 
+test('blog visual SVGs avoid long unwrapped text runs', () => {
+  const visualFiles = readdirSync(join(root, 'public/blog/visuals')).filter((filename) => filename.endsWith('.svg'))
+
+  for (const visual of visualFiles) {
+    const visualSource = readSource(`public/blog/visuals/${visual}`)
+    const textRuns = [...visualSource.matchAll(/<text[^>]*>([^<]+)<\/text>/g)].map((match) => match[1])
+
+    for (const text of textRuns) {
+      assert.ok(text.length <= 58, `${visual} has an SVG text run that may overflow: "${text}"`)
+    }
+  }
+})
+
 test('blog route is discoverable from navigation, footer, and sitemap', () => {
   const navbar = readSource('app/components/Navbar.tsx')
   const footer = readSource('app/components/Footer.tsx')
