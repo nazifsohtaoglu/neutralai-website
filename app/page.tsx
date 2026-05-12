@@ -5,6 +5,7 @@ import Hero from './components/home/Hero'
 import HowItWorks from './components/home/HowItWorks'
 import PricingSection from './components/home/PricingSection'
 import ProductSurface from './components/home/ProductSurface'
+import SocialProofSection from './components/home/SocialProofSection'
 import TrustSection from './components/home/TrustSection'
 import WhyItMatters from './components/home/WhyItMatters'
 
@@ -16,6 +17,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqStructuredData) }}
       />
       <Hero />
+      <SocialProofSection />
       <ProductSurface />
       <WhyItMatters />
       <HowItWorks />

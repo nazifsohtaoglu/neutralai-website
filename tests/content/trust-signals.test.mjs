@@ -15,6 +15,7 @@ function readHomepageSource() {
     'app/data/homepage.ts',
     'app/components/home/DetectionEngine.tsx',
     'app/components/home/Hero.tsx',
+    'app/components/home/SocialProofSection.tsx',
     'app/components/home/TrustSection.tsx',
   ]
     .map(readSource)
@@ -35,6 +36,28 @@ test('homepage exposes concrete trust badges and detection details', () => {
   assert.match(homeSource, /EMAIL/)
   assert.match(homeSource, /CREDIT_CARD/)
   assert.match(homeSource, /PHONE_NUMBER, PERSON, CREDIT_CARD, IBAN, SSN, TR_ID_NUMBER, UK_NHS_NUMBER/)
+})
+
+test('homepage adds social proof without fake customer claims', () => {
+  const homeSource = readHomepageSource()
+
+  assert.match(homeSource, /<SocialProofSection \/>/)
+  assert.match(homeSource, /Proof buyers can verify/)
+  assert.match(homeSource, /Financial Services/)
+  assert.match(homeSource, /Healthcare/)
+  assert.match(homeSource, /Legal/)
+  assert.match(homeSource, /Public Sector/)
+  assert.match(homeSource, /Proof-backed metrics/)
+  assert.match(homeSource, /20\+/)
+  assert.match(homeSource, /10/)
+  assert.match(homeSource, /99\.8%/)
+  assert.match(homeSource, /~41 ms/)
+  assert.match(homeSource, /Finance evaluation pattern/)
+  assert.match(homeSource, /Healthcare evaluation pattern/)
+  assert.match(homeSource, /Production usage counts and customer outcomes are published only when an approved source exists/)
+  assert.doesNotMatch(homeSource, /Trusted by .*customers/)
+  assert.doesNotMatch(homeSource, /testimonial/i)
+  assert.doesNotMatch(homeSource, /customer logo/i)
 })
 
 test('homepage adds a scannable detection engine deep dive', () => {

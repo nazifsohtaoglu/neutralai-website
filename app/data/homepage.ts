@@ -5,10 +5,13 @@ import {
   FileText,
   Gauge,
   Globe,
+  Landmark,
   KeyRound,
+  Scale,
   Languages,
   Lock,
   Network,
+  Stethoscope,
   ScanSearch,
   Server,
   ShieldCheck,
@@ -332,6 +335,67 @@ export const complianceProofs = [
     icon: Timer,
     label: 'Measured overhead',
     value: '~41 ms',
+  },
+] as const
+
+export const socialProofIndustries = [
+  {
+    icon: Landmark,
+    title: 'Financial Services',
+    body: 'Customer, payment, claim, and account context before model routing.',
+  },
+  {
+    icon: Stethoscope,
+    title: 'Healthcare',
+    body: 'PHI-aware masking posture for healthcare and healthtech evaluations.',
+  },
+  {
+    icon: Scale,
+    title: 'Legal',
+    body: 'Matter, client, and document-review prompts with clearer AI boundaries.',
+  },
+  {
+    icon: Building2,
+    title: 'Public Sector',
+    body: 'Citizen-service and internal policy workflows where auditability matters.',
+  },
+] as const
+
+export const socialProofMetrics = [
+  {
+    value: '20+',
+    label: 'PII entity types',
+    detail: 'Names, contacts, account identifiers, cards, IBANs, NHS-style IDs, and custom rules.',
+  },
+  {
+    value: '10',
+    label: 'benchmark languages',
+    detail: 'Current multilingual benchmark scope across English, Turkish, German, French, Spanish, and more.',
+  },
+  {
+    value: '99.8%',
+    label: 'public overall F1',
+    detail: 'Gateway-owned product benchmark, not a third-party independent evaluation.',
+  },
+  {
+    value: '~41 ms',
+    label: 'measured overhead',
+    detail: 'NeutralAI gateway overhead measured separately from model generation time.',
+  },
+] as const
+
+export const evaluationStories = [
+  {
+    label: 'Finance evaluation pattern',
+    title: 'A regulated team wants AI summaries without leaking customer identifiers.',
+    body: 'NeutralAI sits in front of prompt traffic, masks payment and contact details, and gives security reviewers evidence before wider rollout.',
+    outcome: 'Buyer outcome: safer evaluation path before approving production AI workflows.',
+  },
+  {
+    label: 'Healthcare evaluation pattern',
+    title: 'A healthtech team needs useful AI output while reducing raw PHI exposure.',
+    body: 'Prompts keep operational context while direct patient identifiers are tokenized or removed before external model routing.',
+    outcome: 'Buyer outcome: clearer BAA and deployment review conversations without blanket compliance claims.',
   },
 ] as const
 
