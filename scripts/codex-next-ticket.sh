@@ -69,7 +69,9 @@ open_pr_linked_issue_numbers() {
           | rg -oi '(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)[[:space:]]+#[0-9]+' \
           | rg -o '[0-9]+' || true
         printf '%s\n' "$title" | rg -o '\(#[0-9]+\)' | rg -o '[0-9]+' || true
-        if [[ "$branch" =~ -([0-9]+)$ ]]; then
+        if [[ "$branch" =~ ^[^/]+/([0-9]+)- ]]; then
+          echo "${BASH_REMATCH[1]}"
+        elif [[ "$branch" =~ -([0-9]+)$ ]]; then
           echo "${BASH_REMATCH[1]}"
         fi
       done \
@@ -91,12 +93,14 @@ filter_candidate_json_lines() {
     --argjson readyLabels "$ready_labels_json" \
     --arg skipTitleRegex "$SKIP_TITLE_REGEX" \
     --arg requireReadyLabels "$REQUIRE_READY_LABELS" '
+      def normalized_labels:
+        [(.labels // [])[] | if type == "object" then (.name // empty) else tostring end];
       select(.number != null)
       | select((.title // "") | test($skipTitleRegex; "i") | not)
-      | select(([.labels[]?.name // .labels[]?] as $labels | all($skipLabels[]; . as $skip | ($labels | index($skip)) == null)))
+      | select((normalized_labels) as $labels | all($skipLabels[]; . as $skip | ($labels | index($skip)) == null))
       | select(
           ($requireReadyLabels != "true")
-          or ([.labels[]?.name // .labels[]?] as $labels | any($readyLabels[]; . as $ready | ($labels | index($ready)) != null))
+          or ((normalized_labels) as $labels | any($readyLabels[]; . as $ready | ($labels | index($ready)) != null))
         )
     '
 }
