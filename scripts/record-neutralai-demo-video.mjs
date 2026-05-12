@@ -1,5 +1,5 @@
 import { chromium } from 'playwright'
-import { mkdir, readdir, unlink, writeFile } from 'node:fs/promises'
+import { access, mkdir, readdir, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFile } from 'node:child_process'
@@ -13,7 +13,7 @@ const recordingDir = path.join(root, 'output/playwright/neutralai-demo-video')
 const videoPath = path.join(assetDir, 'neutralai-product-walkthrough.webm')
 const captionsPath = path.join(assetDir, 'neutralai-product-walkthrough.vtt')
 const posterPath = path.join(assetDir, 'neutralai-product-walkthrough-poster.png')
-const narrationPath = path.join(recordingDir, 'neutralai-product-walkthrough-narration.aiff')
+const voiceoverPath = process.env.DEMO_VOICEOVER_PATH ?? path.join(assetDir, 'neutralai-product-walkthrough-voiceover.mp3')
 const runFile = promisify(execFile)
 
 await mkdir(assetDir, { recursive: true })
@@ -58,16 +58,25 @@ function renderVtt(cues) {
   ].join('\n')
 }
 
-async function addNarrationTrack(inputVideoPath, outputVideoPath, cues) {
-  const narrationText = `${cues.map((cue) => cue.text.split('.')[0]).join('. ')}.`
+async function getMediaDurationSeconds(filePath) {
+  const { stderr } = await runFile(ffmpegPath, ['-i', filePath, '-hide_banner']).catch((error) => error)
+  const match = stderr?.match(/Duration:\s*(\d{2}):(\d{2}):(\d{2}\.\d{2})/)
 
-  await runFile('/usr/bin/say', ['-v', 'Daniel', '-r', '170', '-o', narrationPath, narrationText])
+  if (!match) {
+    return 0
+  }
+
+  return Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3])
+}
+
+async function addVoiceoverTrack(inputVideoPath, outputVideoPath) {
+  await access(voiceoverPath)
   await runFile(ffmpegPath, [
     '-y',
     '-i',
     inputVideoPath,
     '-i',
-    narrationPath,
+    voiceoverPath,
     '-map',
     '0:v:0',
     '-map',
@@ -83,6 +92,7 @@ async function addNarrationTrack(inputVideoPath, outputVideoPath, cues) {
 }
 
 await assertLocalServer()
+const voiceoverDurationSeconds = await getMediaDurationSeconds(voiceoverPath)
 
 const browser = await chromium.launch({ headless: true })
 const context = await browser.newContext({
@@ -91,8 +101,55 @@ const context = await browser.newContext({
   recordVideo: { dir: recordingDir, size: { width: 1440, height: 810 } },
 })
 const page = await context.newPage()
-const cues = []
 const recordingStartedAt = Date.now()
+
+const voiceoverCues = [
+  {
+    start: 0.3,
+    end: 8.5,
+    text: 'Teams are already using AI to summarise claims, cases, support tickets, and internal documents.',
+  },
+  {
+    start: 8.5,
+    end: 15.5,
+    text: 'But sensitive data often sits inside the prompt before anyone notices.',
+  },
+  {
+    start: 15.5,
+    end: 23.5,
+    text: 'NeutralAI adds a control layer before that prompt reaches an external model.',
+  },
+  {
+    start: 23.5,
+    end: 31.5,
+    text: 'Paste a real workflow prompt, then run masking.',
+  },
+  {
+    start: 31.5,
+    end: 43,
+    text: 'Names, emails, phone numbers, IBANs, card numbers, and other sensitive spans are detected and replaced with safe tokens.',
+  },
+  {
+    start: 43,
+    end: 51.5,
+    text: 'The original prompt stays available for review, while the sanitized version is what moves forward.',
+  },
+  {
+    start: 51.5,
+    end: 60,
+    text: 'Security and legal teams can see what was found, how it was classified, and why it was masked.',
+  },
+  {
+    start: 60,
+    end: 68.8,
+    text: 'For workflows that need controlled restoration, reversible tokens can preserve business context without exposing raw identifiers by default.',
+  },
+  {
+    start: 68.8,
+    end: Math.max(75.3, voiceoverDurationSeconds),
+    text: 'NeutralAI helps regulated teams use AI with clearer boundaries, cleaner evidence, and less sensitive data leaving the business. Try the playground, or book a live walkthrough to map this to your own AI workflow.',
+  },
+]
 
 async function pause(ms = 700) {
   await page.waitForTimeout(ms)
@@ -263,7 +320,6 @@ async function installOverlay() {
 }
 
 async function showCaption(eyebrow, title, body, duration = 2600) {
-  const start = (Date.now() - recordingStartedAt) / 1000
   await page.evaluate(
     ({ eyebrow, title, body }) => {
       const caption = document.querySelector('.demo-video-caption')
@@ -279,7 +335,6 @@ async function showCaption(eyebrow, title, body, duration = 2600) {
     { eyebrow, title, body },
   )
   await pause(duration)
-  cues.push({ start, end: (Date.now() - recordingStartedAt) / 1000, text: `${title}. ${body}` })
 }
 
 async function clickByRole(role, name) {
@@ -300,8 +355,8 @@ await page.mouse.move(1100, 300)
 await showCaption(
   'NeutralAI walkthrough',
   'Control sensitive data before AI sees it',
-  'This short demo uses the public website and playground surfaces, with safe sample data only.',
-  3300,
+  'Teams are already using AI, but sensitive prompt data needs a control point before it reaches external models.',
+  9000,
 )
 await page.screenshot({ path: posterPath, type: 'png' })
 
@@ -309,8 +364,8 @@ await clickByRole('link', 'Try a sample')
 await showCaption(
   'Self-guided evaluation',
   'Buyers can test the control model immediately',
-  'The playground shows the masking path before anyone needs to book a live call.',
-  2800,
+  'The playground shows the masking path with safe sample data and no private app footage.',
+  6500,
 )
 
 await pause(500)
@@ -318,8 +373,8 @@ await clickByRole('button', 'Finance review')
 await showCaption(
   'Realistic prompt',
   'Start with a regulated workflow prompt',
-  'This sample includes an IBAN and payment card so the masking behavior is obvious.',
-  2700,
+  'This sample includes payment details and contact data so the masking behavior is obvious.',
+  8500,
 )
 
 await clickByRole('button', 'Mask prompt')
@@ -328,7 +383,7 @@ await showCaption(
   'Masking result',
   'Original and sanitized outputs sit side by side',
   'The raw prompt remains visible for review while the outbound version uses typed tokens.',
-  3500,
+  12000,
 )
 
 await page.getByText('Entities and confidence').scrollIntoViewIfNeeded()
@@ -336,8 +391,8 @@ await pause(700)
 await showCaption(
   'Evidence',
   'Teams can inspect what was found',
-  'Entity type, matched text, and confidence context make the control easier to review.',
-  3100,
+  'Entity type, matched text, and confidence context make the control easier for security and legal teams to review.',
+  9500,
 )
 
 await page.getByRole('button', { name: 'Reversible', exact: true }).scrollIntoViewIfNeeded()
@@ -350,8 +405,8 @@ await page.getByText('Demo preview ready').waitFor({ timeout: 5000 })
 await showCaption(
   'Governed restore',
   'Reversible mode creates scoped demo tokens',
-  'That explains the restore model without sending raw identifiers through normal AI traffic.',
-  3500,
+  'That explains controlled restoration without exposing raw identifiers by default.',
+  11500,
 )
 
 await page.evaluate(() => {
@@ -360,9 +415,9 @@ await page.evaluate(() => {
   endCard.className = 'demo-video-end-card'
   endCard.innerHTML = `
     <div class="demo-video-end-card__inner">
-      <div class="demo-video-end-card__kicker">What the demo proves</div>
-      <h2>NeutralAI turns AI use into a controlled, reviewable flow.</h2>
-      <p>Security, legal, and operations teams can evaluate masking, evidence, restore controls, and rollout fit before a deeper live demo.</p>
+      <div class="demo-video-end-card__kicker">NeutralAI Gateway</div>
+      <h2>Use AI with clearer boundaries and less sensitive data leaving the business.</h2>
+      <p>Try the playground, or book a live walkthrough to map NeutralAI to your own AI workflow.</p>
       <div class="demo-video-end-card__grid">
         <div class="demo-video-end-card__card"><strong>Mask before model calls</strong><span>PII is replaced with typed tokens before prompts are handed onward.</span></div>
         <div class="demo-video-end-card__card"><strong>Review evidence</strong><span>Teams can see what was detected and why it was masked.</span></div>
@@ -374,9 +429,9 @@ await page.evaluate(() => {
 })
 await showCaption(
   'Next step',
-  'Use the video before a sales call',
-  'It gives a buyer enough context to decide whether a live walkthrough is worth their time.',
-  4200,
+  'Try the playground, or book a live walkthrough',
+  'Map the control model to your own prompts, teams, and AI workflow.',
+  Math.max(7000, (voiceoverDurationSeconds + 1) * 1000 - (Date.now() - recordingStartedAt)),
 )
 
 const rawVideo = await page.video()?.path()
@@ -384,17 +439,18 @@ await context.close()
 await browser.close()
 
 if (rawVideo) {
-  await addNarrationTrack(rawVideo, videoPath, cues)
+  await addVoiceoverTrack(rawVideo, videoPath)
   if (path.basename(rawVideo).startsWith('page@')) {
     await unlink(rawVideo).catch(() => {})
   }
 }
 
-await writeFile(captionsPath, renderVtt(cues))
+await writeFile(captionsPath, renderVtt(voiceoverCues))
 
 console.log(JSON.stringify({
   video: videoPath,
   captions: captionsPath,
   poster: posterPath,
+  voiceover: voiceoverPath,
   baseUrl,
 }))

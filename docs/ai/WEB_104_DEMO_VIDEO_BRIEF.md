@@ -20,8 +20,9 @@ Create a short walkthrough that helps enterprise buyers understand NeutralAI bef
 - Video: `public/demo/neutralai-product-walkthrough.webm`
 - Captions: `public/demo/neutralai-product-walkthrough.vtt`
 - Poster: `public/demo/neutralai-product-walkthrough-poster.png`
+- Voiceover source: `public/demo/neutralai-product-walkthrough-voiceover.mp3`
 - Recorder: `scripts/record-neutralai-demo-video.mjs`
-- Audio: generated from a concise caption-derived script with macOS `say`, then muxed into the WebM with `ffmpeg-static`.
+- Audio: generated externally from the approved voiceover script, then muxed into the WebM with `ffmpeg-static`. Pass `DEMO_VOICEOVER_PATH=/path/to/audio.mp3` to test a replacement voiceover without changing the committed source file.
 
 Run the local site first, then refresh the assets with:
 
