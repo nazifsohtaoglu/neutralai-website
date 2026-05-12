@@ -7,6 +7,7 @@ import PricingSection from './components/home/PricingSection'
 import ProductSurface from './components/home/ProductSurface'
 import SocialProofSection from './components/home/SocialProofSection'
 import TrustSection from './components/home/TrustSection'
+import UseCasesSection from './components/home/UseCasesSection'
 import WhyItMatters from './components/home/WhyItMatters'
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       />
       <Hero />
       <SocialProofSection />
+      <UseCasesSection />
       <ProductSurface />
       <WhyItMatters />
       <HowItWorks />

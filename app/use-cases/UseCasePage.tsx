@@ -18,6 +18,26 @@ export type UseCasePageContent = {
     body: string
   }[]
   entities: string[]
+  complianceMapping: {
+    label: string
+    body: string
+  }[]
+  faq: {
+    question: string
+    answer: string
+  }[]
+  faqStructuredData: {
+    '@context': 'https://schema.org'
+    '@type': 'FAQPage'
+    mainEntity: {
+      '@type': 'Question'
+      name: string
+      acceptedAnswer: {
+        '@type': 'Answer'
+        text: string
+      }
+    }[]
+  }
   trustSignals: {
     icon: LucideIcon
     title: string
@@ -29,6 +49,10 @@ export type UseCasePageContent = {
 export default function UseCasePage({ content }: { content: UseCasePageContent }) {
   return (
     <main className="min-h-screen pt-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(content.faqStructuredData) }}
+      />
       <section className="relative overflow-hidden py-20 md:py-24">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(6,182,212,0.18),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(249,115,22,0.15),transparent_24%)]" />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
@@ -131,6 +155,48 @@ export default function UseCasePage({ content }: { content: UseCasePageContent }
           <div className="mt-8 rounded-[24px] border border-white/10 bg-white/[0.035] p-5 text-sm leading-7 text-slate-400">
             <BadgeCheck className="mb-3 h-5 w-5 text-primary-light" />
             {content.disclaimer}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container-custom">
+          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Compliance mapping</p>
+              <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+                Translate the gateway into review language.
+              </h2>
+              <p className="mt-5 text-lg leading-8 text-slate-400">
+                These mappings are practical review prompts, not automatic compliance guarantees. They help buyers connect masking, routing, and evidence to the controls their industry already discusses.
+              </p>
+            </div>
+
+            <div className="grid gap-4">
+              {content.complianceMapping.map((item) => (
+                <div key={item.label} className="rounded-[24px] border border-white/10 bg-background-secondary p-5">
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#fdba74]">{item.label}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section bg-background-secondary">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">FAQ</p>
+            <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Questions buyers ask first</h2>
+          </div>
+          <div className="mx-auto mt-10 grid max-w-5xl gap-4">
+            {content.faq.map((item) => (
+              <article key={item.question} className="rounded-[24px] border border-white/10 bg-background/80 p-5 md:p-6">
+                <h3 className="font-heading text-xl font-semibold text-white">{item.question}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-400">{item.answer}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>

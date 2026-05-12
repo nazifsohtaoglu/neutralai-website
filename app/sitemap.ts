@@ -20,14 +20,18 @@ const routes = [
   '/support/browser-extension',
   '/terms',
   '/trust-center',
-  '/use-cases/finance',
+  '/use-cases',
+  '/use-cases/financial-services',
   '/use-cases/healthcare',
+  '/use-cases/legal',
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = routes.map((route) => ({
     url: `${siteConfig.url}${route}`,
-    lastModified: route === '/trust-center' || route === '/presidio-alternative' || route.startsWith('/insights/')
+    lastModified: route.startsWith('/use-cases')
+      ? '2026-05-12'
+      : route === '/trust-center' || route === '/presidio-alternative' || route.startsWith('/insights/')
       ? '2026-05-08'
       : '2026-03-29',
     changeFrequency: route === '' ? ('weekly' as const) : ('monthly' as const),
