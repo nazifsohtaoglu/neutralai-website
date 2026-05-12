@@ -13,6 +13,23 @@ ensure_local_path_tools() {
   export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 }
 
+bootstrap_dirty_paths_only() {
+  local status="$1"
+  local line path
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    path="${line:3}"
+    case "$path" in
+      scripts/codex-next-ticket.sh|scripts/codex-review-loop.sh|.codex/workflows/*)
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+  done <<< "$status"
+  return 0
+}
+
 acquire_lock() {
   local lock_root="$ROOT_DIR/.codex/.locks"
   local lock_dir="$lock_root/next-ticket.lock"
@@ -179,6 +196,13 @@ get_ticket() {
 
 sync_main() {
   [[ "$SYNC_MAIN" == "true" ]] || return 0
+  if [[ "$BOOTSTRAP_DIRTY" == "true" ]]; then
+    local current_branch
+    current_branch="$(git branch --show-current)"
+    [[ "$current_branch" == "main" ]] || die "Automation bootstrap changes can only skip sync from main; current branch is '$current_branch'."
+    warn "Skipping main sync because local automation bootstrap changes are being carried into the ticket branch."
+    return 0
+  fi
   git switch main >/dev/null 2>&1 || die "Failed to switch to main."
   git pull --ff-only origin main >/dev/null 2>&1 || die "Failed to fast-forward main from origin/main."
 }
@@ -207,12 +231,19 @@ main() {
   need_cmd rg
   need_cmd sed
   need_cmd tr
-  acquire_lock
 
   git rev-parse --is-inside-work-tree >/dev/null 2>&1 || die "Not inside a git repository."
-  if [[ "$ALLOW_DIRTY" != "true" && -n "$(git status --porcelain=v1)" ]]; then
-    die "Working tree is not clean. Commit/stash your changes before running this automation."
+  local dirty_status
+  dirty_status="$(git status --porcelain=v1)"
+  if [[ "$ALLOW_DIRTY" != "true" && -n "$dirty_status" ]]; then
+    if [[ "$ALLOW_BOOTSTRAP_DIRTY" == "true" ]] && bootstrap_dirty_paths_only "$dirty_status"; then
+      BOOTSTRAP_DIRTY="true"
+      warn "Continuing with local automation bootstrap changes; they will be included on the ticket branch."
+    else
+      die "Working tree is not clean. Commit/stash your changes before running this automation."
+    fi
   fi
+  acquire_lock
 
   OPEN_PR_ISSUES="$(open_pr_linked_issue_numbers | tr '\n' ' ')"
 
@@ -265,6 +296,8 @@ SKIP_TITLE_REGEX="${CODEX_ISSUE_SKIP_TITLE_REGEX:-^\\[EPIC\\]|^EPIC\\b}"
 SYNC_MAIN="${CODEX_SYNC_MAIN:-true}"
 DRY_RUN="${CODEX_NEXT_TICKET_DRY_RUN:-false}"
 ALLOW_DIRTY="${CODEX_NEXT_TICKET_ALLOW_DIRTY:-false}"
+ALLOW_BOOTSTRAP_DIRTY="${CODEX_NEXT_TICKET_ALLOW_BOOTSTRAP_DIRTY:-true}"
+BOOTSTRAP_DIRTY="false"
 OPEN_PR_ISSUES=""
 
 main "$@"

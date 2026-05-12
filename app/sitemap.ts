@@ -11,6 +11,7 @@ const routes = [
   '/compare',
   '/contact',
   '/demo',
+  '/developers',
   '/insights/presidio-alone-regulated-industries',
   '/install-extension',
   '/playground',
