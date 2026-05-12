@@ -726,11 +726,12 @@ body {
 
 .btn-cta {
   background: var(--accent-cta);
-  color: white;
+  color: #111827;
 }
 
 .btn-cta:hover {
   background: var(--accent-cta-hover);
+  color: #111827;
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
 }

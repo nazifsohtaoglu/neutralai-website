@@ -20,8 +20,10 @@ const navLinks = [
 ]
 
 const useCaseLinks = [
-  { name: 'Finance', href: '/use-cases/finance' },
+  { name: 'All Use Cases', href: '/use-cases' },
+  { name: 'Finance', href: '/use-cases/financial-services' },
   { name: 'Healthcare', href: '/use-cases/healthcare' },
+  { name: 'Legal', href: '/use-cases/legal' },
 ] as const
 
 export default function Navbar() {
@@ -93,6 +95,8 @@ export default function Navbar() {
 
         <button 
           className="xl:hidden text-slate-300"
+          aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isOpen}
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -11,8 +11,10 @@ const productLinks = [
   { label: 'Compare', href: homeSections.compare },
   { label: 'Playground', href: '/playground' },
   { label: 'Demo', href: siteConfig.demoUrl },
-  { label: 'Finance Use Case', href: '/use-cases/finance' },
+  { label: 'Use Cases', href: '/use-cases' },
+  { label: 'Finance Use Case', href: '/use-cases/financial-services' },
   { label: 'Healthcare Use Case', href: '/use-cases/healthcare' },
+  { label: 'Legal Use Case', href: '/use-cases/legal' },
   { label: 'Blog', href: '/blog' },
   { label: 'Presidio Alternative', href: '/presidio-alternative' },
   { label: 'Pricing', href: homeSections.pricing },
@@ -80,7 +82,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-2 font-heading font-semibold">Product</h4>
+            <p className="mb-2 font-heading font-semibold text-white">Product</p>
             <ul className="space-y-2 text-sm text-slate-500">
               {productLinks.map((link) => (
                 <li key={link.label}>
@@ -91,7 +93,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-2 font-heading font-semibold">Launch</h4>
+            <p className="mb-2 font-heading font-semibold text-white">Launch</p>
             <ul className="space-y-2 text-sm text-slate-500">
               {launchLinks.map((link) => (
                 <li key={link.label}>
@@ -102,7 +104,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-2 font-heading font-semibold">Company</h4>
+            <p className="mb-2 font-heading font-semibold text-white">Company</p>
             <ul className="space-y-2 text-sm text-slate-500">
               {legalLinks.map((link) => (
                 <li key={link.label}>
