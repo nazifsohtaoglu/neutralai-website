@@ -80,7 +80,13 @@ export default function Navbar() {
           <Link href="/contact" className="whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-white 2xl:text-base">
             Contact
           </Link>
-          <Link href={siteConfig.signupUrl} className="btn btn-cta whitespace-nowrap px-5 py-3 text-sm 2xl:text-base">
+          <Link
+            href={siteConfig.signupUrl}
+            className="btn btn-cta whitespace-nowrap px-5 py-3 text-sm 2xl:text-base"
+            data-analytics-event="CTA Click"
+            data-analytics-label="Get Started Free"
+            data-analytics-placement="navbar_desktop"
+          >
             Get Started Free
           </Link>
         </div>
@@ -131,6 +137,9 @@ export default function Navbar() {
             href={siteConfig.signupUrl}
             className="btn btn-cta w-full mt-4"
             onClick={() => setIsOpen(false)}
+            data-analytics-event="CTA Click"
+            data-analytics-label="Get Started Free"
+            data-analytics-placement="navbar_mobile"
           >
             Get Started Free
           </Link>

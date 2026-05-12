@@ -38,11 +38,23 @@ export default function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <a href={siteConfig.signupUrl} className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto">
+              <a
+                href={siteConfig.signupUrl}
+                className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Try Free"
+                data-analytics-placement="homepage_hero"
+              >
                 Try Free
                 <ArrowRight className="h-5 w-5" />
               </a>
-              <a href={siteConfig.demoUrl} className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
+              <a
+                href={siteConfig.demoUrl}
+                className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Book Demo"
+                data-analytics-placement="homepage_hero"
+              >
                 Book Demo
               </a>
             </div>

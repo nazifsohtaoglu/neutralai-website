@@ -3,6 +3,7 @@
 import Script from 'next/script'
 import { useEffect, useId, useState } from 'react'
 import { siteConfig } from '../site'
+import { getLeadAttribution } from '../lib/analytics'
 
 type HubSpotFormApi = {
   forms?: {
@@ -119,6 +120,9 @@ export default function HubSpotLeadForm({
           setHiddenField(form, 'website_intent', intent)
           setHiddenField(form, 'lead_source', leadSource)
           setHiddenField(form, 'website_page_url', window.location.href)
+          Object.entries(getLeadAttribution()).forEach(([name, value]) => {
+            setHiddenField(form, name, String(value))
+          })
         },
       })
     } catch {
