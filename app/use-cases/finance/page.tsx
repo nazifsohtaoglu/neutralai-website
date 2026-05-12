@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
+import { permanentRedirect } from 'next/navigation'
 
 export default function FinanceUseCaseRedirect() {
-  redirect('/use-cases/financial-services')
+  permanentRedirect('/use-cases/financial-services')
 }
