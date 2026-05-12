@@ -10,6 +10,7 @@ const productLinks = [
   { label: 'Why Trust Us', href: homeSections.trust },
   { label: 'Compare', href: homeSections.compare },
   { label: 'Playground', href: '/playground' },
+  { label: 'Developers', href: '/developers' },
   { label: 'Demo', href: siteConfig.demoUrl },
   { label: 'Use Cases', href: '/use-cases' },
   { label: 'Finance Use Case', href: '/use-cases/financial-services' },

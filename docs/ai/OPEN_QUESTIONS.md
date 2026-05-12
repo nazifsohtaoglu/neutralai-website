@@ -16,6 +16,7 @@ Use this file for unknowns. Do not guess silently.
 - WEB-106 needs the live HubSpot portal ID, region, form IDs, contact property names, notification workflow, confirmation email workflow, and Slack routing configured outside the repo before production leads can be verified end-to-end.
 - WEB-106 asks for HubSpot tracking script attribution, but global visitor tracking should wait for approved cookie consent/analytics ownership so the website does not add non-essential tracking before consent.
 - WEB-107 needs a confirmed Plausible workspace/domain, dashboard owner, and approved goal/funnel definitions before production analytics can be verified beyond the website consent-gated wiring.
+- WEB-09 should switch the Developers SDK cards to public registry install commands only after the gateway BUS-012 SDK publication checks confirm `neutralai-sdk` and `neutralai-node-sdk` are live.
 
 ## Architecture / Deployment
 

@@ -13,6 +13,7 @@ const navLinks = [
   { name: 'Why Trust Us', href: homeSections.trust },
   { name: 'Compare', href: homeSections.compare },
   { name: 'Playground', href: '/playground' },
+  { name: 'Developers', href: '/developers' },
   { name: 'Blog', href: '/blog' },
   { name: 'Trust Center', href: '/trust-center' },
   { name: 'Pricing', href: homeSections.pricing },
