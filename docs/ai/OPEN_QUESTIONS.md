@@ -13,6 +13,8 @@ Use this file for unknowns. Do not guess silently.
 - WEB-103 asks for at least 3 articles targeting keywords with search volume >100/mo, but this repo has no approved SEO data source or keyword-volume export. Which SEO tool/export should be treated as the canonical volume source?
 - WEB-104 now has a local Playwright-generated demo video, captions, and poster. If marketing wants external hosting, what hosted URL should replace the local asset? Browser extension or admin dashboard footage still needs explicit approval before it is shown publicly.
 - WEB-105 needs approved real customer outcomes, testimonials, usage counts, or anonymized case-study evidence before the homepage should call anything a customer case study or show social-proof usage numbers.
+- WEB-106 needs the live HubSpot portal ID, region, form IDs, contact property names, notification workflow, confirmation email workflow, and Slack routing configured outside the repo before production leads can be verified end-to-end.
+- WEB-106 asks for HubSpot tracking script attribution, but global visitor tracking should wait for approved cookie consent/analytics ownership so the website does not add non-essential tracking before consent.
 
 ## Architecture / Deployment
 

@@ -18,7 +18,7 @@ import {
   Timer,
   type LucideIcon,
 } from 'lucide-react'
-import { siteConfig } from '../site'
+import { contactLinks, siteConfig } from '../site'
 
 type Card = {
   icon: LucideIcon
@@ -186,7 +186,7 @@ export const pricingPlans = [
       'Managed browser extension rollout',
       'Private cloud or on-prem planning',
     ],
-    href: '/contact',
+    href: contactLinks.enterprise,
     cta: 'Talk to Sales',
     featured: false,
   },

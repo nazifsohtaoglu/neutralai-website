@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, CalendarDays, CirclePlay, FileText, Gauge, MonitorPlay, ShieldCheck } from 'lucide-react'
-import { siteConfig } from '../site'
+import { contactLinks, siteConfig } from '../site'
 
 export const metadata: Metadata = {
   title: 'On-Demand Demo | NeutralAI',
@@ -66,7 +66,7 @@ export default function DemoPage() {
                 Try Free
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link href="/contact" className="btn btn-secondary justify-center px-8 py-4">
+              <Link href={contactLinks.demo} className="btn btn-secondary justify-center px-8 py-4">
                 Book Live Demo
                 <CalendarDays className="h-5 w-5" />
               </Link>
@@ -122,7 +122,7 @@ export default function DemoPage() {
                     <Link href="/playground" className="btn btn-cta justify-center px-7 py-4">
                       Try Playground
                     </Link>
-                    <Link href="/contact" className="btn btn-secondary justify-center px-7 py-4">
+                    <Link href={contactLinks.demo} className="btn btn-secondary justify-center px-7 py-4">
                       Book Live Demo
                     </Link>
                   </div>
@@ -164,7 +164,7 @@ export default function DemoPage() {
               <Link href={siteConfig.signupUrl} className="btn btn-cta justify-center px-7 py-4">
                 Try Free
               </Link>
-              <Link href="/contact" className="btn btn-secondary justify-center px-7 py-4">
+              <Link href={contactLinks.enterprise} className="btn btn-secondary justify-center px-7 py-4">
                 Talk to Sales
               </Link>
             </div>

@@ -109,7 +109,7 @@ export default function TrustCenterPage() {
                 NeutralAI combines a policy boundary, encrypted tokenization, audit evidence, and deployment choices for regulated teams adopting AI.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href={contactLinks.securityMailto} className="btn btn-cta">
+                <a href={contactLinks.securityReview} className="btn btn-cta">
                   Request security review
                 </a>
                 <Link href="/security" className="btn btn-secondary">
@@ -214,7 +214,7 @@ export default function TrustCenterPage() {
                 Send the security context you need reviewed. We will route questionnaire, readiness, and compliance evidence requests through the right owner.
               </p>
             </div>
-            <a href={contactLinks.salesMailto} className="btn btn-cta justify-center">
+            <a href={contactLinks.securityReview} className="btn btn-cta justify-center">
               Contact NeutralAI
             </a>
           </div>
