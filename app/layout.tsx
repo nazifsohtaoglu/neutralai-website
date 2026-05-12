@@ -132,8 +132,11 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${dmSans.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable} font-body bg-background text-slate-50 antialiased`}>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body
+        className={`${dmSans.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable} font-body bg-background text-slate-50 antialiased`}
+        suppressHydrationWarning
+      >
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
