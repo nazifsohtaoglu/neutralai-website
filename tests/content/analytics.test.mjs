@@ -62,6 +62,8 @@ test('utm attribution persists after consent and can enrich HubSpot leads', () =
 
   assert.match(analyticsSource, /ANALYTICS_ATTRIBUTION_KEY/)
   assert.match(analyticsSource, /captureAttribution/)
+  assert.match(analyticsSource, /function mergeAttribution/)
+  assert.match(analyticsSource, /stored\.landing_page_path/)
   assert.match(hubspotSource, /getLeadAttribution/)
   assert.match(hubspotSource, /Object\.entries\(getLeadAttribution\(\)\)/)
   assert.match(openQuestions, /WEB-107 needs a confirmed Plausible workspace/)

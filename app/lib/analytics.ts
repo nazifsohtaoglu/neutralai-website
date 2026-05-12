@@ -122,25 +122,32 @@ export function getStoredAttribution(): AnalyticsProperties {
   }
 }
 
+function mergeAttribution(stored: AnalyticsProperties, current: AnalyticsProperties) {
+  const merged = {
+    ...stored,
+    ...current,
+  }
+
+  if (stored.landing_page_path) {
+    merged.landing_page_path = stored.landing_page_path
+  }
+
+  return merged
+}
+
 export function captureAttribution() {
   if (!hasAnalyticsConsent()) {
     return {}
   }
 
-  const merged = {
-    ...getStoredAttribution(),
-    ...currentUrlAttribution(),
-  }
+  const merged = mergeAttribution(getStoredAttribution(), currentUrlAttribution())
 
   safeLocalStorageSet(ANALYTICS_ATTRIBUTION_KEY, JSON.stringify(merged))
   return merged
 }
 
 export function getLeadAttribution(): AnalyticsProperties {
-  return {
-    ...getStoredAttribution(),
-    ...currentUrlAttribution(),
-  }
+  return mergeAttribution(getStoredAttribution(), currentUrlAttribution())
 }
 
 function getPlausibleQueue() {
