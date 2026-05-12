@@ -38,6 +38,7 @@ function setHiddenField(form: HTMLFormElement | JQueryLikeForm, name: string, va
 
   if (input) {
     input.value = value
+    input.dispatchEvent(new Event('input', { bubbles: true }))
   }
 }
 
