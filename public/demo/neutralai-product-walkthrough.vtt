@@ -1,0 +1,37 @@
+WEBVTT
+
+1
+00:00:00.300 --> 00:00:08.500
+Teams are already using AI to summarise claims, cases, support tickets, and internal documents.
+
+2
+00:00:08.500 --> 00:00:15.500
+But sensitive data often sits inside the prompt before anyone notices.
+
+3
+00:00:15.500 --> 00:00:23.500
+NeutralAI adds a control layer before that prompt reaches an external model.
+
+4
+00:00:23.500 --> 00:00:31.500
+Paste a real workflow prompt, then run masking.
+
+5
+00:00:31.500 --> 00:00:43.000
+Names, emails, phone numbers, IBANs, card numbers, and other sensitive spans are detected and replaced with safe tokens.
+
+6
+00:00:43.000 --> 00:00:51.500
+The original prompt stays available for review, while the sanitized version is what moves forward.
+
+7
+00:00:51.500 --> 00:01:00.000
+Security and legal teams can see what was found, how it was classified, and why it was masked.
+
+8
+00:01:00.000 --> 00:01:08.800
+For workflows that need controlled restoration, reversible tokens can preserve business context without exposing raw identifiers by default.
+
+9
+00:01:08.800 --> 00:01:15.360
+NeutralAI helps regulated teams use AI with clearer boundaries, cleaner evidence, and less sensitive data leaving the business. Try the playground, or book a live walkthrough to map this to your own AI workflow.

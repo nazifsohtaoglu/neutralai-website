@@ -10,6 +10,11 @@ export const siteConfig = {
   appBaseUrl: 'https://app.neutralai.co.uk',
   signupUrl:
     'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=starter&src=website_start_free_trial&callbackUrl=%2Fchat',
+  demoUrl: '/demo',
+  demoVideoEmbedUrl: '',
+  demoVideoSrc: '/demo/neutralai-product-walkthrough.webm',
+  demoVideoCaptionsSrc: '/demo/neutralai-product-walkthrough.vtt',
+  demoVideoPosterSrc: '/demo/neutralai-product-walkthrough-poster.png',
   contactEmail: 'hello@neutralai.co.uk',
   privacyEmail: 'privacy@neutralai.co.uk',
   securityEmail: 'security@neutralai.co.uk',

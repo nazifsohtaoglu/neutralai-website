@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 const root = process.cwd()
@@ -17,6 +17,7 @@ function readHomepageSource() {
     'app/components/home/Hero.tsx',
     'app/components/home/PricingSection.tsx',
     'app/components/home/ProductSurface.tsx',
+    'app/demo/page.tsx',
   ]
     .map(readSource)
     .join('\n')
@@ -44,9 +45,42 @@ test('homepage hero uses Try Free, Book Demo, and a demoted extension install li
   const homeSource = readHomepageSource()
 
   assert.match(homeSource, /href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
-  assert.match(homeSource, /href="\/contact"[\s\S]{0,180}>\s*Book Demo/)
+  assert.match(homeSource, /href=\{siteConfig\.demoUrl\}[\s\S]{0,180}>\s*Book Demo/)
   assert.match(homeSource, /className="text-primary-light[^"]*"[\s\S]{0,80}>\s*Install browser extension/)
   assert.doesNotMatch(homeSource, /className="btn btn-cta[^"]*"[\s\S]{0,120}>\s*Install Extension/)
+})
+
+test('demo page is ready for a hosted video and keeps a live-demo fallback', () => {
+  const demoSource = readSource('app/demo/page.tsx')
+  const siteSource = readSource('app/site.ts')
+  const sitemapSource = readSource('app/sitemap.ts')
+  const footerSource = readSource('app/components/Footer.tsx')
+  const videoPath = join(root, 'public/demo/neutralai-product-walkthrough.webm')
+  const voiceoverPath = join(root, 'public/demo/neutralai-product-walkthrough-voiceover.mp3')
+  const captionsPath = join(root, 'public/demo/neutralai-product-walkthrough.vtt')
+  const posterPath = join(root, 'public/demo/neutralai-product-walkthrough-poster.png')
+
+  assert.match(siteSource, /demoUrl:\s*'\/demo'/)
+  assert.match(siteSource, /demoVideoEmbedUrl:\s*''/)
+  assert.match(siteSource, /demoVideoSrc:\s*'\/demo\/neutralai-product-walkthrough\.webm'/)
+  assert.match(siteSource, /demoVideoCaptionsSrc:\s*'\/demo\/neutralai-product-walkthrough\.vtt'/)
+  assert.match(demoSource, /siteConfig\.demoVideoEmbedUrl/)
+  assert.match(demoSource, /siteConfig\.demoVideoSrc/)
+  assert.match(demoSource, /<video/)
+  assert.match(demoSource, /<track/)
+  assert.match(demoSource, /loading="lazy"/)
+  assert.match(demoSource, /Book Live Demo/)
+  assert.match(demoSource, /Try Playground/)
+  assert.match(demoSource, /Explore the self-guided demo path/)
+  assert.ok(existsSync(videoPath), 'demo video asset should exist')
+  assert.ok(statSync(videoPath).size > 100_000, 'demo video asset should not be empty')
+  assert.ok(existsSync(voiceoverPath), 'demo voiceover source should exist')
+  assert.ok(existsSync(captionsPath), 'demo video captions should exist')
+  assert.ok(existsSync(posterPath), 'demo video poster should exist')
+  assert.doesNotMatch(demoSource, /final asset needed/)
+  assert.doesNotMatch(demoSource, /Recording checklist/)
+  assert.ok(sitemapSource.includes("'/demo'"))
+  assert.match(footerSource, /Book Demo/)
 })
 
 test('extension-focused homepage card keeps Try Free primary and install secondary', () => {

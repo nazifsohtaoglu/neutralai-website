@@ -10,6 +10,7 @@ const productLinks = [
   { label: 'Why Trust Us', href: homeSections.trust },
   { label: 'Compare', href: homeSections.compare },
   { label: 'Playground', href: '/playground' },
+  { label: 'Demo', href: siteConfig.demoUrl },
   { label: 'Finance Use Case', href: '/use-cases/finance' },
   { label: 'Healthcare Use Case', href: '/use-cases/healthcare' },
   { label: 'Blog', href: '/blog' },
@@ -22,6 +23,7 @@ const launchLinks = [
   { label: 'Readiness Check', href: siteConfig.apiReadyUrl },
   { label: 'Playground', href: '/playground' },
   { label: 'Try Free', href: siteConfig.signupUrl },
+  { label: 'Book Demo', href: siteConfig.demoUrl },
   { label: 'Install Extension', href: '/install-extension' },
   { label: 'Extension Support', href: '/support/browser-extension' },
 ] as const
