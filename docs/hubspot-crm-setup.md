@@ -24,6 +24,13 @@ The HubSpot forms should capture these buyer qualification fields:
 - `website_intent`
 - `lead_source`
 - `website_page_url`
+- `utm_source`
+- `utm_medium`
+- `utm_campaign`
+- `utm_term`
+- `utm_content`
+- `referrer_host`
+- `landing_page_path`
 
 ## Form Routing
 

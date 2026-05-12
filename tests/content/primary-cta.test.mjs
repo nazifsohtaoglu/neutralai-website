@@ -44,8 +44,8 @@ test('navbar primary CTA invites users to get started free', () => {
 test('homepage hero uses Try Free, Book Demo, and a demoted extension install link', () => {
   const homeSource = readHomepageSource()
 
-  assert.match(homeSource, /href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
-  assert.match(homeSource, /href=\{siteConfig\.demoUrl\}[\s\S]{0,180}>\s*Book Demo/)
+  assert.match(homeSource, /href=\{siteConfig\.signupUrl\}[\s\S]{0,320}>\s*Try Free/)
+  assert.match(homeSource, /href=\{siteConfig\.demoUrl\}[\s\S]{0,320}>\s*Book Demo/)
   assert.match(homeSource, /className="text-primary-light[^"]*"[\s\S]{0,80}>\s*Install browser extension/)
   assert.doesNotMatch(homeSource, /className="btn btn-cta[^"]*"[\s\S]{0,120}>\s*Install Extension/)
 })
@@ -88,7 +88,7 @@ test('extension-focused homepage card keeps Try Free primary and install seconda
 
   assert.match(
     homeSource,
-    /Same tab\.[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/
+    /Same tab\.[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,320}>\s*Try Free/
   )
   assert.match(
     homeSource,
@@ -100,8 +100,8 @@ test('extension-focused homepage card keeps Try Free primary and install seconda
 test('final CTA keeps Try Free as the primary action and sales as secondary', () => {
   const homeSource = readHomepageSource()
 
-  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
-  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href=\{contactLinks\.enterprise\}[\s\S]{0,180}>\s*Talk to Sales/)
+  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,320}>\s*Try Free/)
+  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href=\{contactLinks\.enterprise\}[\s\S]{0,320}>\s*Talk to Sales/)
 })
 
 test('public positioning avoids beta and pilot language', () => {

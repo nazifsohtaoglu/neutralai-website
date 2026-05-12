@@ -7,6 +7,7 @@ import {
   ArrowRight,
   CheckCircle2,
   Clipboard,
+  Copy,
   Eraser,
   Gauge,
   Loader2,
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react'
 import BackButton from '../components/BackButton'
 import { siteConfig } from '../site'
+import { trackAnalyticsEvent } from '../lib/analytics'
 
 type MaskingMode = 'irreversible' | 'reversible'
 type ResultSource = 'live' | 'demo'
@@ -333,6 +335,11 @@ export default function PlaygroundPage() {
       return
     }
 
+    trackAnalyticsEvent('Playground Mask Submit', {
+      mode,
+      prompt_length: prompt.length,
+    })
+
     const requestVersion = requestVersionRef.current + 1
     const requestPreview = localPreview
     requestVersionRef.current = requestVersion
@@ -404,6 +411,24 @@ export default function PlaygroundPage() {
     clearMaskResult('Waiting for prompt')
   }
 
+  async function copySanitizedOutput() {
+    if (!visibleMaskedText) {
+      return
+    }
+
+    try {
+      await navigator.clipboard.writeText(visibleMaskedText)
+    } catch {
+      return
+    }
+
+    trackAnalyticsEvent('Playground Result Copy', {
+      mode,
+      result_source: source,
+      finding_count: findings.length,
+    })
+  }
+
   return (
     <main className="min-h-screen pt-24">
       <section className="relative overflow-hidden py-12 md:py-16">
@@ -424,7 +449,13 @@ export default function PlaygroundPage() {
                   Try a sample
                   <Play className="h-5 w-5" />
                 </Link>
-                <Link href={siteConfig.signupUrl} className="btn btn-secondary justify-center px-8 py-4">
+                <Link
+                  href={siteConfig.signupUrl}
+                  className="btn btn-secondary justify-center px-8 py-4"
+                  data-analytics-event="CTA Click"
+                  data-analytics-label="Get your free API key"
+                  data-analytics-placement="playground_hero"
+                >
                   Get your free API key
                   <ArrowRight className="h-5 w-5" />
                 </Link>
@@ -515,7 +546,15 @@ export default function PlaygroundPage() {
                     Clear prompt
                   </button>
                 </div>
-                <button type="button" onClick={runMasking} disabled={!canSubmit} className="btn btn-cta justify-center px-7 py-3 disabled:cursor-not-allowed disabled:opacity-60">
+                <button
+                  type="button"
+                  onClick={runMasking}
+                  disabled={!canSubmit}
+                  className="btn btn-cta justify-center px-7 py-3 disabled:cursor-not-allowed disabled:opacity-60"
+                  data-analytics-event="Playground Mask Button Click"
+                  data-analytics-label="Mask prompt"
+                  data-analytics-placement="playground_input"
+                >
                   {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Eraser className="h-5 w-5" />}
                   Mask prompt
                 </button>
@@ -545,6 +584,15 @@ export default function PlaygroundPage() {
                     <h2 className="font-heading text-2xl font-semibold text-white">Detection view</h2>
                     <p className="mt-2 text-sm text-slate-400">Results appear after you run masking from the raw prompt panel.</p>
                   </div>
+                  <button
+                    type="button"
+                    onClick={copySanitizedOutput}
+                    disabled={!hasResult}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-primary/40 hover:text-primary-light disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Copy className="h-4 w-4" />
+                    Copy sanitized
+                  </button>
                 </div>
 
                 <div className="mt-5 grid gap-4 lg:grid-cols-2">
@@ -640,11 +688,23 @@ export default function PlaygroundPage() {
               </div>
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href={siteConfig.signupUrl} className="btn btn-cta justify-center px-8 py-4">
+              <Link
+                href={siteConfig.signupUrl}
+                className="btn btn-cta justify-center px-8 py-4"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Get your free API key"
+                data-analytics-placement="playground_bottom_cta"
+              >
                 Get your free API key
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link href="/contact" className="btn btn-secondary justify-center px-8 py-4">
+              <Link
+                href="/contact"
+                className="btn btn-secondary justify-center px-8 py-4"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Talk to Sales"
+                data-analytics-placement="playground_bottom_cta"
+              >
                 Talk to Sales
               </Link>
             </div>

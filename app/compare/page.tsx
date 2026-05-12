@@ -88,11 +88,23 @@ export default function ComparePage() {
               vaulting, policy enforcement, browser coverage, telemetry, and evidence.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href={siteConfig.signupUrl} className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto">
+              <Link
+                href={siteConfig.signupUrl}
+                className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Try Free"
+                data-analytics-placement="compare_hero"
+              >
                 Try Free
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link href="/contact" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
+              <Link
+                href="/contact"
+                className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Talk to Sales"
+                data-analytics-placement="compare_hero"
+              >
                 Talk to Sales
               </Link>
               <Link href="/presidio-alternative" className="text-primary-light transition hover:text-primary">

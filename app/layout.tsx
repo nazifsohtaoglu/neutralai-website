@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { DM_Sans, JetBrains_Mono, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import AnalyticsProvider from './components/AnalyticsProvider'
 import { siteConfig } from './site'
 
 const dmSans = DM_Sans({
@@ -146,6 +148,9 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Suspense fallback={null}>
+          <AnalyticsProvider />
+        </Suspense>
       </body>
     </html>
   )

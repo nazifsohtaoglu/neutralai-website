@@ -48,7 +48,13 @@ export default function ProductSurface() {
                   NeutralAI can protect browser-based AI usage in the flow people already know, which is exactly why adoption can move faster.
                 </p>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                  <a href={siteConfig.signupUrl} className="btn btn-cta w-full sm:w-auto">
+                  <a
+                    href={siteConfig.signupUrl}
+                    className="btn btn-cta w-full sm:w-auto"
+                    data-analytics-event="CTA Click"
+                    data-analytics-label="Try Free"
+                    data-analytics-placement="homepage_product_surface"
+                  >
                     Try Free
                   </a>
                   <a href="/install-extension" className="btn btn-secondary w-full sm:w-auto">

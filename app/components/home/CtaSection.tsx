@@ -18,17 +18,35 @@ export default function CtaSection() {
             NeutralAI is for teams that already know AI usage is happening and want a credible way to reduce prompt risk without slowing everyone down.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href={siteConfig.signupUrl} className="btn btn-cta w-full px-8 py-4 text-lg sm:w-auto">
+            <a
+              href={siteConfig.signupUrl}
+              className="btn btn-cta w-full px-8 py-4 text-lg sm:w-auto"
+              data-analytics-event="CTA Click"
+              data-analytics-label="Try Free"
+              data-analytics-placement="homepage_final_cta"
+            >
               Try Free
               <ArrowRight className="h-5 w-5" />
             </a>
-            <a href={contactLinks.enterprise} className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto">
+            <a
+              href={contactLinks.enterprise}
+              className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto"
+              data-analytics-event="CTA Click"
+              data-analytics-label="Talk to Sales"
+              data-analytics-placement="homepage_final_cta"
+            >
               Talk to Sales
             </a>
           </div>
           <p className="mt-4 text-sm text-slate-400">
             Need a security or commercial conversation first?{' '}
-            <a href={contactLinks.enterprise} className="text-primary-light hover:text-primary">
+            <a
+              href={contactLinks.enterprise}
+              className="text-primary-light hover:text-primary"
+              data-analytics-event="CTA Click"
+              data-analytics-label="Contact NeutralAI"
+              data-analytics-placement="homepage_final_cta"
+            >
               Contact NeutralAI
             </a>
             .

@@ -15,6 +15,10 @@ export const siteConfig = {
   demoVideoSrc: '/demo/neutralai-product-walkthrough.webm',
   demoVideoCaptionsSrc: '/demo/neutralai-product-walkthrough.vtt',
   demoVideoPosterSrc: '/demo/neutralai-product-walkthrough-poster.png',
+  analytics: {
+    plausibleDomain: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? '',
+    plausibleScriptUrl: process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL ?? 'https://plausible.io/js/script.js',
+  },
   hubspot: {
     portalId: process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID ?? '',
     region: process.env.NEXT_PUBLIC_HUBSPOT_REGION ?? 'eu1',

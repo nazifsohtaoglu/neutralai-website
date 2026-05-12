@@ -62,11 +62,23 @@ export default function DemoPage() {
               The demo flow is designed for buyers who want to understand masking, evidence, restore controls, and rollout options before committing to a live call.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link href={siteConfig.signupUrl} className="btn btn-cta justify-center px-8 py-4">
+              <Link
+                href={siteConfig.signupUrl}
+                className="btn btn-cta justify-center px-8 py-4"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Try Free"
+                data-analytics-placement="demo_hero"
+              >
                 Try Free
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link href={contactLinks.demo} className="btn btn-secondary justify-center px-8 py-4">
+              <Link
+                href={contactLinks.demo}
+                className="btn btn-secondary justify-center px-8 py-4"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Book Live Demo"
+                data-analytics-placement="demo_hero"
+              >
                 Book Live Demo
                 <CalendarDays className="h-5 w-5" />
               </Link>
@@ -119,10 +131,22 @@ export default function DemoPage() {
                     Start with the interactive masking playground, or book a live walkthrough for browser, API, and rollout planning.
                   </p>
                   <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-                    <Link href="/playground" className="btn btn-cta justify-center px-7 py-4">
+                    <Link
+                      href="/playground"
+                      className="btn btn-cta justify-center px-7 py-4"
+                      data-analytics-event="CTA Click"
+                      data-analytics-label="Try Playground"
+                      data-analytics-placement="demo_video_fallback"
+                    >
                       Try Playground
                     </Link>
-                    <Link href={contactLinks.demo} className="btn btn-secondary justify-center px-7 py-4">
+                    <Link
+                      href={contactLinks.demo}
+                      className="btn btn-secondary justify-center px-7 py-4"
+                      data-analytics-event="CTA Click"
+                      data-analytics-label="Book Live Demo"
+                      data-analytics-placement="demo_video_fallback"
+                    >
                       Book Live Demo
                     </Link>
                   </div>
@@ -161,12 +185,24 @@ export default function DemoPage() {
               Bring a representative prompt, document, or browser workflow and the team can walk through the control model with you.
             </p>
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link href={siteConfig.signupUrl} className="btn btn-cta justify-center px-7 py-4">
-                Try Free
-              </Link>
-              <Link href={contactLinks.enterprise} className="btn btn-secondary justify-center px-7 py-4">
-                Talk to Sales
-              </Link>
+                  <Link
+                    href={siteConfig.signupUrl}
+                    className="btn btn-cta justify-center px-7 py-4"
+                    data-analytics-event="CTA Click"
+                    data-analytics-label="Try Free"
+                    data-analytics-placement="demo_bottom_cta"
+                  >
+                    Try Free
+                  </Link>
+                  <Link
+                    href={contactLinks.enterprise}
+                    className="btn btn-secondary justify-center px-7 py-4"
+                    data-analytics-event="CTA Click"
+                    data-analytics-label="Talk to Sales"
+                    data-analytics-placement="demo_bottom_cta"
+                  >
+                    Talk to Sales
+                  </Link>
             </div>
           </div>
         </div>
