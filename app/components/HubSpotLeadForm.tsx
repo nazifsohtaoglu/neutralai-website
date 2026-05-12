@@ -68,13 +68,14 @@ export default function HubSpotLeadForm({
   leadSource: string
 }) {
   const [scriptReady, setScriptReady] = useState(false)
+  const [formReady, setFormReady] = useState(false)
   const [loadFailed, setLoadFailed] = useState(false)
   const instanceId = useId().replaceAll(':', '')
   const targetId = `hubspot-form-${instanceId}`
   const portalId = siteConfig.hubspot.portalId
 
   useEffect(() => {
-    if (!portalId || !formId || scriptReady) {
+    if (!portalId || !formId || formReady) {
       return
     }
 
@@ -83,7 +84,7 @@ export default function HubSpotLeadForm({
     }, 7000)
 
     return () => window.clearTimeout(fallbackTimer)
-  }, [formId, portalId, scriptReady])
+  }, [formId, formReady, portalId])
 
   useEffect(() => {
     if (!scriptReady || !portalId || !formId) {
@@ -112,6 +113,8 @@ export default function HubSpotLeadForm({
         formInstanceId: instanceId,
         redirectUrl: `${siteConfig.url}/contact/thanks/`,
         onFormReady: (form) => {
+          setFormReady(true)
+          setLoadFailed(false)
           setHiddenField(form, 'website_intent', intent)
           setHiddenField(form, 'lead_source', leadSource)
           setHiddenField(form, 'website_page_url', window.location.href)
@@ -139,7 +142,7 @@ export default function HubSpotLeadForm({
       <div id={targetId} data-hubspot-form={formId} className={loadFailed ? 'hidden' : undefined} />
       {loadFailed ? (
         <LeadCaptureFallback reason="load-failed" />
-      ) : !scriptReady ? (
+      ) : !formReady ? (
         <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-sm leading-6 text-slate-400" aria-live="polite">
           Loading secure CRM form...
         </div>

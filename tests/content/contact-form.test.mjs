@@ -25,6 +25,8 @@ test('contact page embeds HubSpot instead of FormSubmit or mailto as the primary
   assert.match(hubspotSource, /redirectUrl: `\$\{siteConfig\.url\}\/contact\/thanks\/`/)
   assert.match(hubspotSource, /onError=\{\(\) => setLoadFailed\(true\)\}/)
   assert.match(hubspotSource, /window\.setTimeout/)
+  assert.match(hubspotSource, /setFormReady\(true\)/)
+  assert.match(hubspotSource, /!formReady/)
   assert.match(hubspotSource, /The CRM form could not load in this browser/)
   assert.doesNotMatch(siteSource, /formsubmit\.co/i)
   assert.doesNotMatch(contactSource, /formsubmit\.co/i)
