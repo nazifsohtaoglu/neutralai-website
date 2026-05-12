@@ -51,12 +51,13 @@ npm run audit:prod
 ## Change Workflow
 
 1. Run `git status --short` and preserve existing user changes.
-2. Classify the ticket using `docs/ai/TICKET_WORKFLOW.md`.
-3. Read the relevant architecture/risk docs.
-4. Make the smallest focused change.
-5. Run targeted checks from `docs/ai/TESTING_AND_COMMANDS.md`.
-6. Commit, push, and open a ready-for-review PR when changes are ready, unless the user explicitly asks not to.
-7. Summarize changed files, validation, risks, PR link, and follow-ups.
+2. If the user asks for the next ticket, run `scripts/codex-next-ticket.sh` before manually selecting an issue.
+3. Classify the ticket using `docs/ai/TICKET_WORKFLOW.md`.
+4. Read the relevant architecture/risk docs.
+5. Make the smallest focused change.
+6. Run targeted checks from `docs/ai/TESTING_AND_COMMANDS.md`.
+7. Commit, push, and open a ready-for-review PR when changes are ready, unless the user explicitly asks not to.
+8. Summarize changed files, validation, risks, PR link, and follow-ups.
 
 ## AI Repo Map Files
 
