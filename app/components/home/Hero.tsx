@@ -63,19 +63,19 @@ export default function Hero() {
               ))}
             </div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          </div>
+
+          <div className="space-y-4 lg:-mt-3 xl:-mt-4">
+            <ProductVisual />
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-3">
               {complianceProofs.map((proof) => (
-                <div key={proof.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                <div key={proof.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-2xl shadow-black/10 backdrop-blur">
                   <proof.icon className="h-5 w-5 text-primary-light" />
                   <p className="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500">{proof.label}</p>
                   <p className="mt-1 font-heading text-lg font-semibold text-slate-100">{proof.value}</p>
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="lg:-mt-3 xl:-mt-4">
-            <ProductVisual />
           </div>
         </div>
       </div>
