@@ -3,6 +3,18 @@ import { siteConfig } from '../../site'
 import { complianceProofs, trustBadges } from '../../data/homepage'
 import ProductVisual from './ProductVisual'
 
+function ProofCard({ proof }: { proof: (typeof complianceProofs)[number] }) {
+  return (
+    <div className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+      <proof.icon className="h-5 w-5 text-primary-light" />
+      <p className="mt-3 break-words text-[10px] uppercase tracking-[0.14em] text-slate-500 sm:text-xs sm:tracking-[0.18em]">
+        {proof.label}
+      </p>
+      <p className="mt-1 break-words font-heading text-base font-semibold text-slate-100 sm:text-lg">{proof.value}</p>
+    </div>
+  )
+}
+
 export default function Hero() {
   return (
     <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-24">
@@ -63,19 +75,20 @@ export default function Hero() {
               ))}
             </div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:hidden">
               {complianceProofs.map((proof) => (
-                <div key={proof.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                  <proof.icon className="h-5 w-5 text-primary-light" />
-                  <p className="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500">{proof.label}</p>
-                  <p className="mt-1 font-heading text-lg font-semibold text-slate-100">{proof.value}</p>
-                </div>
+                <ProofCard key={proof.label} proof={proof} />
               ))}
             </div>
           </div>
 
           <div className="lg:-mt-3 xl:-mt-4">
             <ProductVisual />
+            <div className="mt-4 hidden gap-3 lg:grid lg:grid-cols-3">
+              {complianceProofs.map((proof) => (
+                <ProofCard key={proof.label} proof={proof} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

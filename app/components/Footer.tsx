@@ -61,9 +61,9 @@ function FooterLink({ href, label }: { href: string; label: string }) {
 
 export default function Footer() {
   return (
-    <footer className="relative mt-10 overflow-hidden border-t border-border/80 bg-background-secondary md:mt-14">
+    <footer className="relative mt-20 overflow-hidden border-t border-border/80 bg-background-secondary md:mt-14">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.08),transparent_22%),radial-gradient(circle_at_top_right,rgba(249,115,22,0.08),transparent_18%)]" />
-      <div className="container-custom relative py-8 md:py-10">
+      <div className="container-custom relative pt-12 pb-8 md:py-10">
         <div className="mb-6 grid gap-6 md:grid-cols-[1.15fr_repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="mb-2 flex items-center gap-2">
