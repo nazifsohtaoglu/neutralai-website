@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { siteConfig } from '../../site'
+import { contactLinks, siteConfig } from '../../site'
 import { benchmarkProof, documentRedactionPoints, healthcareTrustPoints, trustCards } from '../../data/homepage'
 
 export default function TrustSection() {
@@ -97,7 +97,7 @@ export default function TrustSection() {
               </p>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <a href="/contact" className="btn btn-cta justify-center px-6 py-3 text-sm">
+                <a href={contactLinks.securityReview} className="btn btn-cta justify-center px-6 py-3 text-sm">
                   Discuss healthcare deployment
                   <ArrowRight className="h-4 w-4" />
                 </a>

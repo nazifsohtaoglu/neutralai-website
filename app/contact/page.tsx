@@ -1,8 +1,11 @@
 'use client'
 
+import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, Mail, ShieldCheck, Waypoints } from 'lucide-react'
+import { ArrowUpRight, Mail, ShieldCheck, Waypoints } from 'lucide-react'
 import BackButton from '../components/BackButton'
+import HubSpotLeadForm from '../components/HubSpotLeadForm'
 import { contactLinks, siteConfig } from '../site'
 
 const contactCards = [
@@ -35,116 +38,66 @@ const onboardingSteps = [
   'If the fit is right, we move into governed onboarding with the right deployment and review path.',
 ] as const
 
-const companySizes = ['1-10', '11-50', '51-200', '200+'] as const
+const intentCopy = {
+  demo: {
+    eyebrow: 'Demo request',
+    title: 'Tell us what you want to protect',
+    description: 'Share the workflow, data types, and deployment context so the first response can be useful.',
+    leadSource: 'website_demo_request',
+  },
+  enterprise: {
+    eyebrow: 'Enterprise enquiry',
+    title: 'Scope a governed rollout',
+    description: 'Share plan interest, provider routing expectations, security review needs, and rollout timing.',
+    leadSource: 'website_enterprise_enquiry',
+  },
+  'security-review': {
+    eyebrow: 'Security review',
+    title: 'Request the right evidence path',
+    description: 'Share the questionnaire, procurement context, or review material your security team needs.',
+    leadSource: 'website_security_review',
+  },
+} as const
 
-const referralOptions = [
-  'Search',
-  'LinkedIn',
-  'Referral',
-  'GitHub',
-  'Security review',
-  'Other',
-] as const
+type ContactIntent = keyof typeof intentCopy
 
-function ContactForm() {
+function normalizeIntent(value: string | null): ContactIntent {
+  if (value === 'enterprise' || value === 'security-review') {
+    return value
+  }
+
+  return 'demo'
+}
+
+function getHubSpotFormId(intent: ContactIntent) {
+  if (intent === 'enterprise') {
+    return siteConfig.hubspot.forms.enterprise || siteConfig.hubspot.forms.contact
+  }
+
+  if (intent === 'security-review') {
+    return siteConfig.hubspot.forms.securityReview || siteConfig.hubspot.forms.contact
+  }
+
+  return siteConfig.hubspot.forms.demo || siteConfig.hubspot.forms.contact
+}
+
+function ContactFormPanel({ intent }: { intent: ContactIntent }) {
+  const copy = intentCopy[intent]
+
   return (
-    <form action={siteConfig.contactFormUrl} method="POST" className="card p-6 md:p-8">
-      <input type="hidden" name="_subject" value="NeutralAI website contact request" />
-      <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value={`${siteConfig.url}/contact/thanks/`} />
-      <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
-
+    <div className="card p-6 md:p-8">
       <div className="flex flex-col gap-4 border-b border-white/10 pb-6 md:flex-row md:items-start md:justify-between">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Demo request</p>
-          <h2 className="mt-3 font-heading text-3xl font-bold">Tell us what you want to protect</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">{copy.eyebrow}</p>
+          <h2 className="mt-3 font-heading text-3xl font-bold">{copy.title}</h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-            Share the workflow, data types, and deployment context so the first response can be useful.
+            {copy.description}
           </p>
         </div>
       </div>
 
-      <div className="mt-6 grid gap-5 md:grid-cols-2">
-        <label className="block">
-          <span className="text-sm font-medium text-slate-200">Full name</span>
-          <input
-            required
-            name="full_name"
-            autoComplete="name"
-            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
-            placeholder="Jane Smith"
-          />
-        </label>
-
-        <label className="block">
-          <span className="text-sm font-medium text-slate-200">Work email</span>
-          <input
-            required
-            type="email"
-            name="email"
-            autoComplete="email"
-            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
-            placeholder="jane@company.com"
-          />
-        </label>
-
-        <label className="block">
-          <span className="text-sm font-medium text-slate-200">Company name</span>
-          <input
-            required
-            name="company_name"
-            autoComplete="organization"
-            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
-            placeholder="Company Ltd"
-          />
-        </label>
-
-        <label className="block">
-          <span className="text-sm font-medium text-slate-200">Company size</span>
-          <select
-            required
-            name="company_size"
-            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors focus:border-primary"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Select size
-            </option>
-            {companySizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-slate-200">Message / use case</span>
-          <textarea
-            required
-            name="message"
-            rows={6}
-            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-primary"
-            placeholder="Tell us which AI workflows, models, and sensitive data types you need to protect."
-          />
-        </label>
-
-        <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-slate-200">How did you hear about us?</span>
-          <select
-            name="referral_source"
-            className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-slate-100 outline-none transition-colors focus:border-primary"
-            defaultValue=""
-          >
-            <option value="">Optional</option>
-            {referralOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="mt-6">
+        <HubSpotLeadForm formId={getHubSpotFormId(intent)} intent={intent} leadSource={copy.leadSource} />
       </div>
 
       <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
@@ -155,12 +108,23 @@ function ContactForm() {
           </a>
           .
         </p>
-        <button type="submit" className="btn btn-cta w-full px-8 py-4 sm:w-auto">
-          Send Message
-          <ArrowRight className="h-5 w-5" />
-        </button>
       </div>
-    </form>
+    </div>
+  )
+}
+
+function ContactFormContent() {
+  const searchParams = useSearchParams()
+  const intent = normalizeIntent(searchParams.get('intent'))
+
+  return <ContactFormPanel intent={intent} />
+}
+
+function ContactForm() {
+  return (
+    <Suspense fallback={<ContactFormPanel intent="demo" />}>
+      <ContactFormContent />
+    </Suspense>
   )
 }
 

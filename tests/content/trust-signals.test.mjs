@@ -132,7 +132,7 @@ test('homepage carries healthcare trust copy without blanket HIPAA claims', () =
   assert.match(homeSource, /Minimum-necessary posture/)
   assert.match(homeSource, /evidence pack are available under review\/NDA/)
   assert.match(homeSource, /BAA review is available for eligible healthcare deployments/)
-  assert.match(homeSource, /href="\/contact"/)
+  assert.match(homeSource, /contactLinks\.securityReview/)
   assert.match(homeSource, /href="\/use-cases\/healthcare"/)
   assert.doesNotMatch(homeSource, /NeutralAI is HIPAA compliant/)
   assert.doesNotMatch(homeSource, /BAA included/)

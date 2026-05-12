@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react'
-import { siteConfig } from '../../site'
+import { contactLinks, siteConfig } from '../../site'
 
 export default function CtaSection() {
   return (
@@ -22,13 +22,13 @@ export default function CtaSection() {
               Try Free
               <ArrowRight className="h-5 w-5" />
             </a>
-            <a href="/contact" className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto">
+            <a href={contactLinks.enterprise} className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto">
               Talk to Sales
             </a>
           </div>
           <p className="mt-4 text-sm text-slate-400">
             Need a security or commercial conversation first?{' '}
-            <a href="/contact" className="text-primary-light hover:text-primary">
+            <a href={contactLinks.enterprise} className="text-primary-light hover:text-primary">
               Contact NeutralAI
             </a>
             .

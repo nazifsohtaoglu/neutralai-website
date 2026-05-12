@@ -101,7 +101,7 @@ test('final CTA keeps Try Free as the primary action and sales as secondary', ()
   const homeSource = readHomepageSource()
 
   assert.match(homeSource, /function CtaSection\(\)[\s\S]*href=\{siteConfig\.signupUrl\}[\s\S]{0,180}>\s*Try Free/)
-  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href="\/contact"[\s\S]{0,180}>\s*Talk to Sales/)
+  assert.match(homeSource, /function CtaSection\(\)[\s\S]*href=\{contactLinks\.enterprise\}[\s\S]{0,180}>\s*Talk to Sales/)
 })
 
 test('public positioning avoids beta and pilot language', () => {
@@ -156,7 +156,7 @@ test('homepage pricing shows approved GBP pricing and self-serve handoff URLs', 
   assert.match(homeSource, /monthlyPrice: 'Custom'/)
   assert.match(homeSource, />GBP</)
   assert.match(homeSource, /website_get_started/)
-  assert.match(homeSource, /href: '\/contact'/)
+  assert.match(homeSource, /href: contactLinks\.enterprise/)
   assert.doesNotMatch(homeSource, /\$499/)
   assert.doesNotMatch(homeSource, />USD</)
   assert.doesNotMatch(homeSource, /monthlyPrice: '£249'/)

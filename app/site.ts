@@ -15,12 +15,21 @@ export const siteConfig = {
   demoVideoSrc: '/demo/neutralai-product-walkthrough.webm',
   demoVideoCaptionsSrc: '/demo/neutralai-product-walkthrough.vtt',
   demoVideoPosterSrc: '/demo/neutralai-product-walkthrough-poster.png',
+  hubspot: {
+    portalId: process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID ?? '',
+    region: process.env.NEXT_PUBLIC_HUBSPOT_REGION ?? 'eu1',
+    forms: {
+      contact: process.env.NEXT_PUBLIC_HUBSPOT_CONTACT_FORM_ID ?? '',
+      demo: process.env.NEXT_PUBLIC_HUBSPOT_DEMO_FORM_ID ?? '',
+      enterprise: process.env.NEXT_PUBLIC_HUBSPOT_ENTERPRISE_FORM_ID ?? '',
+      securityReview: process.env.NEXT_PUBLIC_HUBSPOT_SECURITY_REVIEW_FORM_ID ?? '',
+    },
+  },
   contactEmail: 'hello@neutralai.co.uk',
   privacyEmail: 'privacy@neutralai.co.uk',
   securityEmail: 'security@neutralai.co.uk',
   supportEmail: 'support@neutralai.co.uk',
   salesEmail: 'sales@neutralai.co.uk',
-  contactFormUrl: 'https://formsubmit.co/sales@neutralai.co.uk',
   securityTxtPath: '/.well-known/security.txt',
   chromeExtensionUrl:
     'https://chromewebstore.google.com/detail/neutralai-interceptor/gpdjigfhopjabaodmnombeoldieoobnh',
@@ -29,6 +38,9 @@ export const siteConfig = {
 } as const
 
 export const contactLinks = {
+  demo: '/contact?intent=demo',
+  enterprise: '/contact?intent=enterprise',
+  securityReview: '/contact?intent=security-review',
   demoMailto: `mailto:${siteConfig.salesEmail}?subject=NeutralAI%20demo%20request`,
   launchReviewMailto: `mailto:${siteConfig.contactEmail}?subject=NeutralAI%20launch%20readiness%20review`,
   securityMailto: `mailto:${siteConfig.securityEmail}?subject=Security%20enquiry%20for%20NeutralAI`,
