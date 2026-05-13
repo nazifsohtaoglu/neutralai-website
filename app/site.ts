@@ -18,6 +18,8 @@ export const siteConfig = {
   analytics: {
     plausibleDomain: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? '',
     plausibleScriptUrl: process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL ?? 'https://plausible.io/js/script.js',
+    posthogToken: process.env.NEXT_PUBLIC_POSTHOG_TOKEN ?? '',
+    posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
   },
   hubspot: {
     portalId: process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID ?? '',

@@ -7,8 +7,10 @@ import { siteConfig } from '../site'
 import {
   captureAttribution,
   getAnalyticsConsent,
+  initializePostHog,
   setAnalyticsConsent,
   trackAnalyticsEvent,
+  trackPostHogPageView,
   type AnalyticsConsent,
   type AnalyticsProperties,
 } from '../lib/analytics'
@@ -40,14 +42,23 @@ export default function AnalyticsProvider() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [consent, setConsent] = useState<AnalyticsConsent | null>(() => getAnalyticsConsent())
-  const analyticsEnabled = Boolean(siteConfig.analytics.plausibleDomain)
-  const canLoadAnalytics = consent === 'accepted' && analyticsEnabled
+  const plausibleEnabled = Boolean(siteConfig.analytics.plausibleDomain)
+  const posthogEnabled = Boolean(siteConfig.analytics.posthogToken)
+  const canLoadPlausible = consent === 'accepted' && plausibleEnabled
 
   useEffect(() => {
     if (consent === 'accepted') {
       captureAttribution()
+
+      if (posthogEnabled) {
+        initializePostHog({
+          token: siteConfig.analytics.posthogToken,
+          host: siteConfig.analytics.posthogHost,
+        })
+        trackPostHogPageView(pathname)
+      }
     }
-  }, [consent, pathname, searchParams])
+  }, [consent, pathname, posthogEnabled, searchParams])
 
   useEffect(() => {
     function handleClick(event: MouseEvent) {
@@ -79,7 +90,7 @@ export default function AnalyticsProvider() {
 
   return (
     <>
-      {canLoadAnalytics ? (
+      {canLoadPlausible ? (
         <Script
           id="plausible-analytics"
           src={siteConfig.analytics.plausibleScriptUrl}
@@ -94,7 +105,7 @@ export default function AnalyticsProvider() {
             <div>
               <p className="font-heading text-base font-semibold text-white">Analytics consent</p>
               <p className="mt-1 text-sm leading-6 text-slate-400">
-                We use privacy-friendly analytics to understand page performance and CTA conversion. No analytics runs until you accept.
+                We use consent-based analytics to understand page performance and CTA conversion. No analytics runs until you accept.
               </p>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
