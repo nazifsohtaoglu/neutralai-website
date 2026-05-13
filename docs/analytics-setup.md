@@ -6,8 +6,6 @@ NeutralAI website analytics must stay consent-gated. Do not add analytics cookie
 
 The website can send consent-gated events to Plausible and PostHog. Keep both providers disabled until their public environment variables are configured in the deployment environment.
 
-Track service ownership, accounts, dashboard links, and setup status in `docs/third-party-services.md`.
-
 ### Plausible
 
 - `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`

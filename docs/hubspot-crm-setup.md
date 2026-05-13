@@ -2,8 +2,6 @@
 
 This website loads HubSpot forms from public environment variables only. Do not commit portal credentials, private app tokens, API keys, webhook secrets, or Slack tokens.
 
-Track HubSpot account ownership, form links, Slack notification ownership, and setup status in `docs/third-party-services.md`.
-
 ## Required Public Environment Variables
 
 - `NEXT_PUBLIC_HUBSPOT_PORTAL_ID`
