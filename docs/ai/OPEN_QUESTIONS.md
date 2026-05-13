@@ -17,6 +17,7 @@ Use this file for unknowns. Do not guess silently.
 - WEB-106 asks for HubSpot tracking script attribution, but global visitor tracking should wait for approved cookie consent/analytics ownership so the website does not add non-essential tracking before consent.
 - WEB-107 needs a confirmed Plausible workspace/domain, dashboard owner, and approved goal/funnel definitions before production analytics can be verified beyond the website consent-gated wiring.
 - WEB-61 needs the approved PostHog workspace/project, project region/host, dashboard owner, and final dashboard/funnel URLs before production analytics can be marked fully complete beyond consent-gated website wiring.
+- Third-party service ownership is now tracked in `docs/third-party-services.md`; missing owners, account URLs, and production/staging links should be filled there as accounts are created or confirmed.
 - WEB-09 should switch the Developers SDK cards to public registry install commands only after the gateway BUS-012 SDK publication checks confirm `neutralai-sdk` and `neutralai-node-sdk` are live.
 
 ## Architecture / Deployment

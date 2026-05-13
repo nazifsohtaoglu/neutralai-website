@@ -14,6 +14,7 @@ NeutralAI Website is the public marketing/product website for NeutralAI Gateway.
 | `app/components/` | Shared UI components such as navigation, footer, and reusable page elements |
 | `public/` | Static public assets |
 | `docs/` | Project documentation, dependency security notes, plans, and AI repo map |
+| `docs/third-party-services.md` | Third-party service account, ownership, environment variable, and dashboard/link tracker |
 | `tests/content/` | Node test runner content assertions |
 | `.github/workflows/` | CI workflow for dependency/build/lint/audit checks |
 | `out/`, `.next/` | Generated build output; do not edit manually |
