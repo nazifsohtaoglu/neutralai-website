@@ -21,6 +21,7 @@ Use this file for unknowns. Do not guess silently.
 ## Architecture / Deployment
 
 - Is the website deployed as a static export from `out/`, as a Next server app, or through another platform?
+- Assumption: Until hosting-level redirect support is confirmed, `/use-cases/finance` is implemented as a static fallback alias page that canonicalizes to `/use-cases/financial-services` instead of using App Router runtime redirects.
 - Should generated `out/` assets be committed or treated as build output only?
 - Should Playwright artifacts be ignored/cleaned, or are they used as review evidence?
 
