@@ -54,7 +54,6 @@ Every tracked page must have one row in the SEO tracker with these fields:
 | `/use-cases/legal` | legal ai data protection | implementation | Every 28 days |
 | `/use-cases/financial-services` | financial services ai data protection | implementation | Every 28 days |
 | `/use-cases/healthcare` | healthcare ai data protection | implementation | Every 28 days |
-| `/use-cases/insurance` | insurance ai data protection | implementation | Every 28 days |
 
 ## Performance Review Loop
 
