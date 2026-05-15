@@ -9,7 +9,7 @@ export const siteConfig = {
   apiReadyUrl: 'https://api.neutralai.co.uk/ready',
   appBaseUrl: 'https://app.neutralai.co.uk',
   signupUrl:
-    'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=starter&src=website_start_free_trial&callbackUrl=%2Fchat',
+    'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=free&src=website_start_free_trial&callbackUrl=%2Fchat',
   demoUrl: '/demo',
   demoVideoEmbedUrl: '',
   demoVideoSrc: '/demo/neutralai-product-walkthrough.webm',
