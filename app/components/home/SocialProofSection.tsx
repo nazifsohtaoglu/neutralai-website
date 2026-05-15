@@ -1,9 +1,48 @@
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { evaluationStories, socialProofIndustrySlides, socialProofMetrics } from '../../data/homepage'
 import SectionIntro from './SectionIntro'
 
 export default function SocialProofSection() {
+  const [activeSlide, setActiveSlide] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const slideRefs = useRef<Array<HTMLElement | null>>([])
+
+  const maxSlides = socialProofIndustrySlides.length
+
+  useEffect(() => {
+    const target = slideRefs.current[activeSlide]
+    if (!target) {
+      return
+    }
+    target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+  }, [activeSlide])
+
+  useEffect(() => {
+    if (isPaused) {
+      return
+    }
+    const timer = setInterval(() => {
+      setActiveSlide((current) => (current + 1) % maxSlides)
+    }, 4600)
+    return () => clearInterval(timer)
+  }, [isPaused, maxSlides])
+
+  const goToSlide = (index: number) => {
+    if (index < 0) {
+      setActiveSlide(maxSlides - 1)
+      return
+    }
+    if (index >= maxSlides) {
+      setActiveSlide(0)
+      return
+    }
+    setActiveSlide(index)
+  }
+
   return (
     <section id="social-proof" className="section">
       <div className="container-custom">
@@ -15,20 +54,55 @@ export default function SocialProofSection() {
 
         <div className="mt-10">
           <div className="flex flex-wrap gap-2">
-            {socialProofIndustrySlides.map((industry) => (
-              <span
+            {socialProofIndustrySlides.map((industry, index) => (
+              <button
                 key={industry.title}
-                className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary-light"
+                type="button"
+                onClick={() => goToSlide(index)}
+                className={`rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] transition ${
+                  activeSlide === index
+                    ? 'border-primary/45 bg-primary/20 text-primary-light shadow-[0_0_24px_rgba(34,211,238,0.18)]'
+                    : 'border-primary/20 bg-primary/10 text-primary-light hover:border-primary/35 hover:bg-primary/15'
+                }`}
               >
                 {industry.title}
-              </span>
+              </button>
             ))}
           </div>
 
-          <div className="industry-slider-shell mt-4 rounded-[24px] p-3 md:p-4">
+          <div
+            className="industry-slider-shell mt-4 rounded-[24px] p-3 md:p-4"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div className="industry-slider-controls mb-3 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                aria-label="Previous industry slide"
+                onClick={() => goToSlide(activeSlide - 1)}
+                className="industry-control-btn"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                aria-label="Next industry slide"
+                onClick={() => goToSlide(activeSlide + 1)}
+                className="industry-control-btn"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+
             <div className="industry-slider-track">
-              {[...socialProofIndustrySlides, ...socialProofIndustrySlides].map((slide, index) => (
-                <article key={`${slide.title}-${index}`} className="industry-slide-card">
+              {socialProofIndustrySlides.map((slide, index) => (
+                <article
+                  key={slide.title}
+                  ref={(node) => {
+                    slideRefs.current[index] = node
+                  }}
+                  className={`industry-slide-card ${activeSlide === index ? 'industry-slide-card-active' : ''}`}
+                >
                   <div className="relative overflow-hidden rounded-[16px]">
                     <Image
                       src={slide.image}
@@ -44,6 +118,18 @@ export default function SocialProofSection() {
                     <p className="mt-2 text-sm leading-6 text-slate-300">{slide.caption}</p>
                   </div>
                 </article>
+              ))}
+            </div>
+
+            <div className="mt-4 flex items-center justify-center gap-2">
+              {socialProofIndustrySlides.map((slide, index) => (
+                <button
+                  key={`${slide.title}-dot`}
+                  type="button"
+                  aria-label={`Go to ${slide.title} slide`}
+                  onClick={() => goToSlide(index)}
+                  className={`industry-dot ${activeSlide === index ? 'industry-dot-active' : ''}`}
+                />
               ))}
             </div>
           </div>
