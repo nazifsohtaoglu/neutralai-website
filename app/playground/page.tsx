@@ -445,7 +445,7 @@ export default function PlaygroundPage() {
                 Paste a prompt, choose reversible or irreversible masking, and preview the sanitized output with entity labels and confidence scores.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link href="#playground-demo" className="btn btn-cta justify-center px-8 py-4">
+                <Link href="#playground-demo" className="btn btn-primary justify-center px-8 py-4">
                   Try a sample
                   <Play className="h-5 w-5" />
                 </Link>
@@ -537,7 +537,7 @@ export default function PlaygroundPage() {
               />
 
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex flex-col gap-2 text-sm text-slate-500 sm:flex-row sm:items-center sm:gap-5">
+                <div className="flex flex-col gap-2 text-sm text-slate-400 sm:flex-row sm:items-center sm:gap-5">
                   <span className={isOverLimit ? 'text-orange-300' : undefined}>
                     {prompt.length}/{MAX_PROMPT_LENGTH} recommended characters
                   </span>
@@ -603,7 +603,7 @@ export default function PlaygroundPage() {
                     </div>
                     <div className="min-h-[150px] whitespace-pre-wrap break-words font-mono text-sm leading-7 text-slate-200">
                       {hasResult ? renderHighlightedText(prompt, findings, 'original') : (
-                        <span className="font-body text-sm leading-6 text-slate-500">
+                        <span className="font-body text-sm leading-6 text-slate-400">
                           Write a prompt or choose a sample, then press Mask prompt.
                         </span>
                       )}
@@ -617,7 +617,7 @@ export default function PlaygroundPage() {
                     </div>
                     <div className="min-h-[150px] whitespace-pre-wrap break-words font-mono text-sm leading-7 text-slate-200">
                       {hasResult ? renderHighlightedText(visibleMaskedText, tokens, 'masked') : (
-                        <span className="font-body text-sm leading-6 text-slate-500">
+                        <span className="font-body text-sm leading-6 text-slate-400">
                           Sanitized output will appear here.
                         </span>
                       )}

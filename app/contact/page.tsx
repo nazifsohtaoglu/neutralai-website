@@ -101,7 +101,7 @@ function ContactFormPanel({ intent }: { intent: ContactIntent }) {
       </div>
 
       <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm leading-6 text-slate-500">
+        <p className="text-sm leading-6 text-slate-400">
           Prefer email? Reach us at{' '}
           <a href={contactLinks.salesMailto} className="text-primary-light transition-colors hover:text-primary">
             {siteConfig.salesEmail}

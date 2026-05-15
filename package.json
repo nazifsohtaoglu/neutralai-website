@@ -8,6 +8,7 @@
     "start": "next start",
     "record:demo-video": "node scripts/record-neutralai-demo-video.mjs",
     "test:visual-smoke": "node scripts/visual-smoke.mjs",
+    "test:a11y-smoke": "node scripts/accessibility-smoke.mjs",
     "test:content": "node --test tests/content/*.test.mjs",
     "lint": "eslint .",
     "audit:prod": "npm audit --omit=dev --audit-level=critical"
