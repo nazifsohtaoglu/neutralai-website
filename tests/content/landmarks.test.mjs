@@ -48,6 +48,11 @@ test('shared use-case template owns a single main landmark', () => {
   assert.equal(countMainLandmarks(source), 1, 'UseCasePage should render one <main>')
 })
 
+test('custom not-found page owns a single main landmark', () => {
+  const source = readFileSync(join(root, 'app/not-found.tsx'), 'utf8')
+  assert.equal(countMainLandmarks(source), 1, 'app/not-found.tsx should render one <main>')
+})
+
 test('each route page renders one main landmark directly or via shared template', () => {
   const pageFiles = listPageFiles(appDir)
   assert.ok(pageFiles.length > 0, 'expected at least one app route page')
