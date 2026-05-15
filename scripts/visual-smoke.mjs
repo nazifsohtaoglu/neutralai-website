@@ -207,7 +207,10 @@ async function run() {
 
       try {
         const page = await context.newPage()
-        await page.goto(`${baseUrl}${scenario.route}`, { waitUntil: 'networkidle' })
+        const response = await page.goto(`${baseUrl}${scenario.route}`, { waitUntil: 'networkidle' })
+        if (!response || !response.ok()) {
+          throw new Error(`${scenario.name}: expected 2xx/3xx response but got ${response?.status() ?? 'no response'}`)
+        }
         await page.waitForTimeout(300)
 
         await assertNoHorizontalOverflow(page, scenario.name)
