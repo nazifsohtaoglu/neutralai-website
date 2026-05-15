@@ -46,7 +46,7 @@ function DesktopDropdown({ label, links }: { label: string; links: readonly Drop
         {label}
         <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
       </button>
-      <div className="invisible absolute left-1/2 top-full z-50 mt-1 w-56 -translate-x-1/2 rounded-2xl border border-white/10 bg-background-secondary/95 p-2 opacity-0 shadow-[0_20px_60px_rgba(2,6,23,0.5)] backdrop-blur transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+      <div className="invisible absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 rounded-2xl border border-white/10 bg-background-secondary/95 p-2 opacity-0 shadow-[0_20px_60px_rgba(2,6,23,0.5)] backdrop-blur transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
         {links.map((link) => (
           <Link
             key={link.name}
