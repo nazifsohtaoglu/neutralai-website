@@ -17,8 +17,8 @@ function ProofCard({ proof }: { proof: (typeof complianceProofs)[number] }) {
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-24">
-      <div className="absolute inset-0 hero-mesh" />
+    <section className="hero-control-stage relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-24">
+      <div className="absolute inset-0 hero-control-mesh" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background" />
 
       <div className="container-custom relative z-10">
@@ -73,20 +73,6 @@ export default function Hero() {
               </a>
             </div>
 
-            <div className="mt-10 space-y-3">
-              {[
-                'Stops raw PII and business identifiers before they reach external models',
-                'Generates compliance evidence for AI usage instead of relying on manual screenshots',
-                'Supports browser extension, managed gateway, private cloud, and on-prem rollout paths',
-                'Helps legal and security approve AI adoption without blocking everyday workflows',
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-
             <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:hidden">
               {complianceProofs.map((proof) => (
                 <ProofCard key={proof.label} proof={proof} />
@@ -99,6 +85,42 @@ export default function Hero() {
             <div className="mt-4 hidden gap-3 lg:grid lg:grid-cols-3">
               {complianceProofs.map((proof) => (
                 <ProofCard key={proof.label} proof={proof} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-5 xl:grid-cols-[1.12fr_0.88fr]">
+          <div className="control-storyboard">
+            <p className="font-mono text-[12px] uppercase tracking-[0.28em] text-primary-light md:text-[13px]">How NeutralAI Protects Prompts</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {[
+                ['Intercept', 'Prompt traffic is captured before external model routing.'],
+                ['Detect', 'Policy-aware recognition flags sensitive identifiers early.'],
+                ['Mask', 'Sensitive values are replaced with safer tokens or sanitized references.'],
+                ['Audit', 'Evidence and policy decisions stay review-ready for security teams.'],
+              ].map(([title, body]) => (
+                <div key={title} className="control-storyboard-card rounded-2xl p-5 md:p-5 xl:min-h-[176px]">
+                  <p className="font-mono text-[13px] uppercase tracking-[0.22em] text-[#fdba74] md:text-sm">{title}</p>
+                  <p className="mt-3 text-lg leading-8 text-slate-300 md:text-[1.55rem] md:leading-[1.48]">{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="control-proof-panel rounded-2xl p-5 sm:p-6">
+            <p className="font-mono text-[12px] uppercase tracking-[0.28em] text-primary-light md:text-[13px]">Why teams choose it</p>
+            <div className="mt-4 space-y-4">
+              {[
+                'Stops raw PII and business identifiers before they reach external models',
+                'Generates compliance evidence for AI usage instead of relying on manual screenshots',
+                'Supports browser extension, managed gateway, private cloud, and on-prem rollout paths',
+                'Helps legal and security approve AI adoption without blocking everyday workflows',
+              ].map((item) => (
+                <div key={item} className="control-proof-item flex items-start gap-3 rounded-xl p-4 text-slate-300 md:min-h-[104px]">
+                  <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-primary-light md:h-6 md:w-6" />
+                  <span className="text-base leading-7 md:text-[1.03rem] md:leading-7">{item}</span>
+                </div>
               ))}
             </div>
           </div>

@@ -36,6 +36,8 @@ test('homepage exposes concrete trust badges and detection details', () => {
   assert.match(homeSource, /EMAIL/)
   assert.match(homeSource, /CREDIT_CARD/)
   assert.match(homeSource, /PHONE_NUMBER, PERSON, CREDIT_CARD, IBAN, SSN, TR_ID_NUMBER, UK_NHS_NUMBER/)
+  assert.match(homeSource, /Sensitive values are replaced with safer tokens or sanitized references/)
+  assert.doesNotMatch(homeSource, /neutral tokens or irreversible tags/i)
 })
 
 test('homepage adds social proof without fake customer claims', () => {
