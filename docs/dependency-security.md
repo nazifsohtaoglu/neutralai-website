@@ -2,7 +2,7 @@
 
 - Owner: Founders / Website Maintainer
 - Review cadence: weekly review every Monday, plus every release PR
-- Last updated: 2026-04-19
+- Last updated: 2026-05-15
 
 ## Current baseline
 
@@ -22,4 +22,9 @@
 
 ## Current note
 
-As of `2026-04-19`, the move to `Next.js 16.2.4` clears the previously observed production dependency advisories in `npm audit --omit=dev`. Future major upgrades should still be reviewed deliberately, because framework changes can affect static export, metadata routes, and lint/build conventions.
+As of `2026-05-15`, `npm audit --omit=dev --audit-level=critical` is clean after forcing a safe `postcss` line via `package.json` overrides (`postcss@^8.5.14`) while remaining on `next@16.2.x`.
+
+Next action:
+
+- Keep the override in place until Next ships a stable release that resolves the transitive PostCSS advisory without overrides.
+- Re-check with `npm run audit:prod`, `npm run lint`, and `npm run build` before removing the override.
