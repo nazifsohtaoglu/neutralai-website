@@ -7,18 +7,21 @@ import { motion } from 'framer-motion'
 import { ChevronDown, Menu, X } from 'lucide-react'
 import { homeSections, siteConfig } from '../site'
 
-const navLinks = [
+const primaryNavLinks = [
   { name: 'Problem', href: homeSections.problem },
   { name: 'How It Works', href: homeSections.howItWorks },
   { name: 'Why Trust Us', href: homeSections.trust },
   { name: 'Compare', href: homeSections.compare },
+  { name: 'Pricing', href: homeSections.pricing },
   { name: 'Playground', href: '/playground' },
   { name: 'Developers', href: '/developers' },
+]
+
+const secondaryNavLinks = [
   { name: 'Blog', href: '/blog' },
   { name: 'Trust Center', href: '/trust-center' },
-  { name: 'Pricing', href: homeSections.pricing },
   { name: 'About', href: '/about' },
-]
+] as const
 
 const useCaseLinks = [
   { name: 'All Use Cases', href: '/use-cases' },
@@ -26,6 +29,37 @@ const useCaseLinks = [
   { name: 'Healthcare', href: '/use-cases/healthcare' },
   { name: 'Legal', href: '/use-cases/legal' },
 ] as const
+
+type DropdownLink = {
+  name: string
+  href: string
+}
+
+function DesktopDropdown({ label, links }: { label: string; links: readonly DropdownLink[] }) {
+  return (
+    <div className="group relative">
+      <button
+        type="button"
+        className="flex items-center gap-1 whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 2xl:text-base"
+        aria-haspopup="true"
+      >
+        {label}
+        <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
+      </button>
+      <div className="invisible absolute left-1/2 top-full z-50 mt-1 w-56 -translate-x-1/2 rounded-2xl border border-white/10 bg-background-secondary/95 p-2 opacity-0 shadow-[0_20px_60px_rgba(2,6,23,0.5)] backdrop-blur transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+        {links.map((link) => (
+          <Link
+            key={link.name}
+            href={link.href}
+            className="block rounded-xl px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.06] hover:text-primary focus-visible:bg-white/[0.06] focus-visible:text-primary focus-visible:outline-none"
+          >
+            {link.name}
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -47,8 +81,8 @@ export default function Navbar() {
           <span className="whitespace-nowrap font-heading text-xl font-bold">NeutralAI</span>
         </Link>
 
-        <div className="hidden min-w-0 flex-1 items-center justify-center gap-5 xl:flex 2xl:gap-7">
-          {navLinks.map((link) => (
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-4 xl:flex 2xl:gap-6">
+          {primaryNavLinks.map((link) => (
             <Link 
               key={link.name} 
               href={link.href}
@@ -57,26 +91,8 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <div className="group relative">
-            <button
-              type="button"
-              className="flex items-center gap-1 whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-primary 2xl:text-base"
-            >
-              Use Cases
-              <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
-            </button>
-            <div className="invisible absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 rounded-2xl border border-white/10 bg-background-secondary/95 p-2 opacity-0 shadow-[0_20px_60px_rgba(2,6,23,0.5)] backdrop-blur transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-              {useCaseLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="block rounded-xl px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.06] hover:text-primary"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </div>
+          <DesktopDropdown label="Use Cases" links={useCaseLinks} />
+          <DesktopDropdown label="More" links={secondaryNavLinks} />
         </div>
 
         <div className="hidden flex-shrink-0 items-center gap-4 xl:flex">
@@ -110,9 +126,20 @@ export default function Navbar() {
           animate={{ opacity: 1, y: 0 }}
           className="xl:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-72px)] overflow-y-auto glass border-t border-border p-4"
         >
-          {navLinks.map((link) => (
+          {primaryNavLinks.map((link) => (
             <Link 
               key={link.name} 
+              href={link.href}
+              className="block py-3 text-slate-300 hover:text-primary transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <div className="pt-2 font-mono text-xs uppercase tracking-[0.2em] text-slate-500">More</div>
+          {secondaryNavLinks.map((link) => (
+            <Link
+              key={link.name}
               href={link.href}
               className="block py-3 text-slate-300 hover:text-primary transition-colors"
               onClick={() => setIsOpen(false)}
