@@ -17,9 +17,10 @@ Use this file for unknowns. Do not guess silently.
 
 ## Architecture / Deployment
 
-- Is the website deployed as a static export from `out/`, as a Next server app, or through another platform?
-- Assumption: Until hosting-level redirect support is confirmed, `/use-cases/finance` is implemented as a static fallback alias page that canonicalizes to `/use-cases/financial-services` instead of using App Router runtime redirects.
-- Should generated `out/` assets be committed or treated as build output only?
+- Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: website delivery is documented as static export output from `out/`, served behind Cloudflare edge.
+- Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: `/use-cases/finance` remains a static alias page that canonicalizes to `/use-cases/financial-services` instead of runtime-only redirect APIs.
+- Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: generated `out/` is build-only output and should not be committed.
+- Which private ops source-of-truth owns host-level redirect/header configuration and rollback on-call for website production? Track in issue [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) under owner role Platform/Infra.
 - Should Playwright artifacts be ignored/cleaned, or are they used as review evidence?
 
 ## Testing / CI
