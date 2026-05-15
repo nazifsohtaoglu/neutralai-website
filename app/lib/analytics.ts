@@ -14,16 +14,6 @@ const attributionParams = [
   'utm_content',
 ] as const
 
-type PlausibleOptions = {
-  props?: AnalyticsProperties
-  url?: string
-}
-
-type PlausibleFn = {
-  (eventName: string, options?: PlausibleOptions): void
-  q?: [string, PlausibleOptions | undefined][]
-}
-
 type PostHogClient = typeof import('posthog-js/dist/module.no-external').default
 
 type PostHogRuntimeConfig = {
@@ -34,12 +24,6 @@ type PostHogRuntimeConfig = {
 type QueuedPostHogEvent = {
   eventName: string
   properties: AnalyticsProperties
-}
-
-declare global {
-  interface Window {
-    plausible?: PlausibleFn
-  }
 }
 
 const maxQueuedPostHogEvents = 20
@@ -169,18 +153,6 @@ export function getLeadAttribution(): AnalyticsProperties {
   return mergeAttribution(getStoredAttribution(), currentUrlAttribution())
 }
 
-function getPlausibleQueue() {
-  if (!window.plausible) {
-    const plausible: PlausibleFn = (eventName, options) => {
-      plausible.q = plausible.q || []
-      plausible.q.push([eventName, options])
-    }
-    window.plausible = plausible
-  }
-
-  return window.plausible
-}
-
 function normalizePostHogHost(host: string) {
   return host.trim() || 'https://us.i.posthog.com'
 }
@@ -262,7 +234,7 @@ export function trackPostHogPageView(pathname: string) {
   })
 }
 
-export function trackAnalyticsEvent(eventName: string, properties: AnalyticsProperties = {}, options: Omit<PlausibleOptions, 'props'> = {}) {
+export function trackAnalyticsEvent(eventName: string, properties: AnalyticsProperties = {}) {
   if (typeof window === 'undefined' || !hasAnalyticsConsent()) {
     return
   }
@@ -271,11 +243,6 @@ export function trackAnalyticsEvent(eventName: string, properties: AnalyticsProp
     ...getStoredAttribution(),
     ...properties,
   }
-
-  getPlausibleQueue()(eventName, {
-    ...options,
-    props,
-  })
 
   capturePostHogEvent(eventName, props)
 }
