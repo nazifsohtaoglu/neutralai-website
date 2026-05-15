@@ -114,7 +114,7 @@ export default function Hero() {
               {[
                 'Stops raw PII and business identifiers before they reach external models',
                 'Generates compliance evidence for AI usage instead of relying on manual screenshots',
-                'Supports browser extension, managed gateway, private cloud, and on-prem rollout paths',
+                'Supports browser extension and managed gateway today, with private cloud/on-prem scoped through enterprise review',
                 'Helps legal and security approve AI adoption without blocking everyday workflows',
               ].map((item) => (
                 <div key={item} className="control-proof-item flex items-start gap-3 rounded-xl p-4 text-slate-300 md:min-h-[104px]">

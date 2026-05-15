@@ -28,7 +28,7 @@ test('homepage exposes concrete trust badges and detection details', () => {
   assert.match(homeSource, /AES-256-GCM vault/)
   assert.match(homeSource, /SOC2 readiness/)
   assert.match(homeSource, /GDPR-aligned controls/)
-  assert.match(homeSource, /Cyber Essentials evidence/)
+  assert.match(homeSource, /Cyber Essentials via review/)
   assert.match(homeSource, /20\+ PII entity types/)
   assert.match(homeSource, /10-language benchmark/)
   assert.match(homeSource, /Presidio NER and pattern matching with semantic validation using Qdrant/)
@@ -56,10 +56,12 @@ test('homepage adds social proof without fake customer claims', () => {
   assert.match(homeSource, /~41 ms/)
   assert.match(homeSource, /Finance evaluation pattern/)
   assert.match(homeSource, /Healthcare evaluation pattern/)
+  assert.match(homeSource, /Supports browser extension and managed gateway today, with private cloud\/on-prem scoped through enterprise review/)
   assert.match(homeSource, /Production usage counts and customer outcomes are published only when an approved source exists/)
   assert.doesNotMatch(homeSource, /Trusted by .*customers/)
   assert.doesNotMatch(homeSource, /testimonial/i)
   assert.doesNotMatch(homeSource, /customer logo/i)
+  assert.doesNotMatch(homeSource, /Supports browser extension, managed gateway, private cloud, and on-prem rollout paths/)
 })
 
 test('homepage adds a scannable detection engine deep dive', () => {
