@@ -9,16 +9,21 @@ import SectionIntro from './SectionIntro'
 export default function SocialProofSection() {
   const [activeSlide, setActiveSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const viewportRef = useRef<HTMLDivElement | null>(null)
   const slideRefs = useRef<Array<HTMLElement | null>>([])
 
   const maxSlides = socialProofIndustrySlides.length
 
   useEffect(() => {
     const target = slideRefs.current[activeSlide]
-    if (!target) {
+    const viewport = viewportRef.current
+    if (!target || !viewport) {
       return
     }
-    target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+    viewport.scrollTo({
+      left: target.offsetLeft,
+      behavior: 'smooth',
+    })
   }, [activeSlide])
 
   useEffect(() => {
@@ -94,31 +99,35 @@ export default function SocialProofSection() {
               </button>
             </div>
 
-            <div className="industry-slider-track">
-              {socialProofIndustrySlides.map((slide, index) => (
-                <article
-                  key={slide.title}
-                  ref={(node) => {
-                    slideRefs.current[index] = node
-                  }}
-                  className={`industry-slide-card ${activeSlide === index ? 'industry-slide-card-active' : ''}`}
-                >
-                  <div className="relative overflow-hidden rounded-[16px]">
-                    <Image
-                      src={slide.image}
-                      alt={`${slide.title} usage with NeutralAI prompt masking and policy controls`}
-                      width={700}
-                      height={420}
-                      className="h-[210px] w-full object-cover md:h-[250px]"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/15 to-transparent" />
-                  </div>
-                  <div className="mt-3">
-                    <h3 className="font-heading text-xl font-semibold text-white">{slide.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">{slide.caption}</p>
-                  </div>
-                </article>
-              ))}
+            <div ref={viewportRef} className="industry-slider-viewport">
+              <div className="industry-slider-track">
+                {socialProofIndustrySlides.map((slide, index) => (
+                  <button
+                    key={slide.title}
+                    type="button"
+                    ref={(node) => {
+                      slideRefs.current[index] = node
+                    }}
+                    onClick={() => goToSlide(activeSlide + 1)}
+                    className={`industry-slide-card ${activeSlide === index ? 'industry-slide-card-active' : ''}`}
+                  >
+                    <div className="relative overflow-hidden rounded-[16px]">
+                      <Image
+                        src={slide.image}
+                        alt={`${slide.title} usage with NeutralAI prompt masking and policy controls`}
+                        width={700}
+                        height={420}
+                        className="h-[210px] w-full object-cover md:h-[250px]"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/15 to-transparent" />
+                    </div>
+                    <div className="mt-3">
+                      <h3 className="font-heading text-xl font-semibold text-white">{slide.title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-300">{slide.caption}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="mt-4 flex items-center justify-center gap-2">

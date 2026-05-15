@@ -302,17 +302,27 @@ body {
   overflow: hidden;
 }
 
-.industry-slider-track {
-  display: flex;
-  gap: 1rem;
+.industry-slider-viewport {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+.industry-slider-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.industry-slider-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
   padding-bottom: 0.35rem;
 }
 
 .industry-slide-card {
+  appearance: none;
+  text-align: left;
   width: min(84vw, 430px);
   flex: 0 0 auto;
   scroll-snap-align: start;
@@ -326,16 +336,13 @@ body {
   transition: transform 260ms ease, opacity 260ms ease, border-color 260ms ease;
   transform: scale(0.95);
   opacity: 0.68;
+  cursor: pointer;
 }
 
 .industry-slide-card-active {
   transform: scale(1);
   opacity: 1;
   border-color: rgba(34, 211, 238, 0.35);
-}
-
-.industry-slider-track::-webkit-scrollbar {
-  display: none;
 }
 
 .industry-control-btn {
