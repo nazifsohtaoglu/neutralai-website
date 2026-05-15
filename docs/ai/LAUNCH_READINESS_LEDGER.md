@@ -4,7 +4,7 @@ This ledger tracks launch-critical dependencies so no blocker remains as unowned
 
 Use this file for go/no-go readiness. Keep `docs/ai/OPEN_QUESTIONS.md` for non-launch unknowns.
 
-Assumption: Individual owner names and account emails stay in `docs/local/third-party-services.local.md`, while this file tracks owner roles and issue-level status.
+Assumption: Individual owner names, account emails, and admin workspace URLs are maintained in an access-controlled private ops system outside this repository, while this file tracks owner roles and issue-level status.
 
 ## Go/No-Go Rule
 
@@ -19,6 +19,7 @@ Assumption: Individual owner names and account emails stay in `docs/local/third-
 | Public claims evidence and approval (GDPR, regulated sectors, retention/deployment claims) | Product Marketing + Compliance | [#73](https://github.com/nazifsohtaoglu/neutralai-website/issues/73) | Pre-launch | Open | Claim registry must map each public claim to verifiable evidence or remove claim language. |
 | HubSpot production forms, routing, and lead ownership | Revenue Operations + Growth Engineering | [#70](https://github.com/nazifsohtaoglu/neutralai-website/issues/70) | Pre-launch | Open | Portal/form IDs, routing, notifications, and ownership must be verified end-to-end in production. |
 | PostHog production dashboards and funnel ownership | Product Analytics | [#61](https://github.com/nazifsohtaoglu/neutralai-website/issues/61) | Pre-launch | Open | Dashboards, owners, and final URLs are required for launch reporting. |
+| Plausible production ownership decision (active ownership vs formal retirement) | Product Analytics + Growth Engineering | [#87](https://github.com/nazifsohtaoglu/neutralai-website/issues/87) | Pre-launch | Open | Launch docs and runtime wiring still reference Plausible; this must be owned or explicitly retired before go-live sign-off. |
 | Cross-CTA conversion funnel QA (signup/demo/contact/playground/extension) | Growth Engineering + QA | [#76](https://github.com/nazifsohtaoglu/neutralai-website/issues/76) | Pre-launch | Open | Prevents launch with broken or untracked conversion paths. |
 | Static hosting/export runbook ownership (redirects, headers, sitemap, output) | Platform/Infra | [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) | Pre-launch | Open | Deployment mode and operational ownership must be explicit for repeatable releases. |
 | Production dependency audit advisories | Engineering | [#79](https://github.com/nazifsohtaoglu/neutralai-website/issues/79) | Pre-launch | Open | Moderate advisory triage/resolution must be tracked before launch sign-off. |
@@ -27,5 +28,6 @@ Assumption: Individual owner names and account emails stay in `docs/local/third-
 
 ## Operating Notes
 
-- For service-account details (workspace links, named owners, registered emails), update `docs/local/third-party-services.local.md`.
+- Do not store service-account emails, private admin links, or owner contact details in repository-tracked files.
+- Keep sensitive operator/account metadata in an approved private system (password manager, private ops docs, or equivalent access-controlled store).
 - If a dependency cannot be closed pre-launch, record an explicit exception with owner, rationale, and target date in the linked issue.

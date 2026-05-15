@@ -70,6 +70,8 @@ test('posthog dashboard and funnel setup is documented', () => {
   assert.match(openQuestions, /Launch blockers are tracked in `docs\/ai\/LAUNCH_READINESS_LEDGER\.md`\./)
   assert.match(launchLedger, /PostHog production dashboards and funnel ownership/)
   assert.match(launchLedger, /\[#61\]\(https:\/\/github\.com\/nazifsohtaoglu\/neutralai-website\/issues\/61\)/)
+  assert.match(launchLedger, /Plausible production ownership decision/)
+  assert.match(launchLedger, /\[#87\]\(https:\/\/github\.com\/nazifsohtaoglu\/neutralai-website\/issues\/87\)/)
 })
 
 test('utm attribution persists after consent and can enrich HubSpot leads', () => {
