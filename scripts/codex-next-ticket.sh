@@ -154,6 +154,11 @@ pick_ticket_from_project() {
         local issue_state
         issue_state="$(gh issue view "$number" --repo "${DEFAULT_OWNER}/${DEFAULT_REPO}" --json state --jq '.state' 2>/dev/null || true)"
         [[ "$issue_state" == "OPEN" ]] || continue
+        local issue_text
+        issue_text="$(gh issue view "$number" --repo "${DEFAULT_OWNER}/${DEFAULT_REPO}" --json title,body --jq '.title + "\n" + (.body // "")' 2>/dev/null || true)"
+        if [[ -n "$issue_text" ]] && printf '%s\n' "$issue_text" | rg -qi --pcre2 "$SKIP_BODY_REGEX"; then
+          continue
+        fi
         echo "$item"
         return 0
       done
@@ -297,7 +302,7 @@ READY_PROJECT_STATUSES_CSV="${CODEX_READY_PROJECT_STATUSES:-Todo,Ready}"
 READY_LABELS_CSV="${CODEX_ISSUE_READY_LABELS:-}"
 REQUIRE_READY_LABELS="${CODEX_REQUIRE_READY_LABELS:-false}"
 SKIP_LABELS_CSV="${CODEX_ISSUE_SKIP_LABELS:-type/epic,epic}"
-SKIP_TITLE_REGEX="${CODEX_ISSUE_SKIP_TITLE_REGEX:-^\\[EPIC\\]|^EPIC\\b}"
+SKIP_TITLE_REGEX="${CODEX_ISSUE_SKIP_TITLE_REGEX:-^\\[EPIC\\]|^EPIC\\b|\\bmaturity roadmap\\b}"
 SKIP_BODY_REGEX="${CODEX_ISSUE_SKIP_BODY_REGEX:-\\bcoordination ticket\\b|not an implementation pr by itself}"
 SYNC_MAIN="${CODEX_SYNC_MAIN:-true}"
 DRY_RUN="${CODEX_NEXT_TICKET_DRY_RUN:-false}"
