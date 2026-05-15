@@ -73,35 +73,40 @@ export default function Hero() {
               </a>
             </div>
 
-            <div className="control-storyboard mt-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-primary-light">Control point narrative</p>
-              <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                {[
-                  ['Intercept', 'Prompt traffic is captured before external model routing.'],
-                  ['Detect', 'Policy-aware recognition flags sensitive identifiers early.'],
-                  ['Mask', 'Sensitive values are replaced with safer tokens or sanitized references.'],
-                  ['Audit', 'Evidence and policy decisions stay review-ready for security teams.'],
-                ].map(([title, body]) => (
-                  <div key={title} className="control-storyboard-card rounded-2xl p-4">
-                    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#fdba74]">{title}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">{body}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-10 space-y-3">
-              {[
-                'Stops raw PII and business identifiers before they reach external models',
-                'Generates compliance evidence for AI usage instead of relying on manual screenshots',
-                'Supports browser extension, managed gateway, private cloud, and on-prem rollout paths',
-                'Helps legal and security approve AI adoption without blocking everyday workflows',
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
-                  <span>{item}</span>
+            <div className="mt-8 grid gap-4 xl:grid-cols-[1.28fr_0.92fr]">
+              <div className="control-storyboard">
+                <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-primary-light">How NeutralAI Protects Prompts</p>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {[
+                    ['Intercept', 'Prompt traffic is captured before external model routing.'],
+                    ['Detect', 'Policy-aware recognition flags sensitive identifiers early.'],
+                    ['Mask', 'Sensitive values are replaced with safer tokens or sanitized references.'],
+                    ['Audit', 'Evidence and policy decisions stay review-ready for security teams.'],
+                  ].map(([title, body]) => (
+                    <div key={title} className="control-storyboard-card rounded-2xl p-4">
+                      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#fdba74]">{title}</p>
+                      <p className="mt-2 text-sm leading-6 text-slate-300">{body}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              <div className="control-proof-panel rounded-2xl p-4 sm:p-5">
+                <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-primary-light">Why teams choose it</p>
+                <div className="mt-3 space-y-3">
+                  {[
+                    'Stops raw PII and business identifiers before they reach external models',
+                    'Generates compliance evidence for AI usage instead of relying on manual screenshots',
+                    'Supports browser extension, managed gateway, private cloud, and on-prem rollout paths',
+                    'Helps legal and security approve AI adoption without blocking everyday workflows',
+                  ].map((item) => (
+                    <div key={item} className="control-proof-item flex items-start gap-3 rounded-xl p-3 text-slate-300">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:hidden">
