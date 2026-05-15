@@ -52,7 +52,9 @@ Record values from the deployed environment where only public variables are used
 
 ## Fallback Route Validation
 
-1. Validate missing-config state by temporarily removing one HubSpot public form variable in a non-production environment.
+1. Validate missing-config state in a non-production environment by either:
+   - clearing `NEXT_PUBLIC_HUBSPOT_PORTAL_ID`, or
+   - clearing both the selected intent form ID and `NEXT_PUBLIC_HUBSPOT_CONTACT_FORM_ID` fallback for that route.
 2. Confirm fallback copy appears: "The CRM form is not configured in this environment yet."
 3. Validate script-failure state by blocking `https://js.hsforms.net/forms/embed/v2.js` in browser devtools or network tooling.
 4. Confirm fallback copy appears: "The CRM form could not load in this browser."

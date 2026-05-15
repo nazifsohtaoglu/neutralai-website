@@ -30,6 +30,8 @@ test('hubspot production verification runbook captures owners, links, and fallba
   assert.match(runbook, /website_enterprise_enquiry/)
   assert.match(runbook, /website_security_review/)
   assert.match(runbook, /## Fallback Route Validation/)
+  assert.match(runbook, /clearing `NEXT_PUBLIC_HUBSPOT_PORTAL_ID`/)
+  assert.match(runbook, /clearing both the selected intent form ID and `NEXT_PUBLIC_HUBSPOT_CONTACT_FORM_ID` fallback/)
   assert.match(runbook, /The CRM form is not configured in this environment yet\./)
   assert.match(runbook, /The CRM form could not load in this browser\./)
   assert.match(runbook, /mailto:sales@neutralai\.co\.uk/)
