@@ -55,6 +55,7 @@ At the time this kit was installed, the target repo already had unrelated local 
 4. `docs/ai/FLOWS.md`
 5. `docs/ai/RISK_REGISTER.md`
 6. `docs/ai/TESTING_AND_COMMANDS.md`
+7. `docs/ai/LAUNCH_READINESS_LEDGER.md` for launch go/no-go dependencies
 
 ## Assumptions
 
