@@ -100,9 +100,9 @@ export default function Hero() {
                 ['Mask', 'Sensitive values are replaced with safer tokens or sanitized references.'],
                 ['Audit', 'Evidence and policy decisions stay review-ready for security teams.'],
               ].map(([title, body]) => (
-                <div key={title} className="control-storyboard-card rounded-2xl p-5 md:p-6 xl:min-h-[208px]">
+                <div key={title} className="control-storyboard-card rounded-2xl p-5 md:p-5 xl:min-h-[176px]">
                   <p className="font-mono text-[13px] uppercase tracking-[0.22em] text-[#fdba74] md:text-sm">{title}</p>
-                  <p className="mt-3 text-lg leading-8 text-slate-300 md:text-[1.95rem] md:leading-[1.4]">{body}</p>
+                  <p className="mt-3 text-lg leading-8 text-slate-300 md:text-[1.55rem] md:leading-[1.48]">{body}</p>
                 </div>
               ))}
             </div>
@@ -117,9 +117,9 @@ export default function Hero() {
                 'Supports browser extension, managed gateway, private cloud, and on-prem rollout paths',
                 'Helps legal and security approve AI adoption without blocking everyday workflows',
               ].map((item) => (
-                <div key={item} className="control-proof-item flex items-start gap-3 rounded-xl p-4 text-slate-300 md:min-h-[120px]">
+                <div key={item} className="control-proof-item flex items-start gap-3 rounded-xl p-4 text-slate-300 md:min-h-[104px]">
                   <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-primary-light md:h-6 md:w-6" />
-                  <span className="text-base leading-7 md:text-[1.15rem] md:leading-8">{item}</span>
+                  <span className="text-base leading-7 md:text-[1.03rem] md:leading-7">{item}</span>
                 </div>
               ))}
             </div>
