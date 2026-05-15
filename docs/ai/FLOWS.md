@@ -66,4 +66,4 @@ graph LR
 
 - What is the canonical primary CTA destination for the website?
 - Should content tests cover all public routes or only the homepage?
-- Is the website intended to be static-exported through `out/`, deployed through Next server, or both?
+- Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: website release flow is documented around static export output from `out/` served behind Cloudflare edge.
