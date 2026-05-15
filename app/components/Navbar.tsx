@@ -89,7 +89,7 @@ export default function Navbar() {
             <Link 
               key={link.name} 
               href={link.href}
-              className="whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-primary 2xl:text-base"
+              className="whitespace-nowrap rounded-md px-1 py-1 text-sm text-slate-300 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 2xl:text-base"
             >
               {link.name}
             </Link>
@@ -99,7 +99,10 @@ export default function Navbar() {
         </div>
 
         <div className="hidden flex-shrink-0 items-center gap-4 xl:flex">
-          <Link href="/contact" className="whitespace-nowrap text-sm text-slate-300 transition-colors hover:text-white 2xl:text-base">
+          <Link
+            href="/contact"
+            className="whitespace-nowrap rounded-md px-1 py-1 text-sm text-slate-300 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 2xl:text-base"
+          >
             Contact
           </Link>
           <Link
@@ -114,7 +117,7 @@ export default function Navbar() {
         </div>
 
         <button 
-          className="xl:hidden text-slate-300"
+          className="xl:hidden rounded-md text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
           aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
           aria-expanded={isOpen}
           onClick={() => setIsOpen(!isOpen)}
@@ -134,7 +137,7 @@ export default function Navbar() {
             <Link 
               key={link.name} 
               href={link.href}
-              className="block py-3 text-slate-300 hover:text-primary transition-colors"
+              className="block rounded-md px-1 py-3 text-slate-300 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               onClick={() => setIsOpen(false)}
             >
               {link.name}
@@ -145,7 +148,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="block py-3 text-slate-300 hover:text-primary transition-colors"
+              className="block rounded-md px-1 py-3 text-slate-300 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               onClick={() => setIsOpen(false)}
             >
               {link.name}
@@ -156,7 +159,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="block py-3 text-slate-300 hover:text-primary transition-colors"
+              className="block rounded-md px-1 py-3 text-slate-300 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               onClick={() => setIsOpen(false)}
             >
               {link.name}
@@ -164,7 +167,7 @@ export default function Navbar() {
           ))}
           <Link
             href="/contact"
-            className="block py-3 text-slate-300 hover:text-primary transition-colors"
+            className="block rounded-md px-1 py-3 text-slate-300 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
             onClick={() => setIsOpen(false)}
           >
             Contact
