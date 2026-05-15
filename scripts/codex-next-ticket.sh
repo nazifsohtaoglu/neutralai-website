@@ -279,6 +279,9 @@ NEXT_TICKET_BRANCH=${branch}
 
 NEXT_TICKET_BODY:
 ${body}
+
+NEXT_TICKET_PRE_REVIEW_SECURITY:
+./scripts/codex-security-pre-review.sh
 EOF
 }
 
