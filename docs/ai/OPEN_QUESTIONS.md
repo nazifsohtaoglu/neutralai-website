@@ -10,7 +10,7 @@ Use this file for unknowns. Do not guess silently.
 ## Product / Marketing
 
 - What is the canonical primary CTA: trial, demo, contact, waitlist, or install extension?
-- What exact `src` value should website signup handoffs use for homepage "Try Free" CTAs: `website_start_free_trial`, `website_try_free`, or another analytics-owned value?
+- Resolved on 2026-05-15 in ticket [#69](https://github.com/nazifsohtaoglu/neutralai-website/issues/69): website signup handoffs now use the ticket-approved CTA matrix (`website_start_free_trial`, `website_get_started`, `website_get_team`, `website_get_business`).
 - What is the preferred ICP for the website copy: legal, finance, healthcare, insurance, SaaS support, or broader regulated teams?
 - Resolved on 2026-05-15 in `docs/customer-proof-framework.md`: approved proof types, wording guardrails, and publication gates for customer evidence are now documented; public site posture remains conservative until assets are approved.
 - WEB-104 now has a local Playwright-generated demo video, captions, and poster. If marketing wants external hosting, what hosted URL should replace the local asset? Browser extension or admin dashboard footage still needs explicit approval before it is shown publicly.

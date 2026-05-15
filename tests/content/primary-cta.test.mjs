@@ -28,7 +28,7 @@ test('site config exposes a working app signup/sandbox destination instead of a 
 
   assert.match(
     siteSource,
-    /signupUrl:\s*'https:\/\/app\.neutralai\.co\.uk\/auth\/signin\?intent=signup&plan=starter&src=website_start_free_trial&callbackUrl=%2Fchat'/
+    /signupUrl:\s*'https:\/\/app\.neutralai\.co\.uk\/auth\/signin\?intent=signup&plan=free&src=website_start_free_trial&callbackUrl=%2Fchat'/
   )
   assert.doesNotMatch(siteSource, /signupUrl:\s*'mailto:/)
   assert.doesNotMatch(siteSource, /signupUrl:\s*'https:\/\/app\.neutralai\.co\.uk\/auth\/signup/)
@@ -155,7 +155,22 @@ test('homepage pricing shows approved GBP pricing and self-serve handoff URLs', 
   assert.match(homeSource, /name: 'Enterprise'/)
   assert.match(homeSource, /monthlyPrice: 'Custom'/)
   assert.match(homeSource, />GBP</)
+  assert.match(
+    homeSource,
+    /href:\s*'https:\/\/app\.neutralai\.co\.uk\/auth\/signin\?intent=signup&plan=starter&src=website_get_started&callbackUrl=%2Fbilling'/
+  )
+  assert.match(
+    homeSource,
+    /href:\s*'https:\/\/app\.neutralai\.co\.uk\/auth\/signin\?intent=signup&plan=team&src=website_get_team&callbackUrl=%2Fbilling'/
+  )
+  assert.match(
+    homeSource,
+    /href:\s*'https:\/\/app\.neutralai\.co\.uk\/auth\/signin\?intent=signup&plan=business&src=website_get_business&callbackUrl=%2Fbilling'/
+  )
   assert.match(homeSource, /website_get_started/)
+  assert.match(homeSource, /website_get_team/)
+  assert.match(homeSource, /website_get_business/)
+  assert.match(homeSource, /href: siteConfig\.signupUrl/)
   assert.match(homeSource, /href: contactLinks\.enterprise/)
   assert.doesNotMatch(homeSource, /\$499/)
   assert.doesNotMatch(homeSource, />USD</)
