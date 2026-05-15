@@ -361,6 +361,29 @@ export const socialProofIndustries = [
   },
 ] as const
 
+export const socialProofIndustrySlides = [
+  {
+    title: 'Financial Services',
+    image: '/industries/financial-services-usage.webp',
+    caption: 'Protect customer, claim, and payment context before external model routing.',
+  },
+  {
+    title: 'Healthcare',
+    image: '/industries/healthcare-usage.webp',
+    caption: 'Support PHI-aware masking workflows for healthcare and healthtech teams.',
+  },
+  {
+    title: 'Legal',
+    image: '/industries/legal-usage.webp',
+    caption: 'Keep matter and client prompts inside clearer policy boundaries.',
+  },
+  {
+    title: 'Public Sector',
+    image: '/industries/public-sector-usage.webp',
+    caption: 'Reduce citizen-service prompt risk while preserving auditability.',
+  },
+] as const
+
 export const socialProofMetrics = [
   {
     value: '20+',

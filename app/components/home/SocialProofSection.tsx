@@ -1,5 +1,6 @@
+import Image from 'next/image'
 import { CheckCircle2 } from 'lucide-react'
-import { evaluationStories, socialProofIndustries, socialProofMetrics } from '../../data/homepage'
+import { evaluationStories, socialProofIndustrySlides, socialProofMetrics } from '../../data/homepage'
 import SectionIntro from './SectionIntro'
 
 export default function SocialProofSection() {
@@ -12,16 +13,40 @@ export default function SocialProofSection() {
           description="Evidence for regulated teams: supported industries, public benchmark scope, measured gateway overhead, and evaluation patterns without invented customer claims."
         />
 
-        <div className="proof-industry-grid mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {socialProofIndustries.map((industry) => (
-            <article key={industry.title} className="proof-industry-card rounded-[22px] p-5">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary-light">
-                <industry.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-4 font-heading text-xl font-semibold text-white">{industry.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{industry.body}</p>
-            </article>
-          ))}
+        <div className="mt-10">
+          <div className="flex flex-wrap gap-2">
+            {socialProofIndustrySlides.map((industry) => (
+              <span
+                key={industry.title}
+                className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary-light"
+              >
+                {industry.title}
+              </span>
+            ))}
+          </div>
+
+          <div className="industry-slider-shell mt-4 rounded-[24px] p-3 md:p-4">
+            <div className="industry-slider-track">
+              {[...socialProofIndustrySlides, ...socialProofIndustrySlides].map((slide, index) => (
+                <article key={`${slide.title}-${index}`} className="industry-slide-card">
+                  <div className="relative overflow-hidden rounded-[16px]">
+                    <Image
+                      src={slide.image}
+                      alt={`${slide.title} usage with NeutralAI prompt masking and policy controls`}
+                      width={700}
+                      height={420}
+                      className="h-[210px] w-full object-cover md:h-[250px]"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/15 to-transparent" />
+                  </div>
+                  <div className="mt-3">
+                    <h3 className="font-heading text-xl font-semibold text-white">{slide.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">{slide.caption}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">

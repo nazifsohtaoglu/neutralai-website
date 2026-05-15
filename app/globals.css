@@ -294,6 +294,37 @@ body {
     radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 26%);
 }
 
+.industry-slider-shell {
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  background:
+    linear-gradient(180deg, rgba(6, 14, 36, 0.9), rgba(2, 6, 23, 0.92)),
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.12), transparent 30%);
+  overflow: hidden;
+}
+
+.industry-slider-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  animation: industry-slider-loop 42s linear infinite;
+}
+
+.industry-slider-shell:hover .industry-slider-track {
+  animation-play-state: paused;
+}
+
+.industry-slide-card {
+  width: min(84vw, 410px);
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(2, 6, 23, 0.9)),
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.09), transparent 28%);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  box-shadow: 0 16px 40px rgba(2, 8, 23, 0.28);
+}
+
 .signal-shell {
   position: relative;
   overflow: hidden;
@@ -720,6 +751,7 @@ body {
   .typing-caret,
   .token-flight,
   .marquee-track,
+  .industry-slider-track,
   .scan-line,
   .ambient-orbit,
   .pipeline-particle-one,
@@ -742,6 +774,10 @@ body {
   }
 
   .marquee-track {
+    transform: translateX(0) !important;
+  }
+
+  .industry-slider-track {
     transform: translateX(0) !important;
   }
 }
@@ -837,6 +873,11 @@ body {
 @keyframes marquee-slide {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+@keyframes industry-slider-loop {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 0.5rem)); }
 }
 
 @keyframes scan-line {
