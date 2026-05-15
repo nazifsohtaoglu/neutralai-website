@@ -20,7 +20,7 @@ Use this file for unknowns. Do not guess silently.
 - Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: website delivery is documented as static export output from `out/`, served behind Cloudflare edge.
 - Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: `/use-cases/finance` remains a static alias page that canonicalizes to `/use-cases/financial-services` instead of runtime-only redirect APIs.
 - Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: generated `out/` is build-only output and should not be committed.
-- Resolved on 2026-05-15 in `docs/deployment-static-runbook.md` and `docs/ai/LAUNCH_READINESS_LEDGER.md`: repository docs own static behavior and verification instructions, while private ops docs own host-level redirect/header configuration and rollback on-call mapping under owner role Platform/Infra (tracked publicly in issue [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78)).
+- Repository-vs-private-ops source-of-truth split is documented in `docs/deployment-static-runbook.md`, but launch-blocking owner/on-call mapping for host-level redirect/header configuration remains open under Platform/Infra in issue [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) and `docs/ai/LAUNCH_READINESS_LEDGER.md`.
 - Should Playwright artifacts be ignored/cleaned, or are they used as review evidence?
 
 ## Testing / CI
