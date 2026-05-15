@@ -38,6 +38,15 @@ test('vertical use-case pages exist for finance, healthcare, and legal', () => {
   assert.match(content, /PRIVILEGED_CONTEXT/)
 })
 
+test('legacy finance alias is static-export safe and points to canonical route', () => {
+  const alias = readSource('app/use-cases/finance/page.tsx')
+
+  assert.doesNotMatch(alias, /permanentRedirect/)
+  assert.match(alias, /canonical: '\/use-cases\/financial-services'/)
+  assert.match(alias, /robots:\s*{\s*index:\s*false,\s*follow:\s*true,?\s*}/)
+  assert.match(alias, /Go to Financial Services Use Case/)
+})
+
 test('vertical copy avoids blanket compliance claims while supporting review language', () => {
   const content = readSource('app/use-cases/content.ts')
 
