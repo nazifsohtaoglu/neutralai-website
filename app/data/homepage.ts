@@ -78,7 +78,7 @@ export const trustCards: Card[] = [
   },
   {
     icon: Building2,
-    title: 'Managed, private cloud, or on-prem',
+    title: 'Managed now, private cloud/on-prem planning',
     description: 'Teams can start with managed SaaS and move toward stricter deployment models as governance demands increase.',
   },
 ] as const
@@ -324,7 +324,7 @@ export const complianceProofs = [
   {
     icon: ClipboardCheck,
     label: 'Auto evidence',
-    value: 'SOC2 / ISO / CE',
+    value: 'SOC2 readiness / GDPR-aligned / Cyber Essentials evidence',
   },
   {
     icon: Lock,
