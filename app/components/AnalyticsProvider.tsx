@@ -1,6 +1,5 @@
 'use client'
 
-import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { siteConfig } from '../site'
@@ -42,9 +41,7 @@ export default function AnalyticsProvider() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [consent, setConsent] = useState<AnalyticsConsent | null>(() => getAnalyticsConsent())
-  const plausibleEnabled = Boolean(siteConfig.analytics.plausibleDomain)
   const posthogEnabled = Boolean(siteConfig.analytics.posthogToken)
-  const canLoadPlausible = consent === 'accepted' && plausibleEnabled
 
   useEffect(() => {
     if (consent === 'accepted') {
@@ -90,15 +87,6 @@ export default function AnalyticsProvider() {
 
   return (
     <>
-      {canLoadPlausible ? (
-        <Script
-          id="plausible-analytics"
-          src={siteConfig.analytics.plausibleScriptUrl}
-          data-domain={siteConfig.analytics.plausibleDomain}
-          strategy="afterInteractive"
-        />
-      ) : null}
-
       {consent === null ? (
         <div className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-3xl rounded-2xl border border-white/10 bg-background-secondary/95 p-3 shadow-[0_24px_80px_rgba(2,8,23,0.55)] backdrop-blur sm:inset-x-4 sm:bottom-4 sm:p-4 md:p-5">
           <div className="sm:hidden">

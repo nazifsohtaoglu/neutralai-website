@@ -4,14 +4,9 @@ NeutralAI website analytics must stay consent-gated. Do not add analytics cookie
 
 ## Providers
 
-The website can send consent-gated events to Plausible and PostHog. Keep both providers disabled until their public environment variables are configured in the deployment environment.
-
-### Plausible
-
-- `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`
-- `NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL` defaults to `https://plausible.io/js/script.js`
-
-If `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` is missing, the consent banner still records the visitor's choice locally, but no third-party analytics script is loaded.
+Decision date: 2026-05-15  
+Decision owner role: Product Analytics  
+Decision: Plausible is formally retired for launch. Website analytics is PostHog-only.
 
 ### PostHog
 
@@ -31,7 +26,7 @@ If `NEXT_PUBLIC_POSTHOG_TOKEN` is missing, no PostHog client is initialized and 
 
 ## Events
 
-Use these names when creating Plausible goals or PostHog insights/funnels:
+Use these names when creating PostHog insights/funnels:
 
 - `$pageview` for PostHog page views.
 - `CTA Click`
@@ -58,15 +53,6 @@ After consent, the website stores and attaches:
 - `landing_page_path`
 
 HubSpot forms also attempt to pass these values as hidden fields when the matching HubSpot properties exist.
-
-## Dashboard Setup Outside The Repo
-
-- Create or confirm the Plausible site.
-- Add the production domain to `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`.
-- Create goals for CTA clicks and playground interactions.
-- Build the three recommended funnels.
-- Confirm dashboard access for the team.
-- Run one consent-accepted smoke test and one consent-declined smoke test after deployment.
 
 ## PostHog Dashboard And Funnel Setup
 
