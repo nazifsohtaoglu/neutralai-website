@@ -17,8 +17,8 @@ function ProofCard({ proof }: { proof: (typeof complianceProofs)[number] }) {
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-24">
-      <div className="absolute inset-0 hero-mesh" />
+    <section className="hero-control-stage relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-24">
+      <div className="absolute inset-0 hero-control-mesh" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background" />
 
       <div className="container-custom relative z-10">
@@ -71,6 +71,23 @@ export default function Hero() {
               >
                 View live API health
               </a>
+            </div>
+
+            <div className="control-storyboard mt-8">
+              <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-primary-light">Control point narrative</p>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                {[
+                  ['Intercept', 'Prompt traffic is captured before external model routing.'],
+                  ['Detect', 'Policy-aware recognition flags sensitive identifiers early.'],
+                  ['Mask', 'Sensitive values are replaced with safer tokens or sanitized references.'],
+                  ['Audit', 'Evidence and policy decisions stay review-ready for security teams.'],
+                ].map(([title, body]) => (
+                  <div key={title} className="control-storyboard-card rounded-2xl p-4">
+                    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#fdba74]">{title}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">{body}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="mt-10 space-y-3">

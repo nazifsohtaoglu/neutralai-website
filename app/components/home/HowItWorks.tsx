@@ -5,7 +5,7 @@ import { steps } from '../../data/homepage'
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="section bg-background-secondary">
+    <section id="how-it-works" className="section">
       <div className="container-custom">
         <div className="rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.96)),radial-gradient(circle_at_top_left,rgba(34,211,238,0.1),transparent_26%),radial-gradient(circle_at_top_right,rgba(249,115,22,0.12),transparent_24%)] p-6 shadow-[0_28px_70px_rgba(2,8,23,0.42)] md:p-8">
           <div className="mx-auto max-w-3xl text-center">

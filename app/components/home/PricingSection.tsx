@@ -10,7 +10,7 @@ export default function PricingSection() {
   const [annualBilling, setAnnualBilling] = useState(false)
 
   return (
-    <section id="pricing" className="section bg-background-secondary">
+    <section id="pricing" className="section">
       <div className="container-custom">
         <SectionIntro
           eyebrow="Pricing"

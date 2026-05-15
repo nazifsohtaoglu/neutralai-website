@@ -7,7 +7,7 @@ import { deploymentCards } from '../../data/homepage'
 
 export default function ProductSurface() {
   return (
-    <section className="section bg-background-secondary">
+    <section className="section">
       <div className="container-custom">
         <div className="accent-panel rounded-[32px] p-6 md:p-8">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">

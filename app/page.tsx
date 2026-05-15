@@ -12,21 +12,27 @@ import WhyItMatters from './components/home/WhyItMatters'
 
 export default function Home() {
   return (
-    <main>
+    <main className="home-control-canvas">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqStructuredData) }}
       />
       <Hero />
-      <SocialProofSection />
-      <UseCasesSection />
-      <ProductSurface />
-      <WhyItMatters />
-      <HowItWorks />
-      <DetectionEngine />
-      <TrustSection />
-      <PricingSection />
-      <CtaSection />
+      <div className="section-route section-route-proof">
+        <SocialProofSection />
+        <UseCasesSection />
+      </div>
+      <div className="section-route section-route-product">
+        <ProductSurface />
+        <WhyItMatters />
+        <HowItWorks />
+        <DetectionEngine />
+      </div>
+      <div className="section-route section-route-trust">
+        <TrustSection />
+        <PricingSection />
+        <CtaSection />
+      </div>
     </main>
   )
 }
