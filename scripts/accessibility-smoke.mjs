@@ -32,7 +32,7 @@ const scenarios = [
     name: 'contact',
     route: '/contact/',
     contrast: [
-      { selector: 'p.text-sm.leading-6.text-slate-400', minRatio: 4.5, label: 'contact secondary copy contrast' },
+      { selector: 'p:has(> a[href^="mailto:sales@neutralai.co.uk?subject=NeutralAI%20commercial%20enquiry"])', minRatio: 4.5, label: 'contact secondary copy contrast' },
     ],
   },
   {
