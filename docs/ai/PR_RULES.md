@@ -49,4 +49,5 @@ What visitor, content, or maintenance problem does this solve?
 - Review the diff.
 - Confirm no unrelated user changes were included.
 - Run targeted verification from `docs/ai/TESTING_AND_COMMANDS.md`.
+- Run `./scripts/codex-security-pre-review.sh` and resolve blocking findings.
 - Mention tests that were not run and why.

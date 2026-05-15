@@ -56,8 +56,9 @@ npm run audit:prod
 4. Read the relevant architecture/risk docs.
 5. Make the smallest focused change.
 6. Run targeted checks from `docs/ai/TESTING_AND_COMMANDS.md`.
-7. Commit, push, and open a ready-for-review PR when changes are ready, unless the user explicitly asks not to.
-8. Summarize changed files, validation, risks, PR link, and follow-ups.
+7. Run `scripts/codex-security-pre-review.sh` and address blocking findings before PR review.
+8. Commit, push, and open a ready-for-review PR when changes are ready, unless the user explicitly asks not to.
+9. Summarize changed files, validation, risks, PR link, and follow-ups.
 
 ## AI Repo Map Files
 

@@ -74,5 +74,6 @@ A ticket is ready when:
 
 - the requested route/component/content change is complete
 - targeted checks have run or the reason is documented
+- `./scripts/codex-security-pre-review.sh` has run and blocking findings are addressed
 - mobile/desktop visual risk has been considered for UI work
 - PR notes include summary, validation, risks, and follow-ups
