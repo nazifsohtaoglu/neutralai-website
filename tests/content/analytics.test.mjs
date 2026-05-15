@@ -57,6 +57,7 @@ test('posthog dashboard and funnel setup is documented', () => {
   const analyticsDocs = readSource('docs/analytics-setup.md')
   const headersSource = readSource('public/_headers')
   const openQuestions = readSource('docs/ai/OPEN_QUESTIONS.md')
+  const launchLedger = readSource('docs/ai/LAUNCH_READINESS_LEDGER.md')
 
   assert.match(analyticsDocs, /PostHog Dashboard And Funnel Setup/)
   assert.match(analyticsDocs, /Team dashboard:/)
@@ -66,7 +67,9 @@ test('posthog dashboard and funnel setup is documented', () => {
   assert.match(analyticsDocs, /no prompt content or form field values/)
   assert.match(headersSource, /https:\/\/us\.i\.posthog\.com/)
   assert.match(headersSource, /https:\/\/eu\.i\.posthog\.com/)
-  assert.match(openQuestions, /WEB-61 needs the approved PostHog workspace/)
+  assert.match(openQuestions, /Launch blockers are tracked in `docs\/ai\/LAUNCH_READINESS_LEDGER\.md`\./)
+  assert.match(launchLedger, /PostHog production dashboards and funnel ownership/)
+  assert.match(launchLedger, /\[#61\]\(https:\/\/github\.com\/nazifsohtaoglu\/neutralai-website\/issues\/61\)/)
 })
 
 test('utm attribution persists after consent and can enrich HubSpot leads', () => {
@@ -74,7 +77,7 @@ test('utm attribution persists after consent and can enrich HubSpot leads', () =
   const hubspotSource = readSource('app/components/HubSpotLeadForm.tsx')
   const analyticsDocs = readSource('docs/analytics-setup.md')
   const hubspotDocs = readSource('docs/hubspot-crm-setup.md')
-  const openQuestions = readSource('docs/ai/OPEN_QUESTIONS.md')
+  const launchLedger = readSource('docs/ai/LAUNCH_READINESS_LEDGER.md')
 
   for (const field of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'referrer_host', 'landing_page_path']) {
     assert.match(analyticsSource, new RegExp(field))
@@ -88,5 +91,6 @@ test('utm attribution persists after consent and can enrich HubSpot leads', () =
   assert.match(analyticsSource, /stored\.landing_page_path/)
   assert.match(hubspotSource, /getLeadAttribution/)
   assert.match(hubspotSource, /Object\.entries\(getLeadAttribution\(\)\)/)
-  assert.match(openQuestions, /WEB-107 needs a confirmed Plausible workspace/)
+  assert.match(launchLedger, /HubSpot production forms, routing, and lead ownership/)
+  assert.match(launchLedger, /\[#70\]\(https:\/\/github\.com\/nazifsohtaoglu\/neutralai-website\/issues\/70\)/)
 })
