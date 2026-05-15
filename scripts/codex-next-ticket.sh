@@ -109,11 +109,13 @@ filter_candidate_json_lines() {
     --argjson skipLabels "$skip_labels_json" \
     --argjson readyLabels "$ready_labels_json" \
     --arg skipTitleRegex "$SKIP_TITLE_REGEX" \
+    --arg skipBodyRegex "$SKIP_BODY_REGEX" \
     --arg requireReadyLabels "$REQUIRE_READY_LABELS" '
       def normalized_labels:
         [(.labels // [])[] | if type == "object" then (.name // empty) else tostring end];
       select(.number != null)
       | select((.title // "") | test($skipTitleRegex; "i") | not)
+      | select((((.title // "") + "\n" + (.body // "")) | test($skipBodyRegex; "i")) | not)
       | select((normalized_labels) as $labels | all($skipLabels[]; . as $skip | ($labels | index($skip)) == null))
       | select(
           ($requireReadyLabels != "true")
@@ -296,6 +298,7 @@ READY_LABELS_CSV="${CODEX_ISSUE_READY_LABELS:-}"
 REQUIRE_READY_LABELS="${CODEX_REQUIRE_READY_LABELS:-false}"
 SKIP_LABELS_CSV="${CODEX_ISSUE_SKIP_LABELS:-type/epic,epic}"
 SKIP_TITLE_REGEX="${CODEX_ISSUE_SKIP_TITLE_REGEX:-^\\[EPIC\\]|^EPIC\\b}"
+SKIP_BODY_REGEX="${CODEX_ISSUE_SKIP_BODY_REGEX:-\\bcoordination ticket\\b|not an implementation pr by itself}"
 SYNC_MAIN="${CODEX_SYNC_MAIN:-true}"
 DRY_RUN="${CODEX_NEXT_TICKET_DRY_RUN:-false}"
 ALLOW_DIRTY="${CODEX_NEXT_TICKET_ALLOW_DIRTY:-false}"
