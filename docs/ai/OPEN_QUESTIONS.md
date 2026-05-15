@@ -12,7 +12,6 @@ Use this file for unknowns. Do not guess silently.
 - What is the canonical primary CTA: trial, demo, contact, waitlist, or install extension?
 - What exact `src` value should website signup handoffs use for homepage "Try Free" CTAs: `website_start_free_trial`, `website_try_free`, or another analytics-owned value?
 - What is the preferred ICP for the website copy: legal, finance, healthcare, insurance, SaaS support, or broader regulated teams?
-- WEB-103 content planning still needs an approved SEO data source for keyword-volume exports. Which SEO tool/export should be treated as the canonical source?
 - WEB-104 now has a local Playwright-generated demo video, captions, and poster. If marketing wants external hosting, what hosted URL should replace the local asset? Browser extension or admin dashboard footage still needs explicit approval before it is shown publicly.
 - WEB-09 should switch the Developers SDK cards to public registry install commands only after the gateway BUS-012 SDK publication checks confirm `neutralai-sdk` and `neutralai-node-sdk` are live.
 

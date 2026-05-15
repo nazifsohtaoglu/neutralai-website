@@ -24,7 +24,7 @@ Assumption: Individual owner names, account emails, and admin workspace URLs are
 | Static hosting/export runbook ownership (redirects, headers, sitemap, output) | Platform/Infra | [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) | Pre-launch | Open | Deployment mode and operational ownership must be explicit for repeatable releases. |
 | Production dependency audit advisories | Engineering | [#79](https://github.com/nazifsohtaoglu/neutralai-website/issues/79) | Pre-launch | Open | Moderate advisory triage/resolution must be tracked before launch sign-off. |
 | Approved customer proof or anonymized case-study framework | Product Marketing | [#77](https://github.com/nazifsohtaoglu/neutralai-website/issues/77) | Post-launch | Open | Pre-launch copy should avoid unsupported social-proof claims until evidence is approved. |
-| SEO keyword source of truth and performance loop | Content + Growth | [#80](https://github.com/nazifsohtaoglu/neutralai-website/issues/80) | Post-launch | Open | Needed for ongoing content optimization, not a hard launch gate. |
+| SEO keyword source of truth and performance loop | Content + Growth | [#80](https://github.com/nazifsohtaoglu/neutralai-website/issues/80) | Post-launch | Closed | Canonical source stack, keyword map, and review cadence are documented in `docs/seo-keyword-performance-loop.md`. |
 
 ## Operating Notes
 
