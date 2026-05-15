@@ -24,11 +24,30 @@ type PlausibleFn = {
   q?: [string, PlausibleOptions | undefined][]
 }
 
+type PostHogClient = typeof import('posthog-js/dist/module.no-external').default
+
+type PostHogRuntimeConfig = {
+  token: string
+  host: string
+}
+
+type QueuedPostHogEvent = {
+  eventName: string
+  properties: AnalyticsProperties
+}
+
 declare global {
   interface Window {
     plausible?: PlausibleFn
   }
 }
+
+const maxQueuedPostHogEvents = 20
+const posthogEventQueue: QueuedPostHogEvent[] = []
+
+let posthogClient: PostHogClient | null = null
+let posthogInitPromise: Promise<PostHogClient | null> | null = null
+let posthogConfigured = false
 
 function safeLocalStorageGet(key: string) {
   try {
@@ -162,6 +181,87 @@ function getPlausibleQueue() {
   return window.plausible
 }
 
+function normalizePostHogHost(host: string) {
+  return host.trim() || 'https://us.i.posthog.com'
+}
+
+function queuePostHogEvent(eventName: string, properties: AnalyticsProperties) {
+  if (posthogEventQueue.length >= maxQueuedPostHogEvents) {
+    posthogEventQueue.shift()
+  }
+
+  posthogEventQueue.push({ eventName, properties })
+}
+
+function flushPostHogQueue() {
+  if (!posthogClient) {
+    return
+  }
+
+  while (posthogEventQueue.length > 0) {
+    const event = posthogEventQueue.shift()
+    if (event) {
+      posthogClient.capture(event.eventName, event.properties)
+    }
+  }
+}
+
+function capturePostHogEvent(eventName: string, properties: AnalyticsProperties) {
+  if (!posthogConfigured) {
+    return
+  }
+
+  if (posthogClient) {
+    posthogClient.capture(eventName, properties)
+    return
+  }
+
+  queuePostHogEvent(eventName, properties)
+}
+
+export function initializePostHog({ token, host }: PostHogRuntimeConfig) {
+  if (typeof window === 'undefined' || !hasAnalyticsConsent() || !token.trim()) {
+    return
+  }
+
+  posthogConfigured = true
+
+  if (posthogClient || posthogInitPromise) {
+    return
+  }
+
+  posthogInitPromise = import('posthog-js/dist/module.no-external')
+    .then(({ default: posthog }) => {
+      posthog.init(token, {
+        api_host: normalizePostHogHost(host),
+        autocapture: false,
+        capture_pageview: false,
+        defaults: '2026-01-30',
+        disable_session_recording: true,
+      })
+
+      posthogClient = posthog
+      flushPostHogQueue()
+      return posthog
+    })
+    .catch(() => {
+      posthogInitPromise = null
+      return null
+    })
+}
+
+export function trackPostHogPageView(pathname: string) {
+  if (typeof window === 'undefined' || !hasAnalyticsConsent()) {
+    return
+  }
+
+  capturePostHogEvent('$pageview', {
+    ...getStoredAttribution(),
+    page_path: pathname,
+    current_url: window.location.href,
+  })
+}
+
 export function trackAnalyticsEvent(eventName: string, properties: AnalyticsProperties = {}, options: Omit<PlausibleOptions, 'props'> = {}) {
   if (typeof window === 'undefined' || !hasAnalyticsConsent()) {
     return
@@ -176,4 +276,6 @@ export function trackAnalyticsEvent(eventName: string, properties: AnalyticsProp
     ...options,
     props,
   })
+
+  capturePostHogEvent(eventName, props)
 }

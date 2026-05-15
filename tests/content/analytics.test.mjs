@@ -18,12 +18,18 @@ test('analytics script is consent-gated and env configured', () => {
   assert.match(layoutSource, /<AnalyticsProvider \/>/)
   assert.match(siteSource, /NEXT_PUBLIC_PLAUSIBLE_DOMAIN/)
   assert.match(siteSource, /NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL/)
+  assert.match(siteSource, /NEXT_PUBLIC_POSTHOG_TOKEN/)
+  assert.match(siteSource, /NEXT_PUBLIC_POSTHOG_HOST/)
   assert.match(providerSource, /consent === 'accepted'/)
   assert.match(providerSource, /<Script/)
   assert.match(providerSource, /data-domain=\{siteConfig\.analytics\.plausibleDomain\}/)
   assert.match(providerSource, /No analytics runs until you accept/)
   assert.match(analyticsSource, /ANALYTICS_CONSENT_KEY/)
   assert.match(analyticsSource, /hasAnalyticsConsent\(\)/)
+  assert.match(analyticsSource, /initializePostHog/)
+  assert.match(analyticsSource, /posthog-js\/dist\/module\.no-external/)
+  assert.match(analyticsSource, /disable_session_recording: true/)
+  assert.match(analyticsSource, /autocapture: false/)
 })
 
 test('conversion tracking captures CTA clicks and playground events without prompt content', () => {
@@ -45,6 +51,22 @@ test('conversion tracking captures CTA clicks and playground events without prom
   assert.match(playgroundSource, /trackAnalyticsEvent\('Playground Result Copy'/)
   assert.match(playgroundSource, /prompt_length: prompt\.length/)
   assert.doesNotMatch(playgroundSource, /trackAnalyticsEvent\([^)]*prompt[,}]/)
+})
+
+test('posthog dashboard and funnel setup is documented', () => {
+  const analyticsDocs = readSource('docs/analytics-setup.md')
+  const headersSource = readSource('public/_headers')
+  const openQuestions = readSource('docs/ai/OPEN_QUESTIONS.md')
+
+  assert.match(analyticsDocs, /PostHog Dashboard And Funnel Setup/)
+  assert.match(analyticsDocs, /Team dashboard:/)
+  assert.match(analyticsDocs, /Landing page to conversion funnel:/)
+  assert.match(analyticsDocs, /Product\/docs route to conversion funnel:/)
+  assert.match(analyticsDocs, /Playground engagement funnel:/)
+  assert.match(analyticsDocs, /no prompt content or form field values/)
+  assert.match(headersSource, /https:\/\/us\.i\.posthog\.com/)
+  assert.match(headersSource, /https:\/\/eu\.i\.posthog\.com/)
+  assert.match(openQuestions, /WEB-61 needs the approved PostHog workspace/)
 })
 
 test('utm attribution persists after consent and can enrich HubSpot leads', () => {
