@@ -2,6 +2,8 @@
 
 This website loads HubSpot forms from public environment variables only. Do not commit portal credentials, private app tokens, API keys, webhook secrets, or Slack tokens.
 
+For production launch verification tracking, use `docs/hubspot-production-verification.md`.
+
 ## Required Public Environment Variables
 
 - `NEXT_PUBLIC_HUBSPOT_PORTAL_ID`
@@ -47,3 +49,4 @@ Each form should redirect to `/contact/thanks/` after submission.
 - Configure confirmation emails for demo, enterprise, and security-review forms.
 - Connect Slack notifications through HubSpot or the team's approved automation layer.
 - Add global tracking only after cookie consent and analytics ownership are approved.
+- Keep non-secret owner roles, form/workflow links, and smoke-test status current in `docs/hubspot-production-verification.md`.
