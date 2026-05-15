@@ -106,3 +106,23 @@ This repository is the source of truth for static behavior and verification comm
 - Owner role: Platform/Infra
 - Public tracking: [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) and `docs/ai/LAUNCH_READINESS_LEDGER.md`
 - Private tracking expectation: maintain host-level redirect/header rule location (Cloudflare dashboard and/or IaC repository) and rollback on-call mapping in an access-controlled ops system.
+
+### #78 Closure Checklist (Private Ops, Non-Secret Metadata)
+
+Ticket [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) can move to closed when Platform/Infra confirms all items below are recorded in the private ops source of truth:
+
+1. Hosting project/account owner role and backup owner role.
+2. On-call primary role and secondary role for redirect/header/CSP rollback.
+3. Source location for host-level redirect rules and `_headers` equivalent rules (dashboard path and/or IaC path).
+4. Last known-good release identifier and rollback operator procedure.
+5. Last smoke-check execution date for:
+   - canonical domain redirect
+   - trailing slash behavior
+   - `/use-cases/finance/` alias page availability
+   - required security headers and CSP
+   - sitemap and robots output
+
+Public repository follow-up (no secrets):
+
+1. Post a short completion note in issue [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) confirming checklist completion date.
+2. Mark the launch dependency row for static hosting/export runbook ownership as `Closed` in `docs/ai/LAUNCH_READINESS_LEDGER.md`.
