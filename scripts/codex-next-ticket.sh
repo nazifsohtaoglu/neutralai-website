@@ -74,6 +74,29 @@ choose_branch_type() {
   echo "feature"
 }
 
+ticket_branch_name() {
+  local number="$1"
+  local title="$2"
+  local branch_type slug
+  branch_type="$(choose_branch_type "$title")"
+  slug="$(slugify "$title")"
+  echo "${branch_type}/${number}-${slug}"
+}
+
+branch_exists_for_ticket() {
+  local number="$1"
+  local title="$2"
+  local branch
+  branch="$(ticket_branch_name "$number" "$title")"
+  if git show-ref --verify --quiet "refs/heads/$branch"; then
+    return 0
+  fi
+  if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+    return 0
+  fi
+  return 1
+}
+
 csv_to_json_array() {
   echo "$1" | tr ',' '\n' | sed '/^$/d' | jq -R -s 'split("\n")[:-1]'
 }
@@ -98,6 +121,18 @@ open_pr_linked_issue_numbers() {
 is_linked_to_open_pr() {
   local number="$1"
   [[ " ${OPEN_PR_ISSUES} " == *" ${number} "* ]]
+}
+
+ticket_has_existing_branch() {
+  local item="$1"
+  local number title
+  number="$(echo "$item" | jq -r '.number')"
+  title="$(echo "$item" | jq -r '.title // ""')"
+  if branch_exists_for_ticket "$number" "$title"; then
+    warn "Skipping #${number}; branch already exists for ticket slug."
+    return 0
+  fi
+  return 1
 }
 
 filter_candidate_json_lines() {
@@ -151,6 +186,9 @@ pick_ticket_from_project() {
         if is_linked_to_open_pr "$number"; then
           continue
         fi
+        if ticket_has_existing_branch "$item"; then
+          continue
+        fi
         local issue_state
         issue_state="$(gh issue view "$number" --repo "${DEFAULT_OWNER}/${DEFAULT_REPO}" --json state --jq '.state' 2>/dev/null || true)"
         [[ "$issue_state" == "OPEN" ]] || continue
@@ -173,6 +211,9 @@ pick_ticket_from_issues() {
         local number
         number="$(echo "$item" | jq -r '.number')"
         if is_linked_to_open_pr "$number"; then
+          continue
+        fi
+        if ticket_has_existing_branch "$item"; then
           continue
         fi
         echo "$item"
@@ -217,10 +258,8 @@ sync_main() {
 create_branch_for_ticket() {
   local number="$1"
   local title="$2"
-  local branch_type slug branch
-  branch_type="$(choose_branch_type "$title")"
-  slug="$(slugify "$title")"
-  branch="${branch_type}/${number}-${slug}"
+  local branch
+  branch="$(ticket_branch_name "$number" "$title")"
 
   if git show-ref --verify --quiet "refs/heads/$branch"; then
     die "Branch already exists locally: $branch"
@@ -270,7 +309,7 @@ main() {
   log "selected ticket #${number}: ${title}"
 
   if [[ "$DRY_RUN" == "true" ]]; then
-    branch="$(choose_branch_type "$title")/${number}-$(slugify "$title")"
+    branch="$(ticket_branch_name "$number" "$title")"
     log "dry run enabled; not syncing main or creating branch."
   else
     sync_main

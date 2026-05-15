@@ -175,3 +175,22 @@ test('security page describes architecture, encryption, and public trust links',
   assert.match(securitySource, /siteConfig\.apiHealthUrl/)
   assert.match(securitySource, /siteConfig\.apiReadyUrl/)
 })
+
+test('trust center documents customer proof framework without fake social-proof claims', () => {
+  const trustCenterSource = readSource('app/trust-center/page.tsx')
+  const frameworkDoc = readSource('docs/customer-proof-framework.md')
+
+  assert.match(trustCenterSource, /Customer Proof Framework/)
+  assert.match(
+    trustCenterSource,
+    /Publication gates, approved proof\s+types, and wording guardrails are documented in the customer proof framework before any public customer claim\s+goes live\./
+  )
+  assert.match(trustCenterSource, /No customer logos or testimonials are published on this site until approved assets are recorded through the framework workflow/)
+  assert.match(trustCenterSource, /Approved proof types/)
+  assert.match(trustCenterSource, /Wording guardrails/)
+  assert.doesNotMatch(trustCenterSource, /github\.com\/nazifsohtaoglu\/neutralai-website\/blob\/main\/docs\/customer-proof-framework\.md/)
+  assert.match(frameworkDoc, /Allowed Public Proof Types/)
+  assert.match(frameworkDoc, /Required Approval Gates/)
+  assert.match(frameworkDoc, /No invented customer logos, testimonials, or usage numbers\./)
+  assert.match(frameworkDoc, /Current Public Posture \(2026-05-15\)/)
+})

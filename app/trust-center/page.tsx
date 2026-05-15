@@ -89,6 +89,20 @@ const caveats = [
   'Public claims are intentionally narrower than internal readiness artifacts.',
 ] as const
 
+const approvedProofTypes = [
+  'Named customer quote only after written customer approval and Legal sign-off',
+  'Anonymized case study approved by Compliance and Legal',
+  'Measured pilot summary with documented timeframe and limits',
+  'Usage-count claim tied to a repeatable analytics source and owner sign-off',
+  'Benchmark evidence linked to source scope and caveats',
+] as const
+
+const wordingRules = [
+  'No invented customer logos, testimonials, or usage numbers.',
+  'No blanket compliance guarantees for customer deployments.',
+  'No independent-validation language unless a public third-party report exists.',
+] as const
+
 export default function TrustCenterPage() {
   return (
     <main className="min-h-screen pt-24">
@@ -199,6 +213,51 @@ export default function TrustCenterPage() {
                   {item}
                 </p>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section bg-background-secondary">
+        <div className="container-custom">
+          <div className="grid gap-8 rounded-lg border border-border bg-background p-6 lg:grid-cols-[1.02fr_0.98fr] lg:p-8">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Customer Proof Framework</p>
+              <h2 className="mt-3 font-heading text-3xl font-bold">Publish proof only after approval gates clear.</h2>
+              <p className="mt-4 text-sm leading-7 text-slate-400">
+                We keep public trust copy conservative until customer evidence is approved. Publication gates, approved proof
+                types, and wording guardrails are documented in the customer proof framework before any public customer claim
+                goes live.
+              </p>
+              <div className="mt-5 rounded-md border border-border/80 bg-background-secondary/70 p-4">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-slate-500">Current posture</p>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  No customer logos or testimonials are published on this site until approved assets are recorded through the framework workflow.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              <div className="rounded-md border border-border bg-background-secondary/60 p-4">
+                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#fdba74]">Approved proof types</p>
+                <ul className="mt-3 space-y-2">
+                  {approvedProofTypes.map((item) => (
+                    <li key={item} className="text-sm leading-6 text-slate-300">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-md border border-border bg-background-secondary/60 p-4">
+                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#fdba74]">Wording guardrails</p>
+                <ul className="mt-3 space-y-2">
+                  {wordingRules.map((item) => (
+                    <li key={item} className="text-sm leading-6 text-slate-300">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
