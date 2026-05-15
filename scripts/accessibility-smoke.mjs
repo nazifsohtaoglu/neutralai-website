@@ -383,6 +383,43 @@ async function expectFocusedRole(page, tagName, message) {
   }
 }
 
+async function readFocusedElement(page) {
+  return page.evaluate(() => {
+    const active = document.activeElement
+    if (!active) {
+      return { tag: '', name: '' }
+    }
+
+    const ariaLabel = active.getAttribute?.('aria-label')?.trim() || ''
+    const text = (active.textContent || '').trim().replace(/\s+/g, ' ')
+    return { tag: active.tagName, name: ariaLabel || text }
+  })
+}
+
+async function expectFocusedLinkWithName(page, expectedName, message) {
+  const focused = await readFocusedElement(page)
+  if (focused.tag.toUpperCase() !== 'A') {
+    throw new Error(`${message}. Found focused tag: ${focused.tag || 'none'}`)
+  }
+
+  if (!expectedName.test(focused.name)) {
+    throw new Error(`${message}. Found focused link name: "${focused.name || 'unknown'}"`)
+  }
+}
+
+async function tabUntilFocusedLink(page, expectedName, maxTabs, message) {
+  for (let i = 0; i < maxTabs; i += 1) {
+    await page.keyboard.press('Tab')
+    const focused = await readFocusedElement(page)
+    if (focused.tag.toUpperCase() === 'A' && expectedName.test(focused.name)) {
+      return
+    }
+  }
+
+  const focused = await readFocusedElement(page)
+  throw new Error(`${message}. Found: ${focused.tag || 'none'} "${focused.name || ''}"`)
+}
+
 async function assertConsentBanner(page) {
   await page.getByRole('button', { name: /decline/i }).first().waitFor({ state: 'visible', timeout: 5000 })
   await page.getByRole('button', { name: /accept/i }).first().waitFor({ state: 'visible', timeout: 5000 })
@@ -428,11 +465,21 @@ async function assertDesktopKeyboardAndFocus(context, baseUrl) {
   await page.keyboard.press('Tab')
   await expectFocusedRole(page, 'A', 'desktop keyboard: expected focus to reach interactive controls')
 
-  await page.getByRole('button', { name: /^use cases$/i }).first().focus()
+  const useCasesButton = page.getByRole('button', { name: /^use cases$/i }).first()
+  await useCasesButton.focus()
   await expectFocusedRole(page, 'BUTTON', 'desktop keyboard: expected Use Cases dropdown trigger to be focusable')
+  await page.getByRole('link', { name: /^all use cases$/i }).first().waitFor({ state: 'visible', timeout: 5000 })
+  await tabUntilFocusedLink(page, /^all use cases$/i, 4, 'desktop keyboard: expected Use Cases dropdown link to be keyboard reachable')
+
+  const moreButton = page.getByRole('button', { name: /^more$/i }).first()
+  await moreButton.focus()
+  await expectFocusedRole(page, 'BUTTON', 'desktop keyboard: expected More dropdown trigger to be focusable')
+  await page.getByRole('link', { name: /^blog$/i }).first().waitFor({ state: 'visible', timeout: 5000 })
+  await tabUntilFocusedLink(page, /^blog$/i, 4, 'desktop keyboard: expected More dropdown link to be keyboard reachable')
 
   await assertFocusIndicator(page, 'a[href="/#problem"]', 'desktop primary nav link')
   await assertFocusIndicator(page, 'button[aria-haspopup="true"]', 'desktop dropdown trigger')
+  await assertFocusIndicator(page, 'a[href^="/use-cases"]', 'desktop dropdown link')
 }
 
 async function assertMobileKeyboardAndFocus(context, baseUrl) {
@@ -450,7 +497,10 @@ async function assertMobileKeyboardAndFocus(context, baseUrl) {
   await panel.waitFor({ state: 'visible', timeout: 5000 })
 
   await page.keyboard.press('Tab')
-  await expectFocusedRole(page, 'A', 'mobile keyboard: expected first menu item to be keyboard reachable')
+  await expectFocusedLinkWithName(page, /^problem$/i, 'mobile keyboard: expected first menu item to be keyboard reachable')
+  await tabUntilFocusedLink(page, /^blog$/i, 12, 'mobile keyboard: expected grouped More links to be keyboard reachable')
+  await tabUntilFocusedLink(page, /^all use cases$/i, 12, 'mobile keyboard: expected grouped Use Cases links to be keyboard reachable')
+  await tabUntilFocusedLink(page, /^get started free$/i, 20, 'mobile keyboard: expected mobile CTA to be keyboard reachable')
 
   await assertFocusIndicator(page, 'button[aria-label*="navigation menu"]', 'mobile menu button')
 }
