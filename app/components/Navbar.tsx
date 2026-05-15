@@ -74,7 +74,10 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'py-4'}`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'py-4'}`}
+      data-visual-smoke="navbar-root"
+    >
       <div className="mx-auto flex w-full max-w-[1760px] items-center justify-between gap-5 px-6 lg:px-8">
         <Link href="/" className="flex flex-shrink-0 items-center gap-2">
           <Image src="/logo-sm.webp" alt="NeutralAI" width={40} height={40} className="w-10 h-10 rounded-lg" priority />
@@ -121,10 +124,11 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="xl:hidden absolute top-full left-0 right-0 max-h-[calc(100vh-72px)] overflow-y-auto glass border-t border-border p-4"
+          data-visual-smoke="mobile-nav-panel"
         >
           {primaryNavLinks.map((link) => (
             <Link 
