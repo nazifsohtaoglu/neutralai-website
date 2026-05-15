@@ -94,7 +94,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="lg:-mt-3 xl:-mt-4">
+          <div className="lg:-mt-3 xl:-mt-4" data-visual-smoke="home-primary-media">
             <ProductVisual />
             <div className="mt-4 hidden gap-3 lg:grid lg:grid-cols-3">
               {complianceProofs.map((proof) => (
