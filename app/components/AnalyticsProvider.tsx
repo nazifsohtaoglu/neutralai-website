@@ -92,7 +92,9 @@ export default function AnalyticsProvider() {
         <div className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-3xl rounded-2xl border border-white/10 bg-background-secondary/95 p-3 shadow-[0_24px_80px_rgba(2,8,23,0.55)] backdrop-blur sm:inset-x-4 sm:bottom-4 sm:p-4 md:p-5">
           <div className="sm:hidden">
             <p className="font-heading text-sm font-semibold text-white">Analytics consent</p>
-            <p className="mt-1 text-xs leading-5 text-slate-400">No analytics runs until you accept.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-400">
+              We use privacy-friendly analytics for page performance and CTA conversion. No analytics runs until you accept.
+            </p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <button
                 type="button"
