@@ -30,7 +30,7 @@ test('registry covers high-risk benchmark, compliance, and deployment claims', (
   assert.match(registry, /AES-256-GCM/)
   assert.match(registry, /SOC2 readiness/)
   assert.match(registry, /GDPR-aligned controls/)
-  assert.match(registry, /Cyber Essentials evidence/)
+  assert.match(registry, /Cyber Essentials via review/)
   assert.match(registry, /public overall F1/)
   assert.match(registry, /measured overhead/)
   assert.match(registry, /PHI-aware masking/)
@@ -45,8 +45,9 @@ test('registry covers high-risk benchmark, compliance, and deployment claims', (
 test('homepage trust proof wording stays conservative for certification and deployment posture', () => {
   const homeData = readSource('app/data/homepage.ts')
 
-  assert.match(homeData, /SOC2 readiness \/ GDPR-aligned \/ Cyber Essentials evidence/)
+  assert.match(homeData, /SOC2 readiness \/ GDPR-aligned \/ Cyber Essentials via review/)
   assert.match(homeData, /Managed now, private cloud\/on-prem planning/)
   assert.doesNotMatch(homeData, /SOC2 \/ ISO \/ CE/)
+  assert.doesNotMatch(homeData, /Cyber Essentials evidence/)
   assert.doesNotMatch(homeData, /Managed, private cloud, or on-prem/)
 })

@@ -235,7 +235,7 @@ export const trustBadges = [
   'AES-256-GCM vault',
   'SOC2 readiness',
   'GDPR-aligned controls',
-  'Cyber Essentials evidence',
+  'Cyber Essentials via review',
   '20+ PII entity types',
   '10-language benchmark',
 ] as const
@@ -324,7 +324,7 @@ export const complianceProofs = [
   {
     icon: ClipboardCheck,
     label: 'Auto evidence',
-    value: 'SOC2 readiness / GDPR-aligned / Cyber Essentials evidence',
+    value: 'SOC2 readiness / GDPR-aligned / Cyber Essentials via review',
   },
   {
     icon: Lock,
