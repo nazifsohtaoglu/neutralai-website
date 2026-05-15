@@ -90,6 +90,14 @@ export default function ProductVisual() {
   const sanitizedPanelActive =
     !shouldReduceMotion &&
     (displayPhase === 'typingSanitized' || displayPhase === 'pauseSanitized')
+  const beamDotAnimate = shouldReduceMotion
+    ? { x: 0, opacity: 0.2 }
+    : showFlights
+      ? { x: ['-64%', '64%'], opacity: [0.35, 1, 0.35] }
+      : { x: '-64%', opacity: 0.2 }
+  const beamDotTransition = shouldReduceMotion
+    ? { duration: 0 }
+    : { duration: 1.1, repeat: showFlights ? Infinity : 0, ease: 'easeInOut' as const }
 
   return (
     <div className="signal-simple-shell rounded-[28px] p-3 sm:p-4 md:p-6 xl:p-7">
@@ -165,12 +173,8 @@ export default function ProductVisual() {
             <div className="beam-wrapper">
               <div className="beam-line" />
               <motion.div
-                animate={
-                  showFlights
-                    ? { x: ['-64%', '64%'], opacity: [0.35, 1, 0.35] }
-                    : { x: '-64%', opacity: 0.2 }
-                }
-                transition={{ duration: 1.1, repeat: showFlights ? Infinity : 0, ease: 'easeInOut' }}
+                animate={beamDotAnimate}
+                transition={beamDotTransition}
                 className="beam-dot"
               />
               <motion.div
