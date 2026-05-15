@@ -19,6 +19,14 @@ const scenarios = [
   { name: 'home-desktop', route: '/', viewport: { width: 1440, height: 900 } },
   { name: 'home-tablet', route: '/', viewport: { width: 1024, height: 1366 } },
   { name: 'home-mobile', route: '/', viewport: { width: 390, height: 844 }, checkMobileNav: true, checkPrimaryMedia: true },
+  {
+    name: 'home-mobile-reduced-motion',
+    route: '/',
+    viewport: { width: 390, height: 844 },
+    checkPrimaryMedia: true,
+    checkReducedMotion: true,
+    reducedMotion: 'reduce',
+  },
   { name: 'pricing-desktop', route: '/#pricing', viewport: { width: 1440, height: 900 } },
   { name: 'contact-desktop', route: '/contact/', viewport: { width: 1440, height: 900 } },
   { name: 'demo-desktop', route: '/demo/', viewport: { width: 1440, height: 900 } },
@@ -187,6 +195,32 @@ async function assertMobileMenuPlacement(page, scenarioName) {
   }
 }
 
+async function assertReducedMotionExperience(page, scenarioName) {
+  const reducedMotionBadge = page.getByText('Reduced motion mode', { exact: true })
+  if ((await reducedMotionBadge.count()) === 0) {
+    throw new Error(`${scenarioName}: expected reduced motion badge in product visual`)
+  }
+
+  const typingCarets = page.locator('.typing-caret')
+  if ((await typingCarets.count()) > 0) {
+    throw new Error(`${scenarioName}: typing caret should be hidden for reduced motion users`)
+  }
+
+  const marqueeAnimationName = await page.evaluate(() => {
+    const marqueeTrack = document.querySelector('.marquee-track')
+    if (!marqueeTrack) {
+      return null
+    }
+    return window.getComputedStyle(marqueeTrack).animationName
+  })
+
+  if (marqueeAnimationName && marqueeAnimationName !== 'none') {
+    throw new Error(
+      `${scenarioName}: marquee animation should be disabled in reduced motion mode (animation=${marqueeAnimationName})`
+    )
+  }
+}
+
 async function run() {
   await ensureOutExists()
   const runDir = path.join(artifactRoot, nowStamp())
@@ -203,6 +237,7 @@ async function run() {
       const context = await browser.newContext({
         viewport: scenario.viewport,
         deviceScaleFactor: 1,
+        reducedMotion: scenario.reducedMotion ?? 'no-preference',
       })
 
       try {
@@ -222,6 +257,10 @@ async function run() {
         if (scenario.checkMobileNav) {
           await assertMobileMenuPlacement(page, scenario.name)
           await assertNoHorizontalOverflow(page, `${scenario.name} (with menu open)`)
+        }
+
+        if (scenario.checkReducedMotion) {
+          await assertReducedMotionExperience(page, scenario.name)
         }
 
         const screenshotFile = path.join(runDir, `${scenario.name}.png`)

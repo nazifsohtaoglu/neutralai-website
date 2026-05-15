@@ -334,7 +334,7 @@ body {
 }
 
 .prompt-editor-shell {
-  min-height: clamp(236px, 24vw, 292px);
+  min-height: clamp(178px, 28vw, 236px);
   width: 100%;
   min-width: 0;
   overflow: hidden;
@@ -413,8 +413,8 @@ body {
 
 .beam-wrapper {
   position: relative;
-  width: clamp(104px, 12vw, 148px);
-  height: clamp(104px, 12vw, 148px);
+  width: clamp(72px, 14vw, 148px);
+  height: clamp(72px, 14vw, 148px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -469,8 +469,8 @@ body {
 .gateway-core {
   position: relative;
   z-index: 1;
-  width: clamp(82px, 8.8vw, 110px);
-  height: clamp(82px, 8.8vw, 110px);
+  width: clamp(72px, 8.8vw, 110px);
+  height: clamp(72px, 8.8vw, 110px);
   border-radius: 9999px;
   border: 1px solid rgba(34, 211, 238, 0.22);
   background:
@@ -489,6 +489,12 @@ body {
 @media (min-width: 1280px) {
   .prompt-editor-shell {
     min-height: 308px;
+  }
+}
+
+@media (min-width: 768px) {
+  .prompt-editor-shell {
+    min-height: clamp(236px, 24vw, 292px);
   }
 }
 
@@ -551,6 +557,43 @@ body {
 
 .ambient-orbit {
   animation: ambient-orbit 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-pulse,
+  .gradient-text-warm,
+  .gradient-text-signal,
+  .typing-caret,
+  .token-flight,
+  .marquee-track,
+  .scan-line,
+  .ambient-orbit,
+  .pipeline-particle-one,
+  .pipeline-particle-two,
+  .pipeline-particle-three,
+  .pipeline-core::before,
+  .pipeline-core::after,
+  .spotlight-card::after,
+  .signal-card-elevated::after,
+  .accent-panel::before,
+  .accent-card::before {
+    animation: none !important;
+  }
+
+  .typing-caret,
+  .token-flight,
+  .scan-line,
+  .ambient-orbit {
+    display: none !important;
+  }
+
+  .marquee-track {
+    transform: translateX(0) !important;
+  }
 }
 
 /* Animated border */
