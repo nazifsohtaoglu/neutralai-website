@@ -43,6 +43,7 @@ For blog articles or content hub work:
 
 - Define the visual story before creating the image: audience, tension, product role, and desired emotional takeaway.
 - Write an art-direction prompt for each hero visual before generating or sourcing assets.
+- Include the keyword source reference (approved export/date) and buyer intent in the ticket before implementation starts.
 - Avoid generic diagrams, stock-photo filler, literal dashboards, and images that only repeat article text.
 - Prefer professional editorial scenes, metaphors, and product-motion storytelling that make NeutralAI's role clear without overclaiming capabilities.
 - Keep generated visuals free of readable text, customer logos, credentials, invented metrics, and unsupported compliance claims.
