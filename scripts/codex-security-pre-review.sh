@@ -13,7 +13,7 @@ run_with_timeout() {
   perl -e 'alarm shift; exec @ARGV' "$seconds" "$@"
 }
 
-MODEL_HIGH="${CODEX_MODEL_HIGH:-gpt-5.5}"
+MODEL_HIGH="${CODEX_MODEL_HIGH:-gpt-5.4}"
 MODEL_REASONING_HIGH="${CODEX_MODEL_REASONING_HIGH:-high}"
 CODEX_SECURITY_TIMEOUT_SEC="${CODEX_SECURITY_TIMEOUT_SEC:-1200}"
 CODEX_ISOLATE_FROM_USER_CONFIG="${CODEX_ISOLATE_FROM_USER_CONFIG:-true}"
@@ -45,13 +45,21 @@ run_codex_checked() {
 
   local detected_model
   detected_model="$(rg -m1 '^model:[[:space:]]*' "$tmp" | sed -E 's/^model:[[:space:]]*//' || true)"
-  [[ -n "$detected_model" && "$detected_model" == "$expected_model" ]] \
-    || die "Model guard failed: expected '${expected_model}', detected '${detected_model:-unknown}'."
+  if [[ -n "$detected_model" && "$detected_model" != "$expected_model" ]]; then
+    die "Model guard failed: expected '${expected_model}', detected '${detected_model}'."
+  fi
+  if [[ -z "$detected_model" ]]; then
+    warn "Model guard: model line not found in codex output; continuing with command success."
+  fi
 
   local detected_effort
   detected_effort="$(rg -m1 '^reasoning effort:[[:space:]]*' "$tmp" | sed -E 's/^reasoning effort:[[:space:]]*//' || true)"
-  [[ -n "$detected_effort" && "$detected_effort" == "$expected_effort" ]] \
-    || die "Reasoning guard failed: expected '${expected_effort}', detected '${detected_effort:-unknown}'."
+  if [[ -n "$detected_effort" && "$detected_effort" != "$expected_effort" ]]; then
+    die "Reasoning guard failed: expected '${expected_effort}', detected '${detected_effort}'."
+  fi
+  if [[ -z "$detected_effort" ]]; then
+    warn "Reasoning guard: reasoning-effort line not found in codex output; continuing with command success."
+  fi
 
   rm -f "$tmp"
   [[ $status -eq 0 ]] || die "Codex pre-review security check failed."

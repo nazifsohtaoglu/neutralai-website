@@ -19,12 +19,14 @@ test('security pre-review automation script exists and is executable', () => {
 test('security pre-review script includes high-model guard and untracked diff coverage', () => {
   const source = readSource('scripts/codex-security-pre-review.sh')
 
-  assert.match(source, /MODEL_HIGH="\$\{CODEX_MODEL_HIGH:-gpt-5\.5\}"/)
+  assert.match(source, /MODEL_HIGH="\$\{CODEX_MODEL_HIGH:-gpt-5\.4\}"/)
   assert.match(source, /MODEL_REASONING_HIGH="\$\{CODEX_MODEL_REASONING_HIGH:-high\}"/)
   assert.match(source, /git add -N --all/)
   assert.match(source, /git diff --no-color origin\/main/)
   assert.match(source, /post-ticket-security-check\.md/)
   assert.match(source, /Mandatory HIGH security pre-review/)
+  assert.match(source, /model line not found in codex output; continuing with command success/)
+  assert.match(source, /reasoning-effort line not found in codex output; continuing with command success/)
 })
 
 test('workflow and docs require security pre-review before PR review', () => {
