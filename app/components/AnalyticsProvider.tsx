@@ -100,8 +100,30 @@ export default function AnalyticsProvider() {
       ) : null}
 
       {consent === null ? (
-        <div className="fixed inset-x-4 bottom-4 z-[70] mx-auto max-w-3xl rounded-2xl border border-white/10 bg-background-secondary/95 p-4 shadow-[0_24px_80px_rgba(2,8,23,0.55)] backdrop-blur md:p-5">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-3xl rounded-2xl border border-white/10 bg-background-secondary/95 p-3 shadow-[0_24px_80px_rgba(2,8,23,0.55)] backdrop-blur sm:inset-x-4 sm:bottom-4 sm:p-4 md:p-5">
+          <div className="sm:hidden">
+            <p className="font-heading text-sm font-semibold text-white">Analytics consent</p>
+            <p className="mt-1 text-xs leading-5 text-slate-400">
+              We use privacy-friendly analytics for page performance and CTA conversion. No analytics runs until you accept.
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => chooseConsent('declined')}
+                className="h-11 rounded-xl border border-white/10 px-3 text-sm font-medium text-slate-300 transition hover:border-white/20 hover:text-white"
+              >
+                Decline
+              </button>
+              <button
+                type="button"
+                onClick={() => chooseConsent('accepted')}
+                className="h-11 rounded-xl bg-primary px-3 text-sm font-semibold text-slate-950 transition hover:bg-primary-light"
+              >
+                Accept
+              </button>
+            </div>
+          </div>
+          <div className="hidden flex-col gap-4 sm:flex md:flex-row md:items-center md:justify-between">
             <div>
               <p className="font-heading text-base font-semibold text-white">Analytics consent</p>
               <p className="mt-1 text-sm leading-6 text-slate-400">
