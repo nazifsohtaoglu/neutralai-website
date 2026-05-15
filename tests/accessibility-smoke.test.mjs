@@ -48,3 +48,15 @@ test('resolveStaticFileFromRoot rejects traversal and symlink escapes', async ()
     }
   })
 })
+
+test('resolveStaticFileFromRoot rejects malformed absolute and scheme-relative targets', async () => {
+  await withTempDir(async (tempDir) => {
+    await writeFile(path.join(tempDir, 'index.html'), '<html></html>', 'utf8')
+
+    const absoluteTarget = await resolveStaticFileFromRoot(tempDir, 'http://evil.test/index.html')
+    const schemeRelativeTarget = await resolveStaticFileFromRoot(tempDir, '//evil.test/%2e%2e/index.html')
+
+    assert.equal(absoluteTarget, null)
+    assert.equal(schemeRelativeTarget, null)
+  })
+})

@@ -88,7 +88,12 @@ export async function resolveStaticFileFromRoot(staticRoot, urlPathname) {
   let normalizedPath
 
   try {
-    normalizedPath = decodeURIComponent(urlPathname.split('?')[0]).replace(/^\/+/, '')
+    if (!urlPathname.startsWith('/') || urlPathname.startsWith('//')) {
+      return null
+    }
+
+    const pathname = new URL(urlPathname, 'http://localhost').pathname
+    normalizedPath = decodeURIComponent(pathname).replace(/^\/+/, '')
   } catch {
     return null
   }
