@@ -99,10 +99,10 @@ Then validate production/staging URL:
 3. If header/CSP regressions remain, re-apply host header configuration from `public/_headers` equivalent rules and redeploy.
 4. Record the incident and rollback cause in issue [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78).
 
-## Ownership and Open Items
+## Ownership and Ops Source of Truth
 
-The repository now documents static deployment behavior; hosting-account execution ownership still needs explicit role assignment in private ops docs.
+This repository is the source of truth for static behavior and verification commands. Private ops documentation is the source of truth for host-account execution details, explicit on-call mapping, and rollback operator access.
 
-- Owner role to confirm: Platform/Infra
-- Tracking issue: [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78)
-- Decision needed: Where host-level redirect/header rules are maintained (Cloudflare dashboard, IaC repo, or both) and who is on-call for rollback.
+- Owner role: Platform/Infra
+- Public tracking: [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) and `docs/ai/LAUNCH_READINESS_LEDGER.md`
+- Private tracking expectation: maintain host-level redirect/header rule location (Cloudflare dashboard and/or IaC repository) and rollback on-call mapping in an access-controlled ops system.
