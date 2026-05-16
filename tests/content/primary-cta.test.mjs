@@ -46,7 +46,10 @@ test('homepage hero uses Try Free, Book Demo, and a demoted extension install li
 
   assert.match(homeSource, /href=\{siteConfig\.signupUrl\}[\s\S]{0,320}>\s*Try Free/)
   assert.match(homeSource, /href=\{siteConfig\.demoUrl\}[\s\S]{0,320}>\s*Book Demo/)
-  assert.match(homeSource, /className="text-primary-light[^"]*"[\s\S]{0,80}>\s*Install browser extension/)
+  assert.match(
+    homeSource,
+    /href="\/install-extension"[\s\S]*className="text-primary-light[^"]*"[\s\S]*>\s*Install browser extension/
+  )
   assert.doesNotMatch(homeSource, /className="btn btn-cta[^"]*"[\s\S]{0,120}>\s*Install Extension/)
 })
 
@@ -92,7 +95,7 @@ test('extension-focused homepage card keeps Try Free primary and install seconda
   )
   assert.match(
     homeSource,
-    /Same tab\.[\s\S]*href="\/install-extension" className="btn btn-secondary[^"]*"[\s\S]{0,120}>\s*Install Browser Extension/
+    /Same tab\.[\s\S]*href="\/install-extension"[\s\S]*className="btn btn-secondary[^"]*"[\s\S]*>\s*Install Browser Extension/
   )
   assert.doesNotMatch(homeSource, /Plan Enterprise Rollout/)
 })

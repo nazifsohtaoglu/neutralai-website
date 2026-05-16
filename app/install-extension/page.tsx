@@ -89,14 +89,30 @@ export default function InstallExtensionPage() {
 
               if (option.external) {
                 return (
-                  <a key={option.title} href={option.href} target="_blank" rel="noreferrer" className="block">
+                  <a
+                    key={option.title}
+                    href={option.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                    data-analytics-event="CTA Click"
+                    data-analytics-label={option.label}
+                    data-analytics-placement="install_extension_options"
+                  >
                     {content}
                   </a>
                 )
               }
 
               return (
-                <Link key={option.title} href={option.href} className="block">
+                <Link
+                  key={option.title}
+                  href={option.href}
+                  className="block"
+                  data-analytics-event="CTA Click"
+                  data-analytics-label={option.label}
+                  data-analytics-placement="install_extension_options"
+                >
                   {content}
                 </Link>
               )

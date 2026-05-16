@@ -98,7 +98,13 @@ export default function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <a href={plan.href} className={`btn mt-8 w-full ${plan.featured ? 'btn-cta' : 'btn-secondary'}`}>
+              <a
+                href={plan.href}
+                className={`btn mt-8 w-full ${plan.featured ? 'btn-cta' : 'btn-secondary'}`}
+                data-analytics-event="CTA Click"
+                data-analytics-label={`${plan.name} ${plan.cta}`}
+                data-analytics-placement="homepage_pricing_primary"
+              >
                 {plan.cta}
               </a>
             </motion.div>
@@ -157,7 +163,13 @@ export default function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <a href={plan.href} className="btn btn-secondary w-full">
+                <a
+                  href={plan.href}
+                  className="btn btn-secondary w-full"
+                  data-analytics-event="CTA Click"
+                  data-analytics-label={`${plan.name} ${plan.cta}`}
+                  data-analytics-placement="homepage_pricing_advanced"
+                >
                   {plan.cta}
                 </a>
               </div>

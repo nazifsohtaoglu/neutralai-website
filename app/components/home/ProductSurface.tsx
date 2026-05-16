@@ -57,7 +57,13 @@ export default function ProductSurface() {
                   >
                     Try Free
                   </a>
-                  <a href="/install-extension" className="btn btn-secondary w-full sm:w-auto">
+                  <a
+                    href="/install-extension"
+                    className="btn btn-secondary w-full sm:w-auto"
+                    data-analytics-event="CTA Click"
+                    data-analytics-label="Install Browser Extension"
+                    data-analytics-placement="homepage_product_surface"
+                  >
                     Install Browser Extension
                   </a>
                 </div>
