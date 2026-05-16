@@ -100,13 +100,17 @@ branch_exists_for_ticket() {
     warn "Found stale local branch '$branch' with no unique commits; eligible for reuse."
   fi
 
-  if git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+  if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+    git fetch --no-tags origin "$branch:refs/remotes/origin/$branch" >/dev/null 2>&1 \
+      || die "Failed to refresh remote branch metadata: $branch"
     local remote_unique
     remote_unique="$(git rev-list --count "origin/main..refs/remotes/origin/$branch" 2>/dev/null || echo "0")"
     if [[ "$remote_unique" -gt 0 ]]; then
       return 0
     fi
     warn "Found stale remote branch 'origin/$branch' with no unique commits; eligible for reuse."
+  elif git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+    warn "Ignoring stale cached remote-tracking ref 'origin/$branch' because no live remote branch exists."
   fi
 
   return 1
@@ -287,7 +291,9 @@ create_branch_for_ticket() {
     return 0
   fi
 
-  if git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+  if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+    git fetch --no-tags origin "$branch:refs/remotes/origin/$branch" >/dev/null 2>&1 \
+      || die "Failed to refresh remote branch metadata: $branch"
     git switch --track -c "$branch" "origin/$branch" >/dev/null 2>&1 || die "Failed to track remote branch: $branch"
     git merge --ff-only origin/main >/dev/null 2>&1 || die "Failed to fast-forward tracked branch '$branch' to origin/main."
     echo "$branch"
