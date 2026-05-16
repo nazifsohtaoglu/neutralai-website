@@ -160,7 +160,9 @@ export default function SocialProofSection() {
               <div className="divide-y divide-white/10">
                 {socialProofMetrics.map((metric) => (
                   <div key={metric.label} className="grid grid-cols-[110px_minmax(0,1fr)] gap-3 px-4 py-4">
-                    <p className="font-heading text-2xl font-semibold text-white">{metric.value}</p>
+                    <p className="flex h-full items-center justify-center text-center font-heading text-2xl font-semibold text-white">
+                      {metric.value}
+                    </p>
                     <div>
                       <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary-light">{metric.label}</p>
                       <p className="mt-2 text-sm leading-6 text-slate-300">{metric.detail}</p>

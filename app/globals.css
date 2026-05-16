@@ -1063,7 +1063,7 @@ body {
 
 /* Section padding */
 .section {
-  padding: 6rem 1.5rem;
+  padding: 6rem 1rem;
 }
 
 @media (min-width: 768px) {
@@ -1076,7 +1076,17 @@ body {
 .container-custom {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 430px) {
+  .section {
+    padding-inline: 0.75rem;
+  }
+
+  .container-custom {
+    padding-inline: 0.75rem;
+  }
 }
 
 /* Gradient orbs background */
