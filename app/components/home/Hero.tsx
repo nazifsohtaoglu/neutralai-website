@@ -59,7 +59,13 @@ export default function Hero() {
               </a>
             </div>
             <div className="mt-4 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:flex-wrap sm:items-center">
-              <a href="/install-extension" className="text-primary-light transition-colors hover:text-primary">
+              <a
+                href="/install-extension"
+                className="text-primary-light transition-colors hover:text-primary"
+                data-analytics-event="CTA Click"
+                data-analytics-label="Install Browser Extension"
+                data-analytics-placement="homepage_hero"
+              >
                 Install browser extension
               </a>
               <span className="hidden text-slate-600 sm:inline">•</span>
