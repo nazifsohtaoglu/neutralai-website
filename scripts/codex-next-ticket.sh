@@ -88,15 +88,33 @@ branch_exists_for_ticket() {
   local title="$2"
   local branch
   branch="$(ticket_branch_name "$number" "$title")"
+
+  # Only block selection when a ticket branch still has unique work that is
+  # not already contained in origin/main.
   if git show-ref --verify --quiet "refs/heads/$branch"; then
-    return 0
+    local local_unique
+    local_unique="$(git rev-list --count "origin/main..refs/heads/$branch" 2>/dev/null || echo "0")"
+    if [[ "$local_unique" -gt 0 ]]; then
+      return 0
+    fi
+    warn "Found stale local branch '$branch' with no unique commits; eligible for reuse."
   fi
+
   if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
-    return 0
+    git fetch --no-tags origin "$branch:refs/remotes/origin/$branch" >/dev/null 2>&1 \
+      || die "Failed to refresh remote branch metadata: $branch"
+    local remote_unique
+    remote_unique="$(git rev-list --count "origin/main..refs/remotes/origin/$branch" 2>/dev/null || echo "0")"
+    if [[ "$remote_unique" -gt 0 ]]; then
+      return 0
+    fi
+    warn "Found stale remote branch 'origin/$branch' with no unique commits; eligible for reuse."
+  elif git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+    warn "Ignoring stale cached remote-tracking ref 'origin/$branch' because no live remote branch exists."
   fi
+
   return 1
 }
-
 csv_to_json_array() {
   echo "$1" | tr ',' '\n' | sed '/^$/d' | jq -R -s 'split("\n")[:-1]'
 }
@@ -262,10 +280,27 @@ create_branch_for_ticket() {
   branch="$(ticket_branch_name "$number" "$title")"
 
   if git show-ref --verify --quiet "refs/heads/$branch"; then
-    die "Branch already exists locally: $branch"
+    local local_unique
+    local_unique="$(git rev-list --count "origin/main..refs/heads/$branch" 2>/dev/null || echo "0")"
+    if [[ "$local_unique" -gt 0 ]]; then
+      die "Branch already exists locally with unique commits: $branch"
+    fi
+    git switch "$branch" >/dev/null 2>&1 || die "Failed to switch to existing branch: $branch"
+    git merge --ff-only origin/main >/dev/null 2>&1 || die "Failed to fast-forward existing branch '$branch' to origin/main."
+    echo "$branch"
+    return 0
   fi
 
-  git switch -c "$branch" >/dev/null 2>&1 || die "Failed to create branch: $branch"
+  if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+    git fetch --no-tags origin "$branch:refs/remotes/origin/$branch" >/dev/null 2>&1 \
+      || die "Failed to refresh remote branch metadata: $branch"
+    git switch --track -c "$branch" "origin/$branch" >/dev/null 2>&1 || die "Failed to track remote branch: $branch"
+    git merge --ff-only origin/main >/dev/null 2>&1 || die "Failed to fast-forward tracked branch '$branch' to origin/main."
+    echo "$branch"
+    return 0
+  fi
+
+  git switch -c "$branch" origin/main >/dev/null 2>&1 || die "Failed to create branch: $branch"
   echo "$branch"
 }
 
