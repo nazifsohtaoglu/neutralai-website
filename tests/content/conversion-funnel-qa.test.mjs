@@ -27,6 +27,7 @@ test('conversion funnel QA runbook documents owners, destinations, analytics sig
   assert.match(runbook, /website_get_started/)
   assert.match(runbook, /website_get_team/)
   assert.match(runbook, /website_get_business/)
+  assert.match(runbook, /\| Homepage -> Book Demo \|[\s\S]*`\/demo` \(then CTA handoff to `\/contact\?intent=demo`\)/)
   assert.match(runbook, /website_demo_request/)
   assert.match(runbook, /website_enterprise_enquiry/)
   assert.match(runbook, /website_security_review/)
