@@ -135,10 +135,19 @@ export default function Hero() {
       <div className="container-custom relative z-10 mt-12">
         <div className="marquee rounded-full border border-white/10 bg-white/[0.04] px-4 py-3">
           <div className="marquee-track gap-3">
-            {[...trustBadges, ...trustBadges].map((badge, index) => (
+            {trustBadges.map((badge, index) => (
               <span
                 key={`${badge}-${index}`}
                 className="inline-flex whitespace-nowrap rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-light"
+              >
+                {badge}
+              </span>
+            ))}
+            {trustBadges.map((badge, index) => (
+              <span
+                key={`${badge}-duplicate-${index}`}
+                aria-hidden="true"
+                className="marquee-duplicate inline-flex whitespace-nowrap rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-primary-light"
               >
                 {badge}
               </span>

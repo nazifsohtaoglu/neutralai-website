@@ -1,11 +1,13 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, Monitor } from 'lucide-react'
 import { siteConfig } from '../../site'
 import { deploymentCards } from '../../data/homepage'
 
 export default function ProductSurface() {
+  const shouldReduceMotion = useReducedMotion()
+
   return (
     <section className="section">
       <div className="container-custom">
@@ -121,10 +123,10 @@ export default function ProductSurface() {
             {deploymentCards.map((card, index) => (
               <motion.div
                 key={card.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+                whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={shouldReduceMotion ? undefined : { once: true }}
+                transition={shouldReduceMotion ? undefined : { delay: index * 0.08 }}
                 className="accent-card rounded-[24px] p-6"
               >
                 <div className="flex items-center justify-between gap-3">

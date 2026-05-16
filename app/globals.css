@@ -744,6 +744,29 @@ body {
   .proof-ledger > .overflow-hidden {
     border-radius: 0.9rem;
   }
+
+  .signal-simple-shell {
+    border-radius: 1.1rem;
+  }
+
+  .prompt-editor-shell {
+    min-height: 148px;
+    padding: 0.8rem 0.85rem;
+  }
+
+  .beam-wrapper {
+    width: 64px;
+    height: 64px;
+  }
+
+  .gateway-core {
+    width: 64px;
+    height: 64px;
+    box-shadow:
+      inset 0 0 20px rgba(34, 211, 238, 0.12),
+      0 0 0 8px rgba(34, 211, 238, 0.04),
+      0 18px 30px rgba(2, 8, 23, 0.36);
+  }
 }
 
 .data-chip {
@@ -834,7 +857,20 @@ body {
   }
 
   .marquee-track {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: none !important;
     transform: translateX(0) !important;
+  }
+
+  .marquee {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .marquee-duplicate {
+    display: none !important;
   }
 
   .industry-slider-track {
