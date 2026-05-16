@@ -147,9 +147,9 @@ export default function TrustSection() {
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Operational Signals</p>
-              <h3 className="mt-4 font-heading text-3xl font-semibold">Live runtime. Measured product proof.</h3>
+              <h3 className="mt-4 font-heading text-3xl font-semibold">Live product. Easy to verify.</h3>
               <p className="mt-4 max-w-3xl text-slate-300">
-                The public signal is simple: the runtime is live on <span className="text-primary-light">api.neutralai.co.uk</span>, the benchmark pages are published, and the gateway overhead is measured separately from model generation time.
+                You can quickly check that NeutralAI is live: <span className="text-primary-light">api.neutralai.co.uk</span> is public, benchmark pages are published, and gateway latency is tracked separately from model response time.
               </p>
             </div>
 

@@ -16,6 +16,7 @@ export default function ProductVisual() {
   const [rawTypedChars, setRawTypedChars] = useState(0)
   const [sanitizedTypedChars, setSanitizedTypedChars] = useState(0)
   const shouldReduceMotion = useReducedMotion()
+  const phaseOrder = ['Detect', 'Mask', 'Route'] as const
 
   useEffect(() => {
     if (shouldReduceMotion) {
@@ -98,6 +99,13 @@ export default function ProductVisual() {
   const beamDotTransition = shouldReduceMotion
     ? { duration: 0 }
     : { duration: 1.1, repeat: showFlights ? Infinity : 0, ease: 'easeInOut' as const }
+  const activePhaseIndex = shouldReduceMotion
+    ? 2
+    : phase === 'typingRaw' || phase === 'highlightRaw'
+      ? 0
+      : phase === 'sending'
+        ? 1
+        : 2
 
   return (
     <div className="signal-simple-shell rounded-[28px] p-3 sm:p-4 md:p-6 xl:p-7">
@@ -111,6 +119,21 @@ export default function ProductVisual() {
         <div className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs text-primary-light">
           {shouldReduceMotion ? 'Reduced motion mode' : 'api.neutralai.co.uk'}
         </div>
+      </div>
+
+      <div className="mt-3 grid grid-cols-3 gap-2 md:mt-4 md:gap-3">
+        {phaseOrder.map((step, index) => (
+          <div
+            key={step}
+            className={`rounded-xl border px-2.5 py-2 text-center font-mono text-[10px] uppercase tracking-[0.18em] sm:text-[11px] ${
+              index <= activePhaseIndex
+                ? 'border-primary/40 bg-primary/10 text-primary-light'
+                : 'border-white/10 bg-white/[0.02] text-slate-500'
+            }`}
+          >
+            {step}
+          </div>
+        ))}
       </div>
 
       <div className="relative mt-4 overflow-hidden md:mt-6">
