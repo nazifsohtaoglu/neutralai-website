@@ -41,6 +41,8 @@ test('hubspot production verification runbook captures owners, links, and fallba
   assert.match(runbook, /## Verification Log/)
   assert.match(runbook, /\| 2026-05-15 \| Pending \|/)
   assert.match(runbook, /\| 2026-05-17 \| Local repo checks \|/)
+  assert.match(runbook, /Partial \(static coverage only; browser validation still required\)/)
+  assert.match(runbook, /Missing-config and script-blocked fallback behavior still need browser verification/)
   assert.match(runbook, /tests\/content\/contact-form\.test\.mjs/)
 })
 
