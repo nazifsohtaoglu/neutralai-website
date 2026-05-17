@@ -4,6 +4,12 @@ Use this runbook to verify website lead capture and routing for production launc
 
 Assumption: Individual names, private app credentials, and sensitive HubSpot workspace metadata are stored in an access-controlled private ops system, while this file tracks non-secret launch evidence.
 
+## Current Gate Status
+
+- Launch state: `NO-GO` until production HubSpot smoke evidence is recorded for all three intents (`demo`, `enterprise`, `security-review`).
+- Current blocker: Production portal/form access and execution evidence are owned outside this repository.
+- Tracking source of truth: issue [#70](https://github.com/nazifsohtaoglu/neutralai-website/issues/70) and `docs/ai/LAUNCH_READINESS_LEDGER.md`.
+
 ## Ownership And Non-Secret Links
 
 | Area | Owner role | Non-secret reference link | Status |
@@ -65,3 +71,4 @@ Record values from the deployed environment where only public variables are used
 | Date (UTC) | Environment | Tester role | Demo intent | Enterprise intent | Security-review intent | Notification routing | Confirmation emails | Pipeline/stage | Fallback route | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-05-15 | Pending | Revenue Operations + Growth Engineering | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Runbook added in repo; execution evidence not yet recorded. |
+| 2026-05-17 | Local repo checks | Growth Engineering (repo) | Pending (external portal access required) | Pending (external portal access required) | Pending (external portal access required) | Pending (external portal access required) | Pending (external portal access required) | Pending (external portal access required) | Pass (fallback guard asserted in content tests) | `npm run build` passed; `node --test tests/content/contact-form.test.mjs tests/content/hubspot-verification-docs.test.mjs tests/content/analytics.test.mjs` passed. |

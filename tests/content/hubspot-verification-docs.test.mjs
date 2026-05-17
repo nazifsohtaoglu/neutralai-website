@@ -13,6 +13,9 @@ test('hubspot production verification runbook captures owners, links, and fallba
   const runbook = readSource('docs/hubspot-production-verification.md')
 
   assert.match(runbook, /# HubSpot Production Lead Capture Verification/)
+  assert.match(runbook, /## Current Gate Status/)
+  assert.match(runbook, /Launch state: `NO-GO`/)
+  assert.match(runbook, /issue \[#70\]/)
   assert.match(runbook, /## Ownership And Non-Secret Links/)
   assert.match(runbook, /Revenue Operations/)
   assert.match(runbook, /Growth Engineering/)
@@ -37,6 +40,8 @@ test('hubspot production verification runbook captures owners, links, and fallba
   assert.match(runbook, /mailto:sales@neutralai\.co\.uk/)
   assert.match(runbook, /## Verification Log/)
   assert.match(runbook, /\| 2026-05-15 \| Pending \|/)
+  assert.match(runbook, /\| 2026-05-17 \| Local repo checks \|/)
+  assert.match(runbook, /tests\/content\/contact-form\.test\.mjs/)
 })
 
 test('launch readiness ledger references the hubspot verification runbook', () => {
@@ -45,4 +50,15 @@ test('launch readiness ledger references the hubspot verification runbook', () =
   assert.match(launchLedger, /HubSpot production forms, routing, and lead ownership/)
   assert.match(launchLedger, /docs\/hubspot-production-verification\.md/)
   assert.match(launchLedger, /2026-05-15: verification runbook and non-secret ownership\/link matrix added/)
+})
+
+test('third-party register keeps non-secret HubSpot ownership and link placeholders', () => {
+  const register = readSource('docs/local/third-party-services.local.md')
+
+  assert.match(register, /HubSpot \| CRM and lead capture/)
+  assert.match(register, /Needs production smoke evidence/)
+  assert.match(register, /Revenue Operations \+ Growth Engineering/)
+  assert.match(register, /https:\/\/app\.hubspot\.com\/forms\/<portal-id>/)
+  assert.match(register, /https:\/\/app\.hubspot\.com\/workflows\/<portal-id>\/contact/)
+  assert.match(register, /docs\/hubspot-production-verification\.md/)
 })
