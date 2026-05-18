@@ -98,6 +98,24 @@ test('use-case pages publish FAQ structured data for industry SEO', () => {
   assert.match(content, /legal document review AI/)
 })
 
+test('homepage strengthens legal-aware conversion copy without legal-only hero framing', () => {
+  const whyItMatters = readSource('app/components/home/WhyItMatters.tsx')
+  const homeData = readSource('app/data/homepage.ts')
+  const pricing = readSource('app/components/home/PricingSection.tsx')
+  const hero = readSource('app/components/home/Hero.tsx')
+
+  assert.match(homeData, /confidentiality, breach, and insurer review questions/)
+  assert.match(homeData, /client trust erodes before procurement can respond/)
+  assert.match(whyItMatters, /Law firms get blocked when confidentiality concerns/)
+  assert.match(whyItMatters, /href="\/use-cases\/legal"/)
+  assert.match(whyItMatters, /See legal AI use case/)
+  assert.match(whyItMatters, /data-analytics-placement="homepage_problem_legal"/)
+  assert.match(pricing, /All listed GBP prices are excluding VAT/)
+  assert.match(hero, /Mask sensitive prompt data/)
+  assert.doesNotMatch(hero, /for law firms only/i)
+  assert.doesNotMatch(hero, /law-firm-only/i)
+})
+
 test('blog articles link to relevant use-case pages', () => {
   const financeArticle = readSource('content/blog/how-uk-financial-services-teams-use-ai-safely-under-fca-guidance.mdx')
   const piiArticle = readSource('content/blog/why-pii-masking-matters-for-enterprise-ai-adoption.mdx')

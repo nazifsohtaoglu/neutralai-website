@@ -49,6 +49,9 @@ export default function PricingSection() {
         <p className="mx-auto mt-5 max-w-4xl text-center text-sm leading-6 text-slate-400">
           Plans include masking requests. Managed AI usage is covered by small included credits for evaluation. Production model usage can run through BYOK, customer provider accounts, or prepaid top-ups.
         </p>
+        <p className="mx-auto mt-2 max-w-4xl text-center text-xs leading-6 text-slate-500">
+          All listed GBP prices are excluding VAT. VAT may apply based on billing country and entity status.
+        </p>
 
         <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-3">
           {primaryPricingPlans.map((plan, index) => (
