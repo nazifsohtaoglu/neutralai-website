@@ -6,7 +6,13 @@ For production launch verification tracking, use `docs/google-sheets-production-
 
 ## Required Public Environment Variable
 
-- `NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT` with the deployed Google Apps Script `https://script.google.com/...` web app URL
+- `NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT` with the canonical deployed Google Apps Script web app URL in the form `https://script.google.com/macros/s/<deployment-id>/exec`
+
+Because this value is public runtime config, do not paste:
+
+- redirected `script.googleusercontent.com` URLs
+- query-string auth tokens or opaque `user_content_key` values
+- embedded credentials of any kind
 
 ## Required Lead Fields
 

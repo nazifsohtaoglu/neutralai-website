@@ -19,7 +19,7 @@ type FormState = {
   company_website: string
 }
 
-const allowedLeadCaptureHosts = new Set(['script.google.com', 'script.googleusercontent.com'])
+const GOOGLE_SHEETS_EXEC_PATH_REGEX = /^\/macros\/s\/[a-z0-9_-]+\/exec\/?$/i
 
 function buildInitialState(intent: string, leadSource: string): FormState {
   return {
@@ -54,7 +54,15 @@ function resolveLeadCaptureEndpoint(rawEndpoint: string) {
 
   try {
     const parsed = new URL(rawEndpoint)
-    if (parsed.protocol !== 'https:' || !allowedLeadCaptureHosts.has(parsed.hostname)) {
+    if (parsed.protocol !== 'https:' || parsed.hostname !== 'script.google.com') {
+      return null
+    }
+
+    if (parsed.username || parsed.password || parsed.search || parsed.hash) {
+      return null
+    }
+
+    if (!GOOGLE_SHEETS_EXEC_PATH_REGEX.test(parsed.pathname)) {
       return null
     }
 
