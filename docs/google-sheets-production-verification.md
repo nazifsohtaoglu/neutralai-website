@@ -19,7 +19,7 @@ Assumption: Individual names, private credentials, and sensitive workspace metad
 
 Record values from the deployed environment where only public variables are used:
 
-- `NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT`: `TODO` (expected deployed `https://script.google.com/...` web app URL)
+- `NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT`: `TODO` (expected canonical deployed `https://script.google.com/macros/s/<deployment-id>/exec` web app URL; do not use redirected `script.googleusercontent.com` URLs or query-token variants)
 
 ## Intent Routing Matrix
 
