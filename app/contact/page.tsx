@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Mail, ShieldCheck, Waypoints } from 'lucide-react'
 import BackButton from '../components/BackButton'
-import HubSpotLeadForm from '../components/HubSpotLeadForm'
+import GoogleSheetsLeadForm from '../components/GoogleSheetsLeadForm'
 import { contactLinks, siteConfig } from '../site'
 
 const contactCards = [
@@ -69,18 +69,6 @@ function normalizeIntent(value: string | null): ContactIntent {
   return 'demo'
 }
 
-function getHubSpotFormId(intent: ContactIntent) {
-  if (intent === 'enterprise') {
-    return siteConfig.hubspot.forms.enterprise || siteConfig.hubspot.forms.contact
-  }
-
-  if (intent === 'security-review') {
-    return siteConfig.hubspot.forms.securityReview || siteConfig.hubspot.forms.contact
-  }
-
-  return siteConfig.hubspot.forms.demo || siteConfig.hubspot.forms.contact
-}
-
 function ContactFormPanel({ intent }: { intent: ContactIntent }) {
   const copy = intentCopy[intent]
 
@@ -97,7 +85,7 @@ function ContactFormPanel({ intent }: { intent: ContactIntent }) {
       </div>
 
       <div className="mt-6">
-        <HubSpotLeadForm formId={getHubSpotFormId(intent)} intent={intent} leadSource={copy.leadSource} />
+        <GoogleSheetsLeadForm intent={intent} leadSource={copy.leadSource} />
       </div>
 
       <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">

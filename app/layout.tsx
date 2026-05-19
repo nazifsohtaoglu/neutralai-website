@@ -5,6 +5,7 @@ import './globals.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import AnalyticsProvider from './components/AnalyticsProvider'
+import ReferralProvider from './components/ReferralProvider'
 import { siteConfig } from './site'
 
 const dmSans = DM_Sans({
@@ -148,6 +149,9 @@ export default function RootLayout({
           {children}
         </div>
         <Footer />
+        <Suspense fallback={null}>
+          <ReferralProvider />
+        </Suspense>
         <Suspense fallback={null}>
           <AnalyticsProvider />
         </Suspense>

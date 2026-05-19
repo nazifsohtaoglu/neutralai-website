@@ -19,15 +19,8 @@ export const siteConfig = {
     posthogToken: process.env.NEXT_PUBLIC_POSTHOG_TOKEN ?? '',
     posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
   },
-  hubspot: {
-    portalId: process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID ?? '',
-    region: process.env.NEXT_PUBLIC_HUBSPOT_REGION ?? 'eu1',
-    forms: {
-      contact: process.env.NEXT_PUBLIC_HUBSPOT_CONTACT_FORM_ID ?? '',
-      demo: process.env.NEXT_PUBLIC_HUBSPOT_DEMO_FORM_ID ?? '',
-      enterprise: process.env.NEXT_PUBLIC_HUBSPOT_ENTERPRISE_FORM_ID ?? '',
-      securityReview: process.env.NEXT_PUBLIC_HUBSPOT_SECURITY_REVIEW_FORM_ID ?? '',
-    },
+  leadCapture: {
+    googleSheetsEndpoint: process.env.NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT ?? '',
   },
   contactEmail: 'hello@neutralai.co.uk',
   privacyEmail: 'privacy@neutralai.co.uk',

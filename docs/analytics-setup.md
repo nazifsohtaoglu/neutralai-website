@@ -52,7 +52,7 @@ After consent, the website stores and attaches:
 - `referrer_host`
 - `landing_page_path`
 
-HubSpot forms also attempt to pass these values as hidden fields when the matching HubSpot properties exist.
+Google Sheets lead submissions also include these attribution fields in the payload when available.
 
 ## PostHog Dashboard And Funnel Setup
 
