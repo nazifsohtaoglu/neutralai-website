@@ -20,6 +20,21 @@ export default function WhyItMatters() {
               <div className="mt-6 inline-flex rounded-full border border-accent-cta/20 bg-[rgba(249,115,22,0.12)] px-4 py-2 text-sm text-[#fdba74]">
                 NeutralAI creates the yes-path, not just another warning.
               </div>
+              <div className="mt-6 max-w-2xl rounded-[24px] border border-[#fdba74]/30 bg-[rgba(15,23,42,0.65)] p-5">
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#fdba74]">Legal buyer signal</p>
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  Law firms get blocked when confidentiality concerns, breach-response duties, and client trust reviews arrive before a safe AI control path exists.
+                </p>
+                <a
+                  href="/use-cases/legal"
+                  className="mt-4 inline-flex items-center text-sm font-semibold text-primary-light transition hover:text-primary"
+                  data-analytics-event="CTA Click"
+                  data-analytics-label="Legal Use Case"
+                  data-analytics-placement="homepage_problem_legal"
+                >
+                  See legal AI use case
+                </a>
+              </div>
             </div>
 
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-2">
