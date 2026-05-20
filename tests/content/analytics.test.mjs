@@ -68,6 +68,10 @@ test('posthog dashboard and funnel setup is documented', () => {
   assert.match(analyticsDocs, /Plausible is formally retired for launch/)
   assert.match(headersSource, /https:\/\/us\.i\.posthog\.com/)
   assert.match(headersSource, /https:\/\/eu\.i\.posthog\.com/)
+  assert.match(headersSource, /https:\/\/script\.google\.com/)
+  assert.match(headersSource, /https:\/\/script\.googleusercontent\.com/)
+  assert.doesNotMatch(headersSource, /hsforms/i)
+  assert.doesNotMatch(headersSource, /hs-scripts/i)
   assert.doesNotMatch(headersSource, /plausible\.io/)
   assert.match(openQuestions, /Launch blockers are tracked in `docs\/ai\/LAUNCH_READINESS_LEDGER\.md`\./)
   assert.match(launchLedger, /PostHog production dashboards and funnel ownership/)
@@ -77,25 +81,25 @@ test('posthog dashboard and funnel setup is documented', () => {
   assert.match(launchLedger, /\[#87\]\(https:\/\/github\.com\/nazifsohtaoglu\/neutralai-website\/issues\/87\)/)
 })
 
-test('utm attribution persists after consent and can enrich HubSpot leads', () => {
+test('utm attribution persists after consent and can enrich google sheets leads', () => {
   const analyticsSource = readSource('app/lib/analytics.ts')
-  const hubspotSource = readSource('app/components/HubSpotLeadForm.tsx')
+  const leadFormSource = readSource('app/components/GoogleSheetsLeadForm.tsx')
   const analyticsDocs = readSource('docs/analytics-setup.md')
-  const hubspotDocs = readSource('docs/hubspot-crm-setup.md')
+  const leadCaptureDocs = readSource('docs/google-sheets-crm-setup.md')
   const launchLedger = readSource('docs/ai/LAUNCH_READINESS_LEDGER.md')
 
   for (const field of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'referrer_host', 'landing_page_path']) {
     assert.match(analyticsSource, new RegExp(field))
     assert.match(analyticsDocs, new RegExp(field))
-    assert.match(hubspotDocs, new RegExp(field))
+    assert.match(leadCaptureDocs, new RegExp(field))
   }
 
   assert.match(analyticsSource, /ANALYTICS_ATTRIBUTION_KEY/)
   assert.match(analyticsSource, /captureAttribution/)
   assert.match(analyticsSource, /function mergeAttribution/)
   assert.match(analyticsSource, /stored\.landing_page_path/)
-  assert.match(hubspotSource, /getLeadAttribution/)
-  assert.match(hubspotSource, /Object\.entries\(getLeadAttribution\(\)\)/)
-  assert.match(launchLedger, /HubSpot production forms, routing, and lead ownership/)
+  assert.match(leadFormSource, /getLeadAttribution/)
+  assert.match(leadFormSource, /Object\.entries\(getLeadAttribution\(\)\)/)
+  assert.match(launchLedger, /Google Sheets production forms, routing, and lead ownership/)
   assert.match(launchLedger, /\[#70\]\(https:\/\/github\.com\/nazifsohtaoglu\/neutralai-website\/issues\/70\)/)
 })

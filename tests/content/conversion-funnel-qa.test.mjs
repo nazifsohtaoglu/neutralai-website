@@ -31,6 +31,7 @@ test('conversion funnel QA runbook documents owners, destinations, analytics sig
   assert.match(runbook, /website_demo_request/)
   assert.match(runbook, /website_enterprise_enquiry/)
   assert.match(runbook, /website_security_review/)
+  assert.match(runbook, /NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT/)
 })
 
 test('homepage, pricing, and extension flows emit CTA analytics metadata', () => {
@@ -71,6 +72,6 @@ test('contact intent routes and lead-source attribution remain wired for demo, e
   assert.match(contactSource, /leadSource: 'website_security_review'/)
 
   assert.match(runbook, /Pending production execution evidence/)
-  assert.match(runbook, /docs\/hubspot-production-verification\.md/)
+  assert.match(runbook, /docs\/google-sheets-production-verification\.md/)
   assert.match(runbook, /docs\/analytics-setup\.md/)
 })
