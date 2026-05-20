@@ -61,7 +61,7 @@ const samplePrompts = [
   {
     label: 'Insurance claim',
     value:
-      'Summarize Sarah Patel claim CR-20491 for the adjuster. Email sarah@acme.co.uk and call +44 7123 456 789.',
+      "Summarize Sarah Patel's claim for the adjuster. Email sarah@acme.example and call +44 7700 900 123.",
   },
   {
     label: 'Finance review',
@@ -76,19 +76,21 @@ const samplePrompts = [
   {
     label: 'Legal review',
     value:
-      'Prepare a contract risk summary for Daniel Morgan at daniel.morgan@lawfirm.co.uk. Reference matter LT-8821 and remove client identifiers.',
+      'Prepare a contract risk summary for Daniel Morgan at daniel.morgan@lawfirm.example, then remove all client identifiers before sharing.',
   },
   {
     label: 'HR case note',
     value:
-      'Rewrite an HR case note for Olivia Chen. Contact olivia.chen@company.co.uk or +44 7700 900 123 about employee record ER-4420.',
+      'Rewrite an HR case note for Olivia Chen. Contact olivia.chen@company.example or +44 7700 900 123 and remove employee identifiers before sending.',
   },
   {
     label: 'Public sector',
     value:
-      'Create a short briefing for James Walker. Citizen record PS-10992 includes phone 07123 456 789 and email james.walker@gov.example.',
+      'Create a short briefing for James Walker. Keep phone +44 7700 900 123 and email james.walker@gov.example masked, then remove citizen identifiers before sharing.',
   },
 ] as const
+
+const samplePromptValues: ReadonlySet<string> = new Set(samplePrompts.map((sample) => sample.value))
 
 const entityLabels: Record<EntityType, string> = {
   EMAIL_ADDRESS: 'EMAIL',
@@ -348,7 +350,9 @@ export default function PlaygroundPage() {
     setIsInCooldown(true)
     window.setTimeout(() => setIsInCooldown(false), REQUEST_COOLDOWN_MS)
 
-    if (!shouldCallLiveApi()) {
+    const shouldUseSamplePreview = samplePromptValues.has(prompt)
+
+    if (!shouldCallLiveApi() || shouldUseSamplePreview) {
       window.setTimeout(() => {
         if (requestVersionRef.current !== requestVersion) {
           return
@@ -356,7 +360,7 @@ export default function PlaygroundPage() {
 
         setMaskedText(requestPreview.maskedText)
         setSource('demo')
-        setStatusText('Demo preview ready')
+        setStatusText(shouldUseSamplePreview ? 'Sample preview ready' : 'Demo preview ready')
         setIsLoading(false)
       }, 300)
       return
