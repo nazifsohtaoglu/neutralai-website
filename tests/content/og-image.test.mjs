@@ -46,11 +46,16 @@ test('branded OG assets exist at 1200 by 630', () => {
   }
 })
 
+test('email logo asset exists at the stable public path', () => {
+  assert.deepEqual(readPngSize('public/email/neutralai-mark.png'), { width: 320, height: 320 })
+})
+
 test('brand image assets stay within the public performance budget', () => {
   const budgets = [
     ['public/logo.png', 100_000],
     ['public/logo.webp', 100_000],
     ['public/logo-sm.webp', 10_000],
+    ['public/email/neutralai-mark.png', 120_000],
     ['public/og-default.png', 150_000],
     ['public/og-home.png', 150_000],
   ]
