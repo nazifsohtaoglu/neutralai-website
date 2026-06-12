@@ -21,17 +21,17 @@ test('developers page exposes API-first quickstart and auth guidance', () => {
   assert.match(source, /API reference/)
 })
 
-test('developers page covers SDK status and integration examples without unpublished install commands', () => {
+test('developers page covers published SDK install commands and integration examples', () => {
   const source = readSource('app/developers/page.tsx')
 
-  assert.match(source, /Python and Node SDKs are prepared for publication/)
-  assert.match(source, /Public package publication is still in progress/)
+  assert.match(source, /Python and Node SDKs are published/)
+  assert.match(source, /published to PyPI and npm/)
   assert.match(source, /LangChain integration/)
   assert.match(source, /OpenAI SDK wrapper/)
   assert.match(source, /Browser extension/)
   assert.match(source, /Direct API/)
-  assert.doesNotMatch(source, /python -m pip install neutralai-sdk/)
-  assert.doesNotMatch(source, /npm install neutralai-node-sdk/)
+  assert.match(source, /python -m pip install neutralai-sdk/)
+  assert.match(source, /npm install neutralai-node-sdk/)
 })
 
 test('developers route is discoverable from navigation, footer, and sitemap', () => {

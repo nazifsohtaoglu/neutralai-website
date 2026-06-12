@@ -17,14 +17,14 @@ import { siteConfig } from '../site'
 export const metadata: Metadata = {
   title: 'Developers',
   description:
-    'Build with NeutralAI Gateway using the masking API, API-key authentication, SDK package roadmap, and integration examples for regulated AI workflows.',
+    'Build with NeutralAI Gateway using the masking API, API-key authentication, the official Python and Node SDKs, and integration examples for regulated AI workflows.',
   alternates: {
     canonical: '/developers',
   },
   openGraph: {
     title: 'NeutralAI Developers',
     description:
-      'Quickstart guides, API reference links, SDK status, and integration patterns for masking sensitive data before AI prompt egress.',
+      'Quickstart guides, API reference links, official Python and Node SDKs, and integration patterns for masking sensitive data before AI prompt egress.',
     url: `${siteConfig.url}/developers`,
   },
 }
@@ -195,12 +195,13 @@ export default function DevelopersPage() {
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div className="min-w-0">
               <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">SDKs</p>
-              <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Python and Node SDKs are prepared for publication.</h2>
+              <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Python and Node SDKs are published.</h2>
               <p className="mt-5 text-lg leading-8 text-slate-400">
-                The gateway repo contains Python and Node SDK clients. Public package publication is still in progress, so this page keeps install guidance API-first until the registry release is confirmed.
+                Official thin clients for the masking API, published to PyPI and npm. Install one and point it at the hosted gateway — all PII detection and masking happens server-side.
               </p>
-              <div className="mt-6 rounded-2xl border border-amber-300/25 bg-amber-300/10 p-4 text-sm leading-6 text-amber-100">
-                Public package names are reserved, but registry install commands are intentionally withheld until publication checks pass.
+              <div className="mt-6 space-y-2 rounded-2xl border border-white/10 bg-[#050814] p-4 font-mono text-sm text-slate-200">
+                <p><span className="select-none text-slate-500">$ </span>python -m pip install neutralai-sdk</p>
+                <p><span className="select-none text-slate-500">$ </span>npm install neutralai-node-sdk</p>
               </div>
             </div>
 
@@ -263,9 +264,9 @@ export default function DevelopersPage() {
                   <CheckCircle2 className="h-5 w-5" />
                   Ready for a sandbox key
                 </div>
-                <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Start with the masking API, then layer SDKs as they publish.</h2>
+                <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Start with the API or an official SDK.</h2>
                 <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
-                  The direct API path is the safest integration baseline today: one endpoint, explicit auth, and sanitized output ready for downstream AI workflows.
+                  Call the masking endpoint directly, or install <code className="rounded bg-white/10 px-1.5 py-0.5 text-primary-light">neutralai-sdk</code> / <code className="rounded bg-white/10 px-1.5 py-0.5 text-primary-light">neutralai-node-sdk</code> — one endpoint, explicit auth, and sanitized output ready for downstream AI workflows.
                 </p>
               </div>
               <Link href={siteConfig.signupUrl} className="btn btn-cta w-full px-6 py-4 sm:w-auto">
