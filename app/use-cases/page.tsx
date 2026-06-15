@@ -36,6 +36,13 @@ export default function UseCasesIndexPage() {
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
               NeutralAI gives finance, healthcare, and legal teams a practical gateway pattern for masking sensitive data before AI prompts reach external model providers.
             </p>
+            <Link
+              href="/how-it-works"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary-light transition hover:text-primary"
+            >
+              See how the gateway works
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
 
           <div className="mt-12 grid gap-4 lg:grid-cols-3">

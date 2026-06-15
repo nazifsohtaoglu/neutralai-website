@@ -107,6 +107,13 @@ export default function UseCasePage({ content }: { content: UseCasePageContent }
               <p className="mt-5 text-lg leading-8 text-slate-400">
                 NeutralAI is positioned between internal users, browser AI tools, application prompts, and external model providers so sensitive values can be removed or tokenized before egress.
               </p>
+              <Link
+                href="/how-it-works"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary-light transition hover:text-primary"
+              >
+                See exactly how the masking flow works
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             <div className="grid gap-4">

@@ -107,6 +107,9 @@ export default function ComparePage() {
               >
                 Talk to Sales
               </Link>
+              <Link href="/how-it-works" className="text-primary-light transition hover:text-primary">
+                How it works
+              </Link>
               <Link href="/presidio-alternative" className="text-primary-light transition hover:text-primary">
                 Presidio alternative
               </Link>

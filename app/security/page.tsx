@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
@@ -138,6 +139,13 @@ export default function SecurityPage() {
                 <p className="mt-4 text-slate-400">
                   NeutralAI adds a policy gateway before external model providers so sensitive values can be detected, tokenized, and audited before prompt egress.
                 </p>
+                <Link
+                  href="/how-it-works"
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary-light transition hover:text-primary"
+                >
+                  Walk through the full flow
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
 
                 <div className="mt-6 grid gap-3">
                   {architectureSteps.map((step, index) => (

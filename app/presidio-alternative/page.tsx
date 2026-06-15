@@ -260,6 +260,9 @@ export default function PresidioAlternativePage() {
             NeutralAI is not positioned as a from-scratch recognizer model. It uses proven open-source detection
             foundations and adds the gateway, policy, tokenization, audit, deployment, and UX layers regulated teams
             usually have to build themselves.
+            <Link href="/how-it-works" className="ml-2 font-semibold text-primary-light hover:text-primary">
+              See how those layers fit together.
+            </Link>
           </div>
         </div>
       </section>
