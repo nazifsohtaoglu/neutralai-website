@@ -1,0 +1,91 @@
+---
+title: "Some secrets have no pattern: we catch them by meaning, not regex"
+description: "Some sensitive content has no pattern. Catching it by meaning with embeddings, and keeping a fuzzy ML signal under control in production."
+date: "2026-05-26"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*An IBAN has a checksum, an email has an @ sign; they fit a shape, and you catch them. But no pattern can tell you that a sentence is describing something confidential. This is the last layer we built to catch shapeless sensitive content, and the part that actually matters: how we keep its fuzziness under control in production.*
+
+---
+
+![Semantic PII embedding search illustration](/blog/visuals/semantic-pii-embeddings.webp "Embeddings add a meaning-based signal for sensitive content that does not have a stable pattern or checksum.")
+
+## The easy 80% and the dangerous remainder
+
+Most sensitive data has a shape, and the deterministic layers in this series (regex, NER, checksum) catch it reliably. An IBAN passes the math, an email matches a pattern, a name is found by a model. That handles the easy, large majority of the work.
+
+But some sensitive content has no fixed shape: a paragraph *describing* an event, a sentence that paraphrases a situation, a note that alludes to a confidential deal. There's no entity to tag, no number to validate, no pattern to match. You can't write a regex for "this paragraph describes a confidential acquisition." For that, you have to look at the *meaning* of the content, not its shape.
+
+## The mechanism: semantic similarity
+
+The idea: we turn known-sensitive examples into **embeddings**, vectors that represent the meaning of the text, and store them in a vector database (Qdrant). We turn the incoming text into a vector the same way and check how close it is to the known-sensitive examples. If it's close enough, we raise the signal: "this content looks a lot like something we know is sensitive."
+
+```python
+def search(self, text: str, threshold: float):
+    vector = self.embed_text(text)                  # turn the text into a meaning vector
+    response = self.client.query_points(
+        collection_name=self.collection_name,
+        query=vector,
+        score_threshold=threshold,                  # cosine similarity threshold
+        limit=3,
+    )
+    return [hit.payload for hit in response.points]  # known examples above the threshold
+```
+
+The embedding model is small and fast (`all-MiniLM-L6-v2`, 384-dimensional), and the similarity measure is cosine. The logic is simple; the real work starts after this.
+
+## But meaning-matching is fuzzy
+
+A cosine score is not a checksum. A checksum either matches or it doesn't. A similarity score is a "how close" estimate, and estimates are sometimes wrong. So the entire engineering of this layer is about using the signal's power while keeping its fuzziness in check. We do that with three controls.
+
+### Roll it out in stages: observe first, then enforce
+
+You don't put a fuzzy machine-learning signal straight into "block" mode. So the layer has three profiles: **off**, **observe**, and **enforce**. A deployment moves up these steps in order: the layer starts in observe, that is, in the shadows; once you trust it, you promote it to enforce.
+
+```python
+if semantic_hits:
+    if semantic_profile == "enforce":
+        semantic_result = RecognizerResult(entity_type="SEMANTIC_PII",
+                                           start=0, end=len(text), score=0.95)
+        filtered_results.append(semantic_result)        # actually add a detection
+        outcome = "hit_enforced"
+    else:
+        outcome = "hit_observe"                          # only record it, block nothing
+        logger.info("Semantic PII match observed. hit_count=%s ...", len(semantic_hits))
+```
+
+In the observe profile, hits are only logged; the flow is never touched. So you run the layer in the shadows first, measure what it catches correctly and what it gets wrong on real traffic, and only promote it to enforce once you trust it. That way you don't pay the price of wiring a fuzzy signal in blind.
+
+### Don't even ask about short text
+
+The embedding of a three-word fragment is noisy; asking it "what does this mean" produces an unreliable answer. So any text below a certain length is never fed to the semantic layer; it's skipped outright.
+
+### The threshold isn't a truth, it's a dial you set
+
+The cosine threshold isn't a fixed line, it's a dial you calibrate. Raise it and you get fewer but more confident hits; lower it and you get more but noisier ones. You find the right value by measuring.
+
+## It never stops detection, even when it falls over
+
+This layer is also the slowest one: producing an embedding and running a vector search costs more than a regex. So it sits behind a circuit breaker. If Qdrant slows down or goes down, the breaker opens, the semantic step is skipped, and detection carries on with the deterministic layers:
+
+```python
+except CircuitOpenError:
+    outcome = "circuit_open_presidio_fallback"
+    logger.warning("Semantic search circuit open; using Presidio-only fallback.")
+```
+
+So the semantic layer is an **enhancement, not a dependency**. When it works, it catches shapeless content the deterministic layers might miss; when it doesn't, the system does its job without it. (An application of the philosophy from the [fail-closed post](/blog/fail-closed-ai-gateway-resilience/).)
+
+## The honest limit
+
+Semantic detection is the fuzziest, slowest, and least precise layer in the pipeline. That's exactly why it sits last and is rolled out cautiously, in the shadows first. It's good at saying "this content resembles something we know is sensitive," but not at drawing an exact boundary, because on a hit it flags the whole text rather than the precise span inside it. It doesn't replace the deterministic layers; it complements them. And it's only as good as the known-sensitive corpus you give it. So you use it as a backstop, with its settings tuned carefully.
+
+## The takeaway
+
+When a signal is fuzzy, the skill isn't in the signal itself, it's in the controls you put around it: rolling the layer out in stages, measuring it in the shadows before you enforce, never letting unreliable input (very short text) in, and bounding the failure with a circuit breaker. You match the caution of the rollout to how trustworthy the signal is: you trust a checksum instantly, but you earn trust in a cosine score over time, by measuring.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

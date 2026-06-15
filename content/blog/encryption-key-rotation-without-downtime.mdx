@@ -1,0 +1,92 @@
+---
+title: "Rotating a key is easy; rotating it without breaking your old data is not"
+description: "Rotating a key without breaking every value it ever encrypted or signed. A versioned keyring that turns rotation into adding a row, not a migration."
+date: "2026-05-23"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*Rotating an encryption key looks as simple as "replace the secret with a new one." But every vault entry encrypted with the old key, every audit line it signed, every token it produced suddenly can't be decrypted. This is the idea that makes rotation possible without breaking the system, and why we put it in one place.*
+
+---
+
+![Versioned encryption keyring illustration](/blog/visuals/encryption-key-rotation.webp "A versioned keyring lets new writes move forward while old encrypted values remain readable and verifiable.")
+
+## "Change the key" sounds simple, but it's a dangerous job
+
+Encryption keys have to change over time. Sometimes a key leaks; sometimes a compliance rule forces a rotation; sometimes you rotate purely for hygiene, with nothing wrong. At first it looks like a simple job: delete the old key, put in the new one, done.
+
+But a key isn't only used going forward. Everything you've encrypted or signed so far was produced with that old key: the token mappings in the vault, the signatures in the audit ledger, service tokens, tenants' BYOK keys, SSO credentials. The moment you blindly replace the old key with a new one, all of it becomes undecryptable and unverifiable at once. You haven't rotated; you've broken your data.
+
+So the real question is: how do you change a key without breaking anything it produced?
+
+## The idea: not a single key, but a versioned set of keys
+
+The answer is to not hold a single thing called "the key." Instead we hold a key set (a keyring): one *active* version, plus as many *old* versions as you need.
+
+```python
+def build_keyring(*, active_version, active_secret, legacy_raw):
+    if not active_secret:
+        raise ValueError("Active secret cannot be empty")
+    ring = parse_legacy_keyring(legacy_raw)      # old versions: v1=..., v2=...
+    ring[normalize_key_version(active_version)] = active_secret   # active version
+    return ring
+```
+
+You use the active version for new encryption and signing. The old versions stay in the set only so you can still read data that was produced with them earlier.
+
+## Every piece of data says which key produced it
+
+The key point: everything you produce records, inside itself, which key version made it. In signatures this shows up as a version tag prepended to the signature:
+
+```python
+def sign_hmac_sha256(payload, *, keyring, active_version):
+    version = normalize_key_version(active_version)
+    key = keyring.get(version)
+    digest = hmac.new(key.encode(), payload, hashlib.sha256).hexdigest()
+    return f"{version}:{digest}"        # e.g. "v2:9f3c..." (the signature names its version)
+```
+
+Encrypted data works the same way: there's a `key_version` field inside the payload. So no piece of data leaves the question "which key should verify me?" unanswered; the answer is written inside it.
+
+## Verification reads the tag and picks the right key
+
+The verifying side reads the version tag from the signature, finds that version's key in the set, and compares in constant time:
+
+```python
+def verify_hmac_sha256(payload, signature, keyring):
+    if ":" in signature:
+        version, digest = signature.split(":", 1)
+        key = keyring.get(normalize_key_version(version))
+        if not key:
+            return False, None
+        expected = hmac.new(key.encode(), payload, hashlib.sha256).hexdigest()
+        return hmac.compare_digest(expected, digest), normalize_key_version(version)
+    # older signatures with no version tag: try every key in the set in turn
+    ...
+```
+
+There's also a backward-compatibility path for older signatures that carry no version tag: in that case, the keys in the set are tried one by one. That way even data produced before the tagging scheme keeps reading.
+
+## Now rotation is a routine, safe operation
+
+With this structure, rotation stops being a dreaded migration and becomes a routine step:
+
+- **To rotate a key:** you add a new active version and move the old one to the "legacy" list, but you still keep it in the set. New data is written with the new key and its new tag; old data keeps reading under its own tagged key. Nobody gets locked out.
+- **To retire a leaked key:** you remove it from the set entirely. Data produced with that key deliberately becomes unverifiable and undecryptable, which is exactly what you want for a compromised key.
+
+## Why it lives in one place
+
+This ninety-line module powers all rotation across the system. The encrypted mappings in the vault, the [signatures in the audit ledger](/blog/tamper-evident-audit-log-hash-chain/), BYOK keys, SSO crypto; they all use the same key-set structure. Writing the rotation logic once and reusing it everywhere, instead of writing it separately in each module, shrinks the surface for bugs and gives you the confidence that everything rotates the same way.
+
+## The honest limit
+
+Rotation is not re-encryption. Old data stays bound to its old key until you rewrite it. So as long as you need to keep reading that data, you have to keep the old key in the set. That has a cost: when you remove a key from the set entirely, you also lose the data underneath it. True forward secrecy, or re-encrypting everything with the new key, is a separate and much heavier job. And ultimately the security of this set depends on how safely the keys inside it are stored; the job still comes down to key custody.
+
+## The takeaway
+
+Key rotation is really a data-modeling problem, not a crypto problem. If you write the version of the producing key into everything you produce, and keep the old versions in a set, rotation stops being a migration that can lock you out; it becomes as routine as adding a row to the set.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

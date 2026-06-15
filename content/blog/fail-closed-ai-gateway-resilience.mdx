@@ -1,0 +1,105 @@
+---
+title: "A security gateway shows its real character on the day things break"
+description: "A security gateway's real character shows on the bad day. Backpressure, a circuit breaker, and graceful drain, so every failure lands on the safe side."
+date: "2026-05-30"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*Every system works when nothing is wrong. The real test is the bad day: the server crushed under load, the model behind you refusing to answer, a deploy landing while a user's response is still streaming. Each of those moments can end two ways, and for a privacy gateway, one of those ways is either a leak or a collapse. Here's how three mechanisms make the system fall to the safe side every time.*
+
+---
+
+![Fail-closed AI gateway resilience illustration](/blog/visuals/fail-closed-gateway.webp "Backpressure, circuit breakers, and graceful drain keep a privacy gateway on the safe side when upstream systems or capacity fail.")
+
+## The easy part is the happy path
+
+Writing a system is easy when everything is going well. A request comes in, gets processed, an answer comes back. That's what the demo shows, and what most tests cover.
+
+But a security gateway's real character doesn't show up there. It shows up on the bad day: when a traffic spike pushes the server past its capacity, when the LLM provider behind it starts timing out, or when you deploy a new version while someone's response is still streaming. Each of those can resolve two ways. And where "a bad outcome" for an ordinary app means a bit of an error page, for a system whose whole job is keeping raw PII out of the model, the wrong path means either a data leak or the whole server going down.
+
+That's the principle running through the entire design: **fail-closed.** When something goes wrong, the safe default is to refuse, slow down, or wait, never to silently pass data through unprotected, and never to slide into an uncontrolled collapse. Each of the three mechanisms below chooses the *safe* version of failure.
+
+## 1. Backpressure: cap how much you do at once
+
+The first bad day: more traffic than you have capacity for. A naively-built server accepts every incoming request, tries to process them all at once, runs out of memory, and crashes, at which point it can answer no one.
+
+Instead, we put a ceiling on how many PII analyses can run at the same time. When that limit is reached, an incoming request waits a short while for a slot to free up; if none does, it's turned away cleanly:
+
+```python
+async with self._condition:
+    while self._inflight >= self._max_inflight():
+        remaining = deadline - asyncio.get_running_loop().time()
+        if remaining <= 0:
+            raise BackpressureRejectedError("PII backpressure capacity exhausted")
+        await asyncio.wait_for(self._condition.wait(), timeout=remaining)
+    self._inflight += 1
+```
+
+The logic is simple but decisive: a rejected request is recoverable, the client retries in a moment. A server that ran out of memory and crashed is not recoverable; it takes every request inside it down at once. So "I'm busy right now, try again shortly" always beats "accept everything and die together."
+
+## 2. Circuit breaker: stop leaning on a service that isn't answering
+
+The second bad day: the LLM provider behind you goes down. The instinct, retry every request, makes it worse: piled-up requests, ballooning latencies, more load on the back of a service that's already struggling.
+
+A circuit breaker solves this with a state machine. Normally **closed**, requests flow. If failures cross a threshold within a time window, it flips to **open**: it stops making calls and rejects the request immediately, with a "when to retry" hint.
+
+```python
+if self._state == "open":
+    elapsed = now - self._opened_at
+    if elapsed >= self._recovery_seconds:
+        self._transition_locked("half_open", now=now)   # one chance to probe
+        self._half_open_probe_in_flight = True
+        return self._state
+    retry_after = max(1, int(math.ceil(self._recovery_seconds - elapsed)))
+    raise CircuitOpenError(retry_after_seconds=retry_after, circuit_name=self.name)
+```
+
+After a while it moves to **half-open** and lets through exactly **one** probe request. If that one succeeds, the circuit closes and traffic returns to normal; if it fails, it opens again. The single-probe detail matters: when the dependency is just starting to recover, you don't dump all the waiting traffic on it at once, rather than knocking it over a second time, you take a single pulse first. So the breaker stops leaning on an unresponsive service and gives it room to recover, which is the fastest path back.
+
+## 3. Graceful drain: don't cut a user off mid-response
+
+The third bad day, which is really every day: a deploy. As you roll out a new version, someone's response might still be streaming. Kill the server where it stands and that user's answer is cut off mid-sentence.
+
+The shutdown coordinator handles this in two steps. First, it stops accepting new streams:
+
+```python
+async def try_register_stream(self) -> bool:
+    async with self._lock:
+        if self._draining:
+            return False          # draining started: take no new streams
+        self._active_streams += 1
+        self._streams_drained.clear()
+        return True
+```
+
+Then it waits for the streams still in flight to finish, but not forever, only for a bounded window:
+
+```python
+try:
+    await asyncio.wait_for(self._streams_drained.wait(), timeout=timeout)
+    return True
+except asyncio.TimeoutError:
+    logger.warning("Shutdown drain deadline reached. active_streams=%s", self._active_streams)
+    return False
+```
+
+So the deploy lets existing responses finish, but if a client gets stuck it won't wait indefinitely; it moves on at a deadline. There's courtesy, but there's a limit on it.
+
+## The principle that ties all three together
+
+What these three mechanisms share is that each chooses the safe version of failure: under load, refuse cleanly (don't accept everything and crash); when a dependency dies, stop calling it (don't pile on); when shutting down, finish what's started and take nothing new (don't sever a stream).
+
+And they share one discipline: each bounds its own waiting. Backpressure has an acquire timeout, the breaker has a recovery period, the drain has a deadline. Because "fall to the safe side," left unchecked, turns into "wait forever", which is its own kind of failure. And above all of it sits one invariant that never bends: if the PII engine or the vault is unreachable, the request is not passed through, it's blocked.
+
+## The honest limit
+
+Fail-closed is a deliberate trade: it buys safety at the cost of availability. Under heavy load, some users see a 503. During an LLM outage, some requests are rejected fast. A slow client can get caught by the drain deadline mid-deploy and be cut off. These aren't bugs, they're choices: for a privacy/security control, a rejected request is a far better outcome than a leaked one or a collapsed server. You tune the thresholds, how much tolerance for a spike, how much waiting, but you don't eliminate the trade; you manage it on purpose.
+
+## The takeaway
+
+Design for the bad day, not the happy path. The measure of a security system isn't how it behaves when everything works, it's which side it falls to when something breaks. Build it so every failure path lands on the safe side, and put a limit on every wait so that "being safe" never turns into "hanging forever."
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

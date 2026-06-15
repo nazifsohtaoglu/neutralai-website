@@ -1,0 +1,131 @@
+---
+title: "Catching sensitive data is the easy part. Not catching everything else is the job."
+description: "The hard part of PII detection is not finding the data, it is rejecting everything that merely looks like it: checksums, context gates, overlap suppression."
+date: "2026-06-09"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*Any regex can flag a 16-digit number. The trouble is that an order ID, a tracking number, and a timestamp all look exactly like the thing you're hunting, and a privacy filter that cries wolf on every number quietly trains people to ignore it. Here's how PII detection stops being "a model" and becomes a calibrated pipeline: checksums, context gates, and overlap suppression.*
+
+---
+
+![PII precision calibration illustration](/blog/visuals/pii-precision-calibration.webp "Precision comes from rejecting lookalikes with validation, context, and overlap rules before masking breaks useful prompts.")
+
+## The failure mode nobody demos
+
+When people picture a PII filter, they picture the catch: it spots the credit card, the email, the national ID, and masks it. So you'd assume the way to make it better is to catch *more*, detect harder, flag everything that might be sensitive.
+
+That instinct builds a useless product.
+
+Because the moment you flag aggressively, you start masking things that aren't sensitive at all. The invoice number that happens to be eleven digits. The internal SKU that looks like an account reference. The IP address that reads like a phone number. The word that a name-detector decided was a person. Every one of those becomes a `[REDACTED]` in the user's text, and the answer the model gives back is now riddled with holes, because half the redactions were noise.
+
+There's a name for a security tool that fires constantly on nothing: **shelfware.** People turn it off, or worse, learn to ignore it. So the real engineering target of a detection engine isn't recall, it's **precision**, and precision is mostly the unglamorous work of *disqualifying* the things that merely look sensitive. Detection isn't a model you download. It's a pipeline you calibrate.
+
+Here are four of the gates that do the disqualifying.
+
+## Gate 1, Checksums: turn "looks like" into "is"
+
+A lot of sensitive identifiers carry a built-in math check, and most engineers never use it. An IBAN isn't just "two letters and some digits", it has a mod-97 checksum baked into it. So before we believe a candidate is an IBAN, we make it prove the math:
+
+```python
+@staticmethod
+def _passes_iban_checksum(text_segment: str) -> bool:
+    candidate = re.sub(r"[^A-Za-z0-9]+", "", text_segment).upper()
+    if not re.fullmatch(r"[A-Z]{2}\d{2}[A-Z0-9]{11,30}", candidate):
+        return False
+
+    expected_lengths = {"TR": 26, "GB": 22, "DE": 22, "FR": 27, "ES": 24,
+                        "IT": 27, "NL": 18, "PT": 25, "PL": 28}
+    country_code = candidate[:2]
+    expected_length = expected_lengths.get(country_code)
+    if expected_length is not None and len(candidate) != expected_length:
+        return False
+    if expected_length is None and not 15 <= len(candidate) <= 34:
+        return False
+
+    rearranged = f"{candidate[4:]}{candidate[:4]}"
+    remainder = 0
+    for char in rearranged:
+        chunk = str(ord(char) - 55) if char.isalpha() else char
+        remainder = int(f"{remainder}{chunk}") % 97
+    return remainder == 1
+```
+
+Two cheap structural checks first, the shape, and the exact length for countries we know, then the mod-97 itself: move the first four characters to the end, convert letters to numbers (`A`=10 … `Z`=35), and the whole thing mod 97 must equal 1.
+
+The payoff is enormous and free. A random string that happens to match the IBAN shape has roughly a **1-in-97** chance of passing mod-97; a real IBAN passes every time. That single check eliminates ~99% of the lookalikes a naive regex would have masked. The same idea covers national IDs that ship with their own checksum, Chinese resident ID (weighted mod-11), Japanese My Number, Korean RRN, each verified by its own rule before we'll touch it.
+
+When a value can prove itself with arithmetic, make it. It's the highest-precision signal you'll ever get, and it costs microseconds.
+
+## Gate 2, Context: when a number can only be confirmed by its neighbors
+
+Not every identifier has a checksum. A lot of them are just "N digits in a particular shape", and pure shape is dangerous, because an eleven-digit number could be a national ID, an order number, a phone, or a row in a spreadsheet. Masking all of them is exactly the over-detection that kills the product.
+
+So for these, we don't trust the number alone. We require the **context** to vouch for it:
+
+```python
+def _passes_locale_numeric_context_gate(self, *, entity_type, text, start, end) -> bool:
+    context = self._context_window(text=text, start=start, end=end, window_chars=40)
+    entity_key = str(entity_type or "").upper()
+    if entity_key == "UK_NHS_NUMBER":
+        return "nhs" in context
+    if entity_key == "TR_ID_NUMBER":
+        return any(token in context
+                   for token in {"tr id", "trid", "kimlik", "tc ", "tc:", "t.c", "turkish identity"})
+    if entity_key == "BR_CPF_NUMBER":
+        return any(token in context for token in {"cpf", "cadastro", "brazil", "brasil"})
+    # ... NL BSN, PL PESEL, US MRN / health plan / device id, CN/JP/KR ...
+    return True
+```
+
+A bare eleven-digit number floating in a sentence is *not* masked as a Turkish national ID. The same number sitting next to the word "kimlik" or "TC" is. The context window is the disambiguator, it's the difference between "this is a number" and "the author is telling you this is an identity number."
+
+Phone numbers get the same treatment, but two-tier: unambiguous shapes (a `+` country code, a clear UK mobile format) pass on their own, while messier candidates only pass if a phone-ish word, `tel`, `mobile`, `call`, `gsm`, `telefon`, sits nearby. Strong structure is self-certifying; weak structure needs a witness.
+
+## Gate 3, Killing the things that only *look* like names
+
+Names, as covered in [the previous post](/blog/multilingual-pii-detection-turkish-ner/), have no checksum, so the name detector is the noisiest source of false positives. It will occasionally hand you a string of repeated characters, a number-laden token, or a stray English word as a "person."
+
+So a set of narrow, deliberately conservative rules clean up after it:
+
+```python
+@staticmethod
+def _is_noisy_person_candidate(text_segment: str) -> bool:
+    segment = text_segment.strip()
+    if len(segment) < 8:
+        return False
+    if re.search(r"([a-zA-Z])\1{4,}", segment):   # "aaaaa", "Xxxxxxx"
+        return True
+    if re.search(r"\d{2,}", segment):             # names don't contain "42"
+        return True
+    return False
+```
+
+Plus a small blocklist of tokens that NER models love to mis-tag as people, `followup`, `takip`, `callback`, `t.c.`, and a heuristic for all-lowercase multi-word phrases stuffed with workflow stopwords (`email`, `queue`, `pending`, `ticket`). None of these is trying to be clever. The comment in the code says it plainly: *keep rules narrow to avoid missing real names.* A false positive here costs precision; an over-broad rule here costs a real person's privacy. The asymmetry is the whole design.
+
+## Gate 4, When two recognizers fight over the same characters
+
+Run a dozen recognizers over the same text and they will collide. An IP address `192.168.1.100` looks like a phone number to the phone recognizer. A national ID embedded in a structured reference looks like a person. A timestamp overlaps a phone pattern. Left alone, you'd emit two overlapping redactions for one span, or mask the wrong entity type entirely.
+
+So a suppression pass resolves overlaps by **precedence**: when a low-value span overlaps a higher-confidence anchor, the low-value one is dropped. A `PHONE_NUMBER` overlapping a numeric anchor entity is suppressed; a `LOCATION` overlapping that anchor is suppressed; a `DATE_TIME` overlapping a confirmed phone is suppressed; a `PERSON` overlapping a structured reference is suppressed. The high-confidence detection wins the disputed characters, and the noisy interpretation is thrown away.
+
+This is the part that makes the layers behave like one engine instead of a dozen recognizers shouting over each other.
+
+## And the dials behind all of it
+
+Two more calibration surfaces sit underneath: **per-entity score thresholds** (the `PERSON` confidence bar is tuned separately from the global one, because the name detector's score distribution is different from a checksum's binary yes/no), and **whitelists**, both a manual tenant list and a contextual one, so a company can say "our own product names keep tripping the detector; stop flagging them" without weakening detection for anyone else.
+
+## The honest limit
+
+Every one of these gates trades recall for precision, on purpose, and that trade has a cost you have to own. The TR national-ID context gate means a real ID number, written with no nearby "kimlik" or "TC", will *not* be masked. That's a deliberate choice: in the messy middle, we'd rather miss an unlabeled bare number than mask every eleven-digit invoice line in the document and train the user to ignore us. Where exactly that line sits is not "solved", it's tuned against a validation set and revisited, and we describe accuracy as *measured*, never *guaranteed*. A detection engine that claims perfect precision and perfect recall at the same time is selling you something.
+
+## The takeaway
+
+The intuition that a PII filter is "a model that finds sensitive data" is backwards in the part that matters. The model, or the regex, or the NER, only *proposes* candidates. Everything that makes the product usable is the calibration that *disposes* of the bad ones: prove it with a checksum, confirm it with context, reject the obvious noise, and resolve the overlaps so one detection wins.
+
+Detection is easy. Disqualification is the product.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

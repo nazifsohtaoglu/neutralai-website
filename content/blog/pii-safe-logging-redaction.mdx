@@ -1,0 +1,74 @@
+---
+title: "Your logs are a back door for PII"
+description: "Your logs are a back door for PII. Why redaction belongs in the logging pipeline itself, scanning even the logs you did not write."
+date: "2026-05-07"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*In a system that handles sensitive data, every log line is a potential leak, and you can't rely on every developer remembering to redact. A single `logger.info(payload)` is enough; the thing you're meant to protect lands in Grafana, often with weaker access control than your database. The fix is to bake redaction not into individual call sites, but into the logging pipeline itself.*
+
+---
+
+![PII-safe logging redaction pipeline illustration](/blog/visuals/pii-safe-logging.webp "PII-safe logging moves redaction into the logging pipeline so sensitive payloads are filtered before observability storage.")
+
+## The easiest leak is the one from a log
+
+A privacy gateway processes PII on every request, and your logs run right next to that data. It's easy to treat logs as harmless: just text, just debugging. But the log pipeline (Loki, Grafana, whatever) is often less protected than the database, and it's the classic place sensitive data quietly escapes.
+
+The trap is simple: one `logger.info(f"... {payload} ...")` written on a tired Friday writes the thing you're meant to protect into a log line. And you can't make this a matter of discipline; the "remember to redact" rule breaks the first time someone is distracted. Redaction has to be structural.
+
+So redaction lives not in individual log calls, but inside the logging pipeline: as a processor that runs on every event. It does three things.
+
+## 1. Redact by key
+
+Any field whose name looks sensitive is replaced with `[REDACTED]`; even in nested dictionaries, recursively:
+
+```python
+SENSITIVE_KEYS = {"authorization", "api_key", "token", "access_token",
+                  "refresh_token", "secret", "client_secret", "password", ...}
+
+def _is_sensitive_key(key: str) -> bool:
+    lowered = key.strip().lower()
+    return (lowered in SENSITIVE_KEYS
+            or any(p in lowered for p in ("password", "secret", "token", "key"))
+            or any(p in lowered for p in DOCUMENT_SENSITIVE_KEY_PARTS))  # ocr_text, extracted_text...
+```
+
+Thanks to substring matching, any field whose name contains "token" or "key", even under an unexpected name, is caught. Fields that carry document content (`ocr_text`, `extracted_text`, `raw_attachment`...) are on this list too; because a document's text is at least as sensitive as a password.
+
+## 2. Redact by value pattern
+
+What if the secret appears not under a field name but inside free text? There are patterns for that too: a Bearer token embedded in a log message, an `sk-...` key, a JWT (`eyJ...`), an email address; all of them are caught and turned into `[REDACTED]`.
+
+```python
+SENSITIVE_PATTERNS = [
+    (re.compile(r"(?i)\b(authorization\s*[:=]\s*bearer\s+)([^\s,;]+)"), r"\1[REDACTED]"),
+    (re.compile(r"\bsk-[A-Za-z0-9]{16,}\b"), "[REDACTED]"),
+    (re.compile(r"\beyJ[...]\.[...]\.[...]\b"), "[REDACTED]"),     # JWT
+    (re.compile(r"\b[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,}\b"), "[REDACTED]"),  # email
+    ...
+]
+```
+
+So even if someone logs a raw string, the familiar-shaped secret inside it is scrubbed out.
+
+## 3. Don't delete the user id, hash it
+
+Not every sensitive field is deleted. If you remove `user_id` entirely, you can't trace a user's requests across logs; and that's needed for operations. So the user id isn't deleted, it's **hashed** (with a `sha256:` prefix). That way you can follow the same user's path through the logs without ever writing their real identity. Not deletion, pseudonymization.
+
+## The real point: it scans logs you didn't write
+
+The critical part of all this: redaction runs not only on your own `structlog` calls, but on logs that come **from the outside** too. The scrubbing processor is placed in both your own log chain and the "foreign" pre-chain; so uvicorn's access logs and the logs of third-party libraries you don't control also pass through the same filter before they're written. You don't trust libraries to behave; you scan everything centrally.
+
+## The honest limit
+
+Key and pattern redaction is best-effort, not guaranteed. A secret in an unexpected shape, or a piece of PII with no pattern at all (a name inside a free sentence), can still slip through. That's why the real rule is still "don't log the payload in the first place"; this layer is a safety net for when someone does anyway. It's a layer of defense in depth, not a license to log freely. (The "log the exception's class, not the exception itself" detail you've seen elsewhere in the series is a small reflection of the same discipline.)
+
+## The takeaway
+
+In a system that handles sensitive data, observability and privacy pull against each other; and you resolve that tension by making the safe thing automatic. Don't ask each log call to remember. Scan the whole stream, in one place, including the parts you don't own.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

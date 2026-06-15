@@ -1,0 +1,75 @@
+---
+title: "Sending a webhook means letting a customer point your server at any address they like"
+description: "An outbound webhook is two dangers at once: SSRF on a customer-controlled URL, and proving the payload is really from you. Signing, IP-blocking, DNS pinning."
+date: "2026-05-05"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*An outbound webhook is two separate dangers at once. The customer gives you a URL, and you make a request to it when an event fires; that URL could well be their internal network's metadata endpoint (SSRF). And the receiver needs to trust that the payload really came from you. Here are the two layers that solve both: signing, and address defense.*
+
+---
+
+![Webhook signing and SSRF defense illustration](/blog/visuals/webhook-ssrf-defense.webp "Outbound webhooks need signed delivery and address defense so customer-controlled URLs cannot become internal network access.")
+
+## Innocent-looking, actually two security problems
+
+Webhooks are how you tell a customer's system "something happened": a usage event, a policy hit. The customer gives you a URL; when the event fires, you POST to it. It sounds trivial.
+
+But an outbound webhook is two security problems wearing one coat.
+
+First: you're making your server send a request to a URL the **customer controls**. That's SSRF by design: the customer could point that URL at `http://169.254.169.254/` (the cloud metadata endpoint, i.e. your credentials), at `localhost`, or at an internal service. Second: the receiver gets a POST claiming to be from you, but anyone can POST to that URL. It needs to be able to verify that it's really you, and that this isn't a replay of an old delivery.
+
+## Defense 1: signed delivery
+
+Each subscription gets its own signing secret, and every delivery is signed; the same thing Stripe does, for the same reasons:
+
+```python
+def generate_signing_secret() -> str:
+    return secrets.token_urlsafe(32)              # a separate secret per subscription
+
+def _delivery_signature(secret, *, timestamp, payload):
+    signed = f"{timestamp}.{payload}".encode()    # timestamp + payload, signed together
+    return hmac.new(secret.encode(), signed, hashlib.sha256).hexdigest()
+```
+
+The receiver recomputes the HMAC with the shared secret; if it matches, the payload really came from you, and that's authentication. The signature also covers not just the payload but the **timestamp**: the receiver can notice that an old delivery is being replayed and reject it. That's replay protection.
+
+## Defense 2: the URL can't attack your network
+
+Before sending, the URL is filtered: it must be https, must not contain embedded credentials, and most importantly, the host itself *or the address it resolves to* must not be a private/local address:
+
+```python
+def _is_blocked_ip_address(hostname: str) -> bool:
+    parsed = ipaddress.ip_address(hostname.strip("[]"))
+    return not parsed.is_global          # loopback, private ranges, AND 169.254.x metadata
+
+def _assert_webhook_host_allowed(hostname, port):
+    if _is_blocked_ip_address(hostname):
+        raise ValueError("webhook URL must not target private or local addresses")
+    for address in _resolve_webhook_host_addresses(hostname, port):
+        if _is_blocked_ip_address(address):   # also check the IPs the host resolves to
+            raise ValueError("webhook URL must not resolve to private or local addresses")
+```
+
+`not is_global` covers a lot in one check: loopback, the RFC1918 private ranges, and the juiciest SSRF target, the `169.254.x` cloud metadata range. It looks not only at the host as written, but at the addresses that host resolves to in DNS.
+
+## The subtle part: DNS rebinding
+
+Checking that the host resolves to a safe IP isn't enough on its own. An attacker can make DNS return a safe IP at check time, then rebind to an internal IP for the actual connection (DNS rebinding). The fix: **pin** the resolved IP and connect to exactly that address; so the check and the connection use the same IP. (The connection also doesn't follow redirects; an escape to an internal address via a 302 is closed off.)
+
+## On top: reliable delivery
+
+The sending itself also works with the pattern from the [Stripe outbox post](/blog/reliable-usage-metering-transactional-outbox/): events are queued, retried with exponential backoff on failure, and an endpoint that keeps failing is automatically disabled after a threshold; so a dead customer URL isn't retried forever.
+
+## The honest limit
+
+IP-blocking and pinning defend against network-level SSRF. They can't stop a customer from pointing the webhook at their own *public* service that they shouldn't; that's their problem. And signing only helps a receiver that actually *verifies* it: a customer who ignores the signature gains nothing from it. You provide the defenses; the other side still has to use them.
+
+## The takeaway
+
+Every time you let an external party give you a URL to call, you've said yes to SSRF; handle it by blocking internal addresses and pinning the IP. And every time you call them, sign it (HMAC plus a timestamp), so they can trust you and reject replays. An outbound webhook is a two-way trust problem; solve both directions.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

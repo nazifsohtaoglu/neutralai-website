@@ -1,0 +1,78 @@
+---
+title: "Scanning a message is easy; scanning a 50-page PDF is a different job"
+description: "Scanning a chat message is easy; scanning a 50-page PDF is not. Safe extraction, zip-bomb limits, chunking with page provenance, and scoped storage."
+date: "2026-05-14"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*A chat message is a single sentence: plain text, short, easy. A document is megabytes, multi-format (PDF, DOCX, PPTX, CSV), and an untrusted binary that can hide a zip bomb. Catching PII in a document is much more than calling the same detection engine; it means solving four separate problems at once.*
+
+---
+
+![Document PII scanning pipeline illustration](/blog/visuals/document-pii-scanning.webp "Document scanning starts with safe extraction and bounded processing before detection can produce useful page-level evidence.")
+
+## The four problems a document forces on you
+
+In chat, the unit is a message: a sentence or two, plain text. Easy to scan. But customers don't only chat; they upload contracts, spreadsheets, decks. And a document is a different beast entirely.
+
+A document brings four problems at once. First, it's an untrusted binary (PDF/DOCX/PPTX/CSV); you have to extract its text safely, without getting attacked. Second, it's big; too big to hand the detection engine in one piece. Third, you need to know *where* a hit is: "page 7," not "somewhere in 50 pages." Fourth, you have to hold the sanitized result safely, but not forever.
+
+## 1. Safe extraction from untrusted formats
+
+There's a separate extractor for each format (the literal text of a PDF, the XML of DOCX/PPTX, CSV). But the real issue is defense. A document upload is an attack surface, and the pipeline is bounded accordingly:
+
+```python
+DOCUMENT_CHUNK_MAX_CHARS = 1200
+DOCUMENT_REDACTION_MAX_BYTES = 2 * 1024 * 1024
+_PPTX_MAX_UNCOMPRESSED_XML_BYTES = 50 * 1024 * 1024     # zip-bomb defense
+
+def get_ingest_max_bytes(billing_plan):                  # size limit by plan tier
+    if plan == "enterprise": return settings.DOCUMENT_INGEST_MAX_BYTES_ENTERPRISE
+    if plan == "growth":     return settings.DOCUMENT_INGEST_MAX_BYTES_GROWTH
+    return settings.DOCUMENT_INGEST_MAX_BYTES_FREE
+```
+
+A compressed format can blow up memory when it expands; against zip bombs there's a cap on the expanded XML. There's a plan-based limit on the upload size. And on a malformed file there's a clean error, not a crash: a bad PDF returns an explicit "extraction failed" instead of taking the pipeline down.
+
+## 2 & 3. Chunking, with page attribution
+
+The text is first extracted **page by page**, then split into bounded-size chunks (at most 1200 characters), so the detection engine sees a manageable amount of text. Each chunk and each finding is recorded together with its page number:
+
+```python
+@dataclass
+class ExtractedDocumentPage:
+    page_number: int
+    text: str
+
+@dataclass
+class DocumentRedactionFinding:
+    page_number: int
+    ...
+```
+
+So a hit in a 50-page document is mapped back as "on page 7," not "somewhere." The page provenance is preserved end to end.
+
+## 4. Temporary, scoped storage
+
+The sanitized chunks are kept in a store, but with the same zero-retention philosophy as the [vault post](/blog/reversible-pii-masking-ttl-aes-gcm-vault/): a TTL purges the expired ones, and reads go through an owner check.
+
+```python
+def get(self, document_id, *, owner_id=None) -> StoredSanitizedDocument:
+    self._purge_expired()
+    # ... only the owner, and only if it hasn't expired, can read it
+```
+
+So the sanitized document exists for a short time, only for its owner; not as a permanent copy that someone else could reach.
+
+## The honest limit
+
+Extracting text from arbitrary binary formats is inherently best-effort, not guaranteed. A scanned-image PDF with no text layer, an exotic format, or an unusual encoding gives little or nothing to scan; and you can't redact text you couldn't extract. That's why the extraction method is recorded and a failure is explicit, not silent. Also, fixed-size chunking can split a PII value across a chunk boundary; this is handled, but it's the same boundary problem as in the [streaming post](/blog/redacting-pii-in-streaming-llm-responses/), just in a different place.
+
+## The takeaway
+
+The detection engine is the same; most of the work on the document path is the unglamorous work *around* it: parsing hostile formats safely, bounding resources, chunking with provenance, and holding the result briefly. The model finds the PII; the pipeline is what makes it safe to even look at the document.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

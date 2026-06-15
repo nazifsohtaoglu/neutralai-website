@@ -1,0 +1,126 @@
+---
+title: "You tightened a security rule. Most of your servers never heard about it."
+description: "Cache a policy in memory, run several replicas, and a rule you changed on one server runs stale on the others. How pub/sub, polling, and signatures keep them consistent."
+date: "2026-06-04"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*You cache policies in memory for speed. You run multiple replicas for scale. Put those two together and a security rule you just updated on one replica keeps running in its old form on the others, no error, nothing in the logs. This is the silent inconsistency, and the two mechanisms (plus one cheap trick) that close it.*
+
+---
+
+![Policy consistency across replicas illustration](/blog/visuals/policy-replica-consistency.webp "Policy updates need propagation and verification so every replica enforces the same rule set after a security change.")
+
+## Two decisions that are each correct on their own
+
+A privacy gateway scans every prompt for sensitive data. To do that it leans on policies, custom recognizers, and a whitelist. If you fetch those rules from the database on every request, you've added a DB round-trip to every keystroke of work, unacceptable latency on the hot path. The right move is obvious: load the rules once at startup, keep them **in memory**, serve requests from there.
+
+Equally, you don't want to depend on a single server. For load and availability you run multiple replicas, two, three, five, each able to serve any request.
+
+Both decisions are correct in isolation. The problem shows up where they meet.
+
+## The inconsistency that appears when you combine them
+
+Say an admin tightens the IBAN masking rule. The replica that handled the request, call it A, updates the rule in its own memory. But B, C, and D are still running the copy they loaded at startup. So at the same moment, the same product is enforcing the new rule on one of five servers and the old one on the other four.
+
+For an ordinary cache that's annoying. For a **security control** it's dangerous. You tightened a rule, and it isn't in force everywhere, and there's no way to notice, because nothing errors. The logs are clean. The exposure is real. The "you changed the rule on one replica, another ran with the old one" class of bug is among the nastiest precisely because it fails silently.
+
+The two obvious patches both fall short:
+
+- **Drop the cache, hit the DB on every request** → consistency returns, but so does the latency you cached to avoid. You've reopened the problem you solved.
+- **Restart every replica on every change** → operationally absurd, and racy on top of it.
+
+What you need is a mechanism that keeps the speed of memory and brings back consistency. NeutralAI does it with two channels.
+
+## The fast path: Redis pub/sub
+
+When a change happens, the replica that made it announces it on a channel:
+
+```python
+def notify_change(self, scope: str) -> None:
+    payload = {"scope": scope, "source": self.instance_id, "sent_at": _iso_or_none(_utc_now())}
+    client = self._get_publish_client()
+    client.publish(self.channel, json.dumps(payload, separators=(",", ":")))
+```
+
+Every replica runs a loop subscribed to that same channel, and re-syncs when a message lands:
+
+```python
+def _redis_listener_loop(self) -> None:
+    while not self._stop_event.is_set():
+        ...
+        message = pubsub.get_message(timeout=1.0)
+        payload = self._parse_payload(message.get("data"))
+        source = payload.get("source")
+        scope = str(payload.get("scope") or "all")
+        if source == self.instance_id:      # skip the message you published yourself
+            continue
+        self.sync_now(reason=f"redis_event:{scope}")
+```
+
+Propagation is near-instant. There's a small but important detail here: every message carries the `instance_id` of the replica that published it. If a replica receives its own message back, it skips it, it already synced, no need to do the work twice.
+
+## The safety net: DB poll
+
+Pub/sub is fast, but it isn't guaranteed. Redis can blip, a message can be missed, a listener can be mid-reconnect. You never entrust consistency to a best-effort channel alone.
+
+So there's a second channel: every replica re-syncs on a fixed interval, whether or not a pub/sub message arrived:
+
+```python
+def _poll_loop(self) -> None:
+    while not self._stop_event.is_set():
+        self.sync_now(reason="poll")
+        self._stop_event.wait(self.poll_seconds)
+```
+
+Even if the pub/sub message never arrives, the change still propagates everywhere within one poll interval. The fast path drives latency down; the safety net guarantees no change is ever lost entirely. When one fails, the other covers.
+
+## The trick that makes polling cheap: signatures
+
+The immediate objection: if re-syncing every few seconds means reloading the rules each time, isn't that an expensive waste?
+
+It isn't, because `sync_now` doesn't reload blindly. First it derives a **signature** from each scope's database rows (config, policies, whitelist): a SHA-256 hash of the ordered rows.
+
+```python
+def _hash_payload(payload: list[dict[str, Any]]) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+```
+
+Then it compares the new signatures against the previous ones and reloads only the scopes that actually **changed**:
+
+```python
+signatures = self._compute_signatures(db)
+previous = self._signatures
+changed_scopes = [scope for scope in self.SCOPES if signatures.get(scope) != previous.get(scope)]
+
+for scope in changed_scopes:
+    self._reload_scope(scope=scope, db=db)   # config_loader / recognizers / whitelist
+```
+
+So the cost of polling often is just a few queries and a hash comparison; the expensive work, rebuilding the recognizers or the whitelist, happens only when something genuinely changed. Poll often, reload rarely. That's what makes the safety net affordable to run.
+
+## The small things that make it robust
+
+- Each replica gives itself a random `instance_id` at startup; that's what makes it possible to attribute a message's source and swallow your own echo.
+- The pub/sub listener reconnects when the connection drops; every error is recorded but none crashes the process, if one channel misbehaves, the other carries the load.
+- A `snapshot()` method exposes the last successful sync, the seconds since, and a `stale_window_exceeded` flag. So if a replica falls behind, you can see it and alert on it, you measure the inconsistency instead of guessing at it.
+
+## The honest limit
+
+Let's be plain: this propagation isn't instant or transactional. There's a window between the change and the sync, as long as the pub/sub latency, or up to one poll interval if the message was missed. The system is eventually consistent, not strongly consistent. For a security policy you accept that as a small, **bounded** staleness window: you cap it with `max_stale_seconds` and you watch it with `snapshot`. If you genuinely needed strict consistency, you'd centralize the check on every request and eat the latency, a deliberate trade.
+
+## The takeaway
+
+Any in-memory cache spread across replicas needs an invalidation story; without one it slowly becomes a store of silently-stale lies. The robust pattern stands on three legs:
+
+- **Push for speed:** announce the change instantly over pub/sub.
+- **Poll for safety:** re-sync on a fixed interval so nothing is ever lost.
+- **Hash to stay cheap:** detect what actually changed with a signature, and reload only that.
+
+Push, poll, hash. Together they close the door on the "you changed the rule but half the fleet never heard" class of bug.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*
