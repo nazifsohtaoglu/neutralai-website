@@ -48,7 +48,7 @@ export const contactLinks = {
 
 export const homeSections = {
   problem: '/#problem',
-  howItWorks: '/#how-it-works',
+  howItWorks: '/how-it-works',
   trust: '/#trust',
   pricing: '/#pricing',
   compare: '/compare',

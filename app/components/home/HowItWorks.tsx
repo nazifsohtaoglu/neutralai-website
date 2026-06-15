@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { steps } from '../../data/homepage'
 
@@ -39,6 +41,16 @@ export default function HowItWorks() {
                 <div className={`mt-6 h-1 w-16 rounded-full ${index === 1 ? 'bg-[linear-gradient(90deg,#f97316,#fdba74)]' : 'bg-[linear-gradient(90deg,#22d3ee,#7dd3fc)]'}`} />
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link
+              href="/how-it-works"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm text-slate-200 transition-colors hover:border-primary hover:text-primary"
+            >
+              See the full architecture
+              <ArrowRight className="h-4 w-4 text-primary-light" />
+            </Link>
           </div>
         </div>
       </div>
