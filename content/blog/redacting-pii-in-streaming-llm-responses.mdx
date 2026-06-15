@@ -1,0 +1,181 @@
+---
+title: "The half-token that leaks the data you just hid"
+description: "How we re-insert masked values into a streaming LLM response without ever leaking a half-token, and the one rule that fixes it."
+date: "2026-06-13"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*Your AI privacy layer can mask every email, name, and account number perfectly, and still print one of them to the screen the moment you switch on streaming. No error. No exception. Just a customer's address, live on the page. Here's exactly why it happens, and the one-sentence rule that fixes it.*
+
+---
+
+![Streaming PII redaction buffer illustration](/blog/visuals/streaming-pii-redaction.webp "Streaming response redaction needs a buffer boundary so partial sensitive tokens never escape before they are complete and safe.")
+
+## First, the thing almost everyone is building now
+
+If your company lets people use ChatGPT, Claude, or Gemini for real work, you've probably run into the same uncomfortable question: *what's actually in those prompts?* Client names. Email addresses. Account numbers. Case files. All of it typed into a box and shipped to someone else's model.
+
+The increasingly common answer is a **privacy gateway** that sits in the middle. On the way out, it finds the sensitive bits and swaps each one for a placeholder token, so the model only ever sees neutralized text:
+
+```
+"Email sarah@neutralai.co.uk about the Henderson account"
+        →  "Email <EMAIL_3F9A> about the <ACCOUNT_7K9X> account"
+```
+
+On the way back, it does the reverse, when the answer is allowed to be re-opened for that user, each token is swapped back to the real value. The model never saw the real data; the human still gets a useful, readable answer. Everyone's happy.
+
+And in a plain request/response world, this is almost too simple to write a blog post about. You keep a dictionary of `token → real value`, you run `str.replace` over the finished answer, you're done. A junior engineer ships it in an afternoon.
+
+Then someone enables streaming, the typewriter effect everyone now expects from an AI, and that tidy little solution springs a leak. A quiet one. The kind that doesn't throw an exception or show up in your error dashboard. It just occasionally prints the exact thing you were hired to hide.
+
+Let's look at *why* it breaks, then build the fix from first principles.
+
+## Why streaming breaks it
+
+An LLM streams its answer in chunks, and those chunks have nothing to do with *your* token boundaries. The model emits text a few characters at a time, wherever its own tokenizer happens to cut. Which means a placeholder you need to swap back will eventually arrive **split across two chunks**:
+
+```
+chunk 1:  "...email the client at <EMAIL_3F"
+chunk 2:  "9A> first thing tomorrow..."
+```
+
+Now watch the simple solution fail. If you run `replace()` on each chunk as it lands, neither chunk contains the full string `<EMAIL_3F9A>`, so neither match fires. You forward `<EMAIL_3F` to the screen, then `9A>`. The placeholder leaks verbatim, the real value never comes back, and the output is quietly corrupted. Do this on a real product and one in every few hundred responses ships a raw token to a user.
+
+The two obvious patches both fail, in opposite directions:
+
+- **Replace on each chunk** → misses every boundary split. Fast, wrong.
+- **Buffer the whole answer, replace once at the end** → correct, but you've deleted streaming. The user watches a spinner while the entire response accumulates in memory. You bought correctness by removing the feature you turned streaming on for.
+
+So the real problem statement is sharper than "replace some strings." It's:
+
+> **Be correct across chunk boundaries *and* keep latency low**, hold back only the smallest amount of text that could still be the beginning of a token, and not one character more.
+
+That constraint is the whole game. Everything below is in service of it.
+
+## The fix: a rolling buffer with one rule
+
+The mechanism is a rolling buffer governed by a single non-obvious rule: **emit eagerly, but pause the instant the tail of the buffer could still grow into a real token.**
+
+Here's the entire class. It's short on purpose, the value is in the reasoning, not the line count:
+
+```python
+class StreamingPIIRedactor:
+    """
+    Replace known raw PII values with vault tokens during streaming output.
+    Uses a rolling buffer to handle chunk boundary splits safely.
+    """
+
+    def __init__(self, replacements: list[tuple[str, str]]):
+        normalized: list[tuple[str, str]] = []
+        seen: set[tuple[str, str]] = set()
+        for original_value, token in replacements:
+            source = str(original_value or "").strip()
+            target = str(token or "").strip()
+            if not source or not target:
+                continue
+            key = (source.lower(), target)
+            if key in seen:
+                continue
+            seen.add(key)
+            normalized.append((source, target))
+
+        normalized.sort(key=lambda item: len(item[0]), reverse=True)
+        self._patterns = [(source.lower(), target) for source, target in normalized]
+        self._max_source_len = max((len(source) for source, _ in self._patterns), default=0)
+        self._buffer = ""
+
+    def _prefix_match(self, data: str) -> tuple[str, int] | None:
+        lower = data.lower()
+        for source, target in self._patterns:
+            if lower.startswith(source):
+                return target, len(source)
+        return None
+
+    def _has_prefix_candidate(self, data: str) -> bool:
+        lower = data.lower()
+        for source, _ in self._patterns:
+            if source.startswith(lower):
+                return True
+        return False
+
+    def _consume(self, *, final: bool) -> str:
+        if not self._patterns:
+            output = self._buffer
+            self._buffer = ""
+            return output
+
+        out: list[str] = []
+        while self._buffer:
+            matched = self._prefix_match(self._buffer)
+            if matched:
+                token, consumed = matched
+                out.append(token)
+                self._buffer = self._buffer[consumed:]
+                continue
+
+            if not final:
+                probe = self._buffer[: self._max_source_len]
+                if self._has_prefix_candidate(probe):
+                    break
+
+            out.append(self._buffer[0])
+            self._buffer = self._buffer[1:]
+
+        return "".join(out)
+
+    def ingest(self, chunk: str) -> str:
+        self._buffer += chunk
+        return self._consume(final=False)
+
+    def flush(self) -> str:
+        return self._consume(final=True)
+```
+
+The public surface is two methods: `ingest(chunk)` for each streamed chunk, and `flush()` once the stream ends. Everything interesting lives in `_consume`.
+
+## The four decisions that make it correct
+
+**1. Sort sources by descending length.** Two known values can share a prefix, `Sarah` and `Sarah Chen`. Match the shorter one first and you redact `Sarah`, leave ` Chen` dangling, and produce a wrong result. Sorting longest-first (line 21) means the most specific match always wins. It's the streaming cousin of the longest-match rule you'd find in any tokenizer.
+
+**2. Anchor matches at the head of the buffer, not anywhere in it.** `_prefix_match` only checks whether the buffer *starts with* a source. That's deliberate: we process the stream strictly left-to-right and only ever emit from the front. A value sitting mid-sentence isn't ignored, we emit the non-matching characters ahead of it one at a time until the buffer head lines up with that value's start.
+
+**3. Hold only when the tail might still grow into a token.** This is the heart of it. When there's no full match and we're not yet at the end of the stream, we look at the first `_max_source_len` characters of the buffer, the `probe`, and ask `_has_prefix_candidate`: *could any known source start with what we currently hold?* If yes, we stop emitting and wait for the next chunk (line 58). If no, the head character is provably not the start of any token, so we release it and move on.
+
+The payoff is a **bounded** wait. We never hold back more than the length of the longest known value. A token can't split in a way we miss, and we never buffer the whole response "just in case." The latency you add is capped by your longest source string, not by how long the model decides to talk.
+
+**4. `final` changes exactly one thing: never hold.** `flush()` calls `_consume(final=True)`, which skips the prefix-candidate pause. Whatever is still buffered at end-of-stream is real, complete text, no more chunks are coming, so we emit it verbatim. The same loop serves both the live path and the drain; the only difference is whether "this might still grow" is a reason to wait.
+
+Two smaller touches that matter in production: matching is **case-insensitive** (we compare lowercased sources but emit the real token), and the constructor **strips and de-duplicates** the input pairs so a noisy replacement list can't produce empty matches or redundant work.
+
+## Watch it run
+
+One pattern: `sarah@neutralai.co.uk → <EMAIL_3F9A>`. That source is 21 characters, so `_max_source_len` is 21.
+
+| Step | Incoming chunk | Buffer after ingest | What happens | Emitted to user |
+|---|---|---|---|---|
+| 1 | `"Mail sarah@neutral"` | `Mail sarah@neutral` | emit `Mail `, then `sarah@neutral` could still grow into the source → **hold** | `"Mail "` |
+| 2 | `"ai.co.uk now"` | `sarah@neutralai.co.uk now` | head matches the source → emit token; ` now` is then safe | `"<EMAIL_3F9A> now"` |
+| 3 | *(stream ends)* | *(empty)* | `flush()`, nothing buffered | `""` |
+
+At no point did a partial token reach the user, and at no point did we hold back more than 21 characters of text.
+
+## What this is, and what it isn't
+
+It's deliberately a **string mechanism**, not a model. It doesn't *detect* anything, detection already happened on the way out; this is the deterministic inverse on the way back, and it has to be exact. A redactor that's "usually right" is a redactor that occasionally prints a customer's email to the screen, which is the entire failure mode we're here to prevent.
+
+And it's worth being honest about the cost model: matching is `O(buffer × patterns)` per step, advancing one character when nothing matches. For the handful of distinct values in a single conversation, that's free. If you ever pushed thousands of patterns through one stream, you'd reach for an Aho-Corasick automaton instead. We haven't needed to, and "don't build the fast version until the slow version hurts" is its own kind of discipline.
+
+## The one sentence to remember
+
+The interesting part of this feature is invisible when it works and painful when it doesn't, which is the definition of an edge case that *is* the actual work. The correctness rule fits in a single line:
+
+> **Emit a character as soon as it can't be the start of a token, hold it as long as it can, and treat end-of-stream as the only thing that overrides the hold.**
+
+Everything else in the class is just bookkeeping around that invariant.
+
+If you're building anything that rewrites a stream in flight, redaction, link rewriting, profanity filtering, inline citations, this is the boundary problem you're going to hit. A bounded rolling buffer is the way through it.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

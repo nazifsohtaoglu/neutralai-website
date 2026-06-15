@@ -1,0 +1,90 @@
+---
+title: "We hand-wrote our JWT verifier, because in JWT, flexibility is a vulnerability"
+description: "JWT's most famous bugs come from library flexibility, not the crypto. Why pinning one algorithm in ninety lines removes the alg-confusion class entirely."
+date: "2026-05-28"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*Everyone says "don't roll your own crypto, use a battle-tested library," and most of the time they're right. But JWT's most famous vulnerabilities don't come from the crypto, they come from library flexibility: letting the token tell the verifier which algorithm to check it with. Pin a single algorithm into ninety lines and that entire class of bug simply ceases to have anywhere to live. Here's why we wrote the verifier ourselves instead of pulling in a library.*
+
+---
+
+![Pinned JWT verification rail illustration](/blog/visuals/jwt-verification-rail.webp "A JWT verifier that pins one algorithm removes the flexible paths that make algorithm-confusion bugs possible.")
+
+## "Don't roll your own crypto", good advice, but not the whole story
+
+It's the oldest rule in security: don't write your own cryptographic code, trust a library that's been hammered on for years. Good advice, and in most cases a rule to follow to the letter.
+
+But when it comes to JWT, that advice is incomplete. Because JWT libraries have, for years, been a recurring source of vulnerabilities, and the bugs aren't in the math, they're in the **flexibility.** Two classics come from the same root:
+
+- **`alg: none`**: the token says "I have no signature, trust me as-is," and a flexible library falls for it.
+- **RS256 ↔ HS256 confusion**: the token says "verify me with RS256," and the attacker signs it using the public key (which is, well, public) as an HMAC secret.
+
+Both have one root cause: the library lets the *token* decide which algorithm it'll be verified with. Since the attacker controls the token, the attacker controls the verification path. Flexibility turns into weakness right there.
+
+## Our choice: one algorithm, ninety lines
+
+Our need is narrow and specific: signing the service calls the frontend makes to the backend. We write both ends; there's no third party. In a setting like that, algorithm flexibility isn't a feature, it's purely a risk. So we wrote the verifier ourselves, locked to a single algorithm.
+
+Token creation looks like this:
+
+```python
+def create_service_token(*, tenant_id, secret, issuer, audience, ttl_seconds=60):
+    now = int(time.time())
+    payload = {
+        "iss": issuer, "aud": audience, "sub": "frontend-service",
+        "jti": secrets.token_urlsafe(16),       # single-use nonce
+        "tenant_id": tenant_id,
+        "iat": now, "exp": now + ttl_seconds,    # short-lived
+    }
+    return sign_hs256(payload, secret)
+```
+
+## Rule one: never trust the algorithm in the header
+
+This is the heart of verification. We recompute the signature **always** with HMAC-SHA256 and the secret, no matter what the token's header says; only *after* that do we check that the header actually claims HS256:
+
+```python
+expected_sig = hmac.new(secret.encode(), signing_input, hashlib.sha256).digest()
+provided_sig = _b64url_decode(sig_b64)
+
+if not hmac.compare_digest(expected_sig, provided_sig):
+    raise ValueError("Invalid token signature")
+
+header = json.loads(_b64url_decode(header_b64).decode())
+if header.get("alg") != "HS256":
+    raise ValueError("Unsupported JWT algorithm")
+```
+
+Notice: the header's `alg` field *never* selects which verification method runs. The method is fixed in the code; the token can only say "I'm HS256 too," and is rejected if it doesn't. There's no code path where the token can pick a different algorithm or claim "no signature." So the whole family of `alg=none` and algorithm-confusion bugs is structurally impossible, there's simply nowhere for them to exist.
+
+## Rule two: compare the signature in constant time
+
+This is the one place where rolling your own genuinely gets dangerous: if you compare signatures with an ordinary `==`, how long the comparison takes leaks information to an attacker, opening the door to guessing the right bytes one at a time. So the comparison uses `hmac.compare_digest`, which runs in the same time regardless of the inputs.
+
+The remaining checks are standard but complete: `exp` (expiry) and `nbf` (not-yet-valid) with a small tolerance, plus `aud` (audience) and `iss` (issuer) validation.
+
+## But isn't this "rolling your own crypto"?
+
+It isn't, and the distinction matters. We don't write any of the cryptographic primitives: HMAC, SHA-256, constant-time comparison are all from Python's standard library, vetted over many years. The only thing we hand-wrote is the **token format and validation logic** around those parts: ninety lines, one algorithm, readable end to end.
+
+Writing a narrow, readable protocol around vetted primitives is a completely different thing from inventing your own cipher. The first can be responsible engineering; the second is almost always a mistake.
+
+## What makes it safe: a narrow scope
+
+The reason this approach works is that the scope is small. These tokens aren't for user login, they're for service calls where we own both ends. Because we never have to interoperate with a third-party issuer, we don't need algorithm agility either, and that agility is exactly what makes libraries flexible in the first place. One issuer, one audience, one secret, one algorithm.
+
+A few more layers sit on top: a very short lifetime, a single-use `jti` per token, and an explicit `jti`-based blocklist for revocation, once a token's `jti` lands on the list, it's no longer accepted.
+
+## The honest limit
+
+All of this is correct precisely *because* the scope is narrow. The moment you need to accept tokens from third-party issuers, support multiple algorithms, or manage key rotation across parties, you should move to a real library, because the flexibility you stripped out is exactly the flexibility you'd then need. Hand-writing is the right call only when you own both ends and can fix the algorithm. And even then, you leave the actual crypto to the standard library. So the lesson here is not "always write your own JWT."
+
+## The takeaway
+
+Often the safest code is the code that *can't* do the dangerous thing. A library is flexible because it has to interoperate with systems that don't know each other; our internal token has no such need, so stripping that flexibility out strips a whole class of vulnerability out with it. Match the tool's surface area to the actual need, and never confuse "writing a protocol around vetted primitives" with "inventing your own crypto."
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

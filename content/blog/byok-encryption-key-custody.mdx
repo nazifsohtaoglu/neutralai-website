@@ -1,0 +1,62 @@
+---
+title: "A customer hands you their most sensitive key: how do you hold it?"
+description: "When a customer hands you their LLM key, you become its custodian. Per-tenant derived keys, AEAD context-binding, and rotation that locks no one out."
+date: "2026-05-19"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*BYOK means a customer gives you their own LLM provider key to store. It's one of their most sensitive secrets. At that moment you become the custodian of other companies' keys, and you have to hold them so that three things are true at once: one tenant can't reach another's, you can't casually read them yourself, and you can rotate your own master key without locking everyone out. Here's the design that makes all three true.*
+
+---
+
+![Customer key custody vault illustration](/blog/visuals/byok-key-custody.webp "Customer-provided keys need tenant separation, derived encryption material, and rotation paths that preserve access without weakening custody.")
+
+## The weight of the trust
+
+BYOK, "bring your own key," is a tenant using its own LLM provider key instead of the one you manage. It's great for the customer: their key, their billing, their control. But it puts a heavy responsibility on you; you're now holding other organizations' most sensitive secret.
+
+To carry that responsibility properly, three things have to be true at once. You can't store the key in plaintext: one database leak would mean every customer's key. One tenant's key must be unreachable by another tenant. And you must be able to rotate your own master encryption key without breaking any tenant's stored key.
+
+## 1. A derived key for each tenant
+
+The first decision: we don't encrypt all tenants' keys with a single master key. Instead we *derive* a separate key for each tenant, from the master secret and the tenant's identity:
+
+```python
+def _derive_tenant_key(secret: str, tenant_id: str) -> bytes:
+    return hmac.new(secret.encode(), tenant_id.encode(), hashlib.sha256).digest()
+```
+
+The result: tenant A's data is encrypted with a mathematically different key from tenant B's, even though both come from the same master secret. A's derived key can never touch B's ciphertext. Tenant isolation here isn't just a rule enforced by application code; it's baked into the crypto.
+
+## 2. The secret is locked to its context (AEAD)
+
+Encryption uses AES-256-GCM, with a fresh nonce and an AAD. Into the AAD we put the exact context the secret belongs to: tenant, provider, key id, key version.
+
+```python
+aad = _aad_bytes(tenant_id=tenant_id, provider=provider,
+                 key_id=key_id, key_version=key_version)
+encrypted = AESGCM(derived_key).encrypt(nonce, plaintext_api_key.encode(), aad)
+```
+
+It's the same idea as in the [vault post (#4)](/blog/reversible-pii-masking-ttl-aes-gcm-vault/): a ciphertext can only be decrypted in the exact context it was created in. If you take a blob and try to move it into another tenant's or provider's slot, the AAD won't match and decryption collapses.
+
+## 3. Rotation is built in from the start
+
+The master key uses the versioned key set from the [key-rotation post](/blog/encryption-key-rotation-without-downtime/): one active version, plus older ones. Each ciphertext stores its own `key_version` inside it. So you can rotate the master key without re-encrypting any tenant's stored key; old data keeps decrypting under its own tagged version.
+
+## 4. Never show the key, not even to your own team
+
+When you need to refer to a stored key in a dashboard or a log, you need to refer to it without ever handling it. Two helpers make that possible: a non-reversible **fingerprint** of the key (the first part of its SHA-256; it lets you identify and compare a key without storing it) and a **mask** for display (like `sk-1...wxyz`). So the UI and logs refer to the key but never hold it.
+
+## The honest limit
+
+Let's be clear: at the moment the key is *used*, it has to be decrypted to plaintext in memory to call the provider. So for a brief moment, inside the process, it exists in plaintext. BYOK shrinks the exposure (encrypted at rest, separate per tenant, locked to context) but it doesn't make the key never-plaintext; if you have to use it, that's physically impossible. And ultimately everything depends on keeping the master secret safe. We minimize the exposure; we don't claim "zero."
+
+## The takeaway
+
+When you hold someone else's secret, encryption alone isn't enough; you also need isolation and rotation. If you derive a separate key per tenant, a leak can't cross between tenants. If you lock the secret to its context, a blob can't be moved elsewhere. If you version it, you can rotate the key without locking anyone out. And if you fingerprint it, you can talk about a key without ever holding it.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

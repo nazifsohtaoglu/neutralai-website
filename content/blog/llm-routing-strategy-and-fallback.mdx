@@ -1,0 +1,88 @@
+---
+title: "One API that says 'send to the model': four separate decisions behind it"
+description: "Behind one send-to-the-model API hide four decisions. A pluggable routing strategy, one provider abstraction, and per-provider resilience."
+date: "2026-05-12"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*Behind a single endpoint you're actually resolving four things at once: which model the request goes to, with whose key (yours or the tenant's), under which plan limits, and what happens when the provider falls over. Stuff all of that into one function with `if/else` and you get a mess. Here's the architecture that carries it without becoming one.*
+
+---
+
+![LLM routing and fallback illustration](/blog/visuals/llm-routing-fallback.webp "One simple API call hides routing decisions for model choice, key ownership, plan limits, and provider resilience.")
+
+## Simple outside, four decisions inside
+
+The gateway offers a single LLM interface to the outside: "send these messages, stream the answer." Simple for the caller.
+
+But four decisions hide behind that one call. Which model does it go to? With whose key; the one you manage, or the one the tenant brought? Which plan limits apply? And what happens if the provider times out or goes down? Pile those into one place and the call site turns into a tangle of conditionals. The fix is to separate the four decisions from each other.
+
+## Routing: a pluggable strategy
+
+The first three decisions (model, key, limits) collapse into a single *routing decision*. A request is resolved into an `LLMRouteDecision` by one of two strategies:
+
+```python
+@dataclass
+class LLMRouteDecision:
+    provider: str
+    model: str
+    api_key_override: str | None = None
+    base_url_override: str | None = None
+    strategy: str = "managed"
+    max_tokens_cap: int | None = None
+    max_prompt_chars_cap: int | None = None
+```
+
+The **managed strategy** uses the platform's key and model, but with a model policy: if the requested model isn't on the allowed list it falls back to the default, and the `max_tokens` and `max_prompt_chars` limits are applied per plan tier. So the plan limits are built into routing, not scattered around.
+
+The **BYOK strategy** uses the tenant's own key: it finds the active, non-revoked key, decrypts it the way the [BYOK post](/blog/byok-encryption-key-custody/) describes, and on any problem it **fails closed**, with clear error codes:
+
+```python
+if row:
+    return decrypt_byok_key(ciphertext=row.ciphertext, tenant_id=..., key_version=row.key_version)
+raise HTTPException(status_code=403, detail={"error_code": "BYOK_KEY_MISSING", ...})
+```
+
+Note: if the BYOK key is missing, the request does not silently fall back to *your* managed key. If it did, it would both put the bill on you and give away the tenant's intent. So it's refused explicitly.
+
+## A single provider abstraction
+
+The routing decision supplies the provider, model, key, and base_url; the sending is done by a single abstraction. Providers are gathered behind an **OpenAI-compatible** interface:
+
+```python
+class BaseLLMProvider(ABC):
+    async def generate_stream(self, messages, **kwargs) -> AsyncGenerator[str, None]: ...
+
+class OpenAICompatibleProvider(BaseLLMProvider):
+    ...
+```
+
+So OpenAI, OpenRouter, and a tenant's own BYOK base_url all flow through the same code path. Routing says where to go; the provider class just sends.
+
+## Resilience per provider
+
+The fourth decision, "what if it falls over," is given to each provider with its own resilience settings: its own timeout, its own retry-backoff, its own circuit breaker. All of it is configurable per provider, falling back to a global default:
+
+```python
+failure_threshold = config_loader.get(f"llm_circuit_failure_threshold:{provider}", None) \
+    or config_loader.get("llm_circuit_failure_threshold", threshold_default)
+```
+
+A flaky provider trips its own breaker without dragging the others down. And the errors are structured: is it `retryable`, what's the circuit state; so the caller knows whether a retry will help. (The LLM-side application of the circuit breaker from the [fail-closed post](/blog/fail-closed-ai-gateway-resilience/).)
+
+## Why this shape
+
+Three responsibilities are kept separate: deciding *what to pick* (routing), *how to send* (the provider), and *what happens if it fails* (resilience). Each can change without touching the others: add a new strategy, wire up a new backend, tune a provider's circuit breaker. The call site stays "send to the model"; the complexity lives in named, swappable pieces.
+
+## The honest limit
+
+BYOK is deliberately fail-closed: if the tenant's key is missing or won't decrypt, the request is refused, not silently sent on your key. The cost: a misconfigured BYOK tenant gets a hard 403 until they fix it. When keys and money are involved, that's the right trade, but it's still a trade. And "OpenAI-compatible" covers most things, but not every provider's quirks; a genuinely different API needs its own provider class.
+
+## The takeaway
+
+A clean interface over a messy reality isn't one giant function; it's a few small, separable decisions. You pick the route as a strategy, send through a single abstraction, and wrap each dependency in its own resilience. The call site stays simple; the complexity moves into named, swappable places.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

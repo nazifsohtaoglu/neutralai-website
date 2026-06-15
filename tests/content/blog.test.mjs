@@ -13,6 +13,11 @@ function blogPostFiles() {
   return readdirSync(join(root, 'content/blog')).filter((filename) => filename.endsWith('.mdx'))
 }
 
+function blogMarkdownMatches(pattern) {
+  return blogPostFiles()
+    .flatMap((filename) => [...readSource(`content/blog/${filename}`).matchAll(pattern)])
+}
+
 test('blog infrastructure renders index and MDX-backed post pages', () => {
   const blogIndex = readSource('app/blog/page.tsx')
   const blogPost = readSource('app/blog/[slug]/page.tsx')
@@ -29,6 +34,8 @@ test('blog infrastructure renders index and MDX-backed post pages', () => {
   assert.match(blogPosts, /next\/image/)
   assert.match(blogPosts, /<figure/)
   assert.match(blogPosts, /max-w-3xl/)
+  assert.match(blogPosts, /blogVisualPrefix = '\/blog\/visuals\//)
+  assert.match(blogPosts, /href\.startsWith\('https:\/\/'\)/)
   assert.match(post, /Why PII Masking Matters for Enterprise AI Adoption/)
   assert.match(post, /```text/)
 })
@@ -64,6 +71,19 @@ test('blog articles include editorial hero visuals with accessible alt text', ()
 
   for (const visual of expectedVisuals) {
     assert.match(combinedPosts, new RegExp(`!\\[[^\\]]+\\]\\(/blog/visuals/${visual.replace('.', '\\.')}`))
+  }
+})
+
+test('blog markdown only embeds local visuals and https outbound links', () => {
+  const imageMatches = blogMarkdownMatches(/!\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]+")?\)/g)
+  const absoluteLinkMatches = blogMarkdownMatches(/\[[^\]]+\]\((https?:\/\/[^)]+)\)/g)
+
+  for (const match of imageMatches) {
+    assert.ok(match[1].startsWith('/blog/visuals/'), `blog image must stay local: ${match[1]}`)
+  }
+
+  for (const match of absoluteLinkMatches) {
+    assert.ok(match[1].startsWith('https://'), `blog link must use https: ${match[1]}`)
   }
 })
 

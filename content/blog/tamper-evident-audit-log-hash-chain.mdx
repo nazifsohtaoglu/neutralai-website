@@ -1,0 +1,120 @@
+---
+title: "An audit log you can edit proves nothing"
+description: "An audit log you can edit proves nothing. How per-entry hashing, signatures, a hash chain, and S3 Object Lock make a tamper-evident ledger."
+date: "2026-06-02"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*The value of an audit log isn't that you keep it, it's that you can prove nobody, including you, altered it after the fact. If you can quietly edit a row, that log is worthless in a dispute: the other side just says "you doctored it," and they're right to. Here are the four layers that move an audit trail from "trust me" to "mathematically provable."*
+
+---
+
+![Tamper-evident audit log hash chain illustration](/blog/visuals/audit-log-hash-chain.webp "A tamper-evident audit trail links signed event records so a single altered entry exposes the break in the chain.")
+
+## Everyone keeps a log; the real question is elsewhere
+
+A privacy gateway records every decision: what was masked, which rule fired, when, for which tenant. Note what's stored, not the PII itself, but the **metadata** of the event. So far this is standard; every system keeps an audit log.
+
+But most systems skip the deeper question. An audit log's real value isn't that it exists, it's that you can **prove it wasn't changed.** Because if the person operating the system (you) can edit a row after the fact, the log proves nothing in a dispute. The moment the other side says "you edited that log," you have no answer.
+
+If you want accountability, if you're claiming "we can prove what happened", the record has to be **tamper-evident even to its own operator**: something that, if you altered a single line, would make that change obvious instantly. Tamper-evident doesn't prevent tampering; it exposes it. That reframes the whole problem: the task isn't "store the events," it's "make any change to the record visible."
+
+## Layer 1: every entry is fingerprinted and signed
+
+Two things are derived from each export's contents. The first is a SHA-256 digest, a fingerprint. The second is an HMAC-SHA256 signature, produced with a secret key:
+
+```python
+def sign_payload(payload: bytes) -> str:
+    keyring = build_keyring(
+        active_version=settings.COMPLIANCE_EXPORT_SIGNING_KEY_VERSION,
+        active_secret=settings.COMPLIANCE_EXPORT_SIGNING_KEY,
+        legacy_raw=settings.COMPLIANCE_EXPORT_LEGACY_SIGNING_KEYS,
+    )
+    return sign_hmac_sha256(payload, keyring=keyring,
+                            active_version=settings.COMPLIANCE_EXPORT_SIGNING_KEY_VERSION)
+```
+
+They do different jobs. The SHA-256 ensures the fingerprint changes if even one byte of the content changes, it catches accidental corruption. The HMAC signature goes further: only someone holding the signing key could have produced it. So even if an attacker alters the content and recomputes the fingerprint, they can't forge a valid signature without the key. The key is versioned, so it can be rotated without invalidating the signatures on older records.
+
+## Layer 2: the entries are chained
+
+Individually signed records are still an independent pile, you could pull one out, or reorder them. To close that, each record stores **the fingerprint of the one before it**:
+
+```python
+payload_sha256 = hashlib.sha256(payload).hexdigest()
+# ... when the record is written:
+previous_sha256 = previous.payload_sha256 if previous else None
+```
+
+Now the log stops being a bag of independent rows and becomes a **chain**, where every link points at its predecessor's fingerprint. Change an entry in the middle and its fingerprint changes, which makes the *next* entry's `previous_sha256` no longer match, which breaks the one after that, and so on. A single edit ripples down the whole chain and becomes detectable. It's the idea behind a blockchain, stripped of the hype and reduced to its one job.
+
+## Layer 3: the bytes go somewhere they can't be overwritten
+
+The chain protects integrity *within* the record. But what if someone deletes the whole file and rewrites it from scratch with a consistent chain? For that, the bytes themselves go into write-once storage: S3 Object Lock.
+
+```python
+s3.put_object(
+    Bucket=bucket, Key=object_key, Body=payload_bytes,
+    ContentType="application/x-ndjson",
+    ChecksumAlgorithm="SHA256",
+    ObjectLockMode=settings.COMPLIANCE_S3_OBJECT_LOCK_MODE,          # GOVERNANCE / COMPLIANCE
+    ObjectLockRetainUntilDate=created_at.replace(microsecond=0)
+        + timedelta(days=settings.COMPLIANCE_S3_OBJECT_LOCK_DAYS),
+)
+```
+
+Object Lock means write-once-read-many: once written, the object **cannot be deleted or overwritten** until its retain-until date, and in `COMPLIANCE` mode, that includes the root account. A sidecar `.sha256` file is written alongside it. So the evidence isn't just chained; it's physically un-rewritable for N days.
+
+## Layer 4: production refuses to run this path unless immutability is real
+
+All of this means nothing if the records accidentally get written to a mutable local folder. So in production there's a gate: if the immutability posture isn't right, the system refuses the compliance path.
+
+```python
+if env != "production":
+    return True, "skipped_non_production"
+if not enforce_immutable_write:
+    return False, "immutable_write_enforcement_disabled"
+if parsed.scheme != "s3":
+    return False, "immutable_uri_must_be_s3"
+# ... region present, valid Object Lock mode, positive retention days ...
+```
+
+You can't ship a "compliance" feature that silently writes to a mutable target. A setup that couldn't produce evidence never starts in production, fail-closed, for proof.
+
+## Putting it together: verification
+
+All these layers come together in a single verification step. The verifier walks the records in order and, for each row, checks two things at once: is the chain link intact, and do the bytes in storage still match the recorded fingerprint?
+
+```python
+for row in rows:
+    row_issues = []
+    if row.previous_sha256 != previous_hash:                    # chain broken?
+        row_issues.append("previous_sha256_mismatch")
+
+    immutable_ok, reason = verify_immutable_payload(            # re-read the stored bytes,
+        row.immutable_uri, row.payload_sha256,                 # recompute their SHA-256
+    )
+    if not immutable_ok:
+        row_issues.append(f"immutable_verify_failed:{reason}")
+    ...
+    previous_hash = row.payload_sha256
+```
+
+`verify_immutable_payload` re-downloads the stored object, recomputes its SHA-256, and compares it to the recorded fingerprint. So three kinds of tampering get caught: a doctored entry (fingerprint won't match), a broken chain (`previous_sha256` won't line up), and a modified or deleted object (the stored bytes no longer match).
+
+## The honest limit
+
+To be clear: this proves **integrity**, that the record wasn't altered without detection, not *correctness*. It doesn't answer "did the system record the right thing in the first place," only "was what it recorded changed afterward." And it leans on two external supports: that the signing key stays secret, and that the storage provider actually honors Object Lock. In `COMPLIANCE` mode, S3 prevents even the root account from deleting before the retention window, but ultimately you're trusting the provider's implementation. Retention isn't infinite either; you size the window (N days) to your own legal requirement.
+
+Our claim isn't "unbreakable." Our claim is that no edit to the record can stay hidden, and the bytes can't be rewritten once written.
+
+## The takeaway
+
+An audit log only becomes evidence when altering it leaves a trace and the bytes can no longer be rewritten. To get there: fingerprint each entry, chain the links so a single edit ripples through the whole chain, add a signature only you could produce, and put the bytes somewhere even you can't touch afterward.
+
+Then "I logged it" turns into "here's the proof nobody touched it." That's the engineering of accountability, not protection.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

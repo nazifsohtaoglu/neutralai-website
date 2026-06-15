@@ -1,0 +1,151 @@
+---
+title: "Why our PII filter loads a transformer the moment it sees the letter 'ş'"
+description: "spaCy has no Turkish model and the English one mis-bounds Turkish names. How a single character triggers a transformer for multilingual PERSON detection."
+date: "2026-06-11"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*A privacy gateway has to catch names in every language a customer types. For Turkish, the standard NER stack doesn't just miss names, it confidently draws the wrong boundary, redacting half a name and leaking the rest. Here's why language detection was the wrong tool for the job, and how a single Turkish character ended up triggering a 100-million-parameter model.*
+
+---
+
+![Multilingual PII detection transformer illustration](/blog/visuals/turkish-ner-pii-detection.webp "Multilingual name detection needs a fallback path when the default entity model cannot safely bound Turkish names.")
+
+## Names are the hard part
+
+Most sensitive data has a shape. An IBAN has a checksum. A credit card passes Luhn. A Turkish national ID number is eleven digits with a validation rule. If you see a candidate, you can *verify* it mathematically and throw away the random digit strings. That makes a huge class of PII detection almost boringly reliable.
+
+Names have none of that. `John Smith` is two capitalized words, and so is `New York`, and so is `Best Regards`. There's no checksum for "this is a person." To find names you need a model that understands language: **named-entity recognition** (NER). For English and the other big languages, you can pull a solid NER model off the shelf, spaCy ships one, you load it, you move on.
+
+So a privacy gateway's name-detection story is "use a good NER model", until a customer pastes in a Turkish prompt. That's where it gets interesting, because two unpleasant facts show up at the same time.
+
+## Fact one: there is no Turkish spaCy model, and the English one doesn't fail politely
+
+spaCy has no official Turkish model. Fine, you think, we'll just run the English model and accept slightly worse results on Turkish.
+
+That's not what happens. The English model doesn't quietly return nothing on Turkish names. It returns the **wrong span**. Take a normal sentence a lawyer might type:
+
+```
+"Müvekkilimiz Ahmet Yıldız davası için..."
+ (Our client Ahmet Yıldız, for the case of...)
+```
+
+The English NER, with no concept of Turkish morphology, mis-bounds the name. It swallows the leading word and tags `Müvekkilimiz Ahmet` as one entity, or it splits `Ahmet Yıldız` into two separate fragments and only catches one.
+
+And here's the part that matters: **a mis-bounded redaction is worse than a missed one.** If you redact the span the English model returns, you might mask `Müvekkilimiz Ahmet` and leave `Yıldız` sitting in the text, the surname leaks. Or you mask `Ahmet`, leave `Yıldız`, and ship a half-anonymized name to the model. A confident wrong answer slips straight past you, because your pipeline *did* find a PERSON and *did* redact something. The logs look clean. The leak is real.
+
+For Turkish PERSON detection specifically, you need a model that actually speaks the language. The one we use is a transformer: `savasy/bert-base-turkish-ner-cased`.
+
+## Fact two: language detection is the obvious gate, and it's the wrong one
+
+Loading a Turkish-specific transformer for *every* request would be wasteful, it's a 100M+ parameter model and most prompts aren't Turkish. So you need a gate: decide when to run it.
+
+The obvious gate is language detection. Run `langdetect`, and if the text is Turkish, route it to the Turkish model. Clean in theory.
+
+It falls apart on exactly the inputs we care about. Real prompts are short and **code-switched**, an English instruction wrapped around a Turkish name:
+
+```
+"Summarize the case notes for client Ahmet Yıldız and draft a reply."
+```
+
+`langdetect` reads that as English (it mostly *is* English), so it never fires the Turkish model, so the one Turkish thing in the sentence, the name we needed to catch, sails through. Language detection answers "what language is this document," but our question is "might there be a Turkish name in here," and those are not the same question. Using a probabilistic document-level classifier to make a span-level decision is the wrong tool, confidently applied.
+
+## The gate we actually use: one cheap character check
+
+Here's the gate. It is not a model. It is this:
+
+```python
+# Turkish-specific characters; cheap signal to decide whether to run TR NER.
+_TR_CHARS = set("çğıİöşüÇĞİÖŞÜ")
+
+def text_has_turkish_signal(text: str) -> bool:
+    """Cheap gate: does the text contain Turkish-specific characters?"""
+    if not text:
+        return False
+    return any(ch in _TR_CHARS for ch in text)
+```
+
+If the text contains a single Turkish-specific letter, the `ç` in *davacı*, the `ş` in *kişi*, the `ı` in *Yıldız*, we run the Turkish model. Otherwise we don't. It's deterministic, it costs microseconds, and it doesn't care what "language" the document is. A mostly-English sentence with one Turkish name trips it, which is precisely the case `langdetect` got wrong.
+
+The engine calls this gate first, and only then reaches for the model:
+
+```python
+if not text_has_turkish_signal(text) or not turkish_person_ner.is_enabled():
+    return results
+spans = turkish_person_ner.extract_persons(text)
+```
+
+## Loading a slow model exactly once
+
+The transformer takes minutes to load. You cannot pay that on a request. So the model is a **lazy, process-wide singleton** with double-checked locking, load once, reuse forever, and don't let two concurrent requests both start loading it:
+
+```python
+def _ensure_pipeline(self):
+    if self._pipeline is not None or self._load_failed:
+        return self._pipeline
+    with self._lock:
+        if self._pipeline is not None or self._load_failed:
+            return self._pipeline
+        self._load_attempted = True
+        try:
+            # ... load tokenizer + model, build the NER pipeline ...
+            self._pipeline = pipeline("ner", model=model, tokenizer=tokenizer,
+                                      aggregation_strategy="simple")
+        except Exception as exc:
+            self._load_failed = True
+            logger.warning("Turkish NER model unavailable: %s", exc.__class__.__name__)
+        return self._pipeline
+```
+
+Three deliberate properties live in that small block:
+
+- **Optional and feature-flagged.** It's gated by `PII_TURKISH_NER_ENABLED` (default on) and the model name is overridable. The whole feature can be switched off without touching code.
+- **Silent no-op on failure.** If `transformers` isn't installed or the weights won't load, `_load_failed` latches and the engine keeps running on the regex/Presidio layer. A missing optional model degrades quality; it does not take down detection.
+- **It logs the exception *class*, not the message.** `exc.__class__.__name__`, because this code runs next to user text, and a careless `logger.warning(exc)` is exactly how you leak the thing you're trying to protect into a log line.
+
+A `warm_up()` is called at startup so the minutes-long load happens before the first real request, not during it.
+
+## Merging: on Turkish text, the transformer wins
+
+The transformer only extracts **PERSON**, every other piece of Turkish PII (national ID, IBAN, phone, email) is already handled, reliably, by the checksum/regex/Presidio layer. So all that's left is to fold the transformer's PERSON spans into the existing results without double-counting.
+
+The merge rule encodes the judgment from Fact one, *for Turkish PERSON, the transformer is more trustworthy than the English spaCy model*:
+
+```python
+def _overlaps(a0, a1, b0, b1):
+    return a0 < b1 and a1 > b0
+
+kept = []
+for r in results:
+    is_person = str(getattr(r, "entity_type", "") or "").upper() == "PERSON"
+    if is_person and any(_overlaps(int(r.start), int(r.end), s.start, s.end) for s in spans):
+        continue            # drop the mis-bounded English PERSON span
+    kept.append(r)          # keep everything else (emails, IDs, phones...)
+
+for span in spans:
+    kept.append(RecognizerResult(
+        entity_type="PERSON",
+        start=span.start, end=span.end,
+        score=max(0.6, min(0.99, span.score)),   # floor the score so it survives thresholding
+    ))
+```
+
+Turkish PERSON spans take precedence: any existing PERSON span that overlaps a transformer span is dropped (it's the mis-bounded one), the transformer spans are added, and every non-PERSON result is preserved untouched. The score is floored to `0.6` so a correct name can't be quietly filtered out by a downstream confidence threshold.
+
+## The honest limit
+
+The character gate is cheap and deterministic, and that's also its boundary: it fires on Turkish *characters*, not Turkish *names*. A name written without any Turkish-specific letter, `Mehmet Demir`, all ASCII, won't trip `text_has_turkish_signal` on its own, so in a fully ASCII, fully English-looking sentence it leans on the base NER layer. In practice Turkish text almost always carries at least one `ç/ğ/ı/ö/ş/ü` nearby, and the gate is one signal among several in a layered pipeline, but it's a real trade-off, and pretending a one-line gate is a language model would be exactly the kind of hype this system is built to avoid.
+
+## The takeaway
+
+Two ideas did the work here, and both generalize:
+
+1. **A mis-bounded detection is more dangerous than a missing one**, it looks like success while leaking. When you can't get a span exactly right, prefer the tool that does, even for one language.
+2. **Put a cheap, deterministic gate in front of an expensive, probabilistic model**, and make sure the gate answers *your* question (is there a Turkish name here?), not a neighboring one (what language is this document?). The wrong gate fails silently on the inputs you most need it to catch.
+
+A 100-million-parameter transformer, summoned by the presence of the letter `ş`. The unglamorous character check is what makes the expensive model usable.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

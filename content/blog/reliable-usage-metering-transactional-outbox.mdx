@@ -1,0 +1,86 @@
+---
+title: "Billing is the last place you can afford to be sloppy"
+description: "Billing can't lose an event or count one twice. A transactional outbox with idempotency, single-worker claiming, backoff, and a dead-letter."
+date: "2026-05-16"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*Reporting usage to Stripe is an external API call. You can't make it on top of the user's request; it's slow, and if Stripe goes down the request goes down with it. But you also can't afford to lose an event (a lost event is revenue you'll never bill) or count one twice (a double event is an overcharged, angry customer). Here's the async pipeline that neither loses a usage event nor counts it twice.*
+
+---
+
+![Transactional outbox usage metering illustration](/blog/visuals/usage-metering-outbox.webp "A transactional outbox turns usage billing into durable events that can be claimed, retried, and delivered without double counting.")
+
+## What's tolerated everywhere else isn't tolerated here
+
+Most features tolerate a bit of sloppiness: a retry here, a dropped log there. Billing doesn't. A lost usage event is revenue you can never bill. A double-counted event is an overcharged and rightly angry customer. On top of that, reporting usage to Stripe is an external API call you can't afford to make on the user's hot request path.
+
+So the constraints are heavy: get the work off the request path, lose no event, count none twice, survive Stripe being down, and stay safe even when several workers run at once.
+
+## The pattern: transactional outbox
+
+The core of the solution: when usage happens, we *don't* call Stripe. Instead we write a row to an outbox table, **inside the same database transaction** as the actual work:
+
+```python
+idempotency_key = f"usage_log:{usage_log_id}"
+row = models.StripeUsageOutbox(id=str(uuid.uuid4()), tenant_id=tenant_id,
+                               quantity=quantity_value, idempotency_key=idempotency_key,
+                               status="pending", attempt_count=0, next_attempt_at=_utcnow())
+try:
+    with db.begin_nested():
+        db.add(row); db.flush()
+except IntegrityError:                      # the same usage tried to enqueue a second time
+    row = db.query(models.StripeUsageOutbox).filter(
+        models.StripeUsageOutbox.idempotency_key == idempotency_key).first()
+```
+
+This has two virtues. First, the event is **atomic** with the work: if the work commits, the event is queued; if the work rolls back, so does the event. No phantom events, no lost events. Second, the `idempotency_key` is unique: if you try to queue the same usage a second time, no new row is added, the existing one is found. Double records are prevented from the start.
+
+## Async draining, and the multiple-worker race
+
+After events are written to the queue, a background worker picks them up and sends them to Stripe, off the request path. But if more than one worker is running (replicas), two workers could grab the same event and send it twice. The fix is to claim events with a lock and bind each to a single worker:
+
+```python
+candidate_query = (db.query(models.StripeUsageOutbox.id)
+                   .filter(claimable_filter)
+                   .order_by(models.StripeUsageOutbox.created_at.asc())
+                   .limit(size))
+if db.bind.dialect.name == "postgresql":
+    candidate_query = candidate_query.with_for_update(skip_locked=True)   # concurrent workers
+                                                                          # never see the same row
+```
+
+On PostgreSQL, `SELECT ... FOR UPDATE SKIP LOCKED` never shows concurrent workers the same candidate row. On top of that, each row is marked with an optimistic `UPDATE` guarded by a "is it still claimable" condition, which only succeeds for the worker that won the race. The result: each event is sent by exactly one worker. (SQLite has no `SKIP LOCKED`; there only the optimistic-update pattern applies.)
+
+## Recovering a crashed worker
+
+What if a worker grabs an event and crashes before sending it? Every claim has a deadline (`processing_deadline_at`). Once that passes, the event becomes claimable again and another worker picks it up. No event hangs forever in the "processing" state.
+
+## Handling failure: backoff, then dead-letter
+
+If a send fails, the event neither silently disappears nor retries forever:
+
+```python
+attempt_count = int(row.attempt_count or 0) + 1
+if attempt_count >= capped_max_attempts:
+    values[...status] = "dead"                       # stop retrying; hand it to a human
+else:
+    backoff_seconds = min(max_backoff, initial_backoff * (2 ** (attempt_count - 1)))
+    values[...status] = "retrying"
+    values[...next_attempt_at] = now + timedelta(seconds=backoff_seconds)
+```
+
+If the attempt count is below the limit, the event is re-queued with an exponential backoff, to ride out a temporary Stripe outage without piling onto it. Once it hits the limit, it's moved to a dead-letter: it's no longer retried, but it isn't lost either; it sits there to be seen and handled by a human.
+
+## The honest limit
+
+"Exactly once" is a famous lie in distributed systems. What you actually get is: at-least-once delivery, plus idempotency, equals effectively once. A network blip can re-send an event Stripe already recorded; what makes that safe is the idempotency key deduplicating the same event on Stripe's side too. And a dead-lettered event needs a human to look at it. This isn't magic; it's a careful arrangement of at-least-once delivery, deduplication, backoff, and dead-lettering.
+
+## The takeaway
+
+For anything that touches money, the request path should only **promise** the work (the atomic enqueue). The thing that actually does the work should be a separate process: idempotent, retrying, and binding each event to a single worker. That's how you get resilience to lost events, double counting, and outages; by construction, not by hope.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

@@ -1,0 +1,164 @@
+---
+title: "Reversible masking is a honeypot waiting to happen. Here's how we defused it."
+description: "Reversible PII masking needs a token-to-value store, which is a honeypot waiting to happen. How a TTL, AES-256-GCM, and AEAD context-binding defuse it."
+date: "2026-06-06"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*To un-mask data on the way back, you have to keep a mapping from token to the real value, which is, word for word, a database of every secret you just protected. Build it the obvious way and you've created the exact breach you were hired to prevent. This is the design that keeps a reversible vault from becoming the leak.*
+
+---
+
+![Reversible PII vault illustration](/blog/visuals/reversible-pii-vault.webp "Reversible masking needs a vault that limits exposure with encrypted mappings, context binding, and short-lived retention.")
+
+## Two kinds of masking, and the dangerous one
+
+There are two ways to neutralize a sensitive value, and the difference between them shapes everything that follows.
+
+The first is an **irreversible mask**: `Sarah Chen` becomes `[NAME]`, the real value is gone, and it never comes back. It's the safest option, precisely because there's nothing left to store.
+
+The second is **tokenization**: `Sarah Chen` becomes `<PERSON_7K9X>`, and somewhere you remember that `<PERSON_7K9X>` means `Sarah Chen`. This is far more useful, when the model's answer comes back, you can swap the token for the real name and hand the user a complete, meaningful reply. Chat, drafting, summarization: they all want this.
+
+But tokenization comes with a dangerous obligation: you have to **store** that mapping. And the moment you stop and look at what that mapping actually is, something uncomfortable stares back.
+
+## That mapping is a honeypot
+
+The `token → real value` map is a single store holding the plaintext of every name, email, and IBAN that has ever passed through your system. It is, in other words, exactly what an attacker wants, concentrated, in one place, with a label on it.
+
+Write the obvious `redis.set(token, real_value)` and you've built the breach yourself. The system that exists to protect the data is now the one store that hands over every secret in a single read.
+
+So the entire engineering problem of reversible masking collapses to one question: *how do you keep this store without it becoming the thing that sinks you?* NeutralAI's vault answers with seven defenses stacked on top of each other. None is sufficient alone, the security is in the sum.
+
+## 1. It evaporates (TTL)
+
+A honeypot sits there forever. This vault is a candle. Every mapping is written to Redis with a TTL, a lifetime measured to cover one conversation turn, not eternity:
+
+```python
+self.client.setex(
+    token,
+    effective_ttl,
+    self._encrypt_value(text, token=token, tenant_id=tenant_id, ...),
+)
+```
+
+That TTL is clamped to `[60, 3600]` seconds, defaults to **15 minutes**, and is tunable per tenant:
+
+```python
+@staticmethod
+def _bounded_ttl(value, default: int = 900) -> int:
+    """Return TTL bounded to [60, 3600] seconds."""
+    # below 60 → 60, above 3600 → 3600
+```
+
+The exposure window is minutes, not forever. The mapping deletes itself; an attacker who shows up the next day finds nothing to read. We pay for reversibility by shrinking the time the data exists at all.
+
+## 2. Inside Redis it's ciphertext, never plaintext
+
+Even within that brief window, the value in Redis isn't plaintext. It's encrypted with AES-256-GCM, under a fresh nonce every time:
+
+```python
+def _encrypt_value(self, plaintext, token, tenant_id, ...) -> str:
+    nonce = os.urandom(12)
+    key_version = self._active_key_version
+    aad = self._build_aad(token=token, tenant_id=tenant_id, ...)
+    ciphertext = self._aesgcm_by_version[key_version].encrypt(
+        nonce, plaintext.encode("utf-8"), aad
+    )
+    # nonce + ciphertext + key_version + scope fields get packed together
+```
+
+So someone who fully compromises Redis doesn't get plaintext secrets, they get ciphertext blobs. The encryption key isn't in Redis; it lives in the application (or in KMS). Stealing the store is not the same as stealing the secrets.
+
+## 3. The secret is cryptographically welded to its context (AEAD)
+
+This is the elegant part.
+
+AES-GCM is an **AEAD** cipher, Authenticated Encryption with Associated Data. The "Associated Data" (AAD) isn't encrypted into the ciphertext, but it's cryptographically bound to it: if you don't supply the exact same AAD at decryption time, the decryption **fails**. So we put the secret's birth context into that AAD:
+
+```python
+@staticmethod
+def _build_aad(token, tenant_id, session_id=None, request_id=None, ...) -> bytes:
+    aad_payload = {"v": 2, "token": token, "tenant_id": tenant_id or "",
+                   "session_id": session_id or "", "request_id": request_id or "",
+                   "key_version": ...}
+    return json.dumps(aad_payload, separators=(",", ":")).encode("utf-8")
+```
+
+The result: a ciphertext can only be decrypted within the exact `(tenant, session, request, token)` it was minted in. If an attacker lifts tenant A's blob and tries to decrypt it under tenant B's token, the AAD doesn't match and decryption collapses. Replay a token in another session, it fails. The secret is welded to its context; copying the blob somewhere else buys you nothing.
+
+## 4. Scope is checked twice
+
+The AAD binding is the cryptographic shield, but before it there's a plaintext scope check too. *Before* decrypting, the tenant/session/request fields in the payload are compared against what's expected:
+
+```python
+if not self._matches_scope(payload_tenant_id, expected_tenant_id, strict_scope=strict_scope):
+    return None
+```
+
+With `strict_scope` on, the match must be exact. A request from the wrong scope returns `None` before it ever reaches the crypto, and if it does reach it, the AAD catches it anyway. A cheap check, then an expensive one on top: classic defense in depth.
+
+## 5. The token itself gives nothing away
+
+The token must leak nothing. So we append a high-entropy, cryptographically random suffix:
+
+```python
+token_suffix = secrets.token_urlsafe(entropy_bytes)   # entropy_bytes ∈ [10, 32]
+token = f"<{self._token_label(entity_type)}_{token_suffix}>"
+```
+
+A token carries only an entity-type label (`<EMAIL_…>`, `<PERSON_…>`) plus an unguessable secret. You can't reverse the real value out of it, and you can't guess the next one.
+
+## 6. Keys rotate without downtime
+
+Encryption keys have to change over time, and rotating one must never break existing data. The vault keeps keys in a versioned keyring: new writes use the active version, while old ciphertexts keep decrypting under their own older keys:
+
+```python
+def _candidate_key_versions(self, payload_key_version):
+    if payload_key_version:
+        normalized = normalize_key_version(payload_key_version)
+        return [normalized] if normalized in self._aesgcm_by_version else []
+    # Legacy payloads with no version: try active first, then older keys
+    candidates = [self._active_key_version]
+    for version in self._aesgcm_by_version:
+        if version not in candidates:
+            candidates.append(version)
+    return candidates
+```
+
+If a key is compromised, you retire it; the active key rolls forward and existing data survives. Rotation stops being a "re-encrypt everything or lose access to all of it" dilemma.
+
+## 7. If something breaks, it closes, it doesn't stay open (fail-closed)
+
+What if the vault itself, Redis, becomes unreachable? Silently falling back to an unprotected path is exactly the disaster you're trying to avoid. So the vault requires availability:
+
+```python
+def require_available(self) -> None:
+    if self.is_available():
+        return
+    mode = self.get_failsafe_mode()
+    raise VaultUnavailableError(f"Vault unavailable (mode={mode}): ...")
+```
+
+The default mode is `fail_closed`: no vault, no passthrough. The alternative is `degrade_to_irreversible`, fall back to an irreversible mask, never to "unprotected but reversible."
+
+## The honest limit
+
+Let's be plain: reversible masking is **strictly more** exposure than irreversible masking. During that TTL window the mapping genuinely exists and is reachable with the right key and the right scope. We don't hide that, we manage it. That's exactly why we use tokenization only where you actually need the value **back**, and irreversibly mask everywhere you don't. And the security ultimately rests on key custody (the AES key / KMS), lose that, and the layers thin out.
+
+Our claim isn't "zero risk." Our claim is that every dimension of the liability a reversible vault creates has been shrunk: its lifetime (TTL), its readability (encryption), its blast radius (AEAD + scope binding), and its failure behavior (fail-closed).
+
+## The takeaway
+
+A reversible vault is a calculated liability, not a deleted feature, but a hazard brought under control. The craft is in narrowing every axis of it:
+
+- **Time:** not forever, but minutes (TTL).
+- **Readability:** not plaintext, but ciphertext (AES-256-GCM).
+- **Blast radius:** not anywhere, but only the one context it was minted in (AEAD + scope).
+- **Failure:** not by leaking, but by closing (fail-closed).
+
+What's left isn't a vault of forever-secrets. It's a candle, it burns, does its job, and goes out on its own.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*

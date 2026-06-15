@@ -1,0 +1,109 @@
+---
+title: "A customer's security team wants your logs, but not a single email can be in them"
+description: "A customer's SOC wants your events, but not a single email can leak. Normalizing to one canonical, PII-free event and translating it per SIEM."
+date: "2026-05-09"
+author: "NeutralAI Team"
+category: "Engineering"
+---
+
+*A company's security team (SOC) wants to see your events in their own SIEM: Splunk, Datadog, Microsoft Sentinel. Failed logins, blocked requests, policy hits. You have to give them something useful, but not a single customer's identity can leak into that stream. Here's the pipeline that turns your messy internal logs into one canonical, PII-free, classified event and translates it into each SIEM's language.*
+
+---
+
+![PII-free SIEM normalization illustration](/blog/visuals/siem-normalization.webp "A canonical PII-free event model lets security teams receive useful SIEM signals without exporting customer identifiers.")
+
+## Two problems, one harder than the other
+
+A corporate customer has a SOC and a SIEM. They want your security events flowing into it too, so your gateway shows up on their dashboards next to everything else.
+
+There are two problems here. The first is format: Splunk, Datadog, and Sentinel each expect a different shape. The second, and the harder one: your internal logs contain PII, and you must never pump a customer's email, name, or user id into their (or anyone's) log stream.
+
+## The architecture: normalize to one canonical event first
+
+The unwise way is to convert N kinds of internal log into M separate SIEM formats; that's N×M work. Instead we normalize everything into **one canonical event** first, then wrap it for each provider: N→1→M.
+
+The canonical event has a fixed skeleton: the required fields, plus a `details` bag. Different sources (the audit log, the SSO log) come down to the same shape:
+
+```python
+event = {
+    "timestamp": _isoformat(row.timestamp),
+    "event_type": action,
+    "severity": severity,
+    "tenant_id": tenant_id,
+    "outcome": outcome,
+    "source": ...,
+    "correlation_id": correlation_id,
+    "details": details,
+}
+```
+
+## Severity isn't trusted, it's derived
+
+A raw action string is turned into a properly classified security event. Severity and outcome are derived from the markers in the event type:
+
+```python
+failure_markers = ("fail", "error", "blocked", "denied", "reject", "exceeded")
+if any(m in normalized for m in ("blocked", "denied", "reject", "exceeded")):
+    return "error", "failure"
+```
+
+So an event containing "blocked" or "exceeded" reaches the SOC as `error`/`failure`, with a consistent severity, ready to alert on.
+
+## PII never crosses the boundary
+
+Here's the part that matters most. Forbidden keys (email, phone, full name, ID number, user id) are stripped recursively from the event; the user id, instead of being deleted, is hashed:
+
+```python
+FORBIDDEN_RAW_PII_KEYS = {"email", "phone", "full_name", "first_name",
+                          "last_name", "ssn", "user_id"}
+
+def _redact_pii(value):
+    if isinstance(value, dict):
+        return {k: _redact_pii(v) for k, v in value.items()
+                if k.lower() not in FORBIDDEN_RAW_PII_KEYS}     # drop the forbidden field
+    ...
+
+def _hash_user_id(user_id):
+    return f"sha256:{hashlib.sha256(user_id.encode()).hexdigest()[:20]}"
+```
+
+The SOC gets something it can correlate (a stable hash for the same user) but nothing that identifies a person.
+
+## A validator proves it
+
+Saying "we strip the PII" isn't enough; there's also a gate that checks whether it was actually stripped. The validator checks, for every event, both that the required fields are present and that no forbidden PII key remains anywhere (at the top level or deep in `details`):
+
+```python
+raw_keys = FORBIDDEN_RAW_PII_KEYS & set(event.keys())
+if raw_keys:
+    errors.append(f"event[{index}] contains forbidden top-level fields: ...")
+forbidden_paths = _forbidden_key_paths(event.get("details"), prefix="details")
+if forbidden_paths:
+    errors.append(f"event[{index}] details contains forbidden fields: ...")
+```
+
+You don't trust the stripping; you prove it. (The same "verify, don't trust" discipline as in the [audit-ledger post](/blog/tamper-evident-audit-log-hash-chain/).)
+
+## Then the thin per-provider wrapper
+
+Once the canonical event is ready, translating it to each SIEM is a small mapping table; for Splunk, for example:
+
+```python
+return {"time": event.get("timestamp"), "host": event.get("source"),
+        "source": "neutralai-gateway", "sourcetype": "neutralai:security",
+        "event": event}
+```
+
+For Datadog and Sentinel, the same canonical event is wrapped into their field names (message/status/ddtags, TimeGenerated/OperationName/...). Because the real work is done in normalization, adding a new SIEM is just writing a new small wrapper.
+
+## The honest limit
+
+The PII protection is key-based; it strips fields *named* like PII. A sensitive value hidden under an innocuous name, or a piece of PII embedded in a free-text `details` string, isn't caught by key-stripping alone. That's why the real safeguard is upstream: not putting raw PII into the audit metadata in the first place. This layer is the last gate, not the only gate. The classification is also heuristic, tuned to the event vocabulary. It's a disciplined pipeline, not a magic PII oracle.
+
+## The takeaway
+
+Integration is a normalization problem, and in a privacy product it's also a boundary problem. You reduce many shapes to one canonical event, drop identity down to a hash, prove the stripping with a validator, then translate once per target. What comes out is useful to the SOC but harmless to the person the data is about.
+
+---
+
+*Part of a series on the engineering behind NeutralAI's AI privacy gateway.*
