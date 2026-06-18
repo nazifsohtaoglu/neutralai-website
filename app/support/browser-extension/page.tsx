@@ -63,7 +63,7 @@ export default function BrowserExtensionSupportPage() {
 
         <div className="container-custom relative z-10">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Browser extension support</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Browser extension support</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Public support reference for NeutralAI Interceptor
             </h1>
@@ -78,7 +78,7 @@ export default function BrowserExtensionSupportPage() {
         <div className="container-custom">
           <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="card p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Requested permissions</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Requested permissions</p>
               <div className="mt-6 space-y-5">
                 {permissionExplanations.map((item) => (
                   <div key={item.permission} className="rounded-2xl border border-border bg-background px-5 py-5">
@@ -96,7 +96,7 @@ export default function BrowserExtensionSupportPage() {
 
             <div className="space-y-6">
               <div className="card p-8">
-                <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Support contact</p>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Support contact</p>
                 <h2 className="mt-4 font-heading text-3xl font-bold">Need help or a review response?</h2>
                 <a href={extensionLinks.supportMailto} className="mt-6 inline-flex items-center gap-2 text-lg text-primary-light hover:text-primary">
                   {siteConfig.supportEmail}
@@ -116,7 +116,7 @@ export default function BrowserExtensionSupportPage() {
               </div>
 
               <div className="card p-8">
-                <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Review notes</p>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Review notes</p>
                 <div className="mt-4 space-y-4 text-sm leading-6 text-slate-400">
                   <p>
                     Host permissions are limited to supported AI web applications where prompt masking runs, plus NeutralAI-owned app and API domains used for session detection, auth context, masking, remote configuration, and telemetry.
@@ -138,7 +138,7 @@ export default function BrowserExtensionSupportPage() {
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
             <div className="card p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Self-serve auth flow</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Self-serve auth flow</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Public app and API endpoints</h2>
               <ul className="mt-6 space-y-4">
                 {integrationEndpoints.map((endpoint) => (
@@ -150,7 +150,7 @@ export default function BrowserExtensionSupportPage() {
             </div>
 
             <div className="card p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Enterprise rollout</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Enterprise rollout</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Policy-managed deployment</h2>
               <div className="mt-4 space-y-4 text-sm leading-6 text-slate-400">
                 <p>

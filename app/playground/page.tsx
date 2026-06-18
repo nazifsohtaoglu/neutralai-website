@@ -536,7 +536,7 @@ export default function PlaygroundPage() {
                 }}
                 rows={10}
                 maxLength={MAX_PROMPT_LENGTH + 200}
-                className="mt-5 min-h-[260px] w-full resize-y rounded-2xl border border-white/10 bg-[#020617] p-4 font-mono text-sm leading-7 text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-primary"
+                className="mt-5 min-h-[260px] w-full resize-y rounded-2xl border border-white/10 bg-[#020617] p-4 font-mono text-sm leading-7 text-slate-100 outline-none transition placeholder:text-slate-400 focus:border-primary"
                 placeholder="Write your prompt here, or choose a sample prompt below."
               />
 

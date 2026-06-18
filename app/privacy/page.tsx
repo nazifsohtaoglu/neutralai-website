@@ -42,14 +42,14 @@ export default function PrivacyPage() {
 
         <div className="container-custom relative z-10">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">NeutralAI Interceptor</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">NeutralAI Interceptor</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Browser extension privacy policy
             </h1>
             <p className="mt-6 text-xl text-slate-400">
               This privacy page exists for browser store review and public reference. It explains how NeutralAI Interceptor operates on supported AI web apps, what service endpoints it contacts, and what telemetry posture the product is designed to maintain.
             </p>
-            <p className="mt-4 text-sm text-slate-500">
+            <p className="mt-4 text-sm text-slate-400">
               Privacy questions can be sent to{' '}
               <a href={`mailto:${siteConfig.privacyEmail}`} className="text-primary-light hover:text-primary">
                 {siteConfig.privacyEmail}

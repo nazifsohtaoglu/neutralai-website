@@ -7,7 +7,7 @@ function ProofCard({ proof }: { proof: (typeof complianceProofs)[number] }) {
   return (
     <div className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
       <proof.icon className="h-5 w-5 text-primary-light" />
-      <p className="mt-3 break-words text-[10px] uppercase tracking-[0.14em] text-slate-500 sm:text-xs sm:tracking-[0.18em]">
+      <p className="mt-3 break-words text-xs uppercase tracking-[0.16em] text-slate-400">
         {proof.label}
       </p>
       <p className="mt-1 break-words font-heading text-base font-semibold text-slate-100 sm:text-lg">{proof.value}</p>
@@ -98,7 +98,7 @@ export default function Hero() {
 
         <div className="mt-10 grid gap-5 xl:grid-cols-[1.12fr_0.88fr]">
           <div className="control-storyboard">
-            <p className="font-mono text-[12px] uppercase tracking-[0.28em] text-primary-light md:text-[13px]">How NeutralAI Protects Prompts</p>
+            <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-primary-light md:text-[13px]">How NeutralAI Protects Prompts</p>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {[
                 ['Intercept', 'Prompt traffic is captured before external model routing.'],
@@ -115,7 +115,7 @@ export default function Hero() {
           </div>
 
           <div className="control-proof-panel rounded-2xl p-5 sm:p-6">
-            <p className="font-mono text-[12px] uppercase tracking-[0.28em] text-primary-light md:text-[13px]">Why teams choose it</p>
+            <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-primary-light md:text-[13px]">Why teams choose it</p>
             <div className="mt-4 space-y-4">
               {[
                 'Stops raw PII and business identifiers before they reach external models',

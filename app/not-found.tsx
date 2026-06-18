@@ -5,7 +5,7 @@ export default function NotFoundPage() {
     <main className="min-h-screen pt-24">
       <section className="container-custom py-20 md:py-24">
         <div className="mx-auto max-w-2xl rounded-[28px] border border-white/10 bg-background-secondary/70 p-8 text-center md:p-10">
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">404</p>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">404</p>
           <h1 className="mt-4 font-heading text-4xl font-bold md:text-5xl">Page not found</h1>
           <p className="mt-4 text-base leading-7 text-slate-300">
             The page you requested is unavailable or has moved. You can continue from the homepage or

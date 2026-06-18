@@ -9,7 +9,7 @@ export default function DetectionEngine() {
           <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Detection Engine</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Detection Engine</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 The technical detail buyers ask for, <span className="gradient-text-warm">without the wall of docs.</span>
               </h2>

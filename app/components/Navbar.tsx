@@ -143,7 +143,7 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <div className="pt-2 font-mono text-xs uppercase tracking-[0.2em] text-slate-500">More</div>
+          <div className="pt-2 font-mono text-xs uppercase tracking-[0.2em] text-slate-400">More</div>
           {secondaryNavLinks.map((link) => (
             <Link
               key={link.name}
@@ -154,7 +154,7 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <div className="pt-2 font-mono text-xs uppercase tracking-[0.2em] text-slate-500">Use Cases</div>
+          <div className="pt-2 font-mono text-xs uppercase tracking-[0.2em] text-slate-400">Use Cases</div>
           {useCaseLinks.map((link) => (
             <Link
               key={link.name}

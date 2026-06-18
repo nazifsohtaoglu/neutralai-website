@@ -219,7 +219,7 @@ export default function PresidioAlternativePage() {
         <div className="container-custom">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Feature comparison</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Feature comparison</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 What you still need to build around Presidio
               </h2>
@@ -274,7 +274,7 @@ export default function PresidioAlternativePage() {
           <div className="rounded-[32px] border border-primary/20 bg-[linear-gradient(180deg,rgba(15,23,42,0.95),rgba(2,6,23,0.97)),radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_24%)] px-6 py-10 md:px-10">
             <div className="grid gap-8 lg:grid-cols-[1fr_0.82fr] lg:items-center">
               <div>
-                <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Customer-safe proof</p>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Customer-safe proof</p>
                 <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                   Use the website for the sales story. Use the gateway for the proof source.
                 </h2>

@@ -37,7 +37,7 @@ export default function BlogIndexPage() {
 
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">NeutralAI Blog</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">NeutralAI Blog</p>
               <h1 className="mt-5 max-w-3xl font-heading text-4xl font-bold leading-[0.98] md:text-6xl">
                 Practical notes for secure enterprise AI adoption.
               </h1>
@@ -95,7 +95,7 @@ export default function BlogIndexPage() {
       <section className="section bg-background-secondary">
         <div className="container-custom">
           <div className="mb-8 max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Latest Articles</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Latest Articles</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Start with the controls that unblock AI.</h2>
           </div>
 
@@ -123,7 +123,7 @@ export default function BlogIndexPage() {
                   </span>
                   <h3 className="mt-5 font-heading text-2xl font-semibold text-white">{post.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-400">{post.description}</p>
-                  <div className="mt-6 flex items-center justify-between gap-4 text-xs text-slate-500">
+                  <div className="mt-6 flex items-center justify-between gap-4 text-xs text-slate-400">
                     <span>{post.date}</span>
                     <span>{post.readingTime}</span>
                   </div>

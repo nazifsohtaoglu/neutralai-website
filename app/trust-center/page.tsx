@@ -115,7 +115,7 @@ export default function TrustCenterPage() {
 
           <div className="grid gap-10 lg:grid-cols-[1.06fr_0.94fr] lg:items-end">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Trust Center</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Trust Center</p>
               <h1 className="mt-5 max-w-4xl font-heading text-4xl font-bold leading-[0.98] md:text-6xl">
                 Evidence for teams that need AI security to be provable.
               </h1>
@@ -135,7 +135,7 @@ export default function TrustCenterPage() {
             <div className="rounded-lg border border-primary/25 bg-background-secondary/70 p-5 shadow-2xl shadow-cyan-950/20 backdrop-blur">
               <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
                 <div>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-500">Current posture</p>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400">Current posture</p>
                   <p className="mt-1 font-heading text-2xl font-semibold">Readiness, not theater</p>
                 </div>
                 <FileCheck2 className="h-8 w-8 text-primary-light" />
@@ -161,7 +161,7 @@ export default function TrustCenterPage() {
       <section className="section">
         <div className="container-custom">
           <div className="mb-10 max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Control Areas</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Control Areas</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Security, availability, and confidentiality controls.</h2>
           </div>
 
@@ -183,7 +183,7 @@ export default function TrustCenterPage() {
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Enterprise Evidence</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Enterprise Evidence</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Ready for security review.</h2>
               <p className="mt-5 text-base leading-7 text-slate-400">
                 The public site keeps claims conservative. For procurement and security teams, NeutralAI can provide structured readiness materials through the review process.
@@ -205,7 +205,7 @@ export default function TrustCenterPage() {
       <section className="section">
         <div className="container-custom">
           <div className="rounded-lg border border-[#fdba74]/25 bg-[#fdba74]/10 p-6 md:p-8">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Claim Boundary</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Claim Boundary</p>
             <h2 className="mt-3 font-heading text-2xl font-bold md:text-3xl">SOC2 readiness is in progress.</h2>
             <div className="mt-5 grid gap-3 md:grid-cols-3">
               {caveats.map((item) => (
@@ -222,7 +222,7 @@ export default function TrustCenterPage() {
         <div className="container-custom">
           <div className="grid gap-8 rounded-lg border border-border bg-background p-6 lg:grid-cols-[1.02fr_0.98fr] lg:p-8">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Customer Proof Framework</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Customer Proof Framework</p>
               <h2 className="mt-3 font-heading text-3xl font-bold">Publish proof only after approval gates clear.</h2>
               <p className="mt-4 text-sm leading-7 text-slate-400">
                 We keep public trust copy conservative until customer evidence is approved. Publication gates, approved proof
@@ -230,7 +230,7 @@ export default function TrustCenterPage() {
                 goes live.
               </p>
               <div className="mt-5 rounded-md border border-border/80 bg-background-secondary/70 p-4">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-slate-500">Current posture</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-slate-400">Current posture</p>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
                   No customer logos or testimonials are published on this site until approved assets are recorded through the framework workflow.
                 </p>
@@ -267,7 +267,7 @@ export default function TrustCenterPage() {
         <div className="container-custom">
           <div className="grid gap-6 rounded-lg border border-border bg-background p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Next step</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Next step</p>
               <h2 className="mt-3 font-heading text-3xl font-bold">Need the evidence pack?</h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
                 Send the security context you need reviewed. We will route questionnaire, readiness, and compliance evidence requests through the right owner.

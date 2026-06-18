@@ -111,7 +111,7 @@ export default function ProductVisual() {
     <div className="signal-simple-shell rounded-[28px] p-3 sm:p-4 md:p-6 xl:p-7">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-3 md:pb-4">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Live Narrative</p>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Live Narrative</p>
           <h2 className="mt-2 font-heading text-xl font-semibold sm:text-2xl">
             How NeutralAI works in one view
           </h2>
@@ -128,7 +128,7 @@ export default function ProductVisual() {
             className={`rounded-xl border px-2.5 py-2 text-center font-mono text-[10px] uppercase tracking-[0.18em] sm:text-[11px] ${
               index <= activePhaseIndex
                 ? 'border-primary/40 bg-primary/10 text-primary-light'
-                : 'border-white/10 bg-white/[0.02] text-slate-500'
+                : 'border-white/10 bg-white/[0.02] text-slate-400'
             }`}
           >
             {step}

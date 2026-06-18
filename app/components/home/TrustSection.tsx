@@ -12,7 +12,7 @@ export default function TrustSection() {
         <div className="rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.96)),radial-gradient(circle_at_18%_18%,rgba(34,211,238,0.14),transparent_24%),radial-gradient(circle_at_86%_12%,rgba(249,115,22,0.14),transparent_22%)] p-6 shadow-[0_28px_70px_rgba(2,8,23,0.42)] md:p-8">
           <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Why Trust NeutralAI</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Why Trust NeutralAI</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 Proof your security team <span className="gradient-text-warm">can trust.</span>
               </h2>
@@ -49,12 +49,12 @@ export default function TrustSection() {
         <div id="benchmark-proof" className="mt-10 scroll-mt-28 overflow-hidden rounded-[28px] border border-primary/20 bg-[linear-gradient(135deg,rgba(6,182,212,0.12),rgba(15,23,42,0.94)_42%,rgba(249,115,22,0.10))] p-6">
           <div className="grid gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Benchmark proof</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Benchmark proof</p>
               <h3 className="mt-4 font-heading text-3xl font-semibold">Measured against a reproducible Presidio-vanilla baseline.</h3>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
                 NeutralAI combines proven open-source detection primitives with multilingual calibration, masking, and enforcement layers. The gateway repo remains the measurement source of truth, while the website links buyers to the published methodology and benchmark surface.
               </p>
-              <p className="mt-3 text-xs leading-6 text-slate-500">
+              <p className="mt-3 text-xs leading-6 text-slate-400">
                 Product benchmark, not a third-party independent evaluation.
               </p>
             </div>
@@ -66,7 +66,7 @@ export default function TrustSection() {
                 ['Holdout PERSON F1', benchmarkProof.personHoldoutF1],
               ].map(([label, value]) => (
                 <div key={label} className="rounded-2xl border border-white/10 bg-background/80 p-5">
-                  <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{label}</p>
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{label}</p>
                   <p className="mt-2 font-heading text-3xl font-semibold text-white">{value}</p>
                 </div>
               ))}
@@ -87,12 +87,12 @@ export default function TrustSection() {
         <div id="healthcare-trust" className="mt-10 scroll-mt-28 overflow-hidden rounded-[28px] border border-emerald-400/20 bg-[linear-gradient(135deg,rgba(16,185,129,0.12),rgba(15,23,42,0.96)_46%,rgba(6,182,212,0.10))] p-6">
           <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-emerald-300">Healthcare trust</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-emerald-300">Healthcare trust</p>
               <h3 className="mt-4 font-heading text-3xl font-semibold">HIPAA-ready deployment support without blanket claims.</h3>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
                 NeutralAI helps healthcare and healthtech teams protect PHI before prompts reach AI providers, with PHI-aware controls, audit evidence, and BAA review support for eligible deployments.
               </p>
-              <p className="mt-3 text-xs leading-6 text-slate-500">
+              <p className="mt-3 text-xs leading-6 text-slate-400">
                 Not legal advice. BAA terms, deployment model, and customer obligations require review.
               </p>
 
@@ -121,12 +121,12 @@ export default function TrustSection() {
         <div id="document-redaction-proof" className="mt-10 scroll-mt-28 overflow-hidden rounded-[28px] border border-cyan-300/20 bg-[linear-gradient(135deg,rgba(14,165,233,0.12),rgba(15,23,42,0.96)_48%,rgba(148,163,184,0.10))] p-6">
           <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyan-200">Document proof</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-200">Document proof</p>
               <h3 className="mt-4 font-heading text-3xl font-semibold">Protect files before document content reaches AI workflows.</h3>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
                 NeutralAI document handling extends PII protection beyond chat prompts, with document-aware extraction, redaction output, and audit-safe finding metadata for supported upload flows.
               </p>
-              <p className="mt-3 text-xs leading-6 text-slate-500">
+              <p className="mt-3 text-xs leading-6 text-slate-400">
                 Supports simple text PDFs today. OCR-backed image detection depends on configured OCR runtime.
               </p>
             </div>
@@ -146,7 +146,7 @@ export default function TrustSection() {
         <div className="mt-10 rounded-[28px] border border-accent-cta/20 bg-[linear-gradient(180deg,rgba(249,115,22,0.08),rgba(15,23,42,0.92))] p-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Operational Signals</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Operational Signals</p>
               <h3 className="mt-4 font-heading text-3xl font-semibold">Live product. Easy to verify.</h3>
               <p className="mt-4 max-w-3xl text-slate-300">
                 You can quickly check that NeutralAI is live: <span className="text-primary-light">api.neutralai.co.uk</span> is public, benchmark pages are published, and gateway latency is tracked separately from model response time.

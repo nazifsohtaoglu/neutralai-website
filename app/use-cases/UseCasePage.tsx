@@ -100,7 +100,7 @@ export default function UseCasePage({ content }: { content: UseCasePageContent }
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Protected workflow</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Protected workflow</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 Put masking before AI prompts leave the trusted path.
               </h2>
@@ -137,7 +137,7 @@ export default function UseCasePage({ content }: { content: UseCasePageContent }
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[1fr_0.95fr] lg:items-start">
             <div className="rounded-[28px] border border-white/10 bg-background/80 p-6 md:p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Entity coverage</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Entity coverage</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Industry examples buyers recognize</h2>
               <div className="mt-6 flex flex-wrap gap-3">
                 {content.entities.map((entity) => (
@@ -170,7 +170,7 @@ export default function UseCasePage({ content }: { content: UseCasePageContent }
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Compliance mapping</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Compliance mapping</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 Translate the gateway into review language.
               </h2>
@@ -194,7 +194,7 @@ export default function UseCasePage({ content }: { content: UseCasePageContent }
       <section className="section bg-background-secondary">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">FAQ</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">FAQ</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Questions buyers ask first</h2>
           </div>
           <div className="mx-auto mt-10 grid max-w-5xl gap-4">

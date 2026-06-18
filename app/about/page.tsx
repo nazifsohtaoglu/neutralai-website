@@ -52,7 +52,7 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mx-auto max-w-4xl text-center"
           >
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">About NeutralAI</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">About NeutralAI</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Building a safer way to adopt AI
             </h1>
@@ -113,7 +113,7 @@ export default function AboutPage() {
       <section className="section bg-background-secondary">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Principles</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Principles</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">How we want the company to show up</h2>
           </div>
 

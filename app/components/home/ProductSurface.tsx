@@ -14,7 +14,7 @@ export default function ProductSurface() {
         <div className="accent-panel rounded-[32px] p-6 md:p-8">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Adoption Without Friction</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Adoption Without Friction</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 Secure AI usage <span className="gradient-text-warm">without changing habits</span>
               </h2>
@@ -110,7 +110,7 @@ export default function ProductSurface() {
 
         <div className="mt-14">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Deployment Options</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Deployment Options</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
               One product, <span className="gradient-text-warm">multiple deployment paths</span>
             </h2>

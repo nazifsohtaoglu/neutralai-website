@@ -95,7 +95,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
 
           <header className="mt-10 border-b border-border pb-10">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">{post.category}</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">{post.category}</p>
             <h1 className="mt-5 font-heading text-4xl font-bold leading-tight md:text-6xl">{post.title}</h1>
             <p className="mt-5 text-lg leading-8 text-slate-300">{post.description}</p>
             <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-400">

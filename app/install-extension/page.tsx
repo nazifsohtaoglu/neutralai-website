@@ -57,7 +57,7 @@ export default function InstallExtensionPage() {
 
         <div className="container-custom relative z-10">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">NeutralAI Interceptor</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">NeutralAI Interceptor</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Install the browser extension without guessing the rollout path
             </h1>
@@ -125,7 +125,7 @@ export default function InstallExtensionPage() {
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="card p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Self-serve sign-in</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Self-serve sign-in</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">How unmanaged installs authenticate</h2>
               <p className="mt-4 text-slate-400">
                 The extension uses the NeutralAI app domain for sign-in, session checks, and short-lived auth context retrieval. During store review or guided onboarding, these public URLs should be reachable and documented.
@@ -140,7 +140,7 @@ export default function InstallExtensionPage() {
             </div>
 
             <div className="card p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">What the extension does</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">What the extension does</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Single-purpose behaviour</h2>
               <p className="mt-4 text-slate-400">
                 NeutralAI Interceptor helps users mask sensitive prompt data before it is submitted from supported AI web applications. It is designed to run on supported AI hosts, call the NeutralAI API boundary, and avoid remotely hosted executable code.

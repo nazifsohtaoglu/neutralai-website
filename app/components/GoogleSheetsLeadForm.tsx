@@ -148,7 +148,7 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
             type="text"
             value={state.full_name}
             onChange={(event) => setState((prev) => ({ ...prev, full_name: event.target.value }))}
-            className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-400 focus:border-primary focus:outline-none"
             autoComplete="name"
             maxLength={120}
           />
@@ -160,7 +160,7 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
             type="email"
             value={state.email}
             onChange={(event) => setState((prev) => ({ ...prev, email: event.target.value }))}
-            className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-400 focus:border-primary focus:outline-none"
             autoComplete="email"
             maxLength={180}
           />
@@ -172,7 +172,7 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
             type="text"
             value={state.company_name}
             onChange={(event) => setState((prev) => ({ ...prev, company_name: event.target.value }))}
-            className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-400 focus:border-primary focus:outline-none"
             autoComplete="organization"
             maxLength={180}
           />
@@ -205,7 +205,7 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
           onChange={(event) => setState((prev) => ({ ...prev, message: event.target.value }))}
           rows={5}
           maxLength={2000}
-          className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none"
+          className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-400 focus:border-primary focus:outline-none"
           placeholder="Share your AI workflow, data types, and deployment goals."
         />
       </label>
@@ -216,7 +216,7 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
           type="text"
           value={state.referral_source}
           onChange={(event) => setState((prev) => ({ ...prev, referral_source: event.target.value }))}
-          className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none"
+          className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-400 focus:border-primary focus:outline-none"
           maxLength={120}
         />
       </label>
