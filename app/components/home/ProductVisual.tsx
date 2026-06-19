@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { ShieldCheck } from 'lucide-react'
+import { ShieldCheck, FileCheck2 } from 'lucide-react'
 import {
   rawPromptCharCount,
   rawPromptLines,
@@ -11,12 +11,14 @@ import {
   sanitizedPromptLines,
 } from './promptAnimation'
 
+type Phase = 'typingRaw' | 'highlightRaw' | 'sending' | 'typingSanitized' | 'audit' | 'pauseSanitized'
+
 export default function ProductVisual() {
-  const [phase, setPhase] = useState<'typingRaw' | 'highlightRaw' | 'sending' | 'typingSanitized' | 'pauseSanitized'>('typingRaw')
+  const [phase, setPhase] = useState<Phase>('typingRaw')
   const [rawTypedChars, setRawTypedChars] = useState(0)
   const [sanitizedTypedChars, setSanitizedTypedChars] = useState(0)
   const shouldReduceMotion = useReducedMotion()
-  const phaseOrder = ['Detect', 'Mask', 'Route'] as const
+  const phaseOrder = ['Detect', 'Mask', 'Route', 'Audit'] as const
 
   useEffect(() => {
     if (shouldReduceMotion) {
@@ -57,9 +59,15 @@ export default function ProductVisual() {
         }, typingSpeedMs)
       } else {
         timer = setTimeout(() => {
-          setPhase('pauseSanitized')
-        }, 900)
+          setPhase('audit')
+        }, 700)
       }
+    }
+
+    if (phase === 'audit') {
+      timer = setTimeout(() => {
+        setPhase('pauseSanitized')
+      }, 1700)
     }
 
     if (phase === 'pauseSanitized') {
@@ -67,7 +75,7 @@ export default function ProductVisual() {
         setRawTypedChars(0)
         setSanitizedTypedChars(0)
         setPhase('typingRaw')
-      }, 1200)
+      }, 1100)
     }
 
     return () => {
@@ -90,7 +98,9 @@ export default function ProductVisual() {
     (displayPhase === 'typingRaw' || displayPhase === 'highlightRaw' || displayPhase === 'sending')
   const sanitizedPanelActive =
     !shouldReduceMotion &&
-    (displayPhase === 'typingSanitized' || displayPhase === 'pauseSanitized')
+    (displayPhase === 'typingSanitized' || displayPhase === 'audit' || displayPhase === 'pauseSanitized')
+  const auditVisible =
+    shouldReduceMotion || displayPhase === 'audit' || displayPhase === 'pauseSanitized'
   const beamDotAnimate = shouldReduceMotion
     ? { x: 0, opacity: 0.2 }
     : showFlights
@@ -100,12 +110,14 @@ export default function ProductVisual() {
     ? { duration: 0 }
     : { duration: 1.1, repeat: showFlights ? Infinity : 0, ease: 'easeInOut' as const }
   const activePhaseIndex = shouldReduceMotion
-    ? 2
+    ? 3
     : phase === 'typingRaw' || phase === 'highlightRaw'
       ? 0
       : phase === 'sending'
         ? 1
-        : 2
+        : phase === 'typingSanitized'
+          ? 2
+          : 3
 
   return (
     <div className="signal-simple-shell rounded-[28px] p-3 sm:p-4 md:p-6 xl:p-7">
@@ -121,7 +133,7 @@ export default function ProductVisual() {
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-3 gap-2 md:mt-4 md:gap-3">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 md:mt-4 md:gap-3">
         {phaseOrder.map((step, index) => (
           <div
             key={step}
@@ -250,6 +262,24 @@ export default function ProductVisual() {
           </div>
         </div>
       </div>
+
+      {/* Audit / evidence beat — completes the Detect → Mask → Route → Audit story */}
+      <motion.div
+        initial={false}
+        animate={auditVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className="mt-3 flex items-center gap-3 rounded-2xl border border-emerald-400/30 bg-emerald-950/20 px-3.5 py-3 md:mt-4 md:px-4"
+      >
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-emerald-400/40 bg-emerald-500/10">
+          <FileCheck2 className="h-5 w-5 text-emerald-300" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-slate-100">Audit evidence recorded</p>
+          <p className="truncate font-mono text-[11px] text-emerald-300/90 sm:text-xs">
+            3 entities tokenized · policy PII-Mask-v3 · export-ready
+          </p>
+        </div>
+      </motion.div>
     </div>
   )
 }
