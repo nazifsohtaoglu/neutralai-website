@@ -28,7 +28,7 @@ export default function HowItWorks() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
-                className="relative overflow-hidden rounded-[24px] border border-white/10 bg-background/85 p-6"
+                className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-background/85 p-6 transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_18px_44px_rgba(2,8,23,0.5)]"
               >
                 <div className="absolute right-5 top-5 font-mono text-[11px] uppercase tracking-[0.24em] text-slate-400">
                   0{index + 1}

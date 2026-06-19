@@ -65,7 +65,7 @@ export default function DetectionEngine() {
                   {entityTypes.map((entity) => (
                     <div
                       key={entity}
-                      className="rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-slate-200"
+                      className="rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-slate-200 transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-primary-light"
                     >
                       {entity}
                     </div>
@@ -111,7 +111,7 @@ export default function DetectionEngine() {
 
               <div className="grid gap-3 sm:grid-cols-2">
                 {technicalTrustDetails.map((item) => (
-                  <div key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                  <div key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition duration-300 hover:-translate-y-0.5 hover:border-primary/30">
                     <item.icon className="h-5 w-5 text-primary-light" />
                     <h4 className="mt-3 font-heading text-lg font-semibold text-slate-100">{item.title}</h4>
                     <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>

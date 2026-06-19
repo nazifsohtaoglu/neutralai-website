@@ -127,7 +127,7 @@ export default function ProductSurface() {
                 whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={shouldReduceMotion ? undefined : { once: true }}
                 transition={shouldReduceMotion ? undefined : { delay: index * 0.08 }}
-                className="accent-card rounded-[24px] p-6"
+                className="accent-card rounded-[24px] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(2,8,23,0.5)]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5">
