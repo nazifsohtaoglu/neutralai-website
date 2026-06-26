@@ -32,10 +32,10 @@ export default function ContactThanksPage() {
             </div>
             <p className="mt-8 font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Message sent</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
-              We&apos;ll get back to you within 1 business day
+              We&apos;ll get back to you within 24 hours
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              Thanks for reaching out. The team will review your workflow, company context, and deployment needs before replying.
+              Thanks for reaching out. The team will review your workflow, compliance context, and deployment needs before replying.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <a href="/contact" className="btn btn-secondary px-8 py-4">
