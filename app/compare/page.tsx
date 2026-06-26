@@ -5,8 +5,10 @@ import {
   BadgeCheck,
   CheckCircle2,
   ClipboardCheck,
+  ExternalLink,
   KeyRound,
   Lock,
+  Minus,
   ShieldCheck,
   XCircle,
 } from 'lucide-react'
@@ -14,11 +16,16 @@ import BackButton from '../components/BackButton'
 import { siteConfig } from '../site'
 
 export const metadata: Metadata = {
-  title: 'Compare NeutralAI',
+  title: 'NeutralAI vs Presidio vs Private AI vs Nightfall — PII Detection Comparison',
   description:
-    'A feature-based comparison of NeutralAI against do-it-yourself PII masking for regulated AI workflows.',
+    'Compare NeutralAI against Presidio, Private AI, and Nightfall on PII detection accuracy, operational model, and compliance fit for regulated AI workflows.',
   alternates: {
     canonical: '/compare',
+  },
+  openGraph: {
+    title: 'NeutralAI vs Presidio vs Private AI vs Nightfall',
+    description:
+      'PII detection benchmark evidence, capability comparison, and buyer questions to ask before choosing a vendor.',
   },
 }
 
@@ -68,6 +75,77 @@ const proofPoints = [
   },
 ] as const
 
+// Numbers sourced directly from the NeutralAI 2026 benchmark post:
+// /blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026
+// Nightfall figures from their public marketing documentation (90–95% precision out of the box; 95% accuracy claim for AI-based detectors).
+// Private AI figures: vendor-published narrative (precision/recall/F1 on ~45k-word dataset) — no single headline number cited in public sources.
+const detectionRows = [
+  {
+    metric: 'Overall F1 (published benchmark)',
+    neutralai: '99.8%',
+    presidio: 'Baseline (open-source, uncalibrated)',
+    privateAi: 'Reported separately per entity — no single headline number in public sources',
+    nightfall: 'Not published as F1',
+    source: 'NeutralAI 2026 benchmark; Presidio docs',
+  },
+  {
+    metric: 'Holdout F1',
+    neutralai: '98.4%',
+    presidio: '—',
+    privateAi: '—',
+    nightfall: '—',
+    source: 'NeutralAI 2026 benchmark',
+  },
+  {
+    metric: 'PERSON entity holdout F1',
+    neutralai: '92.7%',
+    presidio: '—',
+    privateAi: '—',
+    nightfall: '—',
+    source: 'NeutralAI 2026 benchmark',
+  },
+  {
+    metric: 'Vendor precision claim (out of the box)',
+    neutralai: 'See holdout F1 above',
+    presidio: 'Community-dependent; no official claim',
+    privateAi: 'Precision + recall published for ~45k-word dataset',
+    nightfall: '90–95% precision (vendor claim)',
+    source: 'Public vendor documentation',
+  },
+  {
+    metric: 'Methodology reproducibility',
+    neutralai: 'Public; entity scope + scorer documented',
+    presidio: 'Open-source; reproducible by design',
+    privateAi: 'Vendor-published narrative benchmark',
+    nightfall: 'Marketing site claims; full methodology not public',
+    source: 'NeutralAI benchmark; vendor docs',
+  },
+  {
+    metric: 'Reversible masking (vault)',
+    neutralai: 'AES-256-GCM encrypted token vault',
+    presidio: 'Not included — requires bespoke build',
+    privateAi: 'Available in paid tiers',
+    nightfall: 'Redaction focused; vault model differs',
+    source: 'Product documentation',
+  },
+  {
+    metric: 'Gateway / proxy model',
+    neutralai: 'Yes — sits before LLM provider',
+    presidio: 'Library only — proxy requires custom build',
+    privateAi: 'API service',
+    nightfall: 'DLP / CASB model, not a prompt proxy',
+    source: 'Product documentation',
+  },
+  {
+    metric: 'Browser extension',
+    neutralai: 'Chrome + Edge (store-published)',
+    presidio: 'Not included',
+    privateAi: 'Not included',
+    nightfall: 'Limited; DLP focus',
+    source: 'Product documentation',
+  },
+] as const
+
 export default function ComparePage() {
   return (
     <main className="min-h-screen pt-24">
@@ -79,7 +157,9 @@ export default function ComparePage() {
           <BackButton />
 
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Build vs Buy</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">
+              NeutralAI vs Presidio vs Private AI vs Nightfall
+            </p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               More than a PII detector. A control layer your buyers can approve.
             </h1>
@@ -134,10 +214,100 @@ export default function ComparePage() {
         </div>
       </section>
 
-      <section className="section bg-background-secondary">
+      {/* ── Detection accuracy section ── */}
+      <section className="section bg-background-secondary" id="detection-accuracy">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Feature Comparison</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Detection Accuracy</p>
+            <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
+              NeutralAI vs Presidio vs Private AI vs Nightfall
+            </h2>
+            <p className="mt-5 text-base leading-7 text-slate-400">
+              The table below uses publicly available vendor evidence. NeutralAI figures come from our{' '}
+              <Link
+                href="/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026"
+                className="font-semibold text-primary-light hover:text-primary"
+              >
+                2026 benchmark post
+              </Link>
+              . Competitor figures are sourced from their own public documentation — different datasets and metrics mean
+              numbers are <em>not</em> directly comparable.{' '}
+              <Link
+                href="/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026"
+                className="font-semibold text-primary-light hover:text-primary"
+              >
+                Read the full benchmark analysis →
+              </Link>
+            </p>
+          </div>
+
+          <div className="mt-10 overflow-x-auto rounded-[28px] border border-white/10 bg-background/80">
+            <table className="w-full min-w-[720px] text-sm">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/[0.04] text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  <th className="px-5 py-4 text-left">Metric</th>
+                  <th className="px-5 py-4 text-left text-primary-light">NeutralAI</th>
+                  <th className="px-5 py-4 text-left">Presidio (OSS)</th>
+                  <th className="px-5 py-4 text-left">Private AI</th>
+                  <th className="px-5 py-4 text-left">Nightfall</th>
+                </tr>
+              </thead>
+              <tbody>
+                {detectionRows.map((row, i) => (
+                  <tr
+                    key={row.metric}
+                    className={`border-b border-white/10 last:border-b-0 ${i % 2 === 0 ? '' : 'bg-white/[0.02]'}`}
+                  >
+                    <td className="px-5 py-4 font-medium text-slate-200">{row.metric}</td>
+                    <td className="px-5 py-4 font-semibold text-primary-light">{row.neutralai}</td>
+                    <td className="px-5 py-4 text-slate-400">{row.presidio}</td>
+                    <td className="px-5 py-4 text-slate-400">{row.privateAi}</td>
+                    <td className="px-5 py-4 text-slate-400">{row.nightfall}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-4 text-xs leading-6 text-slate-500">
+            <Minus className="mr-1 inline h-3 w-3" />
+            &mdash; = not published in comparable form. Precision and F1 are different metrics; a precision claim is not
+            equivalent to an F1 score. See the{' '}
+            <Link
+              href="/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026"
+              className="text-slate-400 underline hover:text-slate-200"
+            >
+              benchmark post
+            </Link>{' '}
+            for methodology context.
+          </p>
+
+          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Link
+              href="/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026"
+              className="btn btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm"
+              data-analytics-event="CTA Click"
+              data-analytics-label="Read Benchmark Post"
+              data-analytics-placement="compare_detection"
+            >
+              Read the full 2026 benchmark
+              <ExternalLink className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/pricing"
+              className="text-sm font-semibold text-primary-light transition hover:text-primary"
+            >
+              See pricing →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Build vs Buy feature comparison ── */}
+      <section className="section">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Build vs Buy</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
               The hard part is not masking once. It is making it safe to operate.
             </h2>
@@ -175,7 +345,7 @@ export default function ComparePage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section bg-background-secondary">
         <div className="container-custom">
           <div className="mx-auto max-w-4xl rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.95),rgba(2,6,23,0.97)),radial-gradient(circle_at_top_right,rgba(249,115,22,0.16),transparent_22%)] px-6 py-10 text-center md:px-10">
             <Lock className="mx-auto h-9 w-9 text-primary-light" />
@@ -186,9 +356,16 @@ export default function ComparePage() {
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link href={siteConfig.signupUrl} className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto">
                 Try Free
+                <ArrowRight className="h-5 w-5" />
               </Link>
               <Link href="/contact" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
                 Plan Enterprise Rollout
+              </Link>
+              <Link
+                href="/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026"
+                className="text-sm text-primary-light transition hover:text-primary"
+              >
+                Read the benchmark →
               </Link>
             </div>
           </div>
