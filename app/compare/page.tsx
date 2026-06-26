@@ -79,7 +79,7 @@ export default function ComparePage() {
           <BackButton />
 
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Build vs Buy</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Build vs Buy</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               More than a PII detector. A control layer your buyers can approve.
             </h1>
@@ -137,7 +137,7 @@ export default function ComparePage() {
       <section className="section bg-background-secondary">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Feature Comparison</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Feature Comparison</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
               The hard part is not masking once. It is making it safe to operate.
             </h2>

@@ -14,7 +14,7 @@ export default function ProductSurface() {
         <div className="accent-panel rounded-[32px] p-6 md:p-8">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Adoption Without Friction</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Adoption Without Friction</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 Secure AI usage <span className="gradient-text-warm">without changing habits</span>
               </h2>
@@ -110,7 +110,7 @@ export default function ProductSurface() {
 
         <div className="mt-14">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Deployment Options</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Deployment Options</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
               One product, <span className="gradient-text-warm">multiple deployment paths</span>
             </h2>
@@ -127,7 +127,7 @@ export default function ProductSurface() {
                 whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={shouldReduceMotion ? undefined : { once: true }}
                 transition={shouldReduceMotion ? undefined : { delay: index * 0.08 }}
-                className="accent-card rounded-[24px] p-6"
+                className="accent-card rounded-[24px] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(2,8,23,0.5)]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5">

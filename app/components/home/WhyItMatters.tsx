@@ -10,7 +10,7 @@ export default function WhyItMatters() {
         <div className="accent-panel rounded-[32px] p-6 md:p-8">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Why It Matters</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Why It Matters</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
                 AI usage grows faster than <span className="gradient-text-warm">approval paths.</span>
               </h2>

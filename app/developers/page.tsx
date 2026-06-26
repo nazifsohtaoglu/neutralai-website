@@ -173,7 +173,7 @@ export default function DevelopersPage() {
       <section className="section bg-background-secondary/40">
         <div className="container-custom">
           <div className="max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Quickstart</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Quickstart</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Three steps to a masked prompt.</h2>
           </div>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -194,14 +194,14 @@ export default function DevelopersPage() {
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div className="min-w-0">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">SDKs</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">SDKs</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Python and Node SDKs are published.</h2>
               <p className="mt-5 text-lg leading-8 text-slate-400">
                 Official thin clients for the masking API, published to PyPI and npm. Install one and point it at the hosted gateway — all PII detection and masking happens server-side.
               </p>
               <div className="mt-6 space-y-2 rounded-2xl border border-white/10 bg-[#050814] p-4 font-mono text-sm text-slate-200">
-                <p><span className="select-none text-slate-500">$ </span>python -m pip install neutralai-sdk</p>
-                <p><span className="select-none text-slate-500">$ </span>npm install neutralai-node-sdk</p>
+                <p><span className="select-none text-slate-400">$ </span>python -m pip install neutralai-sdk</p>
+                <p><span className="select-none text-slate-400">$ </span>npm install neutralai-node-sdk</p>
               </div>
             </div>
 
@@ -229,7 +229,7 @@ export default function DevelopersPage() {
         <div className="container-custom">
           <div className="grid gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Authentication</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Authentication</p>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Keep API keys server-side.</h2>
               <p className="mt-5 text-lg leading-8 text-slate-400">
                 API calls use the <code className="rounded bg-white/10 px-1.5 py-0.5 text-primary-light">x-api-key</code> header. Treat keys as backend secrets, rotate them through the app, and avoid logging prompts or credentials.

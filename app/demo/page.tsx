@@ -54,7 +54,7 @@ export default function DemoPage() {
 
         <div className="container-custom relative z-10">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Product walkthrough</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Product walkthrough</p>
             <h1 className="mt-5 font-heading text-4xl font-bold leading-tight md:text-6xl">
               See how NeutralAI controls sensitive data before AI usage spreads.
             </h1>
@@ -160,7 +160,7 @@ export default function DemoPage() {
       <section className="section">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">What the demo should cover</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">What the demo should cover</p>
             <h2 className="mt-4 font-heading text-3xl font-semibold text-white md:text-5xl">
               A buyer-ready walkthrough, not a feature dump.
             </h2>

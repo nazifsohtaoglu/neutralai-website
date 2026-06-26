@@ -6,6 +6,16 @@ import { CheckCircle2 } from 'lucide-react'
 import { advancedPricingPlans, pricingFaqs, primaryPricingPlans } from '../../data/homepage'
 import SectionIntro from './SectionIntro'
 
+const comparisonTiers = ['Free', 'Starter', 'Team', 'Business', 'Enterprise'] as const
+
+const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string]> = [
+  ['Masking requests', '1k', '10K', '100K', '500K', 'Custom'],
+  ['Managed AI credit', '£1 trial', '£3', '£10', '£25', 'Custom'],
+  ['Provider spend model', 'Managed sandbox', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
+  ['API key management', 'Basic', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
+  ['SSO / SIEM path', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
+]
+
 export default function PricingSection() {
   const [annualBilling, setAnnualBilling] = useState(false)
 
@@ -49,7 +59,7 @@ export default function PricingSection() {
         <p className="mx-auto mt-5 max-w-4xl text-center text-sm leading-6 text-slate-400">
           Plans include masking requests. Managed AI usage is covered by small included credits for evaluation. Production model usage can run through BYOK, customer provider accounts, or prepaid top-ups.
         </p>
-        <p className="mx-auto mt-2 max-w-4xl text-center text-xs leading-6 text-slate-500">
+        <p className="mx-auto mt-2 max-w-4xl text-center text-xs leading-6 text-slate-400">
           All listed GBP prices are excluding VAT. VAT may apply based on billing country and entity status.
         </p>
 
@@ -180,33 +190,42 @@ export default function PricingSection() {
           ))}
         </div>
 
-        <div className="mt-8 overflow-x-auto rounded-[28px] border border-white/10 bg-white/[0.04]">
-          <div className="min-w-[1040px]">
-            <div className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300">
-              <div className="px-4 py-3 font-semibold text-slate-100">Capability</div>
-              <div className="px-4 py-3 font-semibold text-slate-100">Free</div>
-              <div className="px-4 py-3 font-semibold text-slate-100">Starter</div>
-              <div className="px-4 py-3 font-semibold text-slate-100">Team</div>
-              <div className="px-4 py-3 font-semibold text-slate-100">Business</div>
-              <div className="px-4 py-3 font-semibold text-slate-100">Enterprise</div>
-            </div>
-            {[
-              ['Masking requests', '1k', '10K', '100K', '500K', 'Custom'],
-              ['Managed AI credit', '£1 trial', '£3', '£10', '£25', 'Custom'],
-              ['Provider spend model', 'Managed sandbox', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
-              ['API key management', 'Basic', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
-              ['SSO / SIEM path', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
-            ].map(([label, free, starter, team, business, enterprise]) => (
-              <div key={label} className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300 last:border-b-0">
-                <div className="px-4 py-3 text-slate-100">{label}</div>
-                <div className="px-4 py-3">{free}</div>
-                <div className="px-4 py-3">{starter}</div>
-                <div className="px-4 py-3">{team}</div>
-                <div className="px-4 py-3">{business}</div>
-                <div className="px-4 py-3">{enterprise}</div>
-              </div>
+        {/* Desktop: full comparison grid */}
+        <div className="mt-8 hidden overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] lg:block">
+          <div className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300">
+            <div className="px-4 py-3 font-semibold text-slate-100">Capability</div>
+            {comparisonTiers.map((tier) => (
+              <div key={tier} className="px-4 py-3 font-semibold text-slate-100">{tier}</div>
             ))}
           </div>
+          {comparisonRows.map(([label, ...values]) => (
+            <div key={label} className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300 last:border-b-0">
+              <div className="px-4 py-3 text-slate-100">{label}</div>
+              {values.map((value, i) => (
+                <div key={comparisonTiers[i]} className="px-4 py-3">{value}</div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile/tablet: one card per plan, listing all its capabilities — no horizontal scroll */}
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:hidden">
+          {comparisonTiers.map((tier, tierIdx) => (
+            <div key={tier} className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5">
+              <h4 className="font-heading text-base font-semibold text-primary-light">{tier}</h4>
+              <dl className="mt-3 space-y-2">
+                {comparisonRows.map(([label, ...values]) => (
+                  <div
+                    key={label}
+                    className="flex items-baseline justify-between gap-4 border-b border-white/5 pb-2 last:border-b-0 last:pb-0"
+                  >
+                    <dt className="text-sm text-slate-400">{label}</dt>
+                    <dd className="text-right text-sm font-medium text-slate-200">{values[tierIdx]}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))}
         </div>
 
         <div className="mt-10">

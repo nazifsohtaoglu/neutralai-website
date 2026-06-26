@@ -76,7 +76,7 @@ function ContactFormPanel({ intent }: { intent: ContactIntent }) {
     <div className="card p-6 md:p-8">
       <div className="flex flex-col gap-4 border-b border-white/10 pb-6 md:flex-row md:items-start md:justify-between">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">{copy.eyebrow}</p>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">{copy.eyebrow}</p>
           <h2 className="mt-3 font-heading text-3xl font-bold">{copy.title}</h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
             {copy.description}
@@ -131,7 +131,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mx-auto max-w-4xl text-center"
           >
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Contact NeutralAI</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Contact NeutralAI</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Schedule a demo for your AI security rollout
             </h1>
@@ -151,7 +151,7 @@ export default function ContactPage() {
       <section className="section bg-background-secondary">
         <div className="container-custom">
           <div className="mx-auto mb-8 max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Other routes</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Other routes</p>
             <h2 className="mt-4 font-heading text-3xl font-bold">Email and runtime checks</h2>
           </div>
           <div className="grid gap-6 lg:grid-cols-3">
@@ -195,7 +195,7 @@ export default function ContactPage() {
               viewport={{ once: true }}
               className="card p-8"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">What to include</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">What to include</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Make your first message useful</h2>
               <ul className="mt-6 space-y-4 text-slate-300">
                 <li className="flex items-start gap-3">
@@ -220,7 +220,7 @@ export default function ContactPage() {
               transition={{ delay: 0.08 }}
               className="card p-8"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Evaluation flow</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Evaluation flow</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">What happens next</h2>
               <ol className="mt-6 space-y-5">
                 {onboardingSteps.map((step, index) => (

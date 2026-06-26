@@ -126,7 +126,7 @@ export default function TermsPage() {
                     <div key={j}>
                       {'label' in item && (
                         <div className="mb-4">
-                          <span className="text-slate-500 font-medium">{item.label}: </span>
+                          <span className="text-slate-400 font-medium">{item.label}: </span>
                           <span className="text-slate-300">{item.value}</span>
                         </div>
                       )}
@@ -167,10 +167,10 @@ export default function TermsPage() {
               <p className="text-slate-400">
                 By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
               </p>
-              <p className="text-slate-500 text-sm mt-4">
+              <p className="text-slate-400 text-sm mt-4">
                 Questions about these terms can be sent to hello@neutralai.co.uk.
               </p>
-              <p className="text-slate-500 text-sm mt-6">
+              <p className="text-slate-400 text-sm mt-6">
                 Last updated: March 29, 2026
               </p>
             </div>

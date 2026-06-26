@@ -10,7 +10,7 @@ export default function CtaSection() {
 
       <div className="container-custom relative z-10">
         <div className="mx-auto max-w-4xl rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.95),rgba(2,6,23,0.97)),radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(249,115,22,0.18),transparent_22%)] px-6 py-10 text-center shadow-[0_32px_80px_rgba(2,8,23,0.5)] md:px-10 md:py-12">
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#fdba74]">Final CTA</p>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Final CTA</p>
           <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">
             Put the <span className="gradient-text-warm">control layer</span> in place before the rollout gets messy
           </h2>

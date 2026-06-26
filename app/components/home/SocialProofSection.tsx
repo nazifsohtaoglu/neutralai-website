@@ -146,7 +146,7 @@ export default function SocialProofSection() {
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="proof-ledger rounded-[28px] p-6 md:p-7">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Proof-backed metrics</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Proof-backed metrics</p>
             <h3 className="mt-4 font-heading text-3xl font-semibold text-white">Concrete signals buyers can verify.</h3>
             <p className="mt-4 text-sm leading-7 text-slate-300">
               These numbers come from product surfaces, benchmark artifacts, and documented website claims. Production usage counts and customer outcomes are published only when an approved source exists.

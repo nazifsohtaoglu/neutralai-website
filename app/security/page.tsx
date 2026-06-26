@@ -99,7 +99,7 @@ export default function SecurityPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mx-auto max-w-4xl text-center"
           >
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Security Overview</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Security Overview</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Launch trust starts with an accurate posture
             </h1>
@@ -134,7 +134,7 @@ export default function SecurityPage() {
           <div className="mt-10 rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.96)),radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_24%)] p-6 md:p-8">
             <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div>
-                <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Technical controls</p>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Technical controls</p>
                 <h2 className="mt-4 font-heading text-3xl font-bold">Mask first, then route the sanitized request</h2>
                 <p className="mt-4 text-slate-400">
                   NeutralAI adds a policy gateway before external model providers so sensitive values can be detected, tokenized, and audited before prompt egress.
@@ -185,7 +185,7 @@ export default function SecurityPage() {
               viewport={{ once: true }}
               className="card p-8"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Readiness snapshot</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Readiness snapshot</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Current public position</h2>
               <ul className="mt-6 space-y-4">
                 {readinessItems.map((item) => (
@@ -204,7 +204,7 @@ export default function SecurityPage() {
               transition={{ delay: 0.08 }}
               className="card p-8"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Useful links</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Useful links</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Validate or get in touch</h2>
               <div className="mt-6 space-y-4">
                 <a

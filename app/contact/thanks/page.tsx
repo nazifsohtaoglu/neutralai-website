@@ -30,7 +30,7 @@ export default function ContactThanksPage() {
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/25 bg-primary/10">
               <CheckCircle2 className="h-8 w-8 text-primary-light" />
             </div>
-            <p className="mt-8 font-mono text-xs uppercase tracking-[0.28em] text-primary-light">Message sent</p>
+            <p className="mt-8 font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Message sent</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               We&apos;ll get back to you within 1 business day
             </h1>
