@@ -12,6 +12,11 @@ import {
 } from 'lucide-react'
 import BackButton from '../components/BackButton'
 import { contactLinks, siteConfig } from '../site'
+import {
+  EgressFlowDiagram,
+  IngressFlowDiagram,
+  VaultLifecycleDiagram,
+} from '../components/diagrams'
 
 // Source of truth: neutralai-gateway#750, documents/business/templates/trust_center_content_source_2026q2.md
 export const metadata: Metadata = {
@@ -179,7 +184,41 @@ export default function TrustCenterPage() {
         </div>
       </section>
 
+      {/* ── Data-flow diagrams ─────────────────────────────────────────── */}
       <section className="section bg-background-secondary">
+        <div className="container-custom">
+          <div className="mb-10 max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Data Flow</p>
+            <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Where your data goes — and what stays inside.</h2>
+            <p className="mt-5 text-base leading-7 text-slate-400">
+              Every prompt passes through the NeutralAI gateway boundary before reaching an external model. Raw PII is detected,
+              tokenized, and audited inside that boundary. Only the sanitized version ever leaves.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* Egress */}
+            <div className="rounded-lg border border-border bg-background p-6">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-primary-light">Prompt egress — outbound</p>
+              <EgressFlowDiagram />
+            </div>
+
+            {/* Ingress */}
+            <div className="rounded-lg border border-border bg-background p-6">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-primary-light">Response ingress — unmask path</p>
+              <IngressFlowDiagram />
+            </div>
+
+            {/* Vault lifecycle */}
+            <div className="rounded-lg border border-[#8B5CF6]/25 bg-background p-6">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-[#A78BFA]">Token vault lifecycle</p>
+              <VaultLifecycleDiagram />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
