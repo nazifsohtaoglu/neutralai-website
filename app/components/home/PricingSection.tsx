@@ -1,10 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { CheckCircle2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { CheckCircle2, ChevronDown, KeyRound, ShieldCheck } from 'lucide-react'
 import { advancedPricingPlans, pricingFaqs, primaryPricingPlans } from '../../data/homepage'
 import SectionIntro from './SectionIntro'
+
+const BYOK_PLANS = ['Business', 'Enterprise'] as const
+const SSO_PLANS = ['Enterprise'] as const
+const SSO_ROADMAP_PLANS = ['Business'] as const
 
 const comparisonTiers = ['Free', 'Starter', 'Team', 'Business', 'Enterprise'] as const
 
@@ -15,6 +19,71 @@ const comparisonRows: ReadonlyArray<readonly [string, string, string, string, st
   ['API key management', 'Basic', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
   ['SSO / SIEM path', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
 ]
+
+function PlanBadges({ planName }: { planName: string }) {
+  const hasByok = (BYOK_PLANS as readonly string[]).includes(planName)
+  const hasSso = (SSO_PLANS as readonly string[]).includes(planName)
+  const hasSsoRoadmap = (SSO_ROADMAP_PLANS as readonly string[]).includes(planName)
+
+  if (!hasByok && !hasSso && !hasSsoRoadmap) return null
+
+  return (
+    <div className="mt-3 flex flex-wrap gap-2">
+      {hasByok && (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-xs font-medium text-amber-300">
+          <KeyRound className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+          BYOK available
+        </span>
+      )}
+      {hasSso && (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/20 bg-violet-400/10 px-3 py-1 text-xs font-medium text-violet-300">
+          <ShieldCheck className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+          SSO required
+        </span>
+      )}
+      {hasSsoRoadmap && (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/15 bg-violet-400/[0.07] px-3 py-1 text-xs font-medium text-violet-300/70">
+          <ShieldCheck className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+          SSO export path
+        </span>
+      )}
+    </div>
+  )
+}
+
+function FaqAccordionItem({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="rounded-[20px] border border-white/10 bg-background/75">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+      >
+        <span className="font-heading text-base font-semibold text-slate-100">{question}</span>
+        <ChevronDown
+          className={`h-5 w-5 flex-shrink-0 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <p className="px-5 pb-5 text-sm leading-6 text-slate-400">{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 export default function PricingSection() {
   const [annualBilling, setAnnualBilling] = useState(false)
@@ -156,6 +225,7 @@ export default function PricingSection() {
                     {annualBilling && 'annualBilled' in plan ? plan.annualBilled : plan.priceNote}
                   </p>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{plan.summary}</p>
+                  <PlanBadges planName={plan.name} />
                   <div className="mt-4 flex flex-wrap gap-2 text-sm">
                     <span className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1.5 text-primary-light">
                       {plan.usage}
@@ -229,13 +299,10 @@ export default function PricingSection() {
         </div>
 
         <div className="mt-10">
-          <h3 className="font-heading text-2xl font-semibold">FAQ</h3>
-          <div className="mt-5 grid gap-4 lg:grid-cols-3">
+          <h3 className="font-heading text-2xl font-semibold">Frequently asked questions</h3>
+          <div className="mt-5 grid gap-3 lg:grid-cols-2">
             {pricingFaqs.map((item) => (
-              <div key={item.question} className="rounded-[24px] border border-white/10 bg-background/75 p-5">
-                <h4 className="font-heading text-lg font-semibold text-slate-50">{item.question}</h4>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{item.answer}</p>
-              </div>
+              <FaqAccordionItem key={item.question} question={item.question} answer={item.answer} />
             ))}
           </div>
         </div>
