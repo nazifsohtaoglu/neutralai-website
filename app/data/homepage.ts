@@ -216,6 +216,41 @@ export const pricingFaqs = [
     answer:
       'Enterprise is the right fit when rollout requires managed extension deployment, required SSO posture, SIEM export, private endpoint routing, on-prem deployment, or custom commercial review.',
   },
+  {
+    question: 'What counts as a masking request?',
+    answer:
+      'Each text submission that passes through the NeutralAI shield layer counts as one masking request, regardless of how many PII entities are detected or replaced. Document uploads are counted per submission, not per page.',
+  },
+  {
+    question: 'Can I bring my own API key (BYOK)?',
+    answer:
+      'Yes. BYOK is available from the Team plan onwards and is the recommended approach for production model spend. You connect your own OpenAI, Anthropic, or other supported provider key; NeutralAI routes the cleaned prompt through your account so model spend appears on your own provider bill.',
+  },
+  {
+    question: 'Which plans include SSO and SIEM integration?',
+    answer:
+      'SSO is on the roadmap for the Team plan and is required for Enterprise deployments. SIEM-compatible evidence export is available on the Business plan as an export path, and is a required posture item on Enterprise. Free and Starter plans do not include SSO or SIEM paths.',
+  },
+  {
+    question: 'What happens if I exceed my monthly masking limit?',
+    answer:
+      'Masking requests pause once the monthly limit is reached until the next billing cycle resets the counter. You can upgrade to a higher plan at any time to restore service immediately. Enterprise plans carry a custom volume ceiling agreed commercially.',
+  },
+  {
+    question: 'Does NeutralAI add VAT to my invoice?',
+    answer:
+      'All listed GBP prices exclude VAT. VAT may apply depending on your billing country and whether your entity is VAT-registered. UK businesses will be charged UK VAT unless a valid VAT number is provided. EU entities may be eligible for reverse-charge treatment.',
+  },
+  {
+    question: 'Can I cancel or downgrade my plan?',
+    answer:
+      'Yes. Plans can be cancelled or downgraded at any time from the billing section of the app. Cancellation takes effect at the end of the current billing period; you retain access to paid features until then. Annual billing is non-refundable for the remainder of the term.',
+  },
+  {
+    question: 'Where is my data processed and stored?',
+    answer:
+      'NeutralAI processes and stores data in the EU (London/Frankfurt regions) by default. Vault tokens are encrypted with AES-256-GCM and carry a 15-minute TTL unless extended by policy. Enterprise customers can discuss private cloud or on-premises deployment for stricter data-residency requirements.',
+  },
 ] as const
 
 export const pricingFaqStructuredData = {
