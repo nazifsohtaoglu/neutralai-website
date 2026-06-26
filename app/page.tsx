@@ -1,4 +1,5 @@
 import { pricingFaqStructuredData } from './data/homepage'
+import LiveMaskingDemo from './components/home/LiveMaskingDemo'
 import CtaSection from './components/home/CtaSection'
 import DetectionEngine from './components/home/DetectionEngine'
 import Hero from './components/home/Hero'
@@ -25,6 +26,7 @@ export default function Home() {
       <div className="section-route section-route-product">
         <ProductSurface />
         <WhyItMatters />
+        <LiveMaskingDemo />
         <HowItWorks />
         <DetectionEngine />
       </div>
