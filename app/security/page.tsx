@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import BackButton from '../components/BackButton'
 import { contactLinks, siteConfig } from '../site'
+import { EgressFlowDiagram } from '../components/diagrams'
 
 const securitySections = [
   {
@@ -173,6 +174,31 @@ export default function SecurityPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Egress data-flow diagram ───────────────────────────────────── */}
+      <section className="section">
+        <div className="container-custom">
+          <div className="mb-8 max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Data Flow</p>
+            <h2 className="mt-4 font-heading text-3xl font-bold md:text-4xl">How a prompt is sanitized before it leaves.</h2>
+            <p className="mt-4 text-base leading-7 text-slate-400">
+              The gateway intercepts every outbound prompt, runs multi-stage PII detection, tokenizes entities into the encrypted
+              vault, and only forwards the sanitized version to the model provider. Raw PII never crosses the boundary.
+            </p>
+          </div>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-primary-light">Prompt egress — outbound data-flow</p>
+            <EgressFlowDiagram />
+          </div>
+          <p className="mt-4 text-sm text-slate-500">
+            See the full ingress unmask path and token vault lifecycle on the{' '}
+            <Link href="/trust-center" className="text-primary-light underline-offset-2 hover:underline">
+              Trust Center
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
