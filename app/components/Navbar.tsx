@@ -108,9 +108,10 @@ export default function Navbar() {
           <Link
             href={siteConfig.signupUrl}
             className="btn btn-cta whitespace-nowrap px-5 py-3 text-sm 2xl:text-base"
-            data-analytics-event="CTA Click"
+            data-analytics-event="cta_click"
             data-analytics-label="Get Started Free"
             data-analytics-placement="navbar_desktop"
+            data-analytics-cta-id="nav_get_started"
           >
             Get Started Free
           </Link>
@@ -176,9 +177,10 @@ export default function Navbar() {
             href={siteConfig.signupUrl}
             className="btn btn-cta w-full mt-4"
             onClick={() => setIsOpen(false)}
-            data-analytics-event="CTA Click"
+            data-analytics-event="cta_click"
             data-analytics-label="Get Started Free"
             data-analytics-placement="navbar_mobile"
+            data-analytics-cta-id="nav_get_started"
           >
             Get Started Free
           </Link>
