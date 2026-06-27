@@ -1,0 +1,63 @@
+# NeutralAI
+
+> NeutralAI is an AI compliance gateway for regulated industries. It sits between user clients and downstream LLMs, detecting and masking PII before data reaches an external model, then optionally restoring it in the response.
+
+NeutralAI targets UK/EU regulated organisations: financial services, legal, healthcare, and any team that must demonstrate PII controls for GDPR, FCA, or sector-specific AI guidance.
+
+## What it does
+
+- **PII detection**: two-stage pipeline (Presidio NER + SpaCy + semantic embedding search) across English, German, Spanish, French, and Turkish text.
+- **Reversible tokenisation**: AES-256-GCM encrypted vault; tokens carry TTL, scope, and restore paths. PII never leaves the gateway unmasked.
+- **LLM routing**: managed (OpenRouter) or BYOK (OpenAI, Anthropic, Azure OpenAI, Gemini). Masking is enforced before every outbound call.
+- **Audit trail**: tamper-evident hash-chained audit log; compliance export; SIEM-ready event structure.
+- **Multi-tenant**: per-tenant policy scoping, API key lifecycle, seat management, SSO/SAML 2.0 (Enterprise plan only), BYOK key isolation.
+- **Browser enforcement**: Chrome and Edge extension shows a live shield status (Protected / Paused / Blocked) and applies masking inside the browser.
+
+## Key pages
+
+- [Product overview](https://neutralai.co.uk): what NeutralAI is and who it is for
+- [How it works](https://neutralai.co.uk/how-it-works): architecture layers from detection to vault to audit
+- [Pricing](https://neutralai.co.uk/pricing): plans for startups, growth, and enterprise; BYOK eligibility
+- [Security](https://neutralai.co.uk/security): encryption posture, SOC 2 roadmap, secret policy, audit posture
+- [Trust center](https://neutralai.co.uk/trust-center): compliance evidence, data retention
+- [Presidio alternative](https://neutralai.co.uk/presidio-alternative): build-vs-buy comparison with benchmark data
+- [Blog](https://neutralai.co.uk/blog): technical articles on PII detection, LLM routing, audit logging, and compliance engineering
+
+## Documentation
+
+- [Developers](https://neutralai.co.uk/developers): REST API reference, Python SDK, Node SDK, browser extension integration
+- [Install extension](https://neutralai.co.uk/install-extension): Chrome and Edge setup guide
+
+## Technical articles (blog)
+
+- [Why PII masking matters for enterprise AI adoption](https://neutralai.co.uk/blog/why-pii-masking-matters-for-enterprise-ai-adoption)
+- [PII detection accuracy: Regex vs NER vs LLM-based approaches](https://neutralai.co.uk/blog/pii-detection-accuracy-regex-vs-ner-vs-llm)
+- [Reversible masking and AES-GCM vault design](https://neutralai.co.uk/blog/reversible-pii-masking-ttl-aes-gcm-vault)
+- [Redacting PII in streaming LLM responses](https://neutralai.co.uk/blog/redacting-pii-in-streaming-llm-responses)
+- [Semantic PII detection with embeddings](https://neutralai.co.uk/blog/semantic-pii-detection-with-embeddings)
+- [Multilingual PII detection (Turkish NER)](https://neutralai.co.uk/blog/multilingual-pii-detection-turkish-ner)
+- [Tamper-evident audit log with hash chains](https://neutralai.co.uk/blog/tamper-evident-audit-log-hash-chain)
+- [Fail-closed AI gateway resilience](https://neutralai.co.uk/blog/fail-closed-ai-gateway-resilience)
+- [BYOK encryption key custody](https://neutralai.co.uk/blog/byok-encryption-key-custody)
+- [How UK financial services teams use AI safely under FCA guidance](https://neutralai.co.uk/blog/how-uk-financial-services-teams-use-ai-safely-under-fca-guidance)
+- [NeutralAI vs Private AI vs Nightfall benchmark 2026](https://neutralai.co.uk/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026)
+- [From Presidio to production: what regulated teams actually need](https://neutralai.co.uk/blog/from-presidio-to-production-regulated-teams)
+- [PII-safe logging and redaction](https://neutralai.co.uk/blog/pii-safe-logging-redaction)
+- [Signing webhooks and SSRF defence](https://neutralai.co.uk/blog/signing-webhooks-and-ssrf-defense)
+- [SIEM event normalisation without PII](https://neutralai.co.uk/blog/siem-event-normalization-without-pii)
+- [Policy consistency across replicas](https://neutralai.co.uk/blog/policy-consistency-across-replicas)
+- [LLM routing strategy and fallback](https://neutralai.co.uk/blog/llm-routing-strategy-and-fallback)
+- [Reliable usage metering with transactional outbox](https://neutralai.co.uk/blog/reliable-usage-metering-transactional-outbox)
+- [Detecting PII in documents (PDF, DOCX)](https://neutralai.co.uk/blog/detecting-pii-in-documents-pdf-docx)
+- [Encryption key rotation without downtime](https://neutralai.co.uk/blog/encryption-key-rotation-without-downtime)
+- [Fail at boot: secret validation](https://neutralai.co.uk/blog/fail-at-boot-secret-validation)
+- [Hidden cost of shadow AI](https://neutralai.co.uk/blog/hidden-cost-of-shadow-ai-security-control-point)
+- [When a lawyer pasted a document into ChatGPT](https://neutralai.co.uk/blog/uk-tribunal-ai-client-confidentiality-ruling)
+- [PII detection precision: checksums, context gates, and overlap suppression](https://neutralai.co.uk/blog/pii-detection-precision-checksums-context-gates)
+- [We hand-wrote our JWT verifier, because in JWT, flexibility is a vulnerability](https://neutralai.co.uk/blog/why-we-hand-rolled-jwt-verification)
+
+## Contact
+
+- General: hello@neutralai.co.uk
+- Security: security@neutralai.co.uk
+- Privacy: privacy@neutralai.co.uk
