@@ -41,9 +41,10 @@ export default function Hero() {
               <a
                 href={siteConfig.signupUrl}
                 className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Try Free"
                 data-analytics-placement="homepage_hero"
+                data-analytics-cta-id="hero_start_free_trial"
               >
                 Try Free
                 <ArrowRight className="h-5 w-5" />
@@ -51,9 +52,10 @@ export default function Hero() {
               <a
                 href={siteConfig.demoUrl}
                 className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Book Demo"
                 data-analytics-placement="homepage_hero"
+                data-analytics-cta-id="hero_book_demo"
               >
                 Book Demo
               </a>

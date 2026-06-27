@@ -29,12 +29,24 @@ function safeDestination(element: HTMLElement) {
 }
 
 function getEventProperties(element: HTMLElement, pathname: string): AnalyticsProperties {
-  return {
+  const props: AnalyticsProperties = {
     label: element.dataset.analyticsLabel || element.textContent?.trim().replace(/\s+/g, ' ').slice(0, 80) || 'unknown',
     placement: element.dataset.analyticsPlacement || 'unspecified',
     destination: element.dataset.analyticsDestination || safeDestination(element),
     page_path: pathname,
   }
+
+  // Funnel: cta_click — cta_id identifies the specific call-to-action
+  if (element.dataset.analyticsCtaId) {
+    props.cta_id = element.dataset.analyticsCtaId
+  }
+
+  // Funnel: pricing_plan_click — plan identifies which pricing tier was selected
+  if (element.dataset.analyticsPlan) {
+    props.plan = element.dataset.analyticsPlan
+  }
+
+  return props
 }
 
 export default function AnalyticsProvider() {
