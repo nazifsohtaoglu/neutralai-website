@@ -64,7 +64,7 @@ export default function Hero() {
               <a
                 href="/install-extension"
                 className="text-primary-light transition-colors hover:text-primary"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Install Browser Extension"
                 data-analytics-placement="homepage_hero"
               >

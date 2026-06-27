@@ -32,7 +32,7 @@ export default function CtaSection() {
             <a
               href={contactLinks.enterprise}
               className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto"
-              data-analytics-event="CTA Click"
+              data-analytics-event="cta_click"
               data-analytics-label="Talk to Sales"
               data-analytics-placement="homepage_final_cta"
             >
@@ -44,7 +44,7 @@ export default function CtaSection() {
             <a
               href={contactLinks.enterprise}
               className="text-primary-light hover:text-primary"
-              data-analytics-event="CTA Click"
+              data-analytics-event="cta_click"
               data-analytics-label="Contact NeutralAI"
               data-analytics-placement="homepage_final_cta"
             >
