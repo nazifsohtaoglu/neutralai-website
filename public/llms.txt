@@ -10,7 +10,7 @@ NeutralAI targets UK/EU regulated organisations: financial services, legal, heal
 - **Reversible tokenisation**: AES-256-GCM encrypted vault; tokens carry TTL, scope, and restore paths. PII never leaves the gateway unmasked.
 - **LLM routing**: managed (OpenRouter) or BYOK (OpenAI, Anthropic, Azure OpenAI, Gemini). Masking is enforced before every outbound call.
 - **Audit trail**: tamper-evident hash-chained audit log; compliance export; SIEM-ready event structure.
-- **Multi-tenant**: per-tenant policy scoping, API key lifecycle, seat management, SSO/SAML, BYOK key isolation.
+- **Multi-tenant**: per-tenant policy scoping, API key lifecycle, seat management, SSO/SAML 2.0 (Enterprise plan only), BYOK key isolation.
 - **Browser enforcement**: Chrome and Edge extension shows a live shield status (Protected / Paused / Blocked) and applies masking inside the browser.
 
 ## Key pages
@@ -18,8 +18,8 @@ NeutralAI targets UK/EU regulated organisations: financial services, legal, heal
 - [Product overview](https://neutralai.co.uk): what NeutralAI is and who it is for
 - [How it works](https://neutralai.co.uk/how-it-works): architecture layers from detection to vault to audit
 - [Pricing](https://neutralai.co.uk/pricing): plans for startups, growth, and enterprise; BYOK eligibility
-- [Security](https://neutralai.co.uk/security): encryption posture, SOC 2 roadmap, secret policy, penetration testing
-- [Trust center](https://neutralai.co.uk/trust-center): compliance evidence, data retention, vendor register
+- [Security](https://neutralai.co.uk/security): encryption posture, SOC 2 roadmap, secret policy, audit posture
+- [Trust center](https://neutralai.co.uk/trust-center): compliance evidence, data retention
 - [Presidio alternative](https://neutralai.co.uk/presidio-alternative): build-vs-buy comparison with benchmark data
 - [Blog](https://neutralai.co.uk/blog): technical articles on PII detection, LLM routing, audit logging, and compliance engineering
 
@@ -53,6 +53,8 @@ NeutralAI targets UK/EU regulated organisations: financial services, legal, heal
 - [Fail at boot: secret validation](https://neutralai.co.uk/blog/fail-at-boot-secret-validation)
 - [Hidden cost of shadow AI](https://neutralai.co.uk/blog/hidden-cost-of-shadow-ai-security-control-point)
 - [When a lawyer pasted a document into ChatGPT](https://neutralai.co.uk/blog/uk-tribunal-ai-client-confidentiality-ruling)
+- [PII detection precision: checksums, context gates, and overlap suppression](https://neutralai.co.uk/blog/pii-detection-precision-checksums-context-gates)
+- [We hand-wrote our JWT verifier, because in JWT, flexibility is a vulnerability](https://neutralai.co.uk/blog/why-we-hand-rolled-jwt-verification)
 
 ## Contact
 
