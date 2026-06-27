@@ -43,6 +43,7 @@ export default function BlogFilteredList({ posts, categories }: BlogFilteredList
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
+              aria-pressed={activeCategory === null}
               onClick={() => setActiveCategory(null)}
               className={[
                 'rounded-full border px-3.5 py-1.5 text-xs font-semibold transition',
@@ -57,6 +58,7 @@ export default function BlogFilteredList({ posts, categories }: BlogFilteredList
               <button
                 key={cat}
                 type="button"
+                aria-pressed={activeCategory === cat}
                 onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
                 className={[
                   'rounded-full border px-3.5 py-1.5 text-xs font-semibold transition',
@@ -75,6 +77,7 @@ export default function BlogFilteredList({ posts, categories }: BlogFilteredList
             <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-500" />
             <input
               type="text"
+              aria-label="Search blog articles"
               placeholder="Search articles…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
