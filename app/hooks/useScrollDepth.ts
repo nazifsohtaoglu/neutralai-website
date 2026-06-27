@@ -1,28 +1,32 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { usePathname } from 'next/navigation'
-import { trackAnalyticsEvent } from '../lib/analytics'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { hasAnalyticsConsent, trackAnalyticsEvent } from '../lib/analytics'
 
 const MILESTONES = [25, 50, 75, 90, 100] as const
 type Milestone = (typeof MILESTONES)[number]
 
 export function useScrollDepth() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   // Track which milestones have fired for the current page view
   const firedRef = useRef<Set<Milestone>>(new Set())
-  // Reset fired milestones when the path changes
-  const prevPathRef = useRef<string>(pathname)
+  // Reset fired milestones when the path (including query string) changes
+  const prevPageKeyRef = useRef<string>(`${pathname}?${searchParams.toString()}`)
 
   useEffect(() => {
-    if (prevPathRef.current !== pathname) {
+    const pageKey = `${pathname}?${searchParams.toString()}`
+    if (prevPageKeyRef.current !== pageKey) {
       firedRef.current = new Set()
-      prevPathRef.current = pathname
+      prevPageKeyRef.current = pageKey
     }
-  }, [pathname])
+  }, [pathname, searchParams])
 
   useEffect(() => {
     function handleScroll() {
+      if (!hasAnalyticsConsent()) return
+
       const scrollTop = window.scrollY
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
       if (docHeight <= 0) return
@@ -34,7 +38,7 @@ export function useScrollDepth() {
           firedRef.current.add(milestone)
           trackAnalyticsEvent('scroll_depth', {
             depth: milestone,
-            path: pathname,
+            page_path: pathname,
           })
         }
       }
@@ -45,5 +49,5 @@ export function useScrollDepth() {
     handleScroll()
 
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [pathname])
+  }, [pathname, searchParams])
 }
