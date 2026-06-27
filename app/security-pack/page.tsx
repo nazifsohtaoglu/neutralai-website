@@ -75,7 +75,7 @@ export default function SecurityPackPage() {
         <div className="container-custom relative z-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary-light">
             <ShieldCheck className="h-3.5 w-3.5" />
-            Security pack — not for public distribution
+            Security pack
           </div>
           <h1 className="mt-5 font-heading text-4xl font-bold md:text-6xl">
             NeutralAI Security Summary

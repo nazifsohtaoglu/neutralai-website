@@ -3,6 +3,8 @@
 import { FormEvent, useState } from 'react'
 import { CheckCircle2, Download, Loader2 } from 'lucide-react'
 import { siteConfig } from '../site'
+import { getLeadAttribution } from '../lib/analytics'
+import { getReferralSnapshot, referralSnapshotToFieldMap } from '../lib/referral'
 
 const GOOGLE_SHEETS_EXEC_PATH_REGEX = /^\/macros\/s\/[a-z0-9_-]+\/exec\/?$/i
 
@@ -35,7 +37,7 @@ export default function SecurityPackForm() {
         <CheckCircle2 className="mx-auto h-8 w-8 text-accent-success" />
         <p className="mt-3 text-base font-semibold text-white">Security pack ready</p>
         <p className="mt-1 text-sm text-slate-300">
-          Download the summary below. Detailed evidence and questionnaire prefill is sent to your email.
+          Download the summary below. Our security team will follow up by email with detailed evidence and questionnaire prefill.
         </p>
         <a
           href="/security-pack"
@@ -59,26 +61,43 @@ export default function SecurityPackForm() {
 
     setStatus('submitting')
 
-    const payload = {
+    const payload: Record<string, string> = {
       full_name: name.trim(),
       email: email.trim(),
       company_name: company.trim(),
+      company_website: '',
       website_intent: 'website_security_pack_download',
       lead_source: 'trust_center_security_pack',
       message: 'Security pack download request',
+      website_page_url: typeof window !== 'undefined' ? window.location.href : '',
+    }
+
+    Object.entries(getLeadAttribution()).forEach(([key, value]) => {
+      payload[key] = String(value)
+    })
+
+    const referralSnapshot = getReferralSnapshot()
+    if (referralSnapshot) {
+      Object.entries(referralSnapshotToFieldMap(referralSnapshot)).forEach(([key, value]) => {
+        payload[key] = value
+      })
     }
 
     try {
       if (endpoint) {
-        await fetch(endpoint, {
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         })
+        if (!response.ok) {
+          setStatus('error')
+          return
+        }
       }
       setStatus('success')
     } catch {
-      setStatus('success')
+      setStatus('error')
     }
   }
 
