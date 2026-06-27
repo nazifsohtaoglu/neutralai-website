@@ -29,7 +29,9 @@ If `NEXT_PUBLIC_POSTHOG_TOKEN` is missing, no PostHog client is initialized and 
 Use these names when creating PostHog insights/funnels:
 
 - `$pageview` for PostHog page views.
-- `CTA Click`
+- `cta_click` — hero, navbar, and final-CTA buttons; carries `cta_id`, `label`, `placement`, `page_path`
+- `pricing_plan_click` — pricing tier buttons; carries `plan`, `label`, `placement`, `page_path`
+- `scroll_depth` — fired at 25/50/75/90/100% milestones; carries `depth`, `page_path`
 - `Playground Mask Submit`
 - `Playground Mask Button Click`
 - `Playground Result Copy`
@@ -76,10 +78,10 @@ Recommended dashboard cards:
 
 Recommended funnels:
 
-- Landing page: `$pageview` where `page_path` is `/` -> `CTA Click` where `placement` is `homepage_hero`, `homepage_product_surface`, or `homepage_final_cta` -> conversion-intent `CTA Click`.
-- Demo flow: `$pageview` where `page_path` is `/demo` -> `CTA Click` where `placement` is `demo_hero` or `demo_bottom_cta` -> conversion-intent `CTA Click`.
-- Playground flow: `$pageview` where `page_path` is `/playground` -> `Playground Mask Submit` or `Playground Mask Button Click` -> `CTA Click` where `placement` is `playground_bottom_cta` or `playground_hero`.
-- Content/product exploration: `$pageview` where `page_path` starts with `/blog`, `/compare`, `/developers`, `/trust-center`, or `/use-cases` -> `CTA Click` -> conversion-intent `CTA Click`.
+- Landing page: `$pageview` where `page_path` is `/` -> `cta_click` where `placement` is `homepage_hero`, `homepage_product_surface`, or `homepage_final_cta` -> conversion-intent `cta_click`.
+- Demo flow: `$pageview` where `page_path` is `/demo` -> `cta_click` where `placement` is `demo_hero` or `demo_bottom_cta` -> conversion-intent `cta_click`.
+- Playground flow: `$pageview` where `page_path` is `/playground` -> `Playground Mask Submit` or `Playground Mask Button Click` -> `cta_click` where `placement` is `playground_bottom_cta` or `playground_hero`.
+- Content/product exploration: `$pageview` where `page_path` starts with `/blog`, `/compare`, `/developers`, `/trust-center`, or `/use-cases` -> `cta_click` -> conversion-intent `cta_click`.
 
 Post-deployment smoke checks:
 

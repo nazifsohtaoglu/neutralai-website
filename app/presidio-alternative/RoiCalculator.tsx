@@ -23,7 +23,7 @@ function formatGbp(value: number) {
 export default function RoiCalculator() {
   const [engineers, setEngineers] = useState(2)
   const [months, setMonths] = useState(6)
-  const [monthlyCost, setMonthlyCost] = useState(8500)
+  const [monthlyCost, setMonthlyCost] = useState(6000)
   const [complianceHours, setComplianceHours] = useState(60)
   const [neutralaiMonthly, setNeutralaiMonthly] = useState(399)
 
@@ -100,7 +100,7 @@ export default function RoiCalculator() {
               <span className="text-sm font-medium text-white">Loaded monthly cost per engineer, GBP</span>
               <input
                 type="number"
-                min="5500"
+                min="5000"
                 step="500"
                 value={monthlyCost}
                 onChange={(event) => setMonthlyCost(Number(event.target.value))}

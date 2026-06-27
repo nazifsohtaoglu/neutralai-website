@@ -5,6 +5,7 @@ import { ArrowRight, CalendarDays, Clock3, FileText } from 'lucide-react'
 import BackButton from '../components/BackButton'
 import { siteConfig } from '../site'
 import { getAllPosts } from './posts'
+import BlogFilteredList from './BlogFilteredList'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -27,6 +28,7 @@ export const metadata: Metadata = {
 export default function BlogIndexPage() {
   const posts = getAllPosts()
   const featured = posts[0]
+  const categories = Array.from(new Set(posts.map((p) => p.category))).sort()
 
   return (
     <main className="min-h-screen pt-24">
@@ -92,47 +94,7 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      <section className="section bg-background-secondary">
-        <div className="container-custom">
-          <div className="mb-8 max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#fdba74]">Latest Articles</p>
-            <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Start with the controls that unblock AI.</h2>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group overflow-hidden rounded-[24px] border border-white/10 bg-background transition hover:-translate-y-1 hover:border-primary/50"
-              >
-                {post.visual ? (
-                  <div className="relative aspect-[1.9] overflow-hidden border-b border-white/10">
-                    <Image
-                      src={post.visual.src}
-                      alt={post.visual.alt}
-                      fill
-                      sizes="(min-width: 1024px) 31vw, (min-width: 768px) 46vw, 100vw"
-                      className="object-cover transition duration-500 group-hover:scale-[1.04]"
-                    />
-                  </div>
-                ) : null}
-                <div className="p-6">
-                  <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs text-primary-light">
-                    {post.category}
-                  </span>
-                  <h3 className="mt-5 font-heading text-2xl font-semibold text-white">{post.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{post.description}</p>
-                  <div className="mt-6 flex items-center justify-between gap-4 text-xs text-slate-400">
-                    <span>{post.date}</span>
-                    <span>{post.readingTime}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BlogFilteredList posts={posts} categories={categories} />
     </main>
   )
 }

@@ -25,6 +25,9 @@ export function useScrollDepth() {
 
   useEffect(() => {
     function handleScroll() {
+      // Only mark milestones and fire events after analytics consent is given.
+      // If consent is not yet accepted, skip silently — milestones won't be
+      // recorded in firedRef so they'll fire correctly once consent is granted.
       if (!hasAnalyticsConsent()) return
 
       const scrollTop = window.scrollY
