@@ -12,7 +12,7 @@ export function useScrollDepth() {
   const searchParams = useSearchParams()
   // Track which milestones have fired for the current page view
   const firedRef = useRef<Set<Milestone>>(new Set())
-  // Reset fired milestones when the path or query string changes
+  // Reset fired milestones when the path (including query string) changes
   const prevPageKeyRef = useRef<string>(`${pathname}?${searchParams.toString()}`)
 
   useEffect(() => {
@@ -32,7 +32,13 @@ export function useScrollDepth() {
 
       const scrollTop = window.scrollY
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      if (docHeight <= 0) return
+      if (docHeight <= 0) {
+        if (!firedRef.current.has(100)) {
+          firedRef.current.add(100)
+          trackAnalyticsEvent('scroll_depth', { depth: 100, page_path: pathname })
+        }
+        return
+      }
 
       const pct = Math.min(100, Math.round((scrollTop / docHeight) * 100))
 

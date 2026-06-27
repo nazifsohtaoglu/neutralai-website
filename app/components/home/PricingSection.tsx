@@ -255,6 +255,7 @@ export default function PricingSection() {
                   data-analytics-label={`${plan.name} ${plan.cta}`}
                   data-analytics-placement="homepage_pricing_advanced"
                   data-analytics-plan={plan.name.toLowerCase()}
+                  data-analytics-cta-id={`pricing_${plan.name.toLowerCase()}_cta`}
                 >
                   {plan.cta}
                 </a>

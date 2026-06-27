@@ -67,6 +67,7 @@ export default function Hero() {
                 data-analytics-event="cta_click"
                 data-analytics-label="Install Browser Extension"
                 data-analytics-placement="homepage_hero"
+                data-analytics-cta-id="hero_install_extension"
               >
                 Install browser extension
               </a>

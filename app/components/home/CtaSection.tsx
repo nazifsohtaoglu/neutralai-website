@@ -35,6 +35,7 @@ export default function CtaSection() {
               data-analytics-event="cta_click"
               data-analytics-label="Talk to Sales"
               data-analytics-placement="homepage_final_cta"
+              data-analytics-cta-id="final_cta_talk_to_sales"
             >
               Talk to Sales
             </a>
@@ -47,6 +48,7 @@ export default function CtaSection() {
               data-analytics-event="cta_click"
               data-analytics-label="Contact NeutralAI"
               data-analytics-placement="homepage_final_cta"
+              data-analytics-cta-id="final_cta_contact_neutralai"
             >
               Contact NeutralAI
             </a>
