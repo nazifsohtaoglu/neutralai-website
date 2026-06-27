@@ -21,9 +21,10 @@ export default function CtaSection() {
             <a
               href={siteConfig.signupUrl}
               className="btn btn-cta w-full px-8 py-4 text-lg sm:w-auto"
-              data-analytics-event="CTA Click"
+              data-analytics-event="cta_click"
               data-analytics-label="Try Free"
               data-analytics-placement="homepage_final_cta"
+              data-analytics-cta-id="final_cta_start_free_trial"
             >
               Try Free
               <ArrowRight className="h-5 w-5" />
@@ -31,7 +32,7 @@ export default function CtaSection() {
             <a
               href={contactLinks.enterprise}
               className="btn btn-secondary w-full px-8 py-4 text-lg sm:w-auto"
-              data-analytics-event="CTA Click"
+              data-analytics-event="cta_click"
               data-analytics-label="Talk to Sales"
               data-analytics-placement="homepage_final_cta"
             >
@@ -43,7 +44,7 @@ export default function CtaSection() {
             <a
               href={contactLinks.enterprise}
               className="text-primary-light hover:text-primary"
-              data-analytics-event="CTA Click"
+              data-analytics-event="cta_click"
               data-analytics-label="Contact NeutralAI"
               data-analytics-placement="homepage_final_cta"
             >

@@ -11,16 +11,16 @@ Assumption: Individual assignee names and private dashboard URLs stay in private
 
 | Funnel path | Owner role | Expected destination | Analytics event | Smoke result |
 | --- | --- | --- | --- | --- |
-| Homepage hero -> Try Free | Growth Engineering + Product | `siteConfig.signupUrl` (`intent=signup`, `plan=free`, `src=website_start_free_trial`) | `CTA Click` (`placement=homepage_hero`, `label=Try Free`) | Repo-verified (2026-05-16) |
-| Navbar desktop/mobile -> Get Started Free | Growth Engineering | `siteConfig.signupUrl` (`intent=signup`, `plan=free`, `src=website_start_free_trial`) | `CTA Click` (`placement=navbar_desktop` / `navbar_mobile`, `label=Get Started Free`) | Repo-verified (2026-05-16) |
-| Homepage pricing -> Starter/Team/Business get started | Growth Engineering + Product Analytics | App signin URLs with `src=website_get_started`, `website_get_team`, `website_get_business` | `CTA Click` (`placement=homepage_pricing_primary` / `homepage_pricing_advanced`) | Repo-verified (2026-05-16) |
-| Homepage -> Book Demo | Growth Engineering + RevOps | `/demo` (then CTA handoff to `/contact?intent=demo`) | `CTA Click` (`placement=homepage_hero`, `label=Book Demo`) | Repo-verified (2026-05-16) |
+| Homepage hero -> Try Free | Growth Engineering + Product | `siteConfig.signupUrl` (`intent=signup`, `plan=free`, `src=website_start_free_trial`) | `cta_click` (`placement=homepage_hero`, `label=Try Free`) | Repo-verified (2026-05-16) |
+| Navbar desktop/mobile -> Get Started Free | Growth Engineering | `siteConfig.signupUrl` (`intent=signup`, `plan=free`, `src=website_start_free_trial`) | `cta_click` (`placement=navbar_desktop` / `navbar_mobile`, `label=Get Started Free`) | Repo-verified (2026-05-16) |
+| Homepage pricing -> Starter/Team/Business get started | Growth Engineering + Product Analytics | App signin URLs with `src=website_get_started`, `website_get_team`, `website_get_business` | `cta_click` (`placement=homepage_pricing_primary` / `homepage_pricing_advanced`) | Repo-verified (2026-05-16) |
+| Homepage -> Book Demo | Growth Engineering + RevOps | `/demo` (then CTA handoff to `/contact?intent=demo`) | `cta_click` (`placement=homepage_hero`, `label=Book Demo`) | Repo-verified (2026-05-16) |
 | Contact intent -> Demo | Revenue Operations + Growth Engineering | Google Sheets endpoint (`NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT`) via contact form | `lead_source=website_demo_request` | Pending production execution evidence |
 | Contact intent -> Enterprise | Revenue Operations + Growth Engineering | Google Sheets endpoint (`NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT`) via contact form | `lead_source=website_enterprise_enquiry` | Pending production execution evidence |
 | Contact intent -> Security review | Revenue Operations + Growth Engineering | Google Sheets endpoint (`NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT`) via contact form | `lead_source=website_security_review` | Pending production execution evidence |
-| Demo page -> Book Live Demo / Talk to Sales | Growth Engineering + RevOps | `/contact?intent=demo` and `/contact?intent=enterprise` | `CTA Click` (`placement=demo_hero` / `demo_bottom_cta`) | Repo-verified (2026-05-16) |
-| Playground -> Try Free / Book Demo | Growth Engineering + Product Analytics | `siteConfig.signupUrl` and `/contact?intent=demo` | `CTA Click` (`placement=playground_hero` / `playground_bottom_cta`) | Repo-verified (2026-05-16) |
-| Homepage + install page -> Install extension / support | Growth Engineering + Support Engineering | `/install-extension` and `/support/browser-extension` (plus store links) | `CTA Click` (`placement=homepage_hero`, `homepage_product_surface`, `install_extension_options`) | Repo-verified (2026-05-16) |
+| Demo page -> Book Live Demo / Talk to Sales | Growth Engineering + RevOps | `/contact?intent=demo` and `/contact?intent=enterprise` | `cta_click` (`placement=demo_hero` / `demo_bottom_cta`) | Repo-verified (2026-05-16) |
+| Playground -> Try Free / Book Demo | Growth Engineering + Product Analytics | `siteConfig.signupUrl` and `/contact?intent=demo` | `cta_click` (`placement=playground_hero` / `playground_bottom_cta`) | Repo-verified (2026-05-16) |
+| Homepage + install page -> Install extension / support | Growth Engineering + Support Engineering | `/install-extension` and `/support/browser-extension` (plus store links) | `cta_click` (`placement=homepage_hero`, `homepage_product_surface`, `install_extension_options`) | Repo-verified (2026-05-16) |
 
 ## Repo Smoke Commands
 

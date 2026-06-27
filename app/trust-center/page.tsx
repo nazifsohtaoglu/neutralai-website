@@ -11,6 +11,7 @@ import {
   Siren,
 } from 'lucide-react'
 import BackButton from '../components/BackButton'
+import SecurityPackForm from '../components/SecurityPackForm'
 import { contactLinks, siteConfig } from '../site'
 import {
   EgressFlowDiagram,
@@ -304,17 +305,15 @@ export default function TrustCenterPage() {
 
       <section className="section bg-background-secondary">
         <div className="container-custom">
-          <div className="grid gap-6 rounded-lg border border-border bg-background p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Next step</p>
-              <h2 className="mt-3 font-heading text-3xl font-bold">Need the evidence pack?</h2>
+          <div className="rounded-2xl border border-border bg-background p-6 md:p-8">
+            <div className="mb-6">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Self-service</p>
+              <h2 className="mt-3 font-heading text-3xl font-bold">Get the security pack</h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-                Send the security context you need reviewed. We will route questionnaire, readiness, and compliance evidence requests through the right owner.
+                Download the security summary instantly — encryption posture, SOC 2 control mapping, and prefilled questionnaire answers. For detailed artefacts or NDA-scoped review, the security team follows up by email.
               </p>
             </div>
-            <a href={contactLinks.securityReview} className="btn btn-cta justify-center">
-              Contact NeutralAI
-            </a>
+            <SecurityPackForm />
           </div>
         </div>
       </section>
