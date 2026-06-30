@@ -95,7 +95,7 @@ export default function InstallExtensionPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block"
-                    data-analytics-event="CTA Click"
+                    data-analytics-event="cta_click"
                     data-analytics-label={option.label}
                     data-analytics-placement="install_extension_options"
                   >
@@ -109,7 +109,7 @@ export default function InstallExtensionPage() {
                   key={option.title}
                   href={option.href}
                   className="block"
-                  data-analytics-event="CTA Click"
+                  data-analytics-event="cta_click"
                   data-analytics-label={option.label}
                   data-analytics-placement="install_extension_options"
                 >

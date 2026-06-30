@@ -226,7 +226,7 @@ export default function LiveMaskingDemo() {
               <a
                 href="/playground"
                 className="btn btn-cta whitespace-nowrap"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Try Full Playground"
                 data-analytics-placement="homepage_live_demo"
               >
@@ -236,7 +236,7 @@ export default function LiveMaskingDemo() {
               <a
                 href={contactLinks.demo}
                 className="btn btn-secondary whitespace-nowrap"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Book Demo"
                 data-analytics-placement="homepage_live_demo"
               >
@@ -399,7 +399,7 @@ export default function LiveMaskingDemo() {
             <a
               href="/playground"
               className="text-primary-light underline-offset-2 hover:underline"
-              data-analytics-event="CTA Click"
+              data-analytics-event="cta_click"
               data-analytics-label="Try Full Playground (disclaimer)"
               data-analytics-placement="homepage_live_demo_footer"
             >

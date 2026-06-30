@@ -53,7 +53,7 @@ export default function ProductSurface() {
                   <a
                     href={siteConfig.signupUrl}
                     className="btn btn-cta w-full sm:w-auto"
-                    data-analytics-event="CTA Click"
+                    data-analytics-event="cta_click"
                     data-analytics-label="Try Free"
                     data-analytics-placement="homepage_product_surface"
                   >
@@ -62,7 +62,7 @@ export default function ProductSurface() {
                   <a
                     href="/install-extension"
                     className="btn btn-secondary w-full sm:w-auto"
-                    data-analytics-event="CTA Click"
+                    data-analytics-event="cta_click"
                     data-analytics-label="Install Browser Extension"
                     data-analytics-placement="homepage_product_surface"
                   >

@@ -1,7 +1,7 @@
 'use client'
 
 import { FormEvent, useMemo, useRef, useState } from 'react'
-import { getLeadAttribution } from '../lib/analytics'
+import { getLeadAttribution, trackAnalyticsEvent } from '../lib/analytics'
 import { getReferralSnapshot, referralSnapshotToFieldMap } from '../lib/referral'
 import { siteConfig } from '../site'
 
@@ -137,6 +137,7 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
   const [errors, setErrors] = useState<FieldErrors>({})
   const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({})
   const formRef = useRef<HTMLFormElement>(null)
+  const formStartedRef = useRef(false)
 
   const isSubmitting = status === 'submitting'
 
@@ -153,6 +154,13 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
   }
 
   const submissionEndpoint = endpoint
+
+  function handleFormFocus() {
+    if (!formStartedRef.current) {
+      formStartedRef.current = true
+      trackAnalyticsEvent('form_started', { form_id: 'lead_contact', lead_source: leadSource, intent })
+    }
+  }
 
   function markTouched(field: keyof FormState) {
     setTouched((prev) => ({ ...prev, [field]: true }))
@@ -227,14 +235,16 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
         throw new Error('submit_failed')
       }
 
+      trackAnalyticsEvent('lead_submitted', { form_id: 'lead_contact', lead_source: leadSource, intent })
       window.location.assign('/contact/thanks/')
     } catch {
       setStatus('failed')
+      trackAnalyticsEvent('form_error', { form_id: 'lead_contact', lead_source: leadSource, intent })
     }
   }
 
   return (
-    <form ref={formRef} className="space-y-4" onSubmit={handleSubmit} noValidate aria-label="Contact request form">
+    <form ref={formRef} className="space-y-4" onSubmit={handleSubmit} onFocus={handleFormFocus} noValidate aria-label="Contact request form">
       <div className="grid gap-4 md:grid-cols-2">
         {/* Full name */}
         <div className="space-y-1 text-sm">

@@ -171,7 +171,7 @@ export default function ComparePage() {
               <Link
                 href={siteConfig.signupUrl}
                 className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Try Free"
                 data-analytics-placement="compare_hero"
               >
@@ -181,7 +181,7 @@ export default function ComparePage() {
               <Link
                 href="/contact"
                 className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Talk to Sales"
                 data-analytics-placement="compare_hero"
               >
@@ -286,7 +286,7 @@ export default function ComparePage() {
             <Link
               href="/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026"
               className="btn btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm"
-              data-analytics-event="CTA Click"
+              data-analytics-event="cta_click"
               data-analytics-label="Read Benchmark Post"
               data-analytics-placement="compare_detection"
             >

@@ -65,7 +65,7 @@ export default function DemoPage() {
               <Link
                 href={siteConfig.signupUrl}
                 className="btn btn-cta justify-center px-8 py-4"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Try Free"
                 data-analytics-placement="demo_hero"
               >
@@ -75,7 +75,7 @@ export default function DemoPage() {
               <Link
                 href={contactLinks.demo}
                 className="btn btn-secondary justify-center px-8 py-4"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Book Live Demo"
                 data-analytics-placement="demo_hero"
               >
@@ -134,7 +134,7 @@ export default function DemoPage() {
                     <Link
                       href="/playground"
                       className="btn btn-cta justify-center px-7 py-4"
-                      data-analytics-event="CTA Click"
+                      data-analytics-event="cta_click"
                       data-analytics-label="Try Playground"
                       data-analytics-placement="demo_video_fallback"
                     >
@@ -143,7 +143,7 @@ export default function DemoPage() {
                     <Link
                       href={contactLinks.demo}
                       className="btn btn-secondary justify-center px-7 py-4"
-                      data-analytics-event="CTA Click"
+                      data-analytics-event="cta_click"
                       data-analytics-label="Book Live Demo"
                       data-analytics-placement="demo_video_fallback"
                     >
@@ -188,7 +188,7 @@ export default function DemoPage() {
                   <Link
                     href={siteConfig.signupUrl}
                     className="btn btn-cta justify-center px-7 py-4"
-                    data-analytics-event="CTA Click"
+                    data-analytics-event="cta_click"
                     data-analytics-label="Try Free"
                     data-analytics-placement="demo_bottom_cta"
                   >
@@ -197,7 +197,7 @@ export default function DemoPage() {
                   <Link
                     href={contactLinks.enterprise}
                     className="btn btn-secondary justify-center px-7 py-4"
-                    data-analytics-event="CTA Click"
+                    data-analytics-event="cta_click"
                     data-analytics-label="Talk to Sales"
                     data-analytics-placement="demo_bottom_cta"
                   >

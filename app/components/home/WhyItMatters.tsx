@@ -28,7 +28,7 @@ export default function WhyItMatters() {
                 <a
                   href="/use-cases/legal"
                   className="mt-4 inline-flex items-center text-sm font-semibold text-primary-light transition hover:text-primary"
-                  data-analytics-event="CTA Click"
+                  data-analytics-event="cta_click"
                   data-analytics-label="Legal Use Case"
                   data-analytics-placement="homepage_problem_legal"
                 >
