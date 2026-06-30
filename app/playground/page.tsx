@@ -456,7 +456,7 @@ export default function PlaygroundPage() {
                 <Link
                   href={siteConfig.signupUrl}
                   className="btn btn-secondary justify-center px-8 py-4"
-                  data-analytics-event="CTA Click"
+                  data-analytics-event="cta_click"
                   data-analytics-label="Get your free API key"
                   data-analytics-placement="playground_hero"
                 >
@@ -695,7 +695,7 @@ export default function PlaygroundPage() {
               <Link
                 href={siteConfig.signupUrl}
                 className="btn btn-cta justify-center px-8 py-4"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Get your free API key"
                 data-analytics-placement="playground_bottom_cta"
               >
@@ -705,7 +705,7 @@ export default function PlaygroundPage() {
               <Link
                 href="/contact"
                 className="btn btn-secondary justify-center px-8 py-4"
-                data-analytics-event="CTA Click"
+                data-analytics-event="cta_click"
                 data-analytics-label="Talk to Sales"
                 data-analytics-placement="playground_bottom_cta"
               >

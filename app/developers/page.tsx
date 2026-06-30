@@ -146,7 +146,7 @@ export default function DevelopersPage() {
                 <Link
                   href={siteConfig.signupUrl}
                   className="btn btn-cta w-full px-6 py-4 sm:w-auto"
-                  data-analytics-event="CTA Click"
+                  data-analytics-event="cta_click"
                   data-analytics-label="Get your free API key"
                   data-analytics-placement="developers_hero"
                 >

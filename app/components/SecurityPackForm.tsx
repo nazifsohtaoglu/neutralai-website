@@ -1,9 +1,9 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import { CheckCircle2, Download, Loader2 } from 'lucide-react'
 import { siteConfig } from '../site'
-import { getLeadAttribution } from '../lib/analytics'
+import { getLeadAttribution, trackAnalyticsEvent } from '../lib/analytics'
 import { getReferralSnapshot, referralSnapshotToFieldMap } from '../lib/referral'
 
 const GOOGLE_SHEETS_EXEC_PATH_REGEX = /^\/macros\/s\/[a-z0-9_-]+\/exec\/?$/i
@@ -30,6 +30,14 @@ export default function SecurityPackForm() {
   const [email, setEmail] = useState('')
   const [company, setCompany] = useState('')
   const [honeypot, setHoneypot] = useState('')
+  const formStartedRef = useRef(false)
+
+  function handleFormFocus() {
+    if (!formStartedRef.current) {
+      formStartedRef.current = true
+      trackAnalyticsEvent('form_started', { form_id: 'security_pack' })
+    }
+  }
 
   if (status === 'success') {
     return (
@@ -92,12 +100,16 @@ export default function SecurityPackForm() {
         })
         if (!response.ok) {
           setStatus('error')
+          trackAnalyticsEvent('form_error', { form_id: 'security_pack' })
           return
         }
       }
+      trackAnalyticsEvent('lead_submitted', { form_id: 'security_pack' })
+      trackAnalyticsEvent('security_pack_downloaded', { form_id: 'security_pack' })
       setStatus('success')
     } catch {
       setStatus('error')
+      trackAnalyticsEvent('form_error', { form_id: 'security_pack' })
     }
   }
 
@@ -105,7 +117,7 @@ export default function SecurityPackForm() {
     'w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none text-sm'
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4">
+    <form onSubmit={handleSubmit} onFocus={handleFormFocus} className="grid gap-4">
       <input
         name="company_website"
         value={honeypot}
