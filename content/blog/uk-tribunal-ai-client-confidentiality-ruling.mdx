@@ -1,0 +1,59 @@
+---
+title: "A UK Tribunal Treated Pasting Client Letters Into ChatGPT as a Data Breach"
+description: "An Upper Tribunal ruling on a solicitor's ChatGPT use shows the real lesson is controls and evidence, not banning AI. Here's what actually failed."
+date: "2026-07-03"
+author: "NeutralAI Team"
+category: "Legal"
+---
+
+**24 February 2026, Upper Tribunal (Immigration and Asylum Chamber).** A solicitor uploaded Home Office decision letters into ChatGPT to generate client summaries, and separately pasted draft client emails into the tool to improve their wording. He accepted that this was a data breach, and undertook to notify the affected clients and self-report to his regulators. The tribunal warned that once confidential client information is placed into an open, public AI system, a firm can lose control over how that information is processed or retained. The case is a useful, unglamorous example of how ordinary AI use — not a dramatic hack — becomes a reportable incident, and of what a firm needs in place before that happens.
+
+## What happened
+
+The facts are mundane, which is exactly why the case matters. A solicitor working on an immigration matter wanted help with two everyday tasks: summarising a Home Office decision letter, and tidying the language in a draft email to a client. He used ChatGPT for both. The letter and the email both contained information that identified the client and their case.
+
+As reported in coverage of the ruling, the solicitor accepted before the tribunal that this amounted to a data breach. He committed to notifying the clients whose information had been exposed and to self-reporting to his professional regulators. The tribunal's warning, as reported, was direct: once confidential client information is placed into an open, public AI system, you may lose control over how that information is processed or retained.
+
+There was no external attacker, no stolen laptop, no phishing email. The exposure happened through a normal browser tab, during normal casework, because a free consumer AI tool was the fastest way to get a summary and a cleaner sentence.
+
+## Why "we banned AI" wouldn't have saved this firm
+
+The instinctive response to a story like this is to tighten the acceptable-use policy: no client data in ChatGPT, full stop. That instinct is understandable, but it doesn't hold up against how the incident actually occurred.
+
+Policy alone doesn't inspect what goes into a prompt. A ban is only as good as everyone's memory of it, every time, under deadline pressure, across every browser tab. The solicitor in this case was presumably subject to some version of a confidentiality obligation already — that's the baseline of legal practice. The gap wasn't a missing rule. It was the absence of anything sitting between "paste this letter into ChatGPT" and the letter actually leaving the firm's control.
+
+Banning a tool changes what people are told to do. It does nothing to what happens when they don't, because there's no technical checkpoint to catch the letter before it leaves the browser. That's the distinction regulators and courts increasingly seem to be drawing: not whether firms permit AI, but whether they can show a control existed at the point sensitive data was about to leave.
+
+## What the guidance already requires
+
+This isn't a novel expectation invented by one tribunal. The Law Society's "Generative AI — the essentials" practice guidance, published 20 May 2025, is explicit that identifiable client data should not go into public AI tools without informed consent. That guidance predates this ruling by nine months. The tribunal wasn't setting new law; it was applying an obligation the profession's own representative body had already spelled out.
+
+Regulators are also not waiting for AI-specific incidents to start enforcing data-protection basics in law firms. The ICO fined DPP Law Ltd £60,000 on 16 April 2025, after a cyber attack exfiltrated highly sensitive client data — the first fine of this cycle against a UK law firm, and a reminder that the regulator is actively scrutinising how firms handle client information, AI-related or not.
+
+Courts are watching a related but distinct failure mode too. In *Ayinde v London Borough of Haringey* and *Al-Haroun v Qatar National Bank* [2025] EWHC 1383 (Admin), decided 6 June 2025, lawyers cited AI-hallucinated case authorities in court filings. The High Court held the conduct improper, unreasonable, and in one instance negligent, and referred the matter to the relevant regulators. Different failure — fabricated citations rather than a confidentiality breach — but the same underlying theme: courts and regulators are treating careless AI use as a conduct issue, not a technology footnote.
+
+Put together, these three developments describe a profession where "we didn't have a policy" is no longer a plausible defence, and increasingly, neither is "we had a policy."
+
+## What good looks like: mask before send, and keep the evidence
+
+The practical answer sits between "ban AI" and "trust everyone to remember the rule every time." Two things need to be true at the point a prompt is about to leave a firm's control.
+
+First, identifiable client data shouldn't reach a public AI tool in its raw form. A solicitor should still be able to ask for help summarising a decision letter or tightening a paragraph — that's genuinely useful work. What shouldn't happen is the client's name, case reference, and personal details travelling along with the request unmasked. Masking or tokenizing that data before it leaves the firm's environment lets the useful work continue while removing the specific thing the tribunal was concerned about.
+
+Second, when something needs checking later — by a partner, a regulator, or an insurer — a firm needs to show the control ran, without reconstructing events from memory or screenshots. That means evidence: a record that a request was screened and what categories of data were detected, not the raw client data itself sitting in a log, which would just recreate the original problem.
+
+A useful way to frame the difference:
+
+- **Policy only** — relies on people remembering and following a rule under time pressure, with no record of whether they did.
+- **Ban only** — removes the fast path for genuinely useful work, without adding any technical checkpoint, and pushes usage into shadow workflows that are harder to see, not easier.
+- **Mask before send + audit evidence** — lets the summarisation and drafting work continue, strips or tokenizes identifiable client data before it reaches the external tool, and leaves a record that the control operated.
+
+This is the boundary NeutralAI is built to sit on: designed to reduce unnecessary exposure of client-identifiable data before a prompt reaches a public AI provider, and to help firms evidence that the control ran. That's a narrower claim than promising compliance or that any specific incident would have been prevented — no masking layer replaces professional judgment or a firm's own regulatory advice.
+
+## The lesson
+
+The Upper Tribunal case will likely be cited as a cautionary tale about AI in legal practice, and it is one. But the more durable lesson isn't "don't use ChatGPT." It's that useful, everyday AI tasks — summarising a letter, improving a sentence — will keep happening whether or not a policy exists, and firms that want to allow that work safely need a control point that acts before data leaves, plus evidence that it did. That combination is what turns "we have a policy" into something a regulator can actually verify.
+
+*Last reviewed: July 2026.*
+
+For a legal-sector walkthrough of how masking and audit evidence fit into existing workflows, see [AI data protection for legal teams](/use-cases/legal), or try the [NeutralAI playground](/playground) with a sample client letter.
