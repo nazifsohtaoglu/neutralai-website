@@ -210,6 +210,10 @@ export default function PresidioAlternativePage() {
                 Public benchmark generated on <span className="font-medium text-white">{benchmark.generatedAt}</span>.
                 It covers {benchmark.languages.join(', ')} prompt samples and links back to the gateway-owned proof page.
               </p>
+              <Link href="/benchmark" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary-light hover:text-primary">
+                See the full benchmark page
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </div>

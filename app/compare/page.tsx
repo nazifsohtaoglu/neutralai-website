@@ -284,6 +284,16 @@ export default function ComparePage() {
 
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
+              href="/benchmark"
+              className="btn btn-cta inline-flex items-center gap-2 px-6 py-3 text-sm"
+              data-analytics-event="cta_click"
+              data-analytics-label="See Full Benchmark"
+              data-analytics-placement="compare_detection"
+            >
+              See the full benchmark page
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
               href="/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026"
               className="btn btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm"
               data-analytics-event="cta_click"

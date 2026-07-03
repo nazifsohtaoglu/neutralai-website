@@ -21,6 +21,7 @@ NeutralAI targets UK/EU regulated organisations: financial services, legal, heal
 - [Security](https://neutralai.co.uk/security): encryption posture, SOC 2 roadmap, secret policy, audit posture
 - [Trust center](https://neutralai.co.uk/trust-center): compliance evidence, data retention
 - [Presidio alternative](https://neutralai.co.uk/presidio-alternative): build-vs-buy comparison with benchmark data
+- [Benchmark](https://neutralai.co.uk/benchmark): dated, citable PII-accuracy stats, methodology, and per-entity results
 - [Blog](https://neutralai.co.uk/blog): technical articles on PII detection, LLM routing, audit logging, and compliance engineering
 
 ## Documentation

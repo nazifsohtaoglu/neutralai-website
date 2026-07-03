@@ -7,6 +7,7 @@ export const dynamic = 'force-static'
 const routes = [
   '',
   '/about',
+  '/benchmark',
   '/pricing',
   '/blog',
   '/compare',
@@ -31,13 +32,15 @@ const routes = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = routes.map((route) => ({
     url: `${siteConfig.url}${route}`,
-    lastModified: route.startsWith('/use-cases')
+    lastModified: route === '/benchmark'
+      ? '2026-07-02'
+      : route.startsWith('/use-cases')
       ? '2026-05-12'
       : route === '/trust-center' || route === '/presidio-alternative' || route.startsWith('/insights/')
       ? '2026-05-08'
       : '2026-03-29',
     changeFrequency: route === '' ? ('weekly' as const) : ('monthly' as const),
-    priority: route === '' ? 1 : route === '/presidio-alternative' ? 0.85 : 0.7,
+    priority: route === '' ? 1 : route === '/presidio-alternative' || route === '/benchmark' ? 0.85 : 0.7,
   }))
 
   const blogRoutes = getAllPosts().map((post) => ({
