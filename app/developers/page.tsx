@@ -158,6 +158,10 @@ export default function DevelopersPage() {
                   <BookOpen className="h-4 w-4" />
                 </a>
               </div>
+              <Link href="/benchmark" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary-light hover:text-primary">
+                See the PII detection benchmark
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             <div className="min-w-0 rounded-[28px] border border-white/10 bg-background-secondary/90 p-4 shadow-[0_24px_80px_rgba(0,0,0,0.36)]">

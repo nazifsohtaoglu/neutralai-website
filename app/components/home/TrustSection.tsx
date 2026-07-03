@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { contactLinks, siteConfig } from '../../site'
 import { benchmarkProof, documentRedactionPoints, healthcareTrustPoints, trustCards } from '../../data/homepage'
@@ -78,6 +79,9 @@ export default function TrustSection() {
               Open benchmark
               <ArrowRight className="h-4 w-4" />
             </a>
+            <Link href="/benchmark" className="btn btn-secondary justify-center px-6 py-3 text-sm">
+              See full benchmark
+            </Link>
             <a href="/presidio-alternative" className="btn btn-secondary justify-center px-6 py-3 text-sm">
               Read Presidio comparison
             </a>
