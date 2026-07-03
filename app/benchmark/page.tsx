@@ -19,7 +19,7 @@ import { siteConfig } from '../site'
 export const metadata: Metadata = {
   title: 'PII Detection Benchmark — Dated, Citable Accuracy Stats',
   description:
-    'NeutralAI PII detection benchmark: 99.8% public overall F1, 98.4% holdout F1, 92.7% PERSON-holdout F1. Dated, vendor-published, reproducible methodology, per-entity results, and a Presidio-vanilla comparison.',
+    'NeutralAI PII detection benchmark: 99.8% public overall F1, 98.4% holdout F1, 92.7% PERSON-holdout F1. Dated, vendor-published product benchmark with documented methodology and a Presidio-vanilla comparison.',
   keywords: [
     'pii detection benchmark',
     'pii accuracy benchmark',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NeutralAI PII Detection Benchmark',
     description:
-      '99.8% public overall F1, 98.4% holdout F1, 92.7% PERSON-holdout F1 — dated, vendor-published, reproducible methodology with per-entity results.',
+      '99.8% public overall F1, 98.4% holdout F1, 92.7% PERSON-holdout F1 — dated, vendor-published product benchmark with documented methodology.',
     url: `${siteConfig.url}/benchmark`,
   },
 }
@@ -72,7 +72,7 @@ const quotableStats = [
 const comparisonRows = [
   {
     product: 'NeutralAI',
-    score: '99.8%',
+    score: benchmarkProof.publicOverallF1,
     status: 'measured',
     note: 'Public overall F1 on the NeutralAI PII benchmark set.',
   },
@@ -86,7 +86,7 @@ const comparisonRows = [
     product: 'OpenAI Privacy Filter',
     score: null,
     status: 'pending',
-    note: 'Head-to-head evaluation in progress. No score is published yet — this row will be updated once results exist.',
+    note: 'No score is published yet — results will be published here if/when a head-to-head comparison is run.',
   },
 ] as const
 
@@ -142,7 +142,7 @@ const faqs = [
   {
     question: 'Can I reproduce it?',
     answer:
-      'Not fully, not yet. The methodology is described on this page, and dataset facts (case count, language split, generation date) are published, but the labeled dataset and full scoring harness are not public — so an external team cannot independently rerun this exact comparison today. Full harness publication is planned. Until then, detailed methodology is available on request through a security or partnership review.',
+      'Not fully, not yet. The methodology is described on this page, and dataset facts (case count, language split, generation date) are published, but the labeled dataset and full scoring harness are not public — so an external team cannot independently rerun this exact comparison today. Detailed methodology is available on request through a security or partnership review.',
   },
   {
     question: 'How often is this updated?',
@@ -288,9 +288,9 @@ export default function BenchmarkPage() {
                 <p className="mt-2 text-sm leading-6 text-slate-300">
                   The methodology is described here: same test set and scorer used for both NeutralAI and the vanilla
                   Presidio baseline, with dataset facts (case count, languages, generation date) published on this
-                  page. The labeled dataset and full scoring harness are not public yet, so an external team cannot
-                  independently rerun this exact comparison today — full harness publication is planned. Until then,
-                  detailed methodology is available on request through security or partnership review.
+                  page. The labeled dataset and full scoring harness are not public today, so an external team cannot
+                  independently rerun this exact comparison. Detailed methodology is available on request through
+                  security or partnership review.
                 </p>
               </div>
             </div>
@@ -427,7 +427,7 @@ export default function BenchmarkPage() {
                   )}
                   <span>
                     {row.status === 'pending' ? (
-                      <span className="font-medium text-[#fdba74]">Pending — head-to-head in progress. </span>
+                      <span className="font-medium text-[#fdba74]">Not yet evaluated. </span>
                     ) : null}
                     {row.note}
                   </span>
