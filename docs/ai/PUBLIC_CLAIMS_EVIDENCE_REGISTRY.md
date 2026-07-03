@@ -36,6 +36,7 @@ Status values:
 | Benchmark (`app/benchmark/page.tsx`) | `OpenAI Privacy Filter` comparison row | `needs_evidence` | No head-to-head evaluation has been run yet; row is explicitly marked pending with no score | Product + Engineering | 2026-07-02 | "Pending — head-to-head in progress. No score is published yet." |
 | Benchmark (`app/benchmark/page.tsx`) | UK legal entity pack (Companies House number, HMRC UTR, court references, SRA ID, Land Registry title number, DVLA licence number) | `roadmap` | Entity-coverage roadmap; no benchmark artifacts exist for these entity types yet | Product + Engineering | 2026-07-02 | "In development — results will be published here once benchmarked." |
 | Benchmark (`app/benchmark/page.tsx`) | Per-entity F1 breakdown (email, phone, card, IBAN, UK NHS number, UK National Insurance number) | `needs_evidence` | Only aggregate overall F1 and PERSON-holdout F1 are currently measured; no per-entity-type F1 has been published | Engineering + Product | 2026-07-02 | "NeutralAI currently publishes overall and PERSON-specific F1 scores; a full per-entity-type breakdown is not yet published." |
+| Benchmark (`app/benchmark/page.tsx`) | UK NHS number and UK National Insurance number are supported entity types today | `approved` | Gateway recognizers `UK_NHS_NUMBER` and `UK_NATIONAL_INSURANCE_NUMBER` shipped in `neutralai-gateway` `app/core/engine.py` | Engineering | 2026-07-02 | "Supported entity type — no published per-entity F1 yet." |
 
 ## Repeatable Review Process For New Claims
 

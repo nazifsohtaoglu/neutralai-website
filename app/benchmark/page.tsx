@@ -119,7 +119,11 @@ const ukPackEntities = [
 const changelog = [
   {
     date: `${lastVerified}`,
-    entry: 'Initial publication of the standalone benchmark page.',
+    entry: 'Initial publication of the standalone benchmark page. UK legal entity pack listed as in development, without figures.',
+  },
+  {
+    date: 'May 2026',
+    entry: `Presidio-vanilla comparison benchmark generated (${generatedAt}, 1,000 cases across DE, EN, ES, FR, TR).`,
   },
 ] as const
 
@@ -127,7 +131,7 @@ const faqs = [
   {
     question: 'How is it measured?',
     answer:
-      'The headline numbers are span-level F1 scores computed against a labeled benchmark set of prompt-style text, comparing detected PII spans to ground-truth annotations. Overall F1 covers all supported entity types combined; holdout F1 is measured on a sample not used for tuning the detectors.',
+      'The headline numbers are F1 scores computed against a labeled benchmark set of prompt-style text, comparing detected PII against ground-truth annotations. The published comparison set covers 1,000 cases across German, English, Spanish, French, and Turkish. Overall F1 covers all supported entity types combined; holdout F1 is measured on a sample not used for tuning the detectors.',
   },
   {
     question: 'Is this independently validated?',
@@ -151,7 +155,7 @@ const datasetStructuredData = {
   '@type': 'Dataset',
   name: 'NeutralAI PII Detection Benchmark',
   description:
-    'A vendor-published benchmark measuring PII detection accuracy (span-level F1) across supported entity types, including a holdout split and a PERSON-entity holdout split, with a comparison against a vanilla Microsoft Presidio baseline.',
+    'A vendor-published benchmark measuring PII detection accuracy (F1) across supported entity types, including a holdout split and a PERSON-entity holdout split, with a comparison against a vanilla Microsoft Presidio baseline on the same test set and scorer.',
   url: `${siteConfig.url}/benchmark`,
   dateModified: generatedAt,
   creator: {
@@ -160,7 +164,7 @@ const datasetStructuredData = {
     url: siteConfig.url,
   },
   license: 'https://neutralai.co.uk/terms',
-  measurementTechnique: 'Span-level F1 scoring against labeled PII benchmark data',
+  measurementTechnique: 'F1 scoring against labeled PII benchmark data',
   variableMeasured: ['Overall F1', 'Holdout F1', 'PERSON-entity holdout F1'],
 } as const
 
@@ -247,9 +251,9 @@ export default function BenchmarkPage() {
                 <ClipboardList className="h-5 w-5 text-primary-light" />
                 <h3 className="mt-4 font-heading text-lg font-semibold text-white">Dataset</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
-                  A labeled benchmark set of prompt-style text spanning multiple languages, scored for span-level PII
-                  detection against supported entity types (names, contacts, financial and account identifiers, and
-                  region-specific IDs such as UK NHS numbers).
+                  A labeled benchmark set of prompt-style text. The published comparison run covers 1,000 cases across
+                  DE, EN, ES, FR, and TR (generated {generatedAt}), scored against supported entity types — names,
+                  contacts, financial and account identifiers, and region-specific IDs such as UK NHS numbers.
                 </p>
               </div>
               <div className="rounded-[22px] border border-white/10 bg-background/80 p-6">
@@ -329,7 +333,7 @@ export default function BenchmarkPage() {
                 </tr>
                 <tr>
                   <td className="px-5 py-4 font-medium text-slate-200">UK National Insurance number</td>
-                  <td className="px-5 py-4 text-slate-400">Not yet a documented benchmark entity type</td>
+                  <td className="px-5 py-4 text-slate-400">Supported entity type — no published per-entity F1 yet</td>
                   <td className="px-5 py-4 text-slate-500">
                     <Minus className="inline h-4 w-4" />
                   </td>
