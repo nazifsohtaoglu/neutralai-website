@@ -5,7 +5,15 @@
     <link>https://neutralai.co.uk/blog</link>
     <description>Practical guidance for PII-safe LLM adoption, privacy engineering, and AI governance.</description>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 11 May 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 03 Jul 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>A UK Tribunal Treated Pasting Client Letters Into ChatGPT as a Data Breach</title>
+      <link>https://neutralai.co.uk/blog/uk-tribunal-ai-client-confidentiality-ruling</link>
+      <guid>https://neutralai.co.uk/blog/uk-tribunal-ai-client-confidentiality-ruling</guid>
+      <description>An Upper Tribunal ruling on a solicitor's ChatGPT use shows the real lesson is controls and evidence, not banning AI. Here's what actually failed.</description>
+      <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
+      <category>Legal</category>
+    </item>
     <item>
       <title>NeutralAI vs Private AI vs Nightfall: PII Detection Benchmark 2026</title>
       <link>https://neutralai.co.uk/blog/neutralai-vs-private-ai-vs-nightfall-pii-detection-benchmark-2026</link>
