@@ -41,6 +41,7 @@ export const metadata: Metadata = {
 // Source of truth: nazifsohtaoglu/neutralai-gateway benchmark artifacts listed in website issue #16.
 // Same numbers as app/data/homepage.ts benchmarkProof and app/presidio-alternative/page.tsx.
 const lastVerified = 'July 2026'
+const lastVerifiedDate = '2026-07-03'
 const generatedAt = '2026-05-08'
 
 // Static, developer-authored content only (no user/request input) — mirrors the
@@ -141,7 +142,7 @@ const faqs = [
   {
     question: 'Can I reproduce it?',
     answer:
-      'The benchmark scope, entity definitions, and scoring approach are documented, and the Presidio-vanilla comparison is reproducible against the open-source library as a baseline. Full dataset artifacts are not published publicly to avoid leaking a labeled eval set, but methodology detail is available on request through a security or partnership review.',
+      'Not fully, not yet. The methodology is described on this page, and dataset facts (case count, language split, generation date) are published, but the labeled dataset and full scoring harness are not public — so an external team cannot independently rerun this exact comparison today. Full harness publication is planned. Until then, detailed methodology is available on request through a security or partnership review.',
   },
   {
     question: 'How often is this updated?',
@@ -157,7 +158,7 @@ const datasetStructuredData = {
   description:
     'A vendor-published benchmark measuring PII detection accuracy (F1) across supported entity types, including a holdout split and a PERSON-entity holdout split, with a comparison against a vanilla Microsoft Presidio baseline on the same test set and scorer.',
   url: `${siteConfig.url}/benchmark`,
-  dateModified: generatedAt,
+  dateModified: lastVerifiedDate,
   creator: {
     '@type': 'Organization',
     name: siteConfig.name,
@@ -228,11 +229,25 @@ export default function BenchmarkPage() {
           </div>
 
           <div className="mx-auto mt-8 flex max-w-5xl flex-col gap-3 sm:flex-row sm:justify-center">
-            <a href={benchmarkProof.appBenchmarkUrl} className="btn btn-cta justify-center px-8 py-4 text-base">
+            <a
+              href={benchmarkProof.appBenchmarkUrl}
+              className="btn btn-cta justify-center px-8 py-4 text-base"
+              data-analytics-event="cta_click"
+              data-analytics-label="Open gateway benchmark surface"
+              data-analytics-placement="benchmark_hero"
+              data-analytics-cta-id="benchmark_hero_open_gateway"
+            >
               Open gateway benchmark surface
               <ArrowRight className="h-5 w-5" />
             </a>
-            <Link href="/presidio-alternative" className="btn btn-secondary justify-center px-8 py-4 text-base">
+            <Link
+              href="/presidio-alternative"
+              className="btn btn-secondary justify-center px-8 py-4 text-base"
+              data-analytics-event="cta_click"
+              data-analytics-label="Read the Presidio comparison"
+              data-analytics-placement="benchmark_hero"
+              data-analytics-cta-id="benchmark_hero_presidio_comparison"
+            >
               Read the Presidio comparison
             </Link>
           </div>
@@ -271,10 +286,11 @@ export default function BenchmarkPage() {
                 <FileText className="h-5 w-5 text-primary-light" />
                 <h3 className="mt-4 font-heading text-lg font-semibold text-white">Reproducibility</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
-                  The Presidio-vanilla comparison uses the same test set and scorer against the open-source library, so
-                  that delta is reproducible by any team running Presidio directly. Full dataset artifacts are not
-                  published to avoid leaking a labeled eval set; detailed methodology is available on request through
-                  security review.
+                  The methodology is described here: same test set and scorer used for both NeutralAI and the vanilla
+                  Presidio baseline, with dataset facts (case count, languages, generation date) published on this
+                  page. The labeled dataset and full scoring harness are not public yet, so an external team cannot
+                  independently rerun this exact comparison today — full harness publication is planned. Until then,
+                  detailed methodology is available on request through security or partnership review.
                 </p>
               </div>
             </div>
@@ -324,15 +340,8 @@ export default function BenchmarkPage() {
                     <td className="px-5 py-4 font-semibold text-primary-light">{row.score}</td>
                   </tr>
                 ))}
-                <tr className="bg-white/[0.02]">
-                  <td className="px-5 py-4 font-medium text-slate-200">UK NHS number</td>
-                  <td className="px-5 py-4 text-slate-400">Supported entity type — no published per-entity F1 yet</td>
-                  <td className="px-5 py-4 text-slate-500">
-                    <Minus className="inline h-4 w-4" />
-                  </td>
-                </tr>
                 <tr>
-                  <td className="px-5 py-4 font-medium text-slate-200">UK National Insurance number</td>
+                  <td className="px-5 py-4 font-medium text-slate-200">UK NHS number</td>
                   <td className="px-5 py-4 text-slate-400">Supported entity type — no published per-entity F1 yet</td>
                   <td className="px-5 py-4 text-slate-500">
                     <Minus className="inline h-4 w-4" />
@@ -370,6 +379,11 @@ export default function BenchmarkPage() {
                 </li>
               ))}
             </ul>
+            <p className="mt-4 text-xs leading-6 text-slate-500">
+              UK National Insurance number detection is in development. A gateway recognizer exists, but this entity
+              type is not yet listed in NeutralAI&apos;s published supported-entity coverage, so it is not included in
+              the benchmark table above until that coverage is published and measured.
+            </p>
           </div>
         </div>
       </section>
@@ -469,11 +483,25 @@ export default function BenchmarkPage() {
               it.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href={siteConfig.signupUrl} className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto">
+              <Link
+                href={siteConfig.signupUrl}
+                className="btn btn-cta w-full px-8 py-4 text-base sm:w-auto"
+                data-analytics-event="cta_click"
+                data-analytics-label="Try Free"
+                data-analytics-placement="benchmark_final_cta"
+                data-analytics-cta-id="benchmark_final_cta_try_free"
+              >
                 Try Free
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link href="/playground" className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto">
+              <Link
+                href="/playground"
+                className="btn btn-secondary w-full px-8 py-4 text-base sm:w-auto"
+                data-analytics-event="cta_click"
+                data-analytics-label="Open the playground"
+                data-analytics-placement="benchmark_final_cta"
+                data-analytics-cta-id="benchmark_final_cta_playground"
+              >
                 Open the playground
               </Link>
             </div>

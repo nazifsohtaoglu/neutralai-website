@@ -13,7 +13,7 @@ test('public claims registry exists and records required review fields', () => {
   const registry = readSource('docs/ai/PUBLIC_CLAIMS_EVIDENCE_REGISTRY.md')
 
   assert.match(registry, /# Public Claims Evidence Registry/)
-  assert.match(registry, /Last reviewed: 2026-05-15/)
+  assert.match(registry, /Last reviewed: 2026-07-03/)
   assert.match(registry, /Status values:/)
   assert.match(registry, /`approved`/)
   assert.match(registry, /`needs_evidence`/)

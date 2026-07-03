@@ -1,7 +1,7 @@
 # Public Claims Evidence Registry
 
 Related issue: [#73](https://github.com/nazifsohtaoglu/neutralai-website/issues/73)
-Last reviewed: 2026-05-15
+Last reviewed: 2026-07-03
 
 This registry maps high-risk public claims to their current evidence status, source, owner, and allowed wording.
 
@@ -35,8 +35,9 @@ Status values:
 | Benchmark (`app/benchmark/page.tsx`) | `99.8%` public overall F1 vs `57.5%` vanilla Presidio overall F1, same test set | `approved` | Same source-of-truth as `app/presidio-alternative/page.tsx` benchmark object; gateway benchmark artifacts (website issue #16 links) | Engineering + Product | 2026-07-02 | "Same benchmark set and scorer, open-source baseline with no product-layer calibration." |
 | Benchmark (`app/benchmark/page.tsx`) | `OpenAI Privacy Filter` comparison row | `needs_evidence` | No head-to-head evaluation has been run yet; row is explicitly marked pending with no score | Product + Engineering | 2026-07-02 | "Pending — head-to-head in progress. No score is published yet." |
 | Benchmark (`app/benchmark/page.tsx`) | UK legal entity pack (Companies House number, HMRC UTR, court references, SRA ID, Land Registry title number, DVLA licence number) | `roadmap` | Entity-coverage roadmap; no benchmark artifacts exist for these entity types yet | Product + Engineering | 2026-07-02 | "In development — results will be published here once benchmarked." |
-| Benchmark (`app/benchmark/page.tsx`) | Per-entity F1 breakdown (email, phone, card, IBAN, UK NHS number, UK National Insurance number) | `needs_evidence` | Only aggregate overall F1 and PERSON-holdout F1 are currently measured; no per-entity-type F1 has been published | Engineering + Product | 2026-07-02 | "NeutralAI currently publishes overall and PERSON-specific F1 scores; a full per-entity-type breakdown is not yet published." |
-| Benchmark (`app/benchmark/page.tsx`) | UK NHS number and UK National Insurance number are supported entity types today | `approved` | Gateway recognizers `UK_NHS_NUMBER` and `UK_NATIONAL_INSURANCE_NUMBER` shipped in `neutralai-gateway` `app/core/engine.py` | Engineering | 2026-07-02 | "Supported entity type — no published per-entity F1 yet." |
+| Benchmark (`app/benchmark/page.tsx`) | Per-entity F1 breakdown (email, phone, card, IBAN, UK NHS number) | `needs_evidence` | Only aggregate overall F1 and PERSON-holdout F1 are currently measured; no per-entity-type F1 has been published | Engineering + Product | 2026-07-03 | "NeutralAI currently publishes overall and PERSON-specific F1 scores; a full per-entity-type breakdown is not yet published." |
+| Benchmark (`app/benchmark/page.tsx`) | UK NHS number is a supported entity type today | `approved` | Gateway recognizer `UK_NHS_NUMBER` shipped in `neutralai-gateway` `app/core/engine.py`, and listed in published supported-entity sources (`app/data/homepage.ts`, `app/how-it-works/page.tsx`) | Engineering | 2026-07-03 | "Supported entity type — no published per-entity F1 yet." |
+| Benchmark (`app/benchmark/page.tsx`) | UK National Insurance number detection | `roadmap` | Gateway recognizer `UK_NATIONAL_INSURANCE_NUMBER` exists in `neutralai-gateway` `app/core/engine.py`, but it is not yet listed in the site's published supported-entity sources (`app/data/homepage.ts`, `app/how-it-works/page.tsx`); treated as in-development until that coverage is published | Engineering + Product | 2026-07-03 | "In development — a gateway recognizer exists, but this entity type is not yet part of NeutralAI's published supported-entity coverage." |
 
 ## Repeatable Review Process For New Claims
 
