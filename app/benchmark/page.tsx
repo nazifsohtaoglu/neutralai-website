@@ -86,7 +86,7 @@ const comparisonRows = [
     product: 'OpenAI Privacy Filter',
     score: null,
     status: 'pending',
-    note: 'No score is published yet — results will be published here if/when a head-to-head comparison is run.',
+    note: 'NeutralAI has not evaluated OpenAI Privacy Filter on this benchmark set — no NeutralAI-verified comparison is published here yet.',
   },
 ] as const
 
