@@ -35,7 +35,8 @@ For non-trivial work, write a short plan:
 3. Make the smallest focused change.
 4. Update content tests if CTA/copy expectations change.
 5. Run targeted verification.
-6. Summarize residual risk.
+6. Run an independent red-team review before PR.
+7. Summarize residual risk.
 
 ### Blog Visual Workflow
 
@@ -57,6 +58,7 @@ For blog articles or content hub work:
 - Do not mix unrelated redesign work into narrow tickets.
 - Preserve user changes in the worktree.
 - Never include secrets or credentials in code, docs, tests, logs, or PR text.
+- Before PR, dispatch an independent red-team reviewer using `.codex/workflows/post-ticket-red-team-check.md` or equivalent context. Treat Critical and Important findings as blockers.
 
 ## 4. Verification
 
@@ -76,5 +78,6 @@ A ticket is ready when:
 - the requested route/component/content change is complete
 - targeted checks have run or the reason is documented
 - `./scripts/codex-security-pre-review.sh` has run and blocking findings are addressed
+- independent red-team review has run and Critical/Important findings are addressed or explicitly rejected with evidence
 - mobile/desktop visual risk has been considered for UI work
 - PR notes include summary, validation, risks, and follow-ups

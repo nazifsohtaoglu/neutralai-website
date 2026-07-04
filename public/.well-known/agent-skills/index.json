@@ -1,0 +1,42 @@
+{
+  "version": "0.2.0",
+  "publisher": {
+    "name": "NeutralAI",
+    "url": "https://neutralai.co.uk"
+  },
+  "updated": "2026-07-04",
+  "skills": [
+    {
+      "id": "neutralai-public-content",
+      "name": "NeutralAI public content discovery",
+      "description": "Find NeutralAI product, security, pricing, developer, and technical article content for retrieval, citation, and evaluation.",
+      "url": "https://neutralai.co.uk/.well-known/agent-skills/neutralai-public-content/SKILL.md",
+      "type": "text/markdown",
+      "audience": [
+        "ai-search",
+        "research-agent",
+        "buyer-research-agent"
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "llms",
+      "url": "https://neutralai.co.uk/llms.txt",
+      "type": "text/plain",
+      "description": "LLM-readable summary and route map for the public website."
+    },
+    {
+      "id": "sitemap",
+      "url": "https://neutralai.co.uk/sitemap.xml",
+      "type": "application/xml",
+      "description": "Canonical route inventory for crawlers."
+    },
+    {
+      "id": "api-catalog",
+      "url": "https://neutralai.co.uk/.well-known/api-catalog",
+      "type": "application/linkset+json",
+      "description": "Public API and documentation discovery linkset."
+    }
+  ]
+}

@@ -28,6 +28,13 @@ NeutralAI targets UK/EU regulated organisations: financial services, legal, heal
 - [Developers](https://neutralai.co.uk/developers): REST API reference, Python SDK, Node SDK, browser extension integration
 - [Install extension](https://neutralai.co.uk/install-extension): Chrome and Edge setup guide
 
+## Agent discovery
+
+- [API catalog](https://neutralai.co.uk/.well-known/api-catalog): linkset for the public API domain, developer documentation, the public health endpoint, and website discovery resources
+- [Agent skills index](https://neutralai.co.uk/.well-known/agent-skills/index.json): machine-readable index for public content discovery
+- [Agent content skill](https://neutralai.co.uk/.well-known/agent-skills/neutralai-public-content/SKILL.md): guidance for agents reading and citing NeutralAI public content
+- [Authentication note](https://neutralai.co.uk/.well-known/auth.md): API-key usage guidance and OAuth/OIDC scope note
+
 ## Technical articles (blog)
 
 - [Why PII masking matters for enterprise AI adoption](https://neutralai.co.uk/blog/why-pii-masking-matters-for-enterprise-ai-adoption)

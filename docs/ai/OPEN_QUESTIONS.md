@@ -22,6 +22,7 @@ Use this file for unknowns. Do not guess silently.
 - Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: generated `out/` is build-only output and should not be committed.
 - Resolved on 2026-05-15 in `docs/deployment-static-runbook.md`: owner/on-call assignment requirements for host-level redirect/header configuration are now captured as explicit closure checklist items, while the actual private-ops assignment execution remains tracked under Platform/Infra in issue [#78](https://github.com/nazifsohtaoglu/neutralai-website/issues/78) and `docs/ai/LAUNCH_READINESS_LEDGER.md`.
 - Should Playwright artifacts be ignored/cleaned, or are they used as review evidence?
+- For Agent-Ready follow-up after issue #153: should NeutralAI publish a real MCP server card, WebMCP surface, OAuth/OIDC metadata, DNS-AID records, or agentic commerce protocol metadata? Do not add those discovery claims until the owning service and production endpoint exist.
 
 ## Testing / CI
 

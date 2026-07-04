@@ -1,0 +1,50 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://api.neutralai.co.uk",
+      "service-doc": [
+        {
+          "href": "https://neutralai.co.uk/developers",
+          "type": "text/html",
+          "title": "NeutralAI developer documentation"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://api.neutralai.co.uk/health",
+          "type": "application/json",
+          "title": "API health"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://neutralai.co.uk/.well-known/auth.md",
+          "type": "text/markdown",
+          "title": "Authentication model"
+        }
+      ]
+    },
+    {
+      "anchor": "https://neutralai.co.uk",
+      "service-doc": [
+        {
+          "href": "https://neutralai.co.uk/llms.txt",
+          "type": "text/plain",
+          "title": "LLM-readable site guide"
+        },
+        {
+          "href": "https://neutralai.co.uk/sitemap.xml",
+          "type": "application/xml",
+          "title": "Public sitemap"
+        }
+      ],
+      "service-desc": [
+        {
+          "href": "https://neutralai.co.uk/.well-known/agent-skills/index.json",
+          "type": "application/json",
+          "title": "Agent skills index"
+        }
+      ]
+    }
+  ]
+}
