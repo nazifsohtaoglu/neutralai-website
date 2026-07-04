@@ -50,4 +50,5 @@ What visitor, content, or maintenance problem does this solve?
 - Confirm no unrelated user changes were included.
 - Run targeted verification from `docs/ai/TESTING_AND_COMMANDS.md`.
 - Run `./scripts/codex-security-pre-review.sh` and resolve blocking findings.
+- Run an independent red-team review using `.codex/workflows/post-ticket-red-team-check.md` or equivalent subagent prompt, then resolve Critical/Important findings before opening the PR.
 - Mention tests that were not run and why.
