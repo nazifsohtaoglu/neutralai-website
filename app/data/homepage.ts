@@ -112,11 +112,11 @@ export const pricingPlans = [
     annualPrice: '£7.20',
     annualBilled: '£86.40 billed yearly, excluding VAT',
     priceNote: 'per month, excluding VAT',
-    usage: '500K masking requests per month',
+    usage: '10K masking requests per month',
     managedAiCredit: 'Bring your own LLM',
     modelUsage: 'Your own LLM — we never touch the call',
     features: [
-      '500K monthly masking requests',
+      '10K monthly masking requests',
       'Shield mask/unmask API and SDK access',
       'Bring your own LLM — we never touch the call',
       'No managed proxy, chat UI, or browser extension',
