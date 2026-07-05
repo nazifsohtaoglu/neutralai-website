@@ -16,7 +16,9 @@ Assumption: The production domain is edge-fronted by Cloudflare (`server: cloudf
 - Trailing slash behavior is enabled in [next.config.js](../next.config.js) via `trailingSlash: true`.
 - Security headers are defined in [public/_headers](../public/_headers).
 - Sitemap generation is defined in [app/sitemap.ts](../app/sitemap.ts).
-- Robots metadata is defined in [app/robots.ts](../app/robots.ts).
+- Robots metadata is defined in [public/robots.txt](../public/robots.txt).
+- Agent markdown negotiation fallback is defined in [functions/_middleware.js](../functions/_middleware.js).
+- Agent readiness controls are documented in [docs/agent-readiness-runbook.md](./agent-readiness-runbook.md).
 - Legacy finance alias behavior is defined in [app/use-cases/finance/page.tsx](../app/use-cases/finance/page.tsx).
 
 ## Build and Artifact Rules
@@ -68,9 +70,23 @@ Assumption: The production domain is edge-fronted by Cloudflare (`server: cloudf
    - `curl -sS https://neutralai.co.uk/robots.txt`
 3. Expected:
    - `Sitemap: https://neutralai.co.uk/sitemap.xml` present.
+   - `Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference` present.
    - Route URLs emitted by [app/sitemap.ts](../app/sitemap.ts) are present in sitemap output.
 4. Note:
    - Production robots output currently includes Cloudflare Managed Content directives in addition to site-defined metadata.
+
+## Agent Markdown Negotiation
+
+1. Verify Markdown response negotiation:
+   - `curl -sSI -H 'Accept: text/markdown' https://neutralai.co.uk/`
+   - `curl -sS -H 'Accept: text/markdown' https://neutralai.co.uk/ | head -40`
+2. Expected:
+   - `Content-Type: text/markdown; charset=utf-8`
+   - `Vary: Accept`
+   - `Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference`
+   - Body starts with `# NeutralAI`
+3. Note:
+   - This is a homepage-only Cloudflare Pages Function fallback for explicit agent requests. If Cloudflare Markdown for Agents becomes editable for the zone, prefer the native edge conversion and remove this fallback after production verification.
 
 ## Deployment Smoke Checklist
 
@@ -91,6 +107,7 @@ Then validate production/staging URL:
 4. `curl -sSI https://neutralai.co.uk/use-cases/finance/` and confirm alias page remains reachable.
 5. `curl -sS https://neutralai.co.uk/sitemap.xml` and verify launch-critical routes are present.
 6. `curl -sS https://neutralai.co.uk/robots.txt` and confirm sitemap line and expected crawler policy.
+7. `curl -sS -H 'Accept: text/markdown' https://neutralai.co.uk/ | head -40` and confirm the agent markdown fallback is active.
 
 ## Rollback
 
