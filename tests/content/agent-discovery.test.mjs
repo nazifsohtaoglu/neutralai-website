@@ -20,7 +20,7 @@ async function loadMiddleware() {
   return import(moduleUrl)
 }
 
-function createContext(path, accept = 'text/markdown') {
+function createContext(path, accept = 'text/markdown', method = 'GET') {
   let nextCalls = 0
 
   return {
@@ -28,6 +28,7 @@ function createContext(path, accept = 'text/markdown') {
       return nextCalls
     },
     request: new Request(`https://neutralai.co.uk${path}`, {
+      method,
       headers: {
         Accept: accept,
       },
@@ -105,6 +106,14 @@ test('markdown negotiation fallback only handles the homepage when markdown is a
 
   assert.equal(rejectedMarkdownContext.nextCalls, 1)
   assert.equal(await rejectedMarkdownResponse.text(), 'next')
+
+  const headContext = createContext('/', 'text/markdown', 'HEAD')
+  const headResponse = await onRequest(headContext)
+
+  assert.equal(headContext.nextCalls, 0)
+  assert.equal(headResponse.headers.get('Content-Type'), 'text/markdown; charset=utf-8')
+  assert.equal(headResponse.headers.get('Cache-Control'), 'no-store')
+  assert.equal(await headResponse.text(), '')
 })
 
 test('api catalog is a linkset with public API and website discovery links', () => {
