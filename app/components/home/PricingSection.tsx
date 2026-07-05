@@ -132,7 +132,7 @@ export default function PricingSection() {
           All listed GBP prices are excluding VAT. VAT may apply based on billing country and entity status.
         </p>
 
-        <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-3">
+        <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
           {primaryPricingPlans.map((plan, index) => (
             <motion.div
               key={plan.name}
