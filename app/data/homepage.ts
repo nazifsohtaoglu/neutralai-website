@@ -105,6 +105,28 @@ export const pricingPlans = [
     featured: false,
   },
   {
+    name: 'Developer',
+    eyebrow: 'API / SDK only',
+    summary: 'Shield-only masking API and SDK access for developers who bring their own LLM.',
+    monthlyPrice: '£9',
+    annualPrice: '£7.20',
+    annualBilled: '£86.40 billed yearly, excluding VAT',
+    priceNote: 'per month, excluding VAT',
+    usage: '500K masking requests per month',
+    managedAiCredit: 'Bring your own LLM',
+    modelUsage: 'Your own LLM — we never touch the call',
+    features: [
+      '500K monthly masking requests',
+      'Shield mask/unmask API and SDK access',
+      'Bring your own LLM — we never touch the call',
+      'No managed proxy, chat UI, or browser extension',
+      '20% annual billing discount',
+    ],
+    href: 'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=developer&src=website_get_developer&callbackUrl=%2Fbilling',
+    cta: 'Get API access',
+    featured: false,
+  },
+  {
     name: 'Starter',
     eyebrow: 'Start controlled',
     summary: 'Low-friction paid plan for founders and small regulated teams.',
@@ -192,7 +214,7 @@ export const pricingPlans = [
   },
 ] as const
 
-export const primaryPricingPlans = pricingPlans.filter((plan) => ['Free', 'Starter', 'Team'].includes(plan.name))
+export const primaryPricingPlans = pricingPlans.filter((plan) => ['Free', 'Developer', 'Starter', 'Team'].includes(plan.name))
 export const advancedPricingPlans = pricingPlans.filter((plan) => ['Business', 'Enterprise'].includes(plan.name))
 
 export const pricingFaqs = [

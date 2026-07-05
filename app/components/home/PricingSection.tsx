@@ -10,14 +10,14 @@ const BYOK_PLANS = ['Business', 'Enterprise'] as const
 const SSO_PLANS = ['Enterprise'] as const
 const SSO_ROADMAP_PLANS = ['Business'] as const
 
-const comparisonTiers = ['Free', 'Starter', 'Team', 'Business', 'Enterprise'] as const
+const comparisonTiers = ['Free', 'Developer', 'Starter', 'Team', 'Business', 'Enterprise'] as const
 
-const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string]> = [
-  ['Masking requests', '1k', '10K', '100K', '500K', 'Custom'],
-  ['Managed AI credit', '£1 trial', '£3', '£10', '£25', 'Custom'],
-  ['Provider spend model', 'Managed sandbox', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
-  ['API key management', 'Basic', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
-  ['SSO / SIEM path', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
+const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string, string]> = [
+  ['Masking requests', '1k', '500K', '10K', '100K', '500K', 'Custom'],
+  ['Managed AI credit', '£1 trial', 'Bring your own LLM', '£3', '£10', '£25', 'Custom'],
+  ['Provider spend model', 'Managed sandbox', 'BYO LLM (shield-only)', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
+  ['API key management', 'Basic', 'Shield API/SDK only', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
+  ['SSO / SIEM path', 'No', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
 ]
 
 function PlanBadges({ planName }: { planName: string }) {
@@ -266,14 +266,14 @@ export default function PricingSection() {
 
         {/* Desktop: full comparison grid */}
         <div className="mt-8 hidden overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] lg:block">
-          <div className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300">
+          <div className="grid grid-cols-7 border-b border-white/10 text-sm text-slate-300">
             <div className="px-4 py-3 font-semibold text-slate-100">Capability</div>
             {comparisonTiers.map((tier) => (
               <div key={tier} className="px-4 py-3 font-semibold text-slate-100">{tier}</div>
             ))}
           </div>
           {comparisonRows.map(([label, ...values]) => (
-            <div key={label} className="grid grid-cols-6 border-b border-white/10 text-sm text-slate-300 last:border-b-0">
+            <div key={label} className="grid grid-cols-7 border-b border-white/10 text-sm text-slate-300 last:border-b-0">
               <div className="px-4 py-3 text-slate-100">{label}</div>
               {values.map((value, i) => (
                 <div key={comparisonTiers[i]} className="px-4 py-3">{value}</div>
