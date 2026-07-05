@@ -69,13 +69,14 @@ function acceptsMarkdown(acceptHeader) {
 export async function onRequest(context) {
   const { request } = context
   const url = new URL(request.url)
+  const isMarkdownMethod = request.method === 'GET' || request.method === 'HEAD'
 
   if (
-    request.method === 'GET' &&
+    isMarkdownMethod &&
     acceptsMarkdown(request.headers.get('Accept')) &&
     normalisePath(url.pathname) === '/'
   ) {
-    return new Response(MARKDOWN_BODY, { headers: MARKDOWN_RESPONSE_HEADERS })
+    return new Response(request.method === 'HEAD' ? null : MARKDOWN_BODY, { headers: MARKDOWN_RESPONSE_HEADERS })
   }
 
   return context.next()
