@@ -13,7 +13,7 @@ const SSO_ROADMAP_PLANS = ['Business'] as const
 const comparisonTiers = ['Free', 'Developer', 'Starter', 'Team', 'Business', 'Enterprise'] as const
 
 const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string, string]> = [
-  ['Masking requests', '1k', '500K', '10K', '100K', '500K', 'Custom'],
+  ['Masking requests', '1k', '10K', '10K', '100K', '500K', 'Custom'],
   ['Managed AI credit', '£1 trial', 'Bring your own LLM', '£3', '£10', '£25', 'Custom'],
   ['Provider spend model', 'Managed sandbox', 'BYO LLM (shield-only)', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
   ['API key management', 'Basic', 'Shield API/SDK only', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
