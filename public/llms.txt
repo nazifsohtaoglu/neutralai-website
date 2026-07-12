@@ -60,7 +60,7 @@ NeutralAI targets UK/EU regulated organisations: financial services, legal, heal
 - [Encryption key rotation without downtime](https://neutralai.co.uk/blog/encryption-key-rotation-without-downtime)
 - [Fail at boot: secret validation](https://neutralai.co.uk/blog/fail-at-boot-secret-validation)
 - [Hidden cost of shadow AI](https://neutralai.co.uk/blog/hidden-cost-of-shadow-ai-security-control-point)
-- [When a lawyer pasted a document into ChatGPT](https://neutralai.co.uk/blog/uk-tribunal-ai-client-confidentiality-ruling)
+- [When an immigration adviser pasted client letters into ChatGPT](https://neutralai.co.uk/blog/uk-tribunal-ai-client-confidentiality-ruling)
 - [PII detection precision: checksums, context gates, and overlap suppression](https://neutralai.co.uk/blog/pii-detection-precision-checksums-context-gates)
 - [We hand-wrote our JWT verifier, because in JWT, flexibility is a vulnerability](https://neutralai.co.uk/blog/why-we-hand-rolled-jwt-verification)
 
