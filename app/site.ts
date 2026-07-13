@@ -17,8 +17,11 @@ export const siteConfig = {
   demoVideoPosterSrc: '/demo/neutralai-product-walkthrough-poster.png',
   analytics: {
     posthogToken: process.env.NEXT_PUBLIC_POSTHOG_TOKEN ?? '',
-    posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
+    posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com',
   },
+  // Pricing figures may not be published before accountant+legal review (BUS-020 §10).
+  // Hidden by default; flip NEXT_PUBLIC_SHOW_PRICING=true once the review clears.
+  showPublicPricing: process.env.NEXT_PUBLIC_SHOW_PRICING === 'true',
   leadCapture: {
     googleSheetsEndpoint: process.env.NEXT_PUBLIC_GOOGLE_SHEETS_LEAD_ENDPOINT ?? '',
   },
