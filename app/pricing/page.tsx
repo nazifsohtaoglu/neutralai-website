@@ -1,4 +1,5 @@
 import { pricingFaqStructuredData } from '../data/homepage'
+import { siteConfig } from '../site'
 import PricingSection from '../components/home/PricingSection'
 import CtaSection from '../components/home/CtaSection'
 

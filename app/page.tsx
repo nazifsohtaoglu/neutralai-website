@@ -1,4 +1,5 @@
 import { pricingFaqStructuredData } from './data/homepage'
+import { siteConfig } from './site'
 import LiveMaskingDemo from './components/home/LiveMaskingDemo'
 import CtaSection from './components/home/CtaSection'
 import DetectionEngine from './components/home/DetectionEngine'

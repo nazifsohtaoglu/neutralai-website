@@ -83,7 +83,12 @@ export const trustCards: Card[] = [
   },
 ] as const
 
-export const pricingPlans = [
+// Pricing figures may not be published before accountant+legal review (BUS-020 §10).
+// Direct process.env reference (not siteConfig) so the dead branch — and every price
+// figure in it — is eliminated from the shipped bundle at build time.
+const SHOW_PUBLIC_PRICING = process.env.NEXT_PUBLIC_SHOW_PRICING === 'true'
+
+const allPricingPlans = [
   {
     name: 'Free',
     eyebrow: 'Sandbox',
@@ -214,10 +219,12 @@ export const pricingPlans = [
   },
 ] as const
 
+export const pricingPlans: readonly (typeof allPricingPlans)[number][] = SHOW_PUBLIC_PRICING ? allPricingPlans : []
+
 export const primaryPricingPlans = pricingPlans.filter((plan) => ['Free', 'Developer', 'Starter', 'Team'].includes(plan.name))
 export const advancedPricingPlans = pricingPlans.filter((plan) => ['Business', 'Enterprise'].includes(plan.name))
 
-export const pricingFaqs = [
+const allPricingFaqs = [
   {
     question: 'Why show pricing before a sales call?',
     answer:
@@ -274,6 +281,8 @@ export const pricingFaqs = [
       'NeutralAI processes and stores data in the EU (London/Frankfurt regions) by default. Vault tokens are encrypted with AES-256-GCM and carry a 15-minute TTL unless extended by policy. Enterprise customers can discuss private cloud or on-premises deployment for stricter data-residency requirements.',
   },
 ] as const
+
+export const pricingFaqs: readonly (typeof allPricingFaqs)[number][] = SHOW_PUBLIC_PRICING ? allPricingFaqs : []
 
 export const pricingFaqStructuredData = {
   '@context': 'https://schema.org',

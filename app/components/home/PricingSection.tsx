@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, ChevronDown, KeyRound, ShieldCheck } from 'lucide-react'
 import { advancedPricingPlans, pricingFaqs, primaryPricingPlans } from '../../data/homepage'
+import { contactLinks, siteConfig } from '../../site'
 import SectionIntro from './SectionIntro'
 
 const BYOK_PLANS = ['Business', 'Enterprise'] as const
@@ -12,13 +13,18 @@ const SSO_ROADMAP_PLANS = ['Business'] as const
 
 const comparisonTiers = ['Free', 'Developer', 'Starter', 'Team', 'Business', 'Enterprise'] as const
 
-const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string, string]> = [
-  ['Masking requests', '1k', '10K', '10K', '100K', '500K', 'Custom'],
-  ['Managed AI credit', '£1 trial', 'Bring your own LLM', '£3', '£10', '£25', 'Custom'],
-  ['Provider spend model', 'Managed sandbox', 'BYO LLM (shield-only)', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
-  ['API key management', 'Basic', 'Shield API/SDK only', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
-  ['SSO / SIEM path', 'No', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
-]
+// Direct process.env reference so the price figures below drop out of the bundle
+// entirely while pricing publication is gated (see app/data/homepage.ts).
+const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string, string]> =
+  process.env.NEXT_PUBLIC_SHOW_PRICING === 'true'
+    ? [
+        ['Masking requests', '1k', '10K', '10K', '100K', '500K', 'Custom'],
+        ['Managed AI credit', '£1 trial', 'Bring your own LLM', '£3', '£10', '£25', 'Custom'],
+        ['Provider spend model', 'Managed sandbox', 'BYO LLM (shield-only)', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
+        ['API key management', 'Basic', 'Shield API/SDK only', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
+        ['SSO / SIEM path', 'No', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
+      ]
+    : []
 
 function PlanBadges({ planName }: { planName: string }) {
   const hasByok = (BYOK_PLANS as readonly string[]).includes(planName)
@@ -87,6 +93,29 @@ function FaqAccordionItem({ question, answer }: { question: string; answer: stri
 
 export default function PricingSection() {
   const [annualBilling, setAnnualBilling] = useState(false)
+
+  if (!siteConfig.showPublicPricing) {
+    return (
+      <section id="pricing" className="section">
+        <div className="container-custom">
+          <SectionIntro
+            eyebrow="Pricing"
+            title="Pricing is being finalised"
+            description="We are finalising our published pricing ahead of commercial launch. Plans start free, and paid tiers are sized for small and mid-sized regulated teams — talk to us for current plans and early-access pricing."
+            centered
+          />
+          <div className="mx-auto mt-8 flex max-w-xl flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <a href={contactLinks.demo} className="btn btn-cta px-8 py-4" data-analytics-event="cta_click" data-analytics-label="Talk to us about pricing" data-analytics-placement="pricing_hidden_notice" data-analytics-cta-id="pricing_contact">
+              Talk to us about pricing
+            </a>
+            <a href={siteConfig.signupUrl} className="btn btn-secondary px-8 py-4" data-analytics-event="cta_click" data-analytics-label="Start free" data-analytics-placement="pricing_hidden_notice" data-analytics-cta-id="pricing_start_free">
+              Start free
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id="pricing" className="section">
