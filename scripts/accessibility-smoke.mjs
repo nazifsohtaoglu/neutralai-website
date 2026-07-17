@@ -51,6 +51,16 @@ const scenarios = [
     contrast: [],
   },
   {
+    name: 'answers-hub',
+    route: '/answers/',
+    contrast: [],
+  },
+  {
+    name: 'answers-question',
+    route: '/answers/can-law-firms-use-chatgpt-with-client-data/',
+    contrast: [],
+  },
+  {
     name: 'playground',
     route: '/playground/',
     contrast: [
