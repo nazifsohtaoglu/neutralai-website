@@ -7,6 +7,15 @@ export const dynamic = 'force-static'
 const routes = [
   '',
   '/about',
+  '/answers',
+  '/answers/can-law-firms-use-chatgpt-with-client-data',
+  '/answers/is-chatgpt-gdpr-compliant',
+  '/answers/stop-staff-pasting-pii-into-chatgpt',
+  '/answers/what-is-reversible-pii-tokenization',
+  '/answers/does-the-eu-ai-act-apply-to-uk-firms',
+  '/answers/uk-tribunal-chatgpt-client-data-ruling',
+  '/answers/dlp-for-llms-explained',
+  '/answers/what-is-shadow-ai',
   '/benchmark',
   '/pricing',
   '/blog',
@@ -44,7 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteConfig.url}${route}`,
     lastModified: route === '/benchmark'
       ? '2026-07-02'
-      : route.startsWith('/compliance')
+      : route.startsWith('/compliance') || route.startsWith('/answers')
       ? '2026-07-17'
       : route.startsWith('/use-cases')
       ? '2026-05-12'

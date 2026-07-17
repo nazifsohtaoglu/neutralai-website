@@ -17,6 +17,7 @@ const productLinks = [
   { label: 'Healthcare Use Case', href: '/use-cases/healthcare' },
   { label: 'Legal Use Case', href: '/use-cases/legal' },
   { label: 'Blog', href: '/blog' },
+  { label: 'Answers', href: '/answers' },
   { label: 'Benchmark', href: '/benchmark' },
   { label: 'Presidio Alternative', href: '/presidio-alternative' },
   { label: 'Pricing', href: homeSections.pricing },
