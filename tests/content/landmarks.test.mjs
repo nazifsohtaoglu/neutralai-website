@@ -30,8 +30,8 @@ function countMainLandmarks(source) {
   return matches ? matches.length : 0
 }
 
-function delegatesToUseCasePage(source) {
-  return source.includes('<UseCasePage ')
+function delegatesToSharedTemplate(source) {
+  return source.includes('<UseCasePage ') || source.includes('<GuidancePage ')
 }
 
 test('root layout delegates main landmark ownership to routes', () => {
@@ -46,6 +46,11 @@ test('root layout delegates main landmark ownership to routes', () => {
 test('shared use-case template owns a single main landmark', () => {
   const source = readFileSync(join(root, 'app/use-cases/UseCasePage.tsx'), 'utf8')
   assert.equal(countMainLandmarks(source), 1, 'UseCasePage should render one <main>')
+})
+
+test('shared guidance template owns a single main landmark', () => {
+  const source = readFileSync(join(root, 'app/compliance/GuidancePage.tsx'), 'utf8')
+  assert.equal(countMainLandmarks(source), 1, 'GuidancePage should render one <main>')
 })
 
 test('custom not-found page owns a single main landmark', () => {
@@ -66,8 +71,8 @@ test('each route page renders one main landmark directly or via shared template'
     }
 
     assert.ok(
-      count === 0 && delegatesToUseCasePage(source),
-      `${pageFile.replace(`${root}/`, '')} should render one <main> directly or delegate to UseCasePage`,
+      count === 0 && delegatesToSharedTemplate(source),
+      `${pageFile.replace(`${root}/`, '')} should render one <main> directly or delegate to a shared template (UseCasePage/GuidancePage)`,
     )
   }
 })

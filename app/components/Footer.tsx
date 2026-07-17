@@ -37,6 +37,7 @@ const legalLinks = [
   { label: 'Terms of Service', href: '/terms' },
   { label: 'Security', href: '/security' },
   { label: 'Trust Center', href: '/trust-center' },
+  { label: 'UK Compliance Hub', href: '/compliance' },
   { label: 'About', href: '/about' },
 ] as const
 

@@ -39,6 +39,11 @@ const financeFaq = [
       'No. NeutralAI provides a gateway boundary, masking policy, and audit evidence that can support financial services review conversations, but it does not guarantee regulatory approval.',
   },
   {
+    question: 'Are there FCA rules specifically about AI?',
+    answer:
+      'The FCA has said it does not plan AI-specific regulations: existing frameworks — the Consumer Duty, SM&CR, and data and resilience rules — apply to AI use. That makes evidence of controls the practical requirement, since a named senior manager is accountable for AI-driven outcomes.',
+  },
+  {
     question: 'Can financial teams keep enough context for useful AI output?',
     answer:
       'Yes. The gateway can replace sensitive values with placeholders or governed tokens while preserving the surrounding business context needed for summaries, triage, and review.',
@@ -115,7 +120,7 @@ export const financeUseCase: UseCasePageContent = {
   complianceMapping: [
     {
       label: 'FCA and PRA review',
-      body: 'Show where AI prompt traffic is controlled, which values are masked, and what audit-safe metadata proves the control ran.',
+      body: 'The FCA plans no AI-specific rulebook — Consumer Duty and SM&CR apply to AI use as-is, so a named senior manager owns the outcome. Show where AI prompt traffic is controlled, which values are masked, and what audit-safe metadata proves the control ran.',
     },
     {
       label: 'PCI-DSS scoping',

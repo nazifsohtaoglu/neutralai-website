@@ -11,6 +11,16 @@ const routes = [
   '/pricing',
   '/blog',
   '/compare',
+  // /compliance/checklist is intentionally absent: gated lead-magnet asset (noindex).
+  '/compliance',
+  '/compliance/uk-guidance-map',
+  '/compliance/law-society-generative-ai',
+  '/compliance/sra-ai-risk-outlook',
+  '/compliance/bar-council-generative-ai',
+  '/compliance/judiciary-ai-guidance',
+  '/compliance/ico-generative-ai',
+  '/compliance/data-use-and-access-act',
+  '/compliance/fca-ai-approach',
   '/contact',
   '/demo',
   '/developers',
@@ -34,13 +44,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteConfig.url}${route}`,
     lastModified: route === '/benchmark'
       ? '2026-07-02'
+      : route.startsWith('/compliance')
+      ? '2026-07-17'
       : route.startsWith('/use-cases')
       ? '2026-05-12'
       : route === '/trust-center' || route === '/presidio-alternative' || route.startsWith('/insights/')
       ? '2026-05-08'
       : '2026-03-29',
     changeFrequency: route === '' ? ('weekly' as const) : ('monthly' as const),
-    priority: route === '' ? 1 : route === '/presidio-alternative' || route === '/benchmark' ? 0.85 : 0.7,
+    priority:
+      route === ''
+        ? 1
+        : route === '/presidio-alternative' || route === '/benchmark' || route === '/compliance'
+        ? 0.85
+        : 0.7,
   }))
 
   const blogRoutes = getAllPosts().map((post) => ({
