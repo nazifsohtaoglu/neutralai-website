@@ -138,10 +138,10 @@ export default function ComplianceChecklistPage() {
             {sections.map((section) => (
               <div key={section.title} className="rounded-[24px] border border-white/10 bg-background/80 p-6 md:p-8">
                 <h2 className="font-heading text-2xl font-semibold text-white">{section.title}</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-400">{section.intro}</p>
+                <p className="mt-2 text-base leading-7 text-slate-300">{section.intro}</p>
                 <ul className="mt-5 space-y-3">
                   {section.questions.map((question) => (
-                    <li key={question} className="flex items-start gap-3 text-sm leading-6 text-slate-200">
+                    <li key={question} className="flex items-start gap-3 text-base leading-7 text-slate-200">
                       <span
                         aria-hidden="true"
                         className="mt-1 h-4 w-4 flex-shrink-0 rounded border border-white/25 bg-white/5"

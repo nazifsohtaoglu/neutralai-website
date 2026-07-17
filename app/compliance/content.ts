@@ -331,7 +331,7 @@ export const guidanceEntries: GuidanceEntry[] = [
     pageTitle: 'The ICO’s position on generative AI and personal data',
     title: 'Response to the consultation series on generative AI',
     firstPublished: '12 December 2024',
-    lastUpdated: 'March 2026 (strategy update)',
+    lastUpdated: 'March 2026',
     sourceUrl:
       'https://ico.org.uk/about-the-ico/what-we-do/our-work-on-artificial-intelligence/response-to-the-consultation-series-on-generative-ai/',
     lastReviewed: LAST_REVIEWED,
@@ -406,7 +406,7 @@ export const guidanceEntries: GuidanceEntry[] = [
     pageTitle: 'No UK AI Act — so what actually binds you? The DUAA, explained',
     title: 'Data (Use and Access) Act 2025 (c. 18)',
     firstPublished: '19 June 2025 (Royal Assent)',
-    lastUpdated: 'Main data-protection provisions in force 5 February 2026',
+    lastUpdated: '5 February 2026 (main provisions in force)',
     sourceUrl: 'https://www.legislation.gov.uk/ukpga/2025/18',
     lastReviewed: LAST_REVIEWED,
     oneLineSummary:

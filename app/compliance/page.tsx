@@ -48,6 +48,13 @@ const faqStructuredData = {
   })),
 }
 
+function monogram(shortName: string): string {
+  if (shortName.replace(/[^A-Za-z]/g, '').length <= 4) return shortName.split(' ')[0].toUpperCase()
+  const words = shortName.split(' ').filter(Boolean)
+  if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase()
+  return shortName.slice(0, 3).toUpperCase()
+}
+
 export default function ComplianceHubPage() {
   return (
     <main className="min-h-screen pt-24">
@@ -97,18 +104,20 @@ export default function ComplianceHubPage() {
               <Link
                 key={entry.slug}
                 href={`/compliance/${entry.slug}`}
-                className="group rounded-[24px] border border-white/10 bg-background/80 p-6 transition hover:border-primary/40 hover:bg-primary/[0.06]"
+                className="group rounded-2xl border border-white/10 bg-background/80 p-6 transition hover:border-primary/40 hover:bg-primary/[0.06]"
               >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">{entry.shortName}</p>
-                  <span className="text-xs text-slate-500">
-                    {entry.lastUpdated ? `Updated ${entry.lastUpdated}` : `Published ${entry.firstPublished}`}
+                <div className="flex items-start justify-between gap-3">
+                  <span className="flex h-12 min-w-12 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 px-2 font-mono text-sm font-bold tracking-wide text-primary-light">
+                    {monogram(entry.shortName)}
+                  </span>
+                  <span className="rounded-md bg-white/5 px-2 py-1 font-mono text-[11px] text-slate-300">
+                    {entry.lastUpdated ? `Updated ${entry.lastUpdated}` : entry.firstPublished}
                   </span>
                 </div>
-                <h3 className="mt-3 font-heading text-xl font-semibold text-white group-hover:text-primary-light">
+                <h3 className="mt-4 font-heading text-xl font-semibold leading-snug text-white group-hover:text-primary-light">
                   {entry.title}
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-slate-400">{entry.oneLineSummary}</p>
+                <p className="mt-2.5 text-base leading-7 text-slate-300">{entry.oneLineSummary}</p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary-light">
                   Read the summary
                   <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
@@ -118,14 +127,16 @@ export default function ComplianceHubPage() {
 
             <Link
               href="/compliance/uk-guidance-map"
-              className="group rounded-[24px] border border-primary/25 bg-primary/10 p-6 transition hover:border-primary/50"
+              className="group rounded-2xl border border-primary/25 bg-primary/10 p-6 transition hover:border-primary/50"
             >
-              <div className="flex items-center justify-between gap-3">
-                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Cross-regulator</p>
-                <Map className="h-4 w-4 text-primary-light" />
+              <div className="flex items-start justify-between gap-3">
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/30 bg-primary/15">
+                  <Map className="h-5 w-5 text-primary-light" />
+                </span>
+                <span className="rounded-md bg-white/5 px-2 py-1 font-mono text-[11px] text-slate-300">7 sources</span>
               </div>
-              <h3 className="mt-3 font-heading text-xl font-semibold text-white">UK guidance map</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-300">
+              <h3 className="mt-4 font-heading text-xl font-semibold leading-snug text-white">UK guidance map</h3>
+              <p className="mt-2.5 text-base leading-7 text-slate-200">
                 One table: every NeutralAI control mapped to the guidance lines it addresses, across all seven sources.
               </p>
               <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary-light">
@@ -173,7 +184,7 @@ export default function ComplianceHubPage() {
             {hubFaq.map((item) => (
               <div key={item.question} className="rounded-2xl border border-white/10 bg-background/80 p-6">
                 <h3 className="font-heading text-lg font-semibold text-white">{item.question}</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-300">{item.answer}</p>
+                <p className="mt-3 text-base leading-8 text-slate-300">{item.answer}</p>
               </div>
             ))}
           </div>

@@ -55,12 +55,12 @@ export default function AnswersHubPage() {
                     <Link
                       key={entry.slug}
                       href={`/answers/${entry.slug}`}
-                      className="group rounded-[24px] border border-white/10 bg-background/80 p-6 transition hover:border-primary/40 hover:bg-primary/[0.06]"
+                      className="group rounded-2xl border border-white/10 bg-background/80 p-6 transition hover:border-primary/40 hover:bg-primary/[0.06]"
                     >
-                      <h3 className="font-heading text-xl font-semibold text-white group-hover:text-primary-light">
+                      <h3 className="font-heading text-2xl font-semibold leading-snug text-white [text-wrap:balance] group-hover:text-primary-light">
                         {entry.question}
                       </h3>
-                      <p className="mt-2 text-sm leading-6 text-slate-400 line-clamp-3">{entry.directAnswer}</p>
+                      <p className="mt-3 text-base leading-7 text-slate-300 line-clamp-3">{entry.directAnswer}</p>
                       <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary-light">
                         Read the answer
                         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
@@ -83,7 +83,7 @@ export default function AnswersHubPage() {
                   <HelpCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary-light" />
                   {item.question}
                 </h3>
-                <p className="mt-2 text-sm leading-7 text-slate-300">{item.answer}</p>
+                <p className="mt-3 text-base leading-8 text-slate-300">{item.answer}</p>
               </div>
             ))}
           </div>
