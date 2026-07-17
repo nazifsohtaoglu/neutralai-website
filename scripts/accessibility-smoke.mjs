@@ -41,6 +41,16 @@ const scenarios = [
     contrast: [],
   },
   {
+    name: 'compliance-hub',
+    route: '/compliance/',
+    contrast: [],
+  },
+  {
+    name: 'compliance-guidance',
+    route: '/compliance/judiciary-ai-guidance/',
+    contrast: [],
+  },
+  {
     name: 'playground',
     route: '/playground/',
     contrast: [
