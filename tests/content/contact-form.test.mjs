@@ -60,7 +60,7 @@ test('contact page keeps secondary email route and routes high-intent form inten
   assert.match(siteSource, /securityReview: '\/contact\?intent=security-review'/)
   assert.match(contactSource, /normalizeIntent/)
   assert.match(leadFormSource, /Lead form endpoint is not configured in this environment yet\./)
-  assert.match(thanksSource, /We&apos;ll get back to you within 1 business day/)
+  assert.match(thanksSource, /We&apos;ll get back to you within 24 hours/)
   assert.match(contactSource, /Prefer email\? Reach us at/)
   assert.match(contactSource, /contactLinks\.salesMailto/)
   assert.match(contactSource, /Other routes/)

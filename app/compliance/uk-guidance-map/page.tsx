@@ -50,7 +50,7 @@ export default function UkGuidanceMapPage() {
               <div key={row.control} className="overflow-hidden rounded-[24px] border border-white/10 bg-background/80">
                 <div className="border-b border-white/10 bg-white/[0.04] px-6 py-5">
                   <h2 className="font-heading text-xl font-semibold text-white">{row.control}</h2>
-                  <p className="mt-1 text-sm leading-6 text-slate-400">{row.description}</p>
+                  <p className="mt-1.5 text-base leading-7 text-slate-300">{row.description}</p>
                 </div>
                 <div>
                   {row.guidanceLines.map((line) => (
@@ -62,7 +62,7 @@ export default function UkGuidanceMapPage() {
                       <div className="px-6 py-4 font-mono text-xs uppercase tracking-[0.14em] text-primary-light">
                         {line.shortName}
                       </div>
-                      <div className="px-6 py-4 text-sm leading-6 text-slate-300 md:px-0">{line.line}</div>
+                      <div className="px-6 py-4 text-base leading-7 text-slate-200 md:px-0">{line.line}</div>
                       <div className="hidden items-center px-6 md:flex">
                         <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:text-primary-light" />
                       </div>

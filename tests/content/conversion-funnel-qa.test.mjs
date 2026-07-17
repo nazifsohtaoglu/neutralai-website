@@ -40,7 +40,7 @@ test('homepage, pricing, and extension flows emit CTA analytics metadata', () =>
   const pricingSource = readSource('app/components/home/PricingSection.tsx')
   const installSource = readSource('app/install-extension/page.tsx')
 
-  assert.match(heroSource, /data-analytics-event="CTA Click"/)
+  assert.match(heroSource, /data-analytics-event="cta_click"/)
   assert.match(heroSource, /data-analytics-label="Try Free"/)
   assert.match(heroSource, /data-analytics-label="Book Demo"/)
   assert.match(heroSource, /data-analytics-label="Install Browser Extension"/)
@@ -53,7 +53,7 @@ test('homepage, pricing, and extension flows emit CTA analytics metadata', () =>
   assert.match(pricingSource, /data-analytics-label=\{`\$\{plan\.name\} \$\{plan\.cta\}`\}/)
 
   assert.match(installSource, /data-analytics-placement="install_extension_options"/)
-  assert.match(installSource, /data-analytics-event="CTA Click"/)
+  assert.match(installSource, /data-analytics-event="cta_click"/)
   assert.match(installSource, /target="_blank"/)
   assert.match(installSource, /rel="noopener noreferrer"/)
 })

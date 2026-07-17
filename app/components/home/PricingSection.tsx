@@ -1,95 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle2, ChevronDown, KeyRound, ShieldCheck } from 'lucide-react'
-import { advancedPricingPlans, pricingFaqs, primaryPricingPlans } from '../../data/homepage'
+import { motion } from 'framer-motion'
+import { CheckCircle2 } from 'lucide-react'
+import { advancedPricingPlans, primaryPricingPlans } from '../../data/homepage'
 import { contactLinks, siteConfig } from '../../site'
 import SectionIntro from './SectionIntro'
-
-const BYOK_PLANS = ['Business', 'Enterprise'] as const
-const SSO_PLANS = ['Enterprise'] as const
-const SSO_ROADMAP_PLANS = ['Business'] as const
-
-const comparisonTiers = ['Free', 'Developer', 'Starter', 'Team', 'Business', 'Enterprise'] as const
-
-// Direct process.env reference so the price figures below drop out of the bundle
-// entirely while pricing publication is gated (see app/data/homepage.ts).
-const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string, string]> =
-  process.env.NEXT_PUBLIC_SHOW_PRICING === 'true'
-    ? [
-        ['Masking requests', '1k', '10K', '10K', '100K', '500K', 'Custom'],
-        ['Managed AI credit', '£1 trial', 'Bring your own LLM', '£3', '£10', '£25', 'Custom'],
-        ['Provider spend model', 'Managed sandbox', 'BYO LLM (shield-only)', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
-        ['API key management', 'Basic', 'Shield API/SDK only', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],
-        ['SSO / SIEM path', 'No', 'No', 'No', 'Roadmap', 'Export path', 'Required'],
-      ]
-    : []
-
-function PlanBadges({ planName }: { planName: string }) {
-  const hasByok = (BYOK_PLANS as readonly string[]).includes(planName)
-  const hasSso = (SSO_PLANS as readonly string[]).includes(planName)
-  const hasSsoRoadmap = (SSO_ROADMAP_PLANS as readonly string[]).includes(planName)
-
-  if (!hasByok && !hasSso && !hasSsoRoadmap) return null
-
-  return (
-    <div className="mt-3 flex flex-wrap gap-2">
-      {hasByok && (
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-xs font-medium text-amber-300">
-          <KeyRound className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
-          BYOK available
-        </span>
-      )}
-      {hasSso && (
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/20 bg-violet-400/10 px-3 py-1 text-xs font-medium text-violet-300">
-          <ShieldCheck className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
-          SSO required
-        </span>
-      )}
-      {hasSsoRoadmap && (
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/15 bg-violet-400/[0.07] px-3 py-1 text-xs font-medium text-violet-300/70">
-          <ShieldCheck className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
-          SSO export path
-        </span>
-      )}
-    </div>
-  )
-}
-
-function FaqAccordionItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false)
-  return (
-    <div className="rounded-[20px] border border-white/10 bg-background/75">
-      <button
-        type="button"
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
-      >
-        <span className="font-heading text-base font-semibold text-slate-100">{question}</span>
-        <ChevronDown
-          className={`h-5 w-5 flex-shrink-0 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-          aria-hidden="true"
-        />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="answer"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <p className="px-5 pb-5 text-sm leading-6 text-slate-400">{answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
+import PlanBadges from './PlanBadges'
+import PricingComparisonTable from './PricingComparisonTable'
+import PricingFaq from './PricingFaq'
 
 export default function PricingSection() {
   const [annualBilling, setAnnualBilling] = useState(false)
@@ -293,52 +212,9 @@ export default function PricingSection() {
           ))}
         </div>
 
-        {/* Desktop: full comparison grid */}
-        <div className="mt-8 hidden overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] lg:block">
-          <div className="grid grid-cols-7 border-b border-white/10 text-sm text-slate-300">
-            <div className="px-4 py-3 font-semibold text-slate-100">Capability</div>
-            {comparisonTiers.map((tier) => (
-              <div key={tier} className="px-4 py-3 font-semibold text-slate-100">{tier}</div>
-            ))}
-          </div>
-          {comparisonRows.map(([label, ...values]) => (
-            <div key={label} className="grid grid-cols-7 border-b border-white/10 text-sm text-slate-300 last:border-b-0">
-              <div className="px-4 py-3 text-slate-100">{label}</div>
-              {values.map((value, i) => (
-                <div key={comparisonTiers[i]} className="px-4 py-3">{value}</div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <PricingComparisonTable />
 
-        {/* Mobile/tablet: one card per plan, listing all its capabilities — no horizontal scroll */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:hidden">
-          {comparisonTiers.map((tier, tierIdx) => (
-            <div key={tier} className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5">
-              <h4 className="font-heading text-base font-semibold text-primary-light">{tier}</h4>
-              <dl className="mt-3 space-y-2">
-                {comparisonRows.map(([label, ...values]) => (
-                  <div
-                    key={label}
-                    className="flex items-baseline justify-between gap-4 border-b border-white/5 pb-2 last:border-b-0 last:pb-0"
-                  >
-                    <dt className="text-sm text-slate-400">{label}</dt>
-                    <dd className="text-right text-sm font-medium text-slate-200">{values[tierIdx]}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10">
-          <h3 className="font-heading text-2xl font-semibold">Frequently asked questions</h3>
-          <div className="mt-5 grid gap-3 lg:grid-cols-2">
-            {pricingFaqs.map((item) => (
-              <FaqAccordionItem key={item.question} question={item.question} answer={item.answer} />
-            ))}
-          </div>
-        </div>
+        <PricingFaq />
       </div>
     </section>
   )
