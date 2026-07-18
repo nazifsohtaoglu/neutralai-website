@@ -49,12 +49,12 @@ const dataHandlingCommitments = [
   {
     title: 'No conversation collection',
     detail:
-      'We do not collect, store, sell or share your conversations. Prompt text is processed to find and mask PII, then discarded.',
+      'We never sell, share, or retain your conversations, and we run no analytics or model training on them. Prompt text is used only to detect and mask PII — in local mode without leaving your browser, in managed mode via the gateway masking call described below — then discarded.',
   },
   {
     title: 'No browsing-history harvesting',
     detail:
-      'Content scripts run only on the supported AI chat sites listed in the manifest — nowhere else. The extension has no visibility into the rest of your browsing.',
+      'Content scripts run only on the supported AI chat sites listed in the manifest — nowhere else. The extension does not read, collect, or transmit the content of your other tabs or general browsing.',
   },
   {
     title: 'No ads, trackers or affiliate links',
@@ -126,7 +126,9 @@ export default function BrowserExtensionSupportPage() {
               <div className="rounded-2xl border border-primary/20 bg-primary/10 px-5 py-5">
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Local mode (default)</p>
                 <p className="mt-2 text-sm leading-6 text-slate-200">
-                  Detection and masking run entirely in your browser. Nothing is sent to NeutralAI servers.
+                  Detection and masking run entirely in your browser — your prompt text is never sent to NeutralAI
+                  servers. The extension still makes background calls for policy/config refresh and metadata telemetry,
+                  which never carry prompt content.
                 </p>
               </div>
               <div className="rounded-2xl border border-border bg-background px-5 py-5">
@@ -140,9 +142,10 @@ export default function BrowserExtensionSupportPage() {
               </div>
             </div>
             <p className="mt-6 text-sm text-slate-400">
-              The full data-handling dossier ships with the extension source as{' '}
-              <span className="font-mono text-slate-300">browser-extension/SECURITY.md</span>, and vulnerabilities can be
-              reported via{' '}
+              This page is the public statement of that posture; the same attestation ships inside the extension package
+              as{' '}
+              <span className="font-mono text-slate-300">SECURITY.md</span> for installed users and store reviewers.
+              Vulnerabilities can be reported via{' '}
               <a href={siteConfig.securityTxtPath} className="text-primary-light hover:text-primary">
                 /.well-known/security.txt
               </a>
