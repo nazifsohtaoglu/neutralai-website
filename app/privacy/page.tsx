@@ -6,7 +6,7 @@ import { extensionLinks, siteConfig } from '../site'
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description:
-    'Public privacy policy for NeutralAI Interceptor, covering supported hosts, sign-in flow, API flow, and metadata-only telemetry posture.',
+    'Public privacy policy for the NeutralAI browser extension, covering supported hosts, sign-in flow, API flow, and metadata-only telemetry posture.',
   alternates: {
     canonical: '/privacy',
   },
@@ -42,12 +42,12 @@ export default function PrivacyPage() {
 
         <div className="container-custom relative z-10">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">NeutralAI Interceptor</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">NeutralAI PII Masking</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Browser extension privacy policy
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              This privacy page exists for browser store review and public reference. It explains how NeutralAI Interceptor operates on supported AI web apps, what service endpoints it contacts, and what telemetry posture the product is designed to maintain.
+              This privacy page exists for browser store review and public reference. It explains how the NeutralAI browser extension operates on supported AI web apps, what service endpoints it contacts, and what telemetry posture the product is designed to maintain.
             </p>
             <p className="mt-4 text-sm text-slate-400">
               Privacy questions can be sent to{' '}
@@ -69,7 +69,7 @@ export default function PrivacyPage() {
               </div>
               <h2 className="mt-5 font-heading text-3xl font-bold">Supported AI hosts only</h2>
               <p className="mt-4 text-sm leading-6 text-slate-400">
-                NeutralAI Interceptor is intended to run only on supported AI web applications where prompt masking is applied before submission. It does not request broad host access across arbitrary browsing activity.
+                The NeutralAI browser extension is intended to run only on supported AI web applications where prompt masking is applied before submission. It does not request broad host access across arbitrary browsing activity.
               </p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {supportedHosts.map((host) => (

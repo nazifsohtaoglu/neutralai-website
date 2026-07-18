@@ -6,7 +6,7 @@ import { extensionLinks, siteConfig } from '../site'
 export const metadata: Metadata = {
   title: 'Install Browser Extension',
   description:
-    'Install NeutralAI Interceptor for Chrome or Edge, or start an enterprise rollout for managed browser deployments.',
+    'Install the NeutralAI browser extension for Chrome or Edge, or start an enterprise rollout for managed browser deployments.',
   alternates: {
     canonical: '/install-extension',
   },
@@ -57,12 +57,12 @@ export default function InstallExtensionPage() {
 
         <div className="container-custom relative z-10">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">NeutralAI Interceptor</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">NeutralAI PII Masking</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
               Install the browser extension without guessing the rollout path
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              NeutralAI Interceptor masks sensitive prompt data before it leaves supported AI web applications. This page is the public install reference for browser store review and managed enterprise rollout.
+              The NeutralAI browser extension masks sensitive prompt data before it leaves supported AI web applications. This page is the public install reference for browser store review and managed enterprise rollout.
             </p>
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function InstallExtensionPage() {
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">What the extension does</p>
               <h2 className="mt-4 font-heading text-3xl font-bold">Single-purpose behaviour</h2>
               <p className="mt-4 text-slate-400">
-                NeutralAI Interceptor helps users mask sensitive prompt data before it is submitted from supported AI web applications. It is designed to run on supported AI hosts, call the NeutralAI API boundary, and avoid remotely hosted executable code.
+                The NeutralAI browser extension helps users mask sensitive prompt data before it is submitted from supported AI web applications. It is designed to run on supported AI hosts, call the NeutralAI API boundary, and avoid remotely hosted executable code.
               </p>
               <div className="mt-8 rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-slate-200">
                 <ShieldCheck className="mb-3 h-5 w-5 text-primary-light" />
