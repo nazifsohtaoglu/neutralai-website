@@ -133,8 +133,9 @@ export default function BrowserExtensionSupportPage() {
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Managed mode (signed in)</p>
                 <p className="mt-2 text-sm leading-6 text-slate-400">
                   Prompt text is sent over TLS to the NeutralAI gateway for stronger server-side detection and the masked
-                  result is returned. Reversible mask tokens live in an encrypted vault (AES-256-GCM) with a 15-minute TTL,
-                  then are destroyed. The audit log records the <em>entities masked</em>, not your full prompt text.
+                  result is returned. Reversible mask tokens live in an encrypted vault (AES-256-GCM) with a short TTL
+                  (15 minutes by default), then are destroyed. The audit log records the <em>entities masked</em>, not your
+                  full prompt text.
                 </p>
               </div>
             </div>
