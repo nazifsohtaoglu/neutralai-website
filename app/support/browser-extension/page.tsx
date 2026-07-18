@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AppWindow, ExternalLink, HardDrive, LockKeyhole, MonitorSmartphone, Radio, Shield } from 'lucide-react'
+import { AppWindow, ExternalLink, HardDrive, LockKeyhole, MonitorSmartphone, Radio, Shield, ShieldCheck } from 'lucide-react'
 import { extensionLinks, siteConfig } from '../../site'
 
 export const metadata: Metadata = {
   title: 'Browser Extension Support',
   description:
-    'Public support reference for NeutralAI Interceptor, including permission rationale, host permission scope, sign-in flow, and enterprise rollout guidance.',
+    'Public support reference for the NeutralAI browser extension, including its no-chat-harvesting attestation, permission rationale, host permission scope, sign-in flow, and enterprise rollout guidance.',
   alternates: {
     canonical: '/support/browser-extension',
   },
@@ -45,6 +45,29 @@ const permissionExplanations = [
   },
 ] as const
 
+const dataHandlingCommitments = [
+  {
+    title: 'No conversation collection',
+    detail:
+      'We do not collect, store, sell or share your conversations. Prompt text is processed to find and mask PII, then discarded.',
+  },
+  {
+    title: 'No browsing-history harvesting',
+    detail:
+      'Content scripts run only on the supported AI chat sites listed in the manifest — nowhere else. The extension has no visibility into the rest of your browsing.',
+  },
+  {
+    title: 'No ads, trackers or affiliate links',
+    detail:
+      'The extension injects nothing into pages beyond the masking behaviour, and monetises none of your activity.',
+  },
+  {
+    title: 'No remotely hosted code',
+    detail:
+      'All executable logic ships inside the reviewed extension package. Nothing is fetched and run from a remote server at runtime.',
+  },
+] as const
+
 const integrationEndpoints = [
   extensionLinks.signIn,
   extensionLinks.session,
@@ -65,10 +88,64 @@ export default function BrowserExtensionSupportPage() {
           <div className="mx-auto max-w-4xl text-center">
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Browser extension support</p>
             <h1 className="mt-4 font-heading text-4xl font-bold md:text-6xl">
-              Public support reference for NeutralAI Interceptor
+              Public support reference for the NeutralAI browser extension
             </h1>
             <p className="mt-6 text-xl text-slate-400">
               This is the canonical support page for browser store review, self-serve installs, and enterprise rollout conversations. It explains the extension’s limited purpose, requested permissions, and the NeutralAI-owned app and API surfaces it interacts with.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container-custom">
+          <div className="card p-8 md:p-10">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                <ShieldCheck className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Data handling &amp; trust</p>
+                <h2 className="font-heading text-3xl font-bold">What this extension does not do</h2>
+              </div>
+            </div>
+            <p className="mt-6 max-w-3xl text-sm leading-6 text-slate-400">
+              In December 2025 several &ldquo;privacy&rdquo; browser extensions were found harvesting millions of users&rsquo;
+              AI chats. Because this extension attaches to the same AI chat pages, we state its data handling plainly and keep
+              it auditable — so users, IT administrators and store reviewers can verify we are not doing that.
+            </p>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {dataHandlingCommitments.map((item) => (
+                <div key={item.title} className="rounded-2xl border border-border bg-background px-5 py-5">
+                  <h3 className="font-heading text-lg font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl border border-primary/20 bg-primary/10 px-5 py-5">
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Local mode (default)</p>
+                <p className="mt-2 text-sm leading-6 text-slate-200">
+                  Detection and masking run entirely in your browser. Nothing is sent to NeutralAI servers.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-border bg-background px-5 py-5">
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Managed mode (signed in)</p>
+                <p className="mt-2 text-sm leading-6 text-slate-400">
+                  Prompt text is sent over TLS to the NeutralAI gateway for stronger server-side detection and the masked
+                  result is returned. Reversible mask tokens live in an encrypted vault (AES-256-GCM) with a 15-minute TTL,
+                  then are destroyed. The audit log records the <em>entities masked</em>, not your full prompt text.
+                </p>
+              </div>
+            </div>
+            <p className="mt-6 text-sm text-slate-400">
+              The full data-handling dossier ships with the extension source as{' '}
+              <span className="font-mono text-slate-300">browser-extension/SECURITY.md</span>, and vulnerabilities can be
+              reported via{' '}
+              <a href={siteConfig.securityTxtPath} className="text-primary-light hover:text-primary">
+                /.well-known/security.txt
+              </a>
+              .
             </p>
           </div>
         </div>
@@ -154,7 +231,7 @@ export default function BrowserExtensionSupportPage() {
               <h2 className="mt-4 font-heading text-3xl font-bold">Policy-managed deployment</h2>
               <div className="mt-4 space-y-4 text-sm leading-6 text-slate-400">
                 <p>
-                  Enterprise customers can deploy NeutralAI Interceptor with managed browser policies so the extension is force-installed, pinned, and locked to organization-controlled NeutralAI endpoints.
+                  Enterprise customers can deploy the NeutralAI browser extension with managed browser policies so the extension is force-installed, pinned, and locked to organization-controlled NeutralAI endpoints.
                 </p>
                 <p>
                   That rollout path is separate from self-serve sign-in and is the recommended approach for regulated teams or centrally managed browser fleets.
