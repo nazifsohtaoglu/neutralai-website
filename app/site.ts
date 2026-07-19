@@ -31,8 +31,14 @@ export const siteConfig = {
   supportEmail: 'support@neutralai.co.uk',
   salesEmail: 'sales@neutralai.co.uk',
   securityTxtPath: '/.well-known/security.txt',
+  // CWS resolves the listing by extension ID; the slug is cosmetic. The store
+  // display name was renamed (#1455), so the canonical slug is now
+  // `neutralai-pii-masking-for` — the old `neutralai-interceptor` URL still
+  // redirected, but it visibly carried the trust-negative name we removed.
   chromeExtensionUrl:
-    'https://chromewebstore.google.com/detail/neutralai-interceptor/gpdjigfhopjabaodmnombeoldieoobnh',
+    'https://chromewebstore.google.com/detail/neutralai-pii-masking-for/gpdjigfhopjabaodmnombeoldieoobnh',
+  // Edge listing is still in review; its slug hasn't been regenerated yet, so it
+  // stays on the old path until the renamed Edge listing goes live.
   edgeExtensionUrl:
     'https://microsoftedge.microsoft.com/addons/detail/neutralai-interceptor/agdhbinchoiapijeicfgdmkoekolefkg',
 } as const
