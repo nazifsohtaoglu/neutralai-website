@@ -9,6 +9,7 @@ import {
   XCircle,
 } from 'lucide-react'
 import RoiCalculator from './RoiCalculator'
+import benchmarkFacts from '../data/benchmark-facts.json'
 import { siteConfig } from '../site'
 
 export const metadata: Metadata = {
@@ -33,15 +34,29 @@ export const metadata: Metadata = {
   },
 }
 
+// Figures come from app/data/benchmark-facts.json, generated from the gateway
+// artifacts by scripts/sync-benchmark-facts.mjs — nothing here is hand-typed.
+//
+// This page used to headline a single pooled NeutralAI-vs-Presidio F1 pair.
+// That pairing was not an accuracy comparison: a vanilla baseline is not
+// configured to attempt most of the benchmarked entity families, so it takes a
+// structural zero on them and the gap widened every time we added an entity
+// type. The two claims it conflated are now shown separately — coverage (how
+// many families each side attempts) and accuracy on the families both attempt,
+// measured on the holdout split (gateway#1643).
 const benchmark = {
-  generatedAt: '2026-05-08',
-  caseCount: 1000,
+  generatedAt: benchmarkFacts.publicSet.generatedAt,
+  caseCount: benchmarkFacts.publicSet.caseCount,
   languages: ['DE', 'EN', 'ES', 'FR', 'TR'],
-  // Source of truth: nazifsohtaoglu/neutralai-gateway benchmark artifacts listed in website issue #16.
-  neutralaiF1: '99.8%',
-  presidioF1: '57.5%',
-  neutralaiRecall: '98.4%',
-  presidioRecall: '40.3%',
+  sharedF1: benchmarkFacts.sharedEntityAccuracy.neutralaiF1,
+  presidioSharedF1: benchmarkFacts.sharedEntityAccuracy.baselineF1,
+  sharedPrecision: benchmarkFacts.sharedEntityAccuracy.neutralaiPrecision,
+  presidioSharedPrecision: benchmarkFacts.sharedEntityAccuracy.baselinePrecision,
+  families: benchmarkFacts.coverage.neutralaiFamilies,
+  presidioFamilies: benchmarkFacts.coverage.baselineFamilies,
+  ukFamilies: benchmarkFacts.coverage.ukFamilies,
+  falsePositives: benchmarkFacts.sharedEntityAccuracy.neutralaiFalsePositives,
+  presidioFalsePositives: benchmarkFacts.sharedEntityAccuracy.baselineFalsePositives,
   exactMatch: '98.4%',
 } as const
 
@@ -83,14 +98,19 @@ const comparisonRows = [
 
 const proofCards = [
   {
-    label: 'NeutralAI overall F1',
-    value: benchmark.neutralaiF1,
+    label: 'Entity families NeutralAI attempts',
+    value: `${benchmark.families}`,
     tone: 'primary',
   },
   {
-    label: 'Presidio-vanilla overall F1',
-    value: benchmark.presidioF1,
+    label: 'Of those, a vanilla Presidio baseline attempts',
+    value: `${benchmark.presidioFamilies}`,
     tone: 'muted',
+  },
+  {
+    label: 'False positives on holdout — NeutralAI vs Presidio-vanilla',
+    value: `${benchmark.falsePositives} vs ${benchmark.presidioFalsePositives}`,
+    tone: 'primary',
   },
   {
     label: 'NeutralAI exact-match accuracy',
@@ -201,8 +221,16 @@ export default function PresidioAlternativePage() {
             </div>
 
             <div className="mt-6 space-y-5">
-              <MetricBar label="Overall F1" neutralai={benchmark.neutralaiF1} presidio={benchmark.presidioF1} />
-              <MetricBar label="Overall recall" neutralai={benchmark.neutralaiRecall} presidio={benchmark.presidioRecall} />
+              <MetricBar
+                label="Holdout F1 — entity types both engines attempt"
+                neutralai={benchmark.sharedF1}
+                presidio={benchmark.presidioSharedF1}
+              />
+              <MetricBar
+                label="Holdout precision — same entity types"
+                neutralai={benchmark.sharedPrecision}
+                presidio={benchmark.presidioSharedPrecision}
+              />
             </div>
 
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-5">

@@ -31,7 +31,7 @@ test('registry covers high-risk benchmark, compliance, and deployment claims', (
   assert.match(registry, /SOC2 readiness/)
   assert.match(registry, /GDPR-aligned controls/)
   assert.match(registry, /Cyber Essentials via review/)
-  assert.match(registry, /public overall F1/)
+  assert.match(registry, /holdout overall F1/)
   assert.match(registry, /measured overhead/)
   assert.match(registry, /PHI-aware masking/)
   assert.match(registry, /BAA review support/)

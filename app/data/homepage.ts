@@ -462,9 +462,10 @@ export const socialProofMetrics = [
     detail: 'Current multilingual benchmark scope across English, Turkish, German, French, Spanish, and more.',
   },
   {
-    value: '99.8%',
-    label: 'public overall F1',
-    detail: 'Gateway-owned product benchmark, not a third-party independent evaluation.',
+    value: '98.4%',
+    label: 'holdout overall F1',
+    detail:
+      'Measured on a sample held out from detector tuning. Gateway-owned product benchmark, not a third-party independent evaluation.',
   },
   {
     value: '~41 ms',
@@ -490,7 +491,6 @@ export const evaluationStories = [
 
 // Source of truth: nazifsohtaoglu/neutralai-gateway benchmark artifacts listed in website issue #16.
 export const benchmarkProof = {
-  publicOverallF1: '99.8%',
   holdoutOverallF1: '98.4%',
   personHoldoutF1: '92.7%',
   appBenchmarkUrl: `${siteConfig.appBaseUrl}/pii-benchmark`,

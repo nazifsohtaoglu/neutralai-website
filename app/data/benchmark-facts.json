@@ -1,0 +1,61 @@
+{
+  "$generatedBy": "scripts/sync-benchmark-facts.mjs — do not edit by hand",
+  "$source": "nazifsohtaoglu/neutralai-gateway documents/business/benchmarks/",
+  "publicSet": {
+    "generatedAt": "2026-07-21",
+    "caseCount": 1587,
+    "languages": [
+      "de",
+      "en",
+      "es",
+      "fr",
+      "tr"
+    ],
+    "overallF1": "100.0%",
+    "falsePositiveRate": "0.0%"
+  },
+  "holdoutSet": {
+    "generatedAt": "2026-05-07",
+    "caseCount": 1660,
+    "overallF1": "98.4%",
+    "personF1": "92.7%"
+  },
+  "coverage": {
+    "neutralaiFamilies": 16,
+    "baselineFamilies": 3,
+    "notAttemptedByBaseline": [
+      "CREDIT_CARD",
+      "IP_ADDRESS",
+      "TR_ID_NUMBER",
+      "UK_BANK_ACCOUNT_NUMBER",
+      "UK_COMPANIES_HOUSE_NUMBER",
+      "UK_COURT_CASE_NUMBER",
+      "UK_DRIVING_LICENCE",
+      "UK_HMRC_UTR",
+      "UK_LAND_REGISTRY_TITLE",
+      "UK_NATIONAL_INSURANCE_NUMBER",
+      "UK_NHS_NUMBER",
+      "UK_SORT_CODE",
+      "UK_SRA_ID"
+    ],
+    "ukFamilies": 10
+  },
+  "sharedEntityAccuracy": {
+    "measuredOn": "holdout",
+    "entities": [
+      "EMAIL_ADDRESS",
+      "PERSON",
+      "PHONE_NUMBER"
+    ],
+    "neutralaiF1": "97.4%",
+    "baselineF1": "72.7%",
+    "neutralaiFalsePositives": 0,
+    "baselineFalsePositives": 371,
+    "neutralaiPrecision": "100.0%",
+    "baselinePrecision": "59.9%",
+    "personNeutralaiF1": "92.7%",
+    "personBaselineF1": "45.5%",
+    "personBaselinePrecision": "31.9%",
+    "baselineFalsePositiveRate": "30.0%"
+  }
+}

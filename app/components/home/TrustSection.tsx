@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { contactLinks, siteConfig } from '../../site'
+import benchmarkFacts from '../../data/benchmark-facts.json'
 import { benchmarkProof, documentRedactionPoints, healthcareTrustPoints, trustCards } from '../../data/homepage'
 
 export default function TrustSection() {
@@ -62,7 +63,7 @@ export default function TrustSection() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                ['Public overall F1', benchmarkProof.publicOverallF1],
+                ['Entity families measured', `${benchmarkFacts.coverage.neutralaiFamilies}`],
                 ['Holdout overall F1', benchmarkProof.holdoutOverallF1],
                 ['Holdout PERSON F1', benchmarkProof.personHoldoutF1],
               ].map(([label, value]) => (

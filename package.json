@@ -11,7 +11,9 @@
     "test:a11y-smoke": "node scripts/accessibility-smoke.mjs",
     "test:content": "node --test tests/content/*.test.mjs",
     "lint": "eslint .",
-    "audit:prod": "npm audit --omit=dev --audit-level=critical"
+    "audit:prod": "npm audit --omit=dev --audit-level=critical",
+    "sync:benchmark-facts": "node scripts/sync-benchmark-facts.mjs",
+    "check:benchmark-facts": "node scripts/sync-benchmark-facts.mjs --check"
   },
   "dependencies": {
     "clsx": "^2.1.1",

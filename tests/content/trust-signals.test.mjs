@@ -52,7 +52,7 @@ test('homepage adds social proof without fake customer claims', () => {
   assert.match(homeSource, /Proof-backed metrics/)
   assert.match(homeSource, /20\+/)
   assert.match(homeSource, /10/)
-  assert.match(homeSource, /99\.8%/)
+  assert.match(homeSource, /98\.4%/)
   assert.match(homeSource, /~41 ms/)
   assert.match(homeSource, /Finance evaluation pattern/)
   assert.match(homeSource, /Healthcare evaluation pattern/)
@@ -113,8 +113,12 @@ test('homepage carries benchmark proof without overclaiming independence', () =>
   assert.match(homeSource, /Benchmark proof/)
   assert.match(homeSource, /reproducible Presidio-vanilla baseline/)
   assert.match(homeSource, /multilingual calibration, masking, and enforcement layers/)
-  assert.match(homeSource, /Public overall F1/)
-  assert.match(homeSource, /99\.8%/)
+  // Coverage replaced "public overall F1" as the third stat (gateway#1643): the
+  // public synthetic set now scores 100%, which reads as a marketing fiction,
+  // and a pooled score blends coverage with accuracy. Holdout figures stay.
+  assert.match(homeSource, /Entity families measured/)
+  assert.doesNotMatch(homeSource, /Public overall F1/)
+  assert.doesNotMatch(homeSource, /99\.8%/)
   assert.match(homeSource, /Holdout overall F1/)
   assert.match(homeSource, /98\.4%/)
   assert.match(homeSource, /Holdout PERSON F1/)

@@ -316,7 +316,7 @@ export const answerEntries: AnswerEntry[] = [
       },
     ],
     related: [
-      { label: 'Published detection benchmark (99.8% F1, internal test set)', href: '/benchmark' },
+      { label: 'Published detection benchmark (98.4% holdout F1, internal test set)', href: '/benchmark' },
       { label: 'How do I stop staff pasting PII into ChatGPT?', href: '/answers/stop-staff-pasting-pii-into-chatgpt' },
       { label: 'What is reversible PII tokenization?', href: '/answers/what-is-reversible-pii-tokenization' },
       { label: 'Presidio alternative — build vs buy', href: '/presidio-alternative' },

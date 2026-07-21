@@ -81,9 +81,9 @@ const proofPoints = [
 // Private AI figures: vendor-published narrative (precision/recall/F1 on ~45k-word dataset) — no single headline number cited in public sources.
 const detectionRows = [
   {
-    metric: 'Overall F1 (published benchmark)',
-    neutralai: '99.8%',
-    presidio: 'Baseline (open-source, uncalibrated)',
+    metric: 'Entity families attempted',
+    neutralai: '16, including the UK identity, financial and legal pack',
+    presidio: '3 of those 16 in a vanilla configuration',
     privateAi: 'Reported separately per entity — no single headline number in public sources',
     nightfall: 'Not published as F1',
     source: 'NeutralAI 2026 benchmark; Presidio docs',
