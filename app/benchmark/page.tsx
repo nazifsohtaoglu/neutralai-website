@@ -58,8 +58,8 @@ const publicCaseCount = benchmarkFacts.publicSet.caseCount.toLocaleString('en-GB
 const quotableStats = [
   {
     value: benchmarkProof.holdoutOverallF1,
-    label: 'holdout overall F1',
-    sentence: `On a holdout sample not used for tuning, NeutralAI measured a ${benchmarkProof.holdoutOverallF1} overall F1 score, last verified ${lastVerified}.`,
+    label: `holdout overall F1 (${benchmarkFacts.holdoutSet.families} entity families)`,
+    sentence: `On a holdout sample not used for tuning, NeutralAI measured a ${benchmarkProof.holdoutOverallF1} overall F1 score across the ${benchmarkFacts.holdoutSet.families} entity families covered by that set, last verified ${lastVerified}.`,
   },
   {
     value: benchmarkProof.personHoldoutF1,
@@ -94,13 +94,13 @@ const comparisonRows = [
     product: 'NeutralAI',
     score: benchmarkFacts.sharedEntityAccuracy.neutralaiF1,
     status: 'measured',
-    note: `Holdout F1 across the ${benchmarkFacts.coverage.neutralaiFamilies} benchmarked entity families, ${benchmarkFacts.sharedEntityAccuracy.neutralaiFalsePositives} false positives.`,
+    note: `Holdout F1 restricted to the ${benchmarkFacts.sharedEntityAccuracy.entities.length} families both configurations attempt, so this is like-for-like. ${benchmarkFacts.sharedEntityAccuracy.neutralaiFalsePositives} false positives.`,
   },
   {
     product: 'Presidio (vanilla, uncalibrated)',
     score: benchmarkFacts.sharedEntityAccuracy.baselineF1,
     status: 'measured',
-    note: `Same holdout set and scorer, scored only on the ${benchmarkFacts.coverage.baselineFamilies} families it is configured to attempt, so coverage is not counted against it. ${benchmarkFacts.sharedEntityAccuracy.baselineFalsePositives} false positives.`,
+    note: `Same holdout set, scorer, and ${benchmarkFacts.sharedEntityAccuracy.entities.length} families, so coverage is not counted against it. ${benchmarkFacts.sharedEntityAccuracy.baselineFalsePositives} false positives.`,
   },
   {
     product: 'OpenAI Privacy Filter',
@@ -112,7 +112,7 @@ const comparisonRows = [
 
 const entityResults = [
   {
-    entity: 'Overall (all entity types)',
+    entity: `Overall (the ${benchmarkFacts.holdoutSet.families} entity types in the holdout set)`,
     metric: 'Holdout overall F1',
     score: benchmarkProof.holdoutOverallF1,
   },
@@ -419,7 +419,10 @@ export default function BenchmarkPage() {
             <p className="mt-3 text-sm leading-6 text-slate-300">
               These were listed here as roadmap items without figures. As of {benchmarkFacts.publicSet.generatedAt} all{' '}
               {benchmarkFacts.coverage.ukFamilies} are in the measured set, each held to a 0.95 F1 floor that fails the
-              build on a regression. A vanilla Presidio baseline does not attempt any of them.
+              build on a regression. A vanilla Presidio baseline does not attempt any of them. Note the limit: they are
+              measured on the public synthetic set only. The holdout split predates them and still covers{' '}
+              {benchmarkFacts.holdoutSet.families} families, so the {benchmarkProof.holdoutOverallF1} holdout figure
+              above does not include the UK pack — holdout coverage for it has not been generated yet.
             </p>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {ukPackEntities.map((entity) => (

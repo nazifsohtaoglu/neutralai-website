@@ -18,7 +18,19 @@
     "generatedAt": "2026-05-07",
     "caseCount": 1660,
     "overallF1": "98.4%",
-    "personF1": "92.7%"
+    "personF1": "92.7%",
+    "families": 7,
+    "familiesWithoutHoldoutCoverage": [
+      "UK_BANK_ACCOUNT_NUMBER",
+      "UK_COMPANIES_HOUSE_NUMBER",
+      "UK_COURT_CASE_NUMBER",
+      "UK_DRIVING_LICENCE",
+      "UK_HMRC_UTR",
+      "UK_LAND_REGISTRY_TITLE",
+      "UK_NATIONAL_INSURANCE_NUMBER",
+      "UK_SORT_CODE",
+      "UK_SRA_ID"
+    ]
   },
   "coverage": {
     "neutralaiFamilies": 16,

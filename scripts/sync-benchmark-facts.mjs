@@ -98,11 +98,16 @@ const facts = {
     falsePositiveRate: pct(pub.results.neutralai.overall.false_positive_rate),
   },
 
+  // The holdout set predates the UK pack, so it covers FEWER families than the
+  // public set. Publish its family count next to its F1 or a reader will take
+  // the holdout score as spanning everything the public set measures.
   holdoutSet: {
     generatedAt: day(holdout.generated_at),
     caseCount: holdout.case_count,
     overallF1: pct(holdout.results.neutralai.overall.f1),
     personF1: pct(holdNeutral.PERSON.f1),
+    families: Object.keys(holdNeutral).length,
+    familiesWithoutHoldoutCoverage: neutralFamilies.filter((e) => !(e in holdNeutral)),
   },
 
   // Claim 1 — coverage. Countable, and the real differentiator.
