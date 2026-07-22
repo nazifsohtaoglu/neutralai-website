@@ -24,6 +24,7 @@
  * the public synthetic set is clean enough that both engines score near 1.0 on
  * the easy families, which understates the real-world difference.
  */
+import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -33,6 +34,46 @@ const SITE_ROOT = resolve(HERE, '..')
 const GATEWAY = process.env.GATEWAY_REPO ?? resolve(SITE_ROOT, '..', 'neutralai-gateway')
 const BENCH_DIR = join(GATEWAY, 'documents', 'business', 'benchmarks')
 const OUT = join(SITE_ROOT, 'app', 'data', 'benchmark-facts.json')
+
+/**
+ * This reads the gateway's WORKING TREE, not a pinned commit — which means a
+ * gateway checkout sitting on a feature branch will silently publish numbers
+ * that are not on `main` yet. That has already happened once: facts generated
+ * from an unmerged holdout branch made the site cite a corpus nobody could
+ * verify, and only a TypeScript error on an unexpectedly-empty array caught it.
+ *
+ * So refuse to run unless the gateway is on `main` and clean. Override with
+ * ALLOW_DIRTY_GATEWAY=1 when you deliberately want to preview branch numbers.
+ */
+function assertGatewayIsPublishable() {
+  if (process.env.ALLOW_DIRTY_GATEWAY === '1') {
+    console.warn('ALLOW_DIRTY_GATEWAY=1 — generating from the gateway working tree as-is. Do not commit these facts.')
+    return
+  }
+  const git = (args) => execFileSync('git', ['-C', GATEWAY, ...args], { encoding: 'utf8' }).trim()
+  let branch
+  let dirty
+  try {
+    branch = git(['rev-parse', '--abbrev-ref', 'HEAD'])
+    dirty = git(['status', '--porcelain', '--', 'documents/business/benchmarks'])
+  } catch (err) {
+    console.error(`Could not inspect the gateway checkout at ${GATEWAY}: ${err.message}`)
+    process.exit(1)
+  }
+  if (branch !== 'main') {
+    console.error(
+      `Gateway checkout is on "${branch}", not main. Published facts must come from merged artifacts.\n` +
+        'Switch it to main, or set ALLOW_DIRTY_GATEWAY=1 to preview branch numbers without committing them.',
+    )
+    process.exit(1)
+  }
+  if (dirty) {
+    console.error(`Gateway benchmark artifacts have uncommitted changes:\n${dirty}\nCommit or stash them first.`)
+    process.exit(1)
+  }
+}
+
+assertGatewayIsPublishable()
 
 const read = (name) => JSON.parse(readFileSync(join(BENCH_DIR, name), 'utf8'))
 

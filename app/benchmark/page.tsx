@@ -48,6 +48,12 @@ const lastVerifiedDate = '2026-07-03'
 const generatedAt = benchmarkFacts.publicSet.generatedAt
 const publicCaseCount = benchmarkFacts.publicSet.caseCount.toLocaleString('en-GB')
 
+// UK families the holdout split does not yet cover. Drives the caveat below, so
+// the page stops claiming a gap as soon as the artifact closes it.
+const ukFamiliesMissingHoldout = benchmarkFacts.holdoutSet.familiesWithoutHoldoutCoverage.filter((e) =>
+  e.startsWith('UK_'),
+)
+
 // NOTE: we deliberately do NOT publish benchmarkFacts.publicSet.overallF1.
 // The public set is clean synthetic text and now scores at ceiling — a figure
 // that reads as a marketing fiction and would overstate real-world behaviour.
@@ -419,11 +425,29 @@ export default function BenchmarkPage() {
             <p className="mt-3 text-sm leading-6 text-slate-300">
               These were listed here as roadmap items without figures. As of {benchmarkFacts.publicSet.generatedAt} all{' '}
               {benchmarkFacts.coverage.ukFamilies} are in the measured set, each held to a 0.95 F1 floor that fails the
-              build on a regression. A vanilla Presidio baseline does not attempt any of them. Note the limit: they are
-              measured on the public synthetic set only. The holdout split predates them and still covers{' '}
-              {benchmarkFacts.holdoutSet.families} families, so the {benchmarkProof.holdoutOverallF1} holdout figure
-              above does not include the UK pack — holdout coverage for it has not been generated yet.
+              build on a regression. A vanilla Presidio baseline does not attempt any of them.
             </p>
+            {/*
+              Data-driven, not prose: the caveat is rendered from
+              holdoutSet.familiesWithoutHoldoutCoverage, so it disappears by
+              itself the moment the regenerated artifact covers the UK pack.
+              Writing it as a fixed sentence would leave the page claiming a gap
+              that had already been closed — the exact drift this whole change
+              set exists to stop.
+            */}
+            {ukFamiliesMissingHoldout.length > 0 ? (
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                Note the limit: {ukFamiliesMissingHoldout.length} of them are measured on the public synthetic set only.
+                The holdout split covers {benchmarkFacts.holdoutSet.families} families, so the{' '}
+                {benchmarkProof.holdoutOverallF1} holdout figure above does not include those.
+              </p>
+            ) : (
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                All {benchmarkFacts.coverage.ukFamilies} are also covered by the holdout split — the sample kept out of
+                detector tuning — written as ordinary correspondence rather than templates, so the cue sits inside a
+                real sentence instead of at the start of a fixed pattern.
+              </p>
+            )}
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {ukPackEntities.map((entity) => (
                 <li
