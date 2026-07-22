@@ -1,3 +1,4 @@
+import benchmarkFacts from '../data/benchmark-facts.json'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -82,8 +83,8 @@ const proofPoints = [
 const detectionRows = [
   {
     metric: 'Entity families attempted',
-    neutralai: '16, including the UK identity, financial and legal pack',
-    presidio: '3 of those 16 in a vanilla configuration',
+    neutralai: `${benchmarkFacts.coverage.neutralaiFamilies}, including the UK identity, financial and legal pack`,
+    presidio: `${benchmarkFacts.coverage.baselineFamilies} of those ${benchmarkFacts.coverage.neutralaiFamilies} in a vanilla configuration`,
     privateAi: 'Reported separately per entity — no single headline number in public sources',
     nightfall: 'Not published as F1',
     source: 'NeutralAI 2026 benchmark; Presidio docs',

@@ -60,6 +60,23 @@ function assertGatewayIsPublishable() {
     console.error(`Could not inspect the gateway checkout at ${GATEWAY}: ${err.message}`)
     process.exit(1)
   }
+  // A clean checkout named "main" can still be behind or ahead of the
+  // authoritative remote, which would publish facts from artifacts nobody has
+  // merged. Compare against origin/main rather than trusting the branch name.
+  try {
+    const localHead = git(['rev-parse', 'HEAD'])
+    const remoteHead = git(['rev-parse', 'origin/main'])
+    if (localHead !== remoteHead) {
+      console.error(
+        `Gateway HEAD (${localHead.slice(0, 8)}) does not match origin/main (${remoteHead.slice(0, 8)}).\n` +
+          'Fetch and fast-forward it, or set ALLOW_DIRTY_GATEWAY=1 to preview unmerged numbers.',
+      )
+      process.exit(1)
+    }
+  } catch {
+    console.error('Could not compare the gateway checkout against origin/main. Fetch it first.')
+    process.exit(1)
+  }
   if (branch !== 'main') {
     console.error(
       `Gateway checkout is on "${branch}", not main. Published facts must come from merged artifacts.\n` +
@@ -102,14 +119,30 @@ function pooledF1(perEntity, entities) {
 }
 
 /**
- * An entity counts as "attempted" by a side when it recorded any decision at
- * all on it. A family the baseline is not configured for produces tp=fp=0 —
- * it did not miss those cases, it never looked for them.
+ * Which families a side is CONFIGURED to attempt.
+ *
+ * Read from the artifact, never inferred from the score table. A family that is
+ * not attempted and a family that is attempted but caught nothing are identical
+ * in `per_entity` (tp=0, fp=0, fn>0), so inferring from counts would silently
+ * reclassify a total regression as "not attempted", drop it from the
+ * like-for-like set, delete its false negatives, and inflate the published
+ * accuracy at exactly the moment detection broke (gateway#1653).
+ *
+ * If the field is missing the artifact predates that change — abort rather than
+ * fall back to the unsound inference.
  */
-const attempted = (perEntity) =>
-  Object.keys(perEntity)
-    .filter((e) => perEntity[e].tp + perEntity[e].fp > 0)
-    .sort()
+const attempted = (mode, modeName) => {
+  const configured = mode.configured_tracked_entities
+  if (!Array.isArray(configured)) {
+    console.error(
+      `The ${modeName} artifact has no configured_tracked_entities (gateway#1653).\n` +
+        'Regenerate the benchmark artifacts with a gateway that records it. Inferring coverage from ' +
+        'detection counts is not safe: it cannot tell "never attempted" from "attempted and caught nothing".',
+    )
+    process.exit(1)
+  }
+  return [...configured].sort()
+}
 
 const pubNeutral = pub.results.neutralai.per_entity
 const pubBaseline = pub.results.presidio_vanilla.per_entity
@@ -117,12 +150,12 @@ const holdNeutral = holdout.results.neutralai.per_entity
 const holdBaseline = holdout.results.presidio_vanilla.per_entity
 
 const neutralFamilies = Object.keys(pubNeutral).sort()
-const baselineFamilies = attempted(pubBaseline)
+const baselineFamilies = attempted(pub.results.presidio_vanilla, 'public-set baseline')
 const notAttempted = neutralFamilies.filter((e) => !baselineFamilies.includes(e))
 
 // Shared families, measured on the holdout split.
 const shared = Object.keys(holdNeutral)
-  .filter((e) => attempted(holdBaseline).includes(e))
+  .filter((e) => attempted(holdout.results.presidio_vanilla, 'holdout baseline').includes(e))
   .sort()
 const sharedNeutral = pooledF1(holdNeutral, shared)
 const sharedBaseline = pooledF1(holdBaseline, shared)

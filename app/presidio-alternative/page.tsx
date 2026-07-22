@@ -46,7 +46,11 @@ export const metadata: Metadata = {
 // measured on the holdout split (gateway#1643).
 const benchmark = {
   generatedAt: benchmarkFacts.publicSet.generatedAt,
-  caseCount: benchmarkFacts.publicSet.caseCount,
+  // The metric bars below are HOLDOUT figures, so the badge must show the
+  // holdout case count. Showing the public-set count next to holdout accuracy
+  // attaches the wrong provenance to the number (#167 review).
+  holdoutCaseCount: benchmarkFacts.holdoutSet.caseCount,
+  publicCaseCount: benchmarkFacts.publicSet.caseCount,
   languages: ['DE', 'EN', 'ES', 'FR', 'TR'],
   sharedF1: benchmarkFacts.sharedEntityAccuracy.neutralaiF1,
   presidioSharedF1: benchmarkFacts.sharedEntityAccuracy.baselineF1,
@@ -200,7 +204,7 @@ export default function PresidioAlternativePage() {
                 <h2 className="mt-2 font-heading text-2xl font-semibold">NeutralAI vs Presidio-vanilla</h2>
               </div>
               <span className="rounded-full border border-accent-success/25 bg-accent-success/10 px-3 py-1 text-xs font-semibold text-accent-success">
-                {benchmark.caseCount} cases
+                {benchmark.holdoutCaseCount.toLocaleString('en-GB')} holdout cases
               </span>
             </div>
 
@@ -236,7 +240,7 @@ export default function PresidioAlternativePage() {
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
               <p className="text-sm leading-7 text-slate-300">
                 Public benchmark generated on <span className="font-medium text-white">{benchmark.generatedAt}</span>.
-                It covers {benchmark.languages.join(', ')} prompt samples and links back to the gateway-owned proof page.
+                It covers {benchmark.publicCaseCount.toLocaleString('en-GB')} public cases across {benchmark.languages.join(', ')} prompt samples and links back to the gateway-owned proof page.
               </p>
               <Link href="/benchmark" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary-light hover:text-primary">
                 See the full benchmark page
