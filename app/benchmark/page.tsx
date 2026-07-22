@@ -20,7 +20,7 @@ import { siteConfig } from '../site'
 export const metadata: Metadata = {
   title: 'PII Detection Benchmark — Dated, Citable Accuracy Stats',
   description:
-    'NeutralAI PII detection benchmark: 98.4% holdout F1, 92.7% PERSON-holdout F1, and 16 measured entity families including the UK identity, financial and legal pack. Dated, vendor-published benchmark with documented methodology and a like-for-like Presidio-vanilla comparison.',
+    `NeutralAI PII detection benchmark: ${benchmarkFacts.holdoutSet.personF1} PERSON-holdout F1 against ${benchmarkFacts.sharedEntityAccuracy.personBaselineF1} for a vanilla Presidio baseline, across ${benchmarkFacts.coverage.neutralaiFamilies} measured entity families including the UK identity, financial and legal pack. Dated, vendor-published benchmark with documented methodology and a like-for-like comparison.`,
   keywords: [
     'pii detection benchmark',
     'pii accuracy benchmark',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NeutralAI PII Detection Benchmark',
     description:
-      '98.4% holdout F1, 92.7% PERSON-holdout F1, 16 measured entity families — dated, vendor-published product benchmark with documented methodology.',
+      `${benchmarkFacts.holdoutSet.personF1} PERSON-holdout F1 vs ${benchmarkFacts.sharedEntityAccuracy.personBaselineF1} baseline, ${benchmarkFacts.coverage.neutralaiFamilies} measured entity families — dated, vendor-published product benchmark with documented methodology.`,
     url: `${siteConfig.url}/benchmark`,
   },
 }
@@ -50,7 +50,7 @@ const publicCaseCount = benchmarkFacts.publicSet.caseCount.toLocaleString('en-GB
 
 // UK families the holdout split does not yet cover. Drives the caveat below, so
 // the page stops claiming a gap as soon as the artifact closes it.
-const ukFamiliesMissingHoldout = benchmarkFacts.holdoutSet.familiesWithoutHoldoutCoverage.filter((e) =>
+const ukFamiliesMissingHoldout = (benchmarkFacts.holdoutSet.familiesWithoutHoldoutCoverage as string[]).filter((e) =>
   e.startsWith('UK_'),
 )
 
@@ -63,14 +63,9 @@ const ukFamiliesMissingHoldout = benchmarkFacts.holdoutSet.familiesWithoutHoldou
 // JSON-LD pattern already used in app/layout.tsx, app/page.tsx, and app/presidio-alternative/page.tsx.
 const quotableStats = [
   {
-    value: benchmarkProof.holdoutOverallF1,
-    label: `holdout overall F1 (${benchmarkFacts.holdoutSet.families} entity families)`,
-    sentence: `On a holdout sample not used for tuning, NeutralAI measured a ${benchmarkProof.holdoutOverallF1} overall F1 score across the ${benchmarkFacts.holdoutSet.families} entity families covered by that set, last verified ${lastVerified}.`,
-  },
-  {
-    value: benchmarkProof.personHoldoutF1,
+    value: benchmarkFacts.holdoutSet.personF1,
     label: 'PERSON-entity holdout F1',
-    sentence: `For the PERSON entity type specifically, NeutralAI measured a ${benchmarkProof.personHoldoutF1} F1 score on holdout data, last verified ${lastVerified}.`,
+    sentence: `For the PERSON entity type specifically, NeutralAI measured a ${benchmarkFacts.holdoutSet.personF1} F1 score on holdout data, last verified ${lastVerified}.`,
   },
   {
     value: `${benchmarkFacts.coverage.neutralaiFamilies} vs ${benchmarkFacts.coverage.baselineFamilies}`,
@@ -118,14 +113,9 @@ const comparisonRows = [
 
 const entityResults = [
   {
-    entity: `Overall (the ${benchmarkFacts.holdoutSet.families} entity types in the holdout set)`,
-    metric: 'Holdout overall F1',
-    score: benchmarkProof.holdoutOverallF1,
-  },
-  {
     entity: 'PERSON',
     metric: 'Holdout F1',
-    score: benchmarkProof.personHoldoutF1,
+    score: benchmarkFacts.holdoutSet.personF1,
   },
   {
     entity: 'PERSON',
@@ -332,11 +322,12 @@ export default function BenchmarkPage() {
                 <h3 className="mt-4 font-heading text-lg font-semibold text-white">Holdout discipline</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
                   &ldquo;Holdout&rdquo; means a sample kept separate from the data used to tune detectors and confidence
-                  thresholds. We lead with holdout F1 ({benchmarkProof.holdoutOverallF1}) and PERSON-holdout F1 (
-                  {benchmarkProof.personHoldoutF1}) because they are the honest read. The tuned public set now scores at
-                  ceiling, which makes it useful as a regression gate — it fails the build when something that worked
-                  last release stops working — but worthless as a forecast of real-world accuracy, so we do not headline
-                  it.
+                  thresholds. We lead with PERSON-holdout F1 ({benchmarkFacts.holdoutSet.personF1}) and the like-for-like
+                  comparison, not a pooled overall score. A pooled figure across all{' '}
+                  {benchmarkFacts.holdoutSet.families} families is dominated by the pattern-matched identifiers, which
+                  sit at or near 1.0, so it rises whenever a new one is added — it moved from 98.4% to{' '}
+                  {benchmarkFacts.holdoutSet.overallF1} when the UK pack was added, with no detection change. The tuned
+                  public set is at ceiling for the same reason: useful as a regression gate, worthless as a forecast.
                 </p>
               </div>
               <div className="rounded-[22px] border border-white/10 bg-background/80 p-6">
@@ -439,7 +430,7 @@ export default function BenchmarkPage() {
               <p className="mt-3 text-sm leading-6 text-slate-300">
                 Note the limit: {ukFamiliesMissingHoldout.length} of them are measured on the public synthetic set only.
                 The holdout split covers {benchmarkFacts.holdoutSet.families} families, so the{' '}
-                {benchmarkProof.holdoutOverallF1} holdout figure above does not include those.
+                {benchmarkFacts.holdoutSet.personF1} PERSON-holdout figure above does not include those.
               </p>
             ) : (
               <p className="mt-3 text-sm leading-6 text-slate-300">

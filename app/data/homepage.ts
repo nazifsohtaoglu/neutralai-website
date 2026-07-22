@@ -491,8 +491,11 @@ export const evaluationStories = [
 
 // Source of truth: nazifsohtaoglu/neutralai-gateway benchmark artifacts listed in website issue #16.
 export const benchmarkProof = {
-  holdoutOverallF1: '98.4%',
-  personHoldoutF1: '92.7%',
+  // Retired as hand-typed constants (gateway#1645): both are now read from
+  // app/data/benchmark-facts.json, generated from the benchmark artifacts.
+  // The pooled holdout F1 is no longer published at all — it is dominated by
+  // pattern-matched families sitting at 1.0, so it rises whenever a new one is
+  // added (98.4% -> 99.9% when the UK pack landed) with no detection change.
   appBenchmarkUrl: `${siteConfig.appBaseUrl}/pii-benchmark`,
 } as const
 

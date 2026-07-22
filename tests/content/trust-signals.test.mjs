@@ -115,14 +115,17 @@ test('homepage carries benchmark proof without overclaiming independence', () =>
   assert.match(homeSource, /multilingual calibration, masking, and enforcement layers/)
   // Coverage replaced "public overall F1" as the third stat (gateway#1643): the
   // public synthetic set now scores 100%, which reads as a marketing fiction,
-  // and a pooled score blends coverage with accuracy. Holdout figures stay.
+  // and a pooled score blends coverage with accuracy. The pooled HOLDOUT figure
+  // is retired for the same reason (gateway#1645): it is dominated by
+  // pattern-matched families at 1.0, so it rises whenever one is added — 98.4%
+  // to 99.9% when the UK pack landed, with no detection change. The homepage
+  // now shows PERSON (the hard, NER-driven entity) against the baseline, and
+  // every figure is generated from the artifacts rather than typed in.
   assert.match(homeSource, /Entity families measured/)
   assert.doesNotMatch(homeSource, /Public overall F1/)
   assert.doesNotMatch(homeSource, /99\.8%/)
-  assert.match(homeSource, /Holdout overall F1/)
-  assert.match(homeSource, /98\.4%/)
-  assert.match(homeSource, /Holdout PERSON F1/)
-  assert.match(homeSource, /92\.7%/)
+  assert.match(homeSource, /benchmarkFacts\.holdoutSet\.personF1/)
+  assert.match(homeSource, /Holdout PERSON F1 vs Presidio/)
   assert.match(homeSource, /Product benchmark, not a third-party independent evaluation/)
   assert.match(homeSource, /benchmarkProof\.appBenchmarkUrl/)
   assert.match(homeSource, /\/presidio-alternative/)

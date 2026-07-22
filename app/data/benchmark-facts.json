@@ -15,22 +15,12 @@
     "falsePositiveRate": "0.0%"
   },
   "holdoutSet": {
-    "generatedAt": "2026-05-07",
-    "caseCount": 1660,
-    "overallF1": "98.4%",
-    "personF1": "92.7%",
-    "families": 7,
-    "familiesWithoutHoldoutCoverage": [
-      "UK_BANK_ACCOUNT_NUMBER",
-      "UK_COMPANIES_HOUSE_NUMBER",
-      "UK_COURT_CASE_NUMBER",
-      "UK_DRIVING_LICENCE",
-      "UK_HMRC_UTR",
-      "UK_LAND_REGISTRY_TITLE",
-      "UK_NATIONAL_INSURANCE_NUMBER",
-      "UK_SORT_CODE",
-      "UK_SRA_ID"
-    ]
+    "generatedAt": "2026-07-22",
+    "caseCount": 2580,
+    "overallF1": "99.9%",
+    "personF1": "96.0%",
+    "families": 16,
+    "familiesWithoutHoldoutCoverage": []
   },
   "coverage": {
     "neutralaiFamilies": 16,
@@ -59,15 +49,15 @@
       "PERSON",
       "PHONE_NUMBER"
     ],
-    "neutralaiF1": "97.4%",
-    "baselineF1": "72.7%",
-    "neutralaiFalsePositives": 0,
-    "baselineFalsePositives": 371,
-    "neutralaiPrecision": "100.0%",
-    "baselinePrecision": "59.9%",
-    "personNeutralaiF1": "92.7%",
-    "personBaselineF1": "45.5%",
-    "personBaselinePrecision": "31.9%",
-    "baselineFalsePositiveRate": "30.0%"
+    "neutralaiF1": "98.5%",
+    "baselineF1": "74.1%",
+    "neutralaiFalsePositives": 14,
+    "baselineFalsePositives": 378,
+    "neutralaiPrecision": "97.7%",
+    "baselinePrecision": "60.4%",
+    "personNeutralaiF1": "96.0%",
+    "personBaselineF1": "49.4%",
+    "personBaselinePrecision": "34.2%",
+    "baselineFalsePositiveRate": "25.6%"
   }
 }
