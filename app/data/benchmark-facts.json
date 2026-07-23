@@ -2,7 +2,7 @@
   "$generatedBy": "scripts/sync-benchmark-facts.mjs — do not edit by hand",
   "$source": "nazifsohtaoglu/neutralai-gateway documents/business/benchmarks/",
   "publicSet": {
-    "generatedAt": "2026-07-21",
+    "generatedAt": "2026-07-22",
     "caseCount": 1587,
     "languages": [
       "de",
