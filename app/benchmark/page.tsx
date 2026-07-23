@@ -13,13 +13,14 @@ import {
   ShieldCheck,
   XCircle,
 } from 'lucide-react'
+import benchmarkFacts from '../data/benchmark-facts.json'
 import { benchmarkProof } from '../data/homepage'
 import { siteConfig } from '../site'
 
 export const metadata: Metadata = {
   title: 'PII Detection Benchmark — Dated, Citable Accuracy Stats',
   description:
-    'NeutralAI PII detection benchmark: 99.8% public overall F1, 98.4% holdout F1, 92.7% PERSON-holdout F1. Dated, vendor-published product benchmark with documented methodology and a Presidio-vanilla comparison.',
+    `NeutralAI PII detection benchmark. Accuracy: ${benchmarkFacts.holdoutSet.personF1} PERSON-holdout F1 against ${benchmarkFacts.sharedEntityAccuracy.personBaselineF1} for a vanilla Presidio baseline, measured on entity families both engines attempt. Separately, coverage: ${benchmarkFacts.coverage.neutralaiFamilies} measured entity families including the UK identity, financial and legal pack, against ${benchmarkFacts.coverage.baselineFamilies} for that baseline. Dated, vendor-published, documented methodology.`,
   keywords: [
     'pii detection benchmark',
     'pii accuracy benchmark',
@@ -33,54 +34,75 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NeutralAI PII Detection Benchmark',
     description:
-      '99.8% public overall F1, 98.4% holdout F1, 92.7% PERSON-holdout F1 — dated, vendor-published product benchmark with documented methodology.',
+      `Accuracy: ${benchmarkFacts.holdoutSet.personF1} PERSON-holdout F1 vs ${benchmarkFacts.sharedEntityAccuracy.personBaselineF1} baseline. Coverage: ${benchmarkFacts.coverage.neutralaiFamilies} measured entity families vs ${benchmarkFacts.coverage.baselineFamilies}. Dated, vendor-published, documented methodology.`,
     url: `${siteConfig.url}/benchmark`,
   },
 }
 
-// Source of truth: nazifsohtaoglu/neutralai-gateway benchmark artifacts listed in website issue #16.
-// Same numbers as app/data/homepage.ts benchmarkProof and app/presidio-alternative/page.tsx.
+// Every benchmark figure on this page comes from app/data/benchmark-facts.json,
+// generated from the gateway artifacts by scripts/sync-benchmark-facts.mjs.
+// benchmarkProof now supplies only the app link, not any measured value.
 const lastVerified = 'July 2026'
 const lastVerifiedDate = '2026-07-03'
-const generatedAt = '2026-05-08'
+// Generated from the gateway artifacts by scripts/sync-benchmark-facts.mjs —
+// case counts and dates are no longer hand-typed here.
+const generatedAt = benchmarkFacts.publicSet.generatedAt
+const publicCaseCount = benchmarkFacts.publicSet.caseCount.toLocaleString('en-GB')
+
+// UK families the holdout split does not yet cover. Drives the caveat below, so
+// the page stops claiming a gap as soon as the artifact closes it.
+const ukFamiliesMissingHoldout = (benchmarkFacts.holdoutSet.familiesWithoutHoldoutCoverage as string[]).filter((e) =>
+  e.startsWith('UK_'),
+)
+
+// NOTE: we deliberately do NOT publish benchmarkFacts.publicSet.overallF1.
+// The public set is clean synthetic text and now scores at ceiling — a figure
+// that reads as a marketing fiction and would overstate real-world behaviour.
+// The holdout split (not used for tuning) is the honest headline, so it leads.
 
 // Static, developer-authored content only (no user/request input) — mirrors the
 // JSON-LD pattern already used in app/layout.tsx, app/page.tsx, and app/presidio-alternative/page.tsx.
 const quotableStats = [
   {
-    value: benchmarkProof.publicOverallF1,
-    label: 'public overall F1',
-    sentence: `NeutralAI measured a ${benchmarkProof.publicOverallF1} overall F1 score on its public PII detection benchmark, last verified ${lastVerified}.`,
-  },
-  {
-    value: benchmarkProof.holdoutOverallF1,
-    label: 'holdout overall F1',
-    sentence: `On a holdout sample not used for tuning, NeutralAI measured a ${benchmarkProof.holdoutOverallF1} overall F1 score, last verified ${lastVerified}.`,
-  },
-  {
-    value: benchmarkProof.personHoldoutF1,
+    value: benchmarkFacts.holdoutSet.personF1,
     label: 'PERSON-entity holdout F1',
-    sentence: `For the PERSON entity type specifically, NeutralAI measured a ${benchmarkProof.personHoldoutF1} F1 score on holdout data, last verified ${lastVerified}.`,
+    sentence: `For the PERSON entity type specifically, NeutralAI measured a ${benchmarkFacts.holdoutSet.personF1} F1 score on holdout data, last verified ${lastVerified}.`,
   },
   {
-    value: '57.5%',
-    label: 'vanilla Presidio overall F1 (same test set)',
-    sentence: `On the same benchmark set, an uncalibrated vanilla Microsoft Presidio baseline scored 57.5% overall F1, versus ${benchmarkProof.publicOverallF1} for NeutralAI, last verified ${lastVerified}.`,
+    value: `${benchmarkFacts.coverage.neutralaiFamilies} vs ${benchmarkFacts.coverage.baselineFamilies}`,
+    label: 'entity families attempted (NeutralAI vs vanilla Presidio)',
+    sentence: `Of the ${benchmarkFacts.coverage.neutralaiFamilies} entity families in the NeutralAI benchmark, an uncalibrated vanilla Microsoft Presidio baseline is configured to attempt ${benchmarkFacts.coverage.baselineFamilies}; it does not look for the other ${benchmarkFacts.coverage.notAttemptedByBaseline.length}, including the ${benchmarkFacts.coverage.ukFamilies} UK identity, financial and legal identifiers, last verified ${lastVerified}.`,
+  },
+  {
+    value: `${benchmarkFacts.sharedEntityAccuracy.neutralaiF1} vs ${benchmarkFacts.sharedEntityAccuracy.baselineF1}`,
+    label: 'holdout F1 on the families both engines attempt',
+    sentence: `Restricted to the entity families both engines attempt (${benchmarkFacts.sharedEntityAccuracy.entities.join(', ')}), NeutralAI scored ${benchmarkFacts.sharedEntityAccuracy.neutralaiF1} F1 on holdout data against ${benchmarkFacts.sharedEntityAccuracy.baselineF1} for a vanilla Presidio baseline, last verified ${lastVerified}.`,
+  },
+  {
+    value: `${benchmarkFacts.sharedEntityAccuracy.neutralaiFalsePositives} vs ${benchmarkFacts.sharedEntityAccuracy.baselineFalsePositives}`,
+    label: 'false positives on holdout (NeutralAI vs vanilla Presidio)',
+    sentence: `On the holdout set, NeutralAI produced ${benchmarkFacts.sharedEntityAccuracy.neutralaiFalsePositives} false positives against ${benchmarkFacts.sharedEntityAccuracy.baselineFalsePositives} for a vanilla Presidio baseline, whose PERSON detection ran at ${benchmarkFacts.sharedEntityAccuracy.personBaselinePrecision} precision, last verified ${lastVerified}.`,
   },
 ] as const
 
+// We deliberately do not headline a single "NeutralAI X% vs Presidio Y%" pair.
+// A pooled overall F1 blends two different things — how many entity families a
+// side attempts, and how accurate it is on them — and the baseline takes a
+// structural zero on every family it is not configured for. That makes the gap
+// widen whenever we add an entity type, with no accuracy change at all. The two
+// claims are reported separately below (gateway#1643).
 const comparisonRows = [
   {
     product: 'NeutralAI',
-    score: benchmarkProof.publicOverallF1,
+    score: benchmarkFacts.sharedEntityAccuracy.neutralaiF1,
     status: 'measured',
-    note: 'Public overall F1 on the NeutralAI PII benchmark set.',
+    note: `Holdout F1 restricted to the ${benchmarkFacts.sharedEntityAccuracy.entities.length} families both configurations attempt, so this is like-for-like. ${benchmarkFacts.sharedEntityAccuracy.neutralaiFalsePositives} false positives.`,
   },
   {
     product: 'Presidio (vanilla, uncalibrated)',
-    score: '57.5%',
+    score: benchmarkFacts.sharedEntityAccuracy.baselineF1,
     status: 'measured',
-    note: 'Same benchmark set and scorer, open-source baseline with no product-layer calibration.',
+    note: `Same holdout set, scorer, and ${benchmarkFacts.sharedEntityAccuracy.entities.length} families, so coverage is not counted against it. ${benchmarkFacts.sharedEntityAccuracy.baselineFalsePositives} false positives.`,
   },
   {
     product: 'OpenAI Privacy Filter',
@@ -92,29 +114,45 @@ const comparisonRows = [
 
 const entityResults = [
   {
-    entity: 'Overall (all entity types)',
-    metric: 'Public overall F1',
-    score: benchmarkProof.publicOverallF1,
-  },
-  {
-    entity: 'Overall (all entity types)',
-    metric: 'Holdout overall F1',
-    score: benchmarkProof.holdoutOverallF1,
+    entity: 'PERSON',
+    metric: 'Holdout F1',
+    score: benchmarkFacts.holdoutSet.personF1,
   },
   {
     entity: 'PERSON',
+    metric: 'Holdout F1 — vanilla Presidio baseline',
+    score: benchmarkFacts.sharedEntityAccuracy.personBaselineF1,
+  },
+  {
+    entity: 'Both engines attempt these (EMAIL, PHONE, PERSON)',
     metric: 'Holdout F1',
-    score: benchmarkProof.personHoldoutF1,
+    score: benchmarkFacts.sharedEntityAccuracy.neutralaiF1,
+  },
+  {
+    entity: 'Both engines attempt these (EMAIL, PHONE, PERSON)',
+    metric: 'Holdout F1 — vanilla Presidio baseline',
+    score: benchmarkFacts.sharedEntityAccuracy.baselineF1,
+  },
+  {
+    entity: 'UK identity, financial and legal pack',
+    metric: `Entity families measured, each CI-gated at a 0.95 F1 floor (${benchmarkFacts.publicSet.generatedAt})`,
+    score: `${benchmarkFacts.coverage.ukFamilies}`,
   },
 ] as const
 
+// Now measured, not roadmap — see the July 2026 changelog entry. Order matches
+// the gateway benchmark artifact's UK_* families.
 const ukPackEntities = [
-  'Companies House number',
+  'National Insurance number',
+  'NHS number',
+  'Sort code',
+  'Bank account number',
   'HMRC UTR',
-  'Court references',
+  'Companies House number',
+  'Court case number',
   'SRA ID',
   'Land Registry title number',
-  'DVLA licence number',
+  'Driving licence number (DVLA and DVA formats)',
 ] as const
 
 const changelog = [
@@ -124,7 +162,15 @@ const changelog = [
   },
   {
     date: 'May 2026',
-    entry: `Presidio-vanilla comparison benchmark generated (${generatedAt}, 1,000 cases across DE, EN, ES, FR, TR).`,
+    entry: 'Presidio-vanilla comparison benchmark generated (2026-05-08, 1,000 cases across DE, EN, ES, FR, TR).',
+  },
+  {
+    date: 'July 2026',
+    entry: `UK identity, financial and legal pack added to the measured set: ${benchmarkFacts.coverage.ukFamilies} entity families, each held to a 0.95 F1 floor that fails the build on a regression. Benchmark regenerated (${generatedAt}, ${publicCaseCount} cases).`,
+  },
+  {
+    date: 'July 2026',
+    entry: `Comparison reporting corrected. A single pooled "NeutralAI vs Presidio" F1 conflated coverage with accuracy: the baseline scores a structural zero on every family it is not configured to attempt, so the gap grew each time we added an entity type. Coverage and shared-entity accuracy are now reported separately, and every figure on this page is generated from the benchmark artifacts rather than typed in.`,
   },
 ] as const
 
@@ -132,7 +178,7 @@ const faqs = [
   {
     question: 'How is it measured?',
     answer:
-      'The headline numbers are F1 scores computed against a labeled benchmark set of prompt-style text, comparing detected PII against ground-truth annotations. The published comparison set covers 1,000 cases across German, English, Spanish, French, and Turkish. Overall F1 covers all supported entity types combined; holdout F1 is measured on a sample not used for tuning the detectors.',
+      `The headline numbers are F1 scores computed against a labeled benchmark set of prompt-style text, comparing detected PII against ground-truth annotations. The published comparison set covers ${publicCaseCount} cases across German, English, Spanish, French, and Turkish. Holdout F1 is measured on a sample not used for tuning the detectors, so it is the figure we lead with. We do not publish a single pooled "NeutralAI vs Presidio" score: a baseline is not configured to attempt most of these entity families, so pooling coverage and accuracy into one number would widen the gap every time we added an entity type without anything getting more accurate. Coverage and shared-entity accuracy are reported separately instead.`,
   },
   {
     question: 'Is this independently validated?',
@@ -166,7 +212,12 @@ const datasetStructuredData = {
   },
   license: 'https://neutralai.co.uk/terms',
   measurementTechnique: 'F1 scoring against labeled PII benchmark data',
-  variableMeasured: ['Overall F1', 'Holdout F1', 'PERSON-entity holdout F1'],
+  variableMeasured: [
+    'PERSON-entity holdout F1',
+    'Holdout F1 on entity families both engines attempt',
+    'Entity families attempted',
+    'False positives on holdout',
+  ],
 } as const
 
 const faqStructuredData = {
@@ -266,9 +317,10 @@ export default function BenchmarkPage() {
                 <ClipboardList className="h-5 w-5 text-primary-light" />
                 <h3 className="mt-4 font-heading text-lg font-semibold text-white">Dataset</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
-                  A labeled benchmark set of prompt-style text. The published comparison run covers 1,000 cases across
-                  DE, EN, ES, FR, and TR (generated {generatedAt}), scored against supported entity types — names,
-                  contacts, financial and account identifiers, and region-specific IDs such as UK NHS numbers.
+                  A labeled benchmark set of prompt-style text. The published comparison run covers {publicCaseCount}{' '}
+                  cases across DE, EN, ES, FR, and TR (generated {generatedAt}), scored against{' '}
+                  {benchmarkFacts.coverage.neutralaiFamilies} entity families — names, contacts, financial and account
+                  identifiers, and the UK identity, financial and legal pack.
                 </p>
               </div>
               <div className="rounded-[22px] border border-white/10 bg-background/80 p-6">
@@ -276,10 +328,12 @@ export default function BenchmarkPage() {
                 <h3 className="mt-4 font-heading text-lg font-semibold text-white">Holdout discipline</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
                   &ldquo;Holdout&rdquo; means a sample kept separate from the data used to tune detectors and confidence
-                  thresholds. Holdout F1 ({benchmarkProof.holdoutOverallF1}) and PERSON-holdout F1 (
-                  {benchmarkProof.personHoldoutF1}) are reported separately from the public overall F1 (
-                  {benchmarkProof.publicOverallF1}) so the gap between tuned and unseen performance is visible rather
-                  than hidden.
+                  thresholds. We lead with PERSON-holdout F1 ({benchmarkFacts.holdoutSet.personF1}) and the like-for-like
+                  comparison, not a pooled overall score. A pooled figure across all{' '}
+                  {benchmarkFacts.holdoutSet.families} families is dominated by the pattern-matched identifiers, which
+                  sit at or near 1.0, so it rises whenever a new one is added — it moved from 98.4% to{' '}
+                  {benchmarkFacts.holdoutSet.overallF1} when the UK pack was added, with no detection change. The tuned
+                  public set is at ceiling for the same reason: useful as a regression gate, worthless as a forecast.
                 </p>
               </div>
               <div className="rounded-[22px] border border-white/10 bg-background/80 p-6">
@@ -359,16 +413,38 @@ export default function BenchmarkPage() {
             for the supported entity list.
           </p>
 
-          {/* In-development UK legal entity pack */}
+          {/* UK identity, financial and legal pack — measured since July 2026 */}
           <div className="mt-10 rounded-[28px] border border-dashed border-white/15 bg-white/[0.02] p-6">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#fdba74]">
               <Clock3 className="h-4 w-4" />
-              In development — UK legal entity pack
+              UK identity, financial and legal pack — now measured
             </div>
             <p className="mt-3 text-sm leading-6 text-slate-300">
-              The following UK legal-sector identifiers are on the entity-coverage roadmap. No accuracy numbers exist
-              for them yet — results will be published here once benchmarked.
+              These were listed here as roadmap items without figures. As of {benchmarkFacts.publicSet.generatedAt} all{' '}
+              {benchmarkFacts.coverage.ukFamilies} are in the measured set, each held to a 0.95 F1 floor that fails the
+              build on a regression. A vanilla Presidio baseline does not attempt any of them.
             </p>
+            {/*
+              Data-driven, not prose: the caveat is rendered from
+              holdoutSet.familiesWithoutHoldoutCoverage, so it disappears by
+              itself the moment the regenerated artifact covers the UK pack.
+              Writing it as a fixed sentence would leave the page claiming a gap
+              that had already been closed — the exact drift this whole change
+              set exists to stop.
+            */}
+            {ukFamiliesMissingHoldout.length > 0 ? (
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                Note the limit: {ukFamiliesMissingHoldout.length} of them are measured on the public synthetic set only.
+                The holdout split covers {benchmarkFacts.holdoutSet.families} families, so the{' '}
+                {benchmarkFacts.holdoutSet.personF1} PERSON-holdout figure above does not include those.
+              </p>
+            ) : (
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                All {benchmarkFacts.coverage.ukFamilies} are also covered by the holdout split — the sample kept out of
+                detector tuning — written as ordinary correspondence rather than templates, so the cue sits inside a
+                real sentence instead of at the start of a fixed pattern.
+              </p>
+            )}
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {ukPackEntities.map((entity) => (
                 <li
@@ -380,9 +456,10 @@ export default function BenchmarkPage() {
               ))}
             </ul>
             <p className="mt-4 text-xs leading-6 text-slate-500">
-              UK National Insurance number detection is in development. A gateway recognizer exists, but this entity
-              type is not yet listed in NeutralAI&apos;s published supported-entity coverage, so it is not included in
-              the benchmark table above until that coverage is published and measured.
+              Scores are measured on synthetic, well-formed prompts, so treat them as a regression gate rather than a
+              forecast of real-world accuracy: their job is to prove that what worked last release still works. UK
+              postcodes are deliberately excluded — a postcode is often a legitimate search term rather than personal
+              data, so it ships as an opt-in policy template instead of a default.
             </p>
           </div>
         </div>
@@ -403,7 +480,7 @@ export default function BenchmarkPage() {
           <div className="mt-10 overflow-hidden rounded-[28px] border border-white/10 bg-background/80">
             <div className="grid border-b border-white/10 bg-white/[0.04] text-sm font-semibold text-slate-200 md:grid-cols-[1fr_0.6fr_1.4fr]">
               <div className="px-5 py-4">Product</div>
-              <div className="px-5 py-4">Overall F1</div>
+              <div className="px-5 py-4">Holdout F1 — shared families</div>
               <div className="px-5 py-4">Status</div>
             </div>
             {comparisonRows.map((row) => (

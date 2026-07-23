@@ -20,8 +20,21 @@ test('presidio alternative page carries SEO and build-vs-buy content', () => {
   assert.match(source, /Buy NeutralAI/)
   assert.match(source, /Presidio is a library/)
   assert.match(source, /not positioned as a from-scratch recognizer model/)
-  assert.match(source, /Source of truth: nazifsohtaoglu\/neutralai-gateway benchmark artifacts/)
-  assert.match(source, /neutralaiF1: '99\.8%'/)
+  // Figures come from app/data/benchmark-facts.json, generated from the gateway
+  // artifacts — no benchmark number is hand-typed on this page any more.
+  assert.match(source, /from '\.\.\/data\/benchmark-facts\.json'/)
+  assert.match(source, /benchmarkFacts\.sharedEntityAccuracy/)
+  assert.match(source, /benchmarkFacts\.coverage/)
+
+  // Claim guard (gateway#1643). A pooled "NeutralAI X% vs Presidio Y%" headline
+  // conflates coverage with accuracy: the baseline is not configured to attempt
+  // most benchmarked entity families, takes a structural zero on them, and the
+  // gap therefore widens every time we add an entity type without anything
+  // becoming more accurate. Coverage and shared-entity accuracy must stay split,
+  // and the retired hand-typed figures must not come back.
+  assert.doesNotMatch(source, /57\.5%/)
+  assert.doesNotMatch(source, /neutralaiF1: '99\.8%'/)
+  assert.match(source, /both engines attempt/i)
 })
 
 test('roi calculator remains client-side and exposes expected controls', () => {

@@ -1,3 +1,4 @@
+import benchmarkFacts from '../data/benchmark-facts.json'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -81,28 +82,28 @@ const proofPoints = [
 // Private AI figures: vendor-published narrative (precision/recall/F1 on ~45k-word dataset) — no single headline number cited in public sources.
 const detectionRows = [
   {
-    metric: 'Overall F1 (published benchmark)',
-    neutralai: '99.8%',
-    presidio: 'Baseline (open-source, uncalibrated)',
+    metric: 'Entity families attempted',
+    neutralai: `${benchmarkFacts.coverage.neutralaiFamilies}, including the UK identity, financial and legal pack`,
+    presidio: `${benchmarkFacts.coverage.baselineFamilies} of those ${benchmarkFacts.coverage.neutralaiFamilies} in a vanilla configuration`,
     privateAi: 'Reported separately per entity — no single headline number in public sources',
     nightfall: 'Not published as F1',
     source: 'NeutralAI 2026 benchmark; Presidio docs',
   },
   {
-    metric: 'Holdout F1',
-    neutralai: '98.4%',
-    presidio: '—',
+    metric: 'Holdout F1 — entity families both engines attempt',
+    neutralai: benchmarkFacts.sharedEntityAccuracy.neutralaiF1,
+    presidio: benchmarkFacts.sharedEntityAccuracy.baselineF1,
     privateAi: '—',
     nightfall: '—',
-    source: 'NeutralAI 2026 benchmark',
+    source: 'NeutralAI 2026 benchmark (holdout split)',
   },
   {
     metric: 'PERSON entity holdout F1',
-    neutralai: '92.7%',
-    presidio: '—',
+    neutralai: benchmarkFacts.holdoutSet.personF1,
+    presidio: benchmarkFacts.sharedEntityAccuracy.personBaselineF1,
     privateAi: '—',
     nightfall: '—',
-    source: 'NeutralAI 2026 benchmark',
+    source: 'NeutralAI 2026 benchmark (holdout split)',
   },
   {
     metric: 'Vendor precision claim (out of the box)',

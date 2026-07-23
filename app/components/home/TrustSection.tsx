@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { contactLinks, siteConfig } from '../../site'
+import benchmarkFacts from '../../data/benchmark-facts.json'
 import { benchmarkProof, documentRedactionPoints, healthcareTrustPoints, trustCards } from '../../data/homepage'
 
 export default function TrustSection() {
@@ -62,9 +63,9 @@ export default function TrustSection() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                ['Public overall F1', benchmarkProof.publicOverallF1],
-                ['Holdout overall F1', benchmarkProof.holdoutOverallF1],
-                ['Holdout PERSON F1', benchmarkProof.personHoldoutF1],
+                ['Entity families measured', `${benchmarkFacts.coverage.neutralaiFamilies}`],
+                ['Holdout PERSON F1 vs Presidio', `${benchmarkFacts.holdoutSet.personF1} / ${benchmarkFacts.sharedEntityAccuracy.personBaselineF1}`],
+                ['Holdout PERSON F1', benchmarkFacts.holdoutSet.personF1],
               ].map(([label, value]) => (
                 <div key={label} className="rounded-2xl border border-white/10 bg-background/80 p-5">
                   <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{label}</p>
