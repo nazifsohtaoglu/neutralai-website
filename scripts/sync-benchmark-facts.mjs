@@ -149,14 +149,20 @@ const pubBaseline = pub.results.presidio_vanilla.per_entity
 const holdNeutral = holdout.results.neutralai.per_entity
 const holdBaseline = holdout.results.presidio_vanilla.per_entity
 
-const neutralFamilies = Object.keys(pubNeutral).sort()
+// Both sides read from configured coverage, never from score-row keys. Using
+// per_entity keys for the NeutralAI side would reintroduce the same blind spot
+// on our own numbers: a family whose score row went missing or empty in a
+// future artifact would silently drop out of the published coverage and the
+// shared-F1 scope (#167 review).
+const neutralFamilies = attempted(pub.results.neutralai, 'public-set NeutralAI')
 const baselineFamilies = attempted(pub.results.presidio_vanilla, 'public-set baseline')
 const notAttempted = neutralFamilies.filter((e) => !baselineFamilies.includes(e))
 
-// Shared families, measured on the holdout split.
-const shared = Object.keys(holdNeutral)
-  .filter((e) => attempted(holdout.results.presidio_vanilla, 'holdout baseline').includes(e))
-  .sort()
+// Shared families = the intersection of the two CONFIGURED holdout lists,
+// measured on the holdout split.
+const holdoutNeutralFamilies = attempted(holdout.results.neutralai, 'holdout NeutralAI')
+const holdoutBaselineFamilies = attempted(holdout.results.presidio_vanilla, 'holdout baseline')
+const shared = holdoutNeutralFamilies.filter((e) => holdoutBaselineFamilies.includes(e)).sort()
 const sharedNeutral = pooledF1(holdNeutral, shared)
 const sharedBaseline = pooledF1(holdBaseline, shared)
 
