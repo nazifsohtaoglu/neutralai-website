@@ -13,6 +13,7 @@ Run commands from the repo root. If a required tool is missing, first try the us
 | Lint | `npm run lint` | repo root |
 | Accessibility smoke checks | `npm run test:a11y-smoke` | repo root (after `npm run build`) |
 | Visual smoke checks | `npm run test:visual-smoke` | repo root (after `npm run build`) |
+| Playground result provenance | `npm run test:playground-results` | repo root (after `npm run build`; Chromium installed) |
 | Content tests | `npm run test:content` | repo root |
 | Production dependency audit | `npm run audit:prod` | repo root |
 | Pre-review security gate | `./scripts/codex-security-pre-review.sh` | repo root |

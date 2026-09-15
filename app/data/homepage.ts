@@ -268,7 +268,7 @@ const allPricingFaqs = [
   {
     question: 'Does NeutralAI add VAT to my invoice?',
     answer:
-      'All listed GBP prices exclude VAT. VAT may apply depending on your billing country and whether your entity is VAT-registered. UK businesses will be charged UK VAT unless a valid VAT number is provided. EU entities may be eligible for reverse-charge treatment.',
+      'Listed prices exclude applicable taxes. Review the tax treatment and total shown in your checkout or commercial quote before purchasing.',
   },
   {
     question: 'Can I cancel or downgrade my plan?',
@@ -278,7 +278,7 @@ const allPricingFaqs = [
   {
     question: 'Where is my data processed and stored?',
     answer:
-      'NeutralAI processes and stores data in the EU (London/Frankfurt regions) by default. Vault tokens are encrypted with AES-256-GCM and carry a 15-minute TTL unless extended by policy. Enterprise customers can discuss private cloud or on-premises deployment for stricter data-residency requirements.',
+      'Confirm the processing and storage region for your deployment with us before production use. Reversible mappings are encrypted with AES-256-GCM and carry a default 15-minute TTL, configurable by policy. Enterprise customers can discuss private cloud or on-premises deployment for stricter data-residency requirements.',
   },
 ] as const
 

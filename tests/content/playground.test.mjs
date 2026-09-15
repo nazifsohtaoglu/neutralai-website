@@ -20,7 +20,7 @@ test('playground page exposes an interactive PII masking workflow', () => {
   assert.match(page, /Sanitized output will appear here/)
   assert.match(page, /Raw prompt/)
   assert.match(page, /Sanitized/)
-  assert.match(page, /Entities and confidence/)
+  assert.match(page, /Detection details/)
   assert.match(page, /reversible/)
   assert.match(page, /samplePrompts/)
   assert.match(page, /requestVersionRef/)

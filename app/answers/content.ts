@@ -29,7 +29,7 @@ export const answerEntries: AnswerEntry[] = [
     metaDescription:
       'What UK guidance and the Upper Tribunal actually say about law firms using ChatGPT with client data — and the technical control that changes the answer.',
     directAnswer:
-      'Not with identifiable client data in the clear. The Law Society’s guidance says confidential data should not go into free, public generative AI tools, and the Upper Tribunal accepted in Munir v SSHD that pasting client correspondence into ChatGPT was a data breach. Law firms can still use ChatGPT productively in two ways: under an enterprise contract with retention and no-training guarantees, or — for any tool — by masking client-identifiable information before the prompt leaves the firm, so the model receives a de-identified version and confidentiality is never in question.',
+      'Not with identifiable client data in the clear. The Law Society’s guidance says confidential data should not go into free, public generative AI tools, and the Upper Tribunal accepted in Munir v SSHD that pasting client correspondence into ChatGPT was a data breach. Controls to evaluate include suitable provider terms and masking detected client identifiers on supported workflows to reduce identifiable data exposure. The remaining document content still needs review under the firm’s policies.',
     sections: [
       {
         heading: 'What the rules actually say',
@@ -39,24 +39,24 @@ export const answerEntries: AnswerEntry[] = [
         ],
       },
       {
-        heading: 'The two compliant paths',
+        heading: 'Controls to evaluate together',
         paragraphs: [
-          'Path one is contractual: ChatGPT Enterprise or an API agreement with no-training and retention commitments. It works — inside that one contract. It does nothing about staff using the free tier, other AI tools, or personal devices, and it still sends real client identifiers to the provider.',
-          'Path two is technical: mask client-identifiable information before the prompt leaves the browser. Names, addresses, NI and NHS numbers, and case references become placeholders like <PERSON_7K9X>; the model works on the de-identified text; the real values are restored locally when the answer returns. The confidential content never reaches the provider, whichever tool staff use — and an audit trail records that the control ran.',
+          'Path one is contractual: ChatGPT Enterprise or an API agreement with no-training and retention commitments. Its protections depend on that contract and the approved workflow. It does nothing about staff using the free tier, other AI tools, or personal devices, and it still sends real client identifiers to the provider.',
+          'Path two is technical: mask detected client identifiers on supported inputs before model submission. Names, addresses, NI and NHS numbers, and case references become placeholders like <PERSON_7K9X>; the model works on text with detected identifiers replaced; restoration follows the configured local or gateway workflow. Remaining context may still be confidential; tool coverage, processing location, and audit behaviour depend on configuration.',
         ],
       },
     ],
     keyPoints: [
       'No ban exists — but identifiable client data in public AI tools is treated as a confidentiality breach.',
       'The Upper Tribunal has already accepted that pasting client letters into ChatGPT was a data breach.',
-      'Enterprise contracts protect one tool; masking protects the prompt on every tool.',
+      'Combine approved provider agreements with masking controls on supported tools and workflows.',
       'Evidence matters: an audit trail of what was masked turns policy into something you can demonstrate.',
     ],
     faq: [
       {
         question: 'Is ChatGPT Enterprise enough on its own?',
         answer:
-          'It covers the tool it contracts for. The gap is everything else: free-tier use, other AI tools, personal devices. Most firms combine an approved enterprise tool with a technical control that applies to whatever staff actually use.',
+          'It covers the tool it contracts for. The gap is everything else: free-tier use, other AI tools, personal devices. Most firms combine an approved enterprise tool with technical controls on supported tools and workflows.',
       },
       {
         question: 'What happened to the adviser in the tribunal case?',
@@ -66,7 +66,7 @@ export const answerEntries: AnswerEntry[] = [
       {
         question: 'Does masking client data change the legal position?',
         answer:
-          'It changes what the AI provider receives: de-identified text instead of confidential client information. That materially reduces the disclosure — though it is a risk-reduction control, not a legal guarantee, and firms still need policy and appropriate provider terms.',
+          'It changes what the AI provider receives: text with detected identifiers replaced; the remaining content may still be confidential. This can reduce identifiable data exposure, but it is not a legal guarantee, and firms still need policy and appropriate provider terms.',
       },
     ],
     sources: [
@@ -95,7 +95,7 @@ export const answerEntries: AnswerEntry[] = [
     metaDescription:
       'Policy and training fail under deadline pressure. The four options for stopping PII reaching ChatGPT — bans, training, enterprise contracts, and prompt-layer masking — compared honestly.',
     directAnswer:
-      'You cannot reliably stop it with policy alone — you make it technically impossible for the PII to reach the tool. The four options are: ban AI (usage moves to personal devices and you lose visibility), train staff (helps, but fails under deadline pressure), buy an enterprise AI contract (covers one tool only), or mask PII at the point of use, in the browser, before the prompt leaves. Masking is the only option that works regardless of which AI tool staff choose, without slowing them down — and it produces an audit record instead of a blind spot.',
+      'Combine approved AI tools, staff training, and technical controls for the workflows you support. NeutralAI can mask detected identifiers before model submission on supported sites and integrations. Coverage depends on configuration, and detection can miss sensitive content; review the remaining text and define which documents are permitted.',
     sections: [
       {
         heading: 'Why bans and training keep failing',
@@ -107,8 +107,8 @@ export const answerEntries: AnswerEntry[] = [
       {
         heading: 'What a point-of-use control looks like',
         paragraphs: [
-          'A browser extension sits on the AI sites staff already use. When someone types or uploads content containing PII — names, emails, phone numbers, NI or NHS numbers, account references — the identifiers are detected and replaced with placeholders before submission. The person keeps working; the model still gets a coherent prompt; the identifying data never leaves.',
-          'Because the control runs at the point of use, it does not care which AI tool is involved, and it generates the thing bans and training never can: evidence. Category-level logs show what was protected, when, and under which policy — without storing the raw content.',
+          'A browser extension sits on the AI sites staff already use. When someone types or uploads content containing PII — names, emails, phone numbers, NI or NHS numbers, account references — the identifiers are detected and replaced with placeholders before submission. The person keeps working; the model still gets a coherent prompt; detected identifiers are replaced on supported inputs. Local mode processes on the device; remote mode processes at the configured gateway.',
+          'Coverage depends on the supported site or integration and the configured processing mode. Where telemetry is enabled, category-level events can help reviewers understand which controls ran; they do not establish that every sensitive value was detected.',
         ],
       },
     ],
@@ -116,7 +116,7 @@ export const answerEntries: AnswerEntry[] = [
       'Bans push usage to personal devices — the risk goes invisible, not away.',
       'Training fails at the moment of deadline pressure; the heaviest AI users paste the most.',
       'Enterprise contracts cover one tool; staff use many.',
-      'Masking at the point of use works on every tool and produces audit evidence.',
+      'Masking applies to supported tools; available audit evidence depends on the configured telemetry.',
     ],
     faq: [
       {
@@ -127,7 +127,7 @@ export const answerEntries: AnswerEntry[] = [
       {
         question: 'Will masking break the usefulness of the AI answer?',
         answer:
-          'Rarely. Most legal, financial, and operational questions do not depend on real names — a structurally faithful placeholder preserves the reasoning task. Where the real values matter for reading the answer, reversible tokenisation restores them locally after the response returns.',
+          'Rarely. Most legal, financial, and operational questions do not depend on real names — a structurally faithful placeholder preserves the reasoning task. Where the real values matter for reading the answer, reversible tokenisation can restore them through the configured local or gateway path after the response returns.',
       },
       {
         question: 'How fast can this be deployed?',
@@ -151,13 +151,13 @@ export const answerEntries: AnswerEntry[] = [
     metaDescription:
       'Reversible PII tokenization replaces identifiers with placeholders before AI processing and restores them after — masking without losing the answer. How it works, with the vault mechanics.',
     directAnswer:
-      'Reversible PII tokenization replaces sensitive values in a prompt with consistent placeholders — "Sarah Thompson" becomes <PERSON_7K9X> — before the text reaches an AI model, then restores the real values in the response after it returns. Unlike permanent redaction, the answer comes back readable; unlike blocking, the work continues. The mapping between placeholder and real value lives in an encrypted vault (AES-256-GCM) with a short time-to-live — 15 minutes by default — so the restore window closes automatically. The AI provider only ever sees placeholders.',
+      'Reversible PII tokenization replaces sensitive values in a prompt with consistent placeholders — "Sarah Thompson" becomes <PERSON_7K9X> — before the text reaches an AI model, then restores the real values in the response after it returns. Unlike permanent redaction, the answer comes back readable; unlike blocking, the work continues. The mapping between placeholder and real value lives in an encrypted vault (AES-256-GCM) with a short time-to-live — 15 minutes by default — so the restore window closes automatically. The AI provider receives the surrounding text with detected identifiers replaced.',
     sections: [
       {
         heading: 'How the round trip works',
         paragraphs: [
           'On the way out, a detection engine finds identifiers in the prompt — names, emails, phone numbers, UK-specific values like NI and NHS numbers — and swaps each for a typed placeholder. The mapping is written to an encrypted vault. The masked prompt goes to the model.',
-          'On the way back, the response usually mentions the placeholders ("advise <PERSON_7K9X> to accept the offer…"). The gateway streams the response through an unmasker that swaps placeholders back to real values — inside your environment, never at the provider. The vault entry then expires on its TTL, closing the restore window.',
+          'On the way back, the response usually mentions the placeholders ("advise <PERSON_7K9X> to accept the offer…"). The gateway streams the response through an unmasker that swaps placeholders back to real values — at the configured gateway, rather than at the AI provider. The vault entry then expires on its TTL, closing the restore window.',
           'This round trip is the part most detection engines cannot do. Microsoft’s open-source Presidio, for example, notes in its own documentation that it cannot restore values once an LLM rephrases the output — the productised vault-and-unmask path is exactly the gap.',
         ],
       },
@@ -169,9 +169,9 @@ export const answerEntries: AnswerEntry[] = [
       },
     ],
     keyPoints: [
-      'Placeholders out, real values back in — the model never sees the identifiers.',
+      'Placeholders out, real values back in — detected identifiers are replaced before model processing.',
       'Vault entries are AES-256-GCM encrypted with a 15-minute default TTL.',
-      'Restoration happens in your environment, not at the AI provider.',
+      'Restoration follows the configured local or gateway path, rather than running at the AI provider.',
       'Choose reversible or irreversible per entity type via policy.',
     ],
     faq: [
@@ -226,7 +226,7 @@ export const answerEntries: AnswerEntry[] = [
         heading: 'Why the reasoning matters beyond this case',
         paragraphs: [
           'The tribunal’s framing — that placing client information into an open AI system puts it in the public domain — matches the judiciary’s own AI guidance, which tells judges to treat anything entered into a public AI chatbot as published to all the world. Two different judicial sources now describe the same act the same way.',
-          'The ruling also drew a line the industry should notice: it distinguished open tools from closed AI systems operating inside a secure network, which it accepted could summarise material without those risks. The safe path is not "no AI" — it is AI where confidential content never reaches the open tool. Masking identifiers before the prompt leaves achieves that boundary at the point of use.',
+          'The ruling also drew a line the industry should notice: it distinguished open tools from closed AI systems operating inside a secure network, which it accepted could summarise material without those risks. Masking identifiers can reduce personal-data exposure, but it does not remove all confidential content from a document. Decide which documents and tools are permitted before submission.',
         ],
       },
       {
@@ -256,7 +256,7 @@ export const answerEntries: AnswerEntry[] = [
       {
         question: 'Would masking have changed this outcome?',
         answer:
-          'The breach turned on client-identifiable material reaching an open tool. If the letters had been masked before upload — names, references, and identifying details replaced — the open tool would have received de-identified text. That is a materially different disclosure, though masking is a risk-reduction control, not a retroactive legal fix.',
+          'Masking could have reduced the identifiers included in the uploaded text. It does not establish that uploading the remaining client correspondence would have been permitted, or that the outcome of this case would have changed.',
       },
     ],
     related: [
@@ -287,8 +287,8 @@ export const answerEntries: AnswerEntry[] = [
       {
         heading: 'Block, flag, or mask — the three postures',
         paragraphs: [
-          'Blocking stops the prompt entirely. Safe, but it taxes productivity and pushes users to personal devices. Flagging (observe-and-coach) lets the data go and tells someone afterwards — visibility without prevention. Masking detects the sensitive values and replaces them before submission, letting the rest of the prompt proceed: the user keeps working, the data never leaves, and the event is logged.',
-          'Mask-and-forward with reversible tokenization is the strictest posture that still preserves the productivity benefit — which is why it suits regulated teams that cannot simply ban AI.',
+          'Blocking stops the prompt entirely. Safe, but it taxes productivity and pushes users to personal devices. Flagging (observe-and-coach) lets the data go and tells someone afterwards — visibility without prevention. Masking detects the sensitive values and replaces them before submission, letting the rest of the prompt proceed: the permitted workflow can continue with detected identifiers replaced. Logging and enforcement depend on the configured policy.',
+          'Mask-and-forward with reversible tokenization can preserve useful context. Choose permitted workflows and failure behaviour through policy; some content should still be blocked.',
         ],
       },
     ],
@@ -408,7 +408,7 @@ const chatgptGdprEntry: AnswerEntry = {
     {
       heading: 'The minimisation shortcut',
       paragraphs: [
-        'The strongest simplification available to any firm is to stop personal data entering the tool at all. If client names, contact details, and identifiers are masked in the browser before the prompt is submitted, the hardest GDPR questions — lawful basis for sending personal data to a third-party model, international transfers, retention at the provider — shrink dramatically, because the provider receives de-identified text. You still need policy and appropriate terms, but you are no longer betting compliance on a vendor’s data pipeline.',
+        'Masking detected identifiers can reduce exposure, but the remaining context may still identify a person or contain confidential information. Review the complete data flow, provider terms, retention, and permitted content; do not treat tokenization as proof that data-protection obligations no longer apply.',
       ],
     },
   ],

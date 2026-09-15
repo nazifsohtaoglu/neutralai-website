@@ -23,7 +23,7 @@ const securitySections = [
     icon: Shield,
     title: 'Gateway boundary',
     description:
-      'NeutralAI is positioned as a security boundary between customer applications and external model providers so policy can be applied before data leaves the trusted path.',
+      'NeutralAI applies masking policies to supported AI requests between customer applications and external model providers.',
   },
   {
     icon: ServerCog,
@@ -35,21 +35,21 @@ const securitySections = [
     icon: Lock,
     title: 'Data handling posture',
     description:
-      'The product story emphasizes transient processing and policy-aware handling instead of broad retention claims that would be hard to support operationally.',
+      'Reversible mappings are encrypted and retained for a limited period, controlled by the configured retention policy.',
   },
   {
     icon: Database,
     title: 'Production hardening',
     description:
-      'Immutable compliance storage and stricter enforcement controls remain part of the production readiness path and are called out explicitly in launch messaging.',
+      'Discuss evidence retention, enforcement requirements, and deployment scope with us before your production rollout.',
   },
 ] as const
 
 const readinessItems = [
   'Public endpoints are live behind TLS on api.neutralai.co.uk.',
   'Docker-based deployment and reverse proxy setup are already in place.',
-  'The current public website describes production controls without implying unsupported certification status.',
-  'Production go-live discussions should include the immutable storage roadmap and security review scope.',
+  'Review the security pack for current controls, audit status, and available evidence.',
+  'Confirm storage requirements and security review scope before production use.',
 ] as const
 
 const securitySpecs = [
@@ -184,8 +184,8 @@ export default function SecurityPage() {
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Data Flow</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-4xl">How a prompt is sanitized before it leaves.</h2>
             <p className="mt-4 text-base leading-7 text-slate-400">
-              The gateway intercepts every outbound prompt, runs multi-stage PII detection, tokenizes entities into the encrypted
-              vault, and only forwards the sanitized version to the model provider. Raw PII never crosses the boundary.
+              The gateway processes supported outbound prompts, runs multi-stage PII detection, tokenizes detected entities into
+              the encrypted vault, and forwards the permitted request with detected identifiers replaced.
             </p>
           </div>
           <div className="rounded-lg border border-border bg-background p-6">

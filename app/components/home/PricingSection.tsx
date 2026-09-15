@@ -19,8 +19,8 @@ export default function PricingSection() {
         <div className="container-custom">
           <SectionIntro
             eyebrow="Pricing"
-            title="Pricing is being finalised"
-            description="We are finalising our published pricing ahead of commercial launch. Plans start free, and paid tiers are sized for small and mid-sized regulated teams — talk to us for current plans and early-access pricing."
+            title="Request current pricing"
+            description="Start with the free plan, or contact us to discuss current paid plans, usage limits, and rollout requirements."
             centered
           />
           <div className="mx-auto mt-8 flex max-w-xl flex-col items-center gap-3 sm:flex-row sm:justify-center">

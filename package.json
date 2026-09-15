@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "audit:prod": "npm audit --omit=dev --audit-level=critical",
     "sync:benchmark-facts": "node scripts/sync-benchmark-facts.mjs",
-    "check:benchmark-facts": "node scripts/sync-benchmark-facts.mjs --check"
+    "check:benchmark-facts": "node scripts/sync-benchmark-facts.mjs --check",
+    "test:playground-results": "node scripts/test-playground-results.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

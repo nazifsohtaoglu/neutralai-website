@@ -38,7 +38,6 @@ type Finding = {
   text: string
   start: number
   end: number
-  confidence: number
 }
 
 type TokenFinding = {
@@ -140,13 +139,13 @@ const entityStyles: Record<EntityType, { original: string; masked: string; dot: 
   },
 }
 
-const patterns: Array<{ entityType: EntityType; regex: RegExp; confidence: number }> = [
-  { entityType: 'EMAIL_ADDRESS', regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, confidence: 0.99 },
-  { entityType: 'IBAN', regex: /\b[A-Z]{2}\d{2}(?:\s?[A-Z0-9]){11,30}\b/g, confidence: 0.96 },
-  { entityType: 'PHONE_NUMBER', regex: /(?:\+44\s?)?(?:0|\(?0\)?)?7\d{3}\s?\d{3}\s?\d{3}\b/g, confidence: 0.93 },
-  { entityType: 'CREDIT_CARD', regex: /\b(?:\d[ -]?){13,19}\b/g, confidence: 0.94 },
-  { entityType: 'UK_NHS', regex: /\b\d{3}\s?\d{3}\s?\d{4}\b/g, confidence: 0.9 },
-  { entityType: 'DATE_TIME', regex: /\b\d{1,2}\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\s+\d{4}\b/gi, confidence: 0.86 },
+const patterns: Array<{ entityType: EntityType; regex: RegExp }> = [
+  { entityType: 'EMAIL_ADDRESS', regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi },
+  { entityType: 'IBAN', regex: /\b[A-Z]{2}\d{2}(?:\s?[A-Z0-9]){11,30}\b/g },
+  { entityType: 'PHONE_NUMBER', regex: /(?:\+44\s?)?(?:0|\(?0\)?)?7\d{3}\s?\d{3}\s?\d{3}\b/g },
+  { entityType: 'CREDIT_CARD', regex: /\b(?:\d[ -]?){13,19}\b/g },
+  { entityType: 'UK_NHS', regex: /\b\d{3}\s?\d{3}\s?\d{4}\b/g },
+  { entityType: 'DATE_TIME', regex: /\b\d{1,2}\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\s+\d{4}\b/gi },
 ]
 
 const personStopWords = new Set([
@@ -180,7 +179,6 @@ function detectFindings(text: string): Finding[] {
         text: value,
         start: match.index,
         end: match.index + value.length,
-        confidence: pattern.confidence,
       }
 
       if (!overlaps(candidate, findings)) {
@@ -201,7 +199,6 @@ function detectFindings(text: string): Finding[] {
       text: value,
       start: match.index,
       end: match.index + value.length,
-      confidence: 0.87,
     }
 
     if (!overlaps(candidate, findings)) {
@@ -309,6 +306,7 @@ export default function PlaygroundPage() {
   const [prompt, setPrompt] = useState<string>('')
   const [mode, setMode] = useState<MaskingMode>('irreversible')
   const [maskedText, setMaskedText] = useState('')
+  const [hasResult, setHasResult] = useState(false)
   const [source, setSource] = useState<ResultSource>('demo')
   const [statusText, setStatusText] = useState('Waiting for prompt')
   const [isLoading, setIsLoading] = useState(false)
@@ -316,9 +314,8 @@ export default function PlaygroundPage() {
   const requestVersionRef = useRef(0)
 
   const localPreview = useMemo(() => maskLocally(prompt, mode === 'reversible'), [prompt, mode])
-  const hasResult = maskedText.length > 0
   const visibleMaskedText = hasResult ? maskedText : ''
-  const findings = hasResult ? localPreview.findings : []
+  const findings = hasResult && source === 'demo' ? localPreview.findings : []
   const tokens = useMemo(() => detectTokens(visibleMaskedText), [visibleMaskedText])
   const entitySummary = summarizeEntities(findings)
   const isOverLimit = prompt.length > MAX_PROMPT_LENGTH
@@ -327,6 +324,7 @@ export default function PlaygroundPage() {
   function clearMaskResult(nextStatus: string) {
     requestVersionRef.current += 1
     setMaskedText('')
+    setHasResult(false)
     setSource('demo')
     setStatusText(nextStatus)
     setIsLoading(false)
@@ -359,6 +357,7 @@ export default function PlaygroundPage() {
         }
 
         setMaskedText(requestPreview.maskedText)
+        setHasResult(true)
         setSource('demo')
         setStatusText(shouldUseSamplePreview ? 'Sample preview ready' : 'Demo preview ready')
         setIsLoading(false)
@@ -391,17 +390,22 @@ export default function PlaygroundPage() {
         return
       }
 
-      setMaskedText(payload.masked_text || requestPreview.maskedText)
-      setSource(payload.masked_text ? 'live' : 'demo')
-      setStatusText(payload.masked_text ? 'Masked by live API' : 'Demo preview ready')
+      if (typeof payload?.masked_text !== 'string') {
+        throw new Error('Mask response did not contain text')
+      }
+      setMaskedText(payload.masked_text)
+      setHasResult(true)
+      setSource('live')
+      setStatusText('Masked by live API')
     } catch {
       if (requestVersionRef.current !== requestVersion) {
         return
       }
 
       setMaskedText(requestPreview.maskedText)
+      setHasResult(true)
       setSource('demo')
-      setStatusText('Demo preview ready')
+      setStatusText('Live service unavailable — showing a local preview')
     } finally {
       window.clearTimeout(timeout)
       if (requestVersionRef.current === requestVersion) {
@@ -429,7 +433,7 @@ export default function PlaygroundPage() {
     trackAnalyticsEvent('Playground Result Copy', {
       mode,
       result_source: source,
-      finding_count: findings.length,
+      ...(source === 'demo' ? { preview_finding_count: findings.length } : {}),
     })
   }
 
@@ -446,7 +450,7 @@ export default function PlaygroundPage() {
                 Try PII masking before your prompt reaches AI.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                Paste a prompt, choose reversible or irreversible masking, and preview the sanitized output with entity labels and confidence scores.
+                Paste a prompt, choose reversible or irreversible masking, and compare the output. Sample previews illustrate detection; live API results show the returned text.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link href="#playground-demo" className="btn btn-primary justify-center px-8 py-4">
@@ -475,7 +479,7 @@ export default function PlaygroundPage() {
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
                 <div className="flex items-center gap-2 text-sm text-slate-300">
                   <ShieldCheck className="h-5 w-5 text-primary-light" />
-                  <span>{statusText}</span>
+                  <span role="status" aria-live="polite">{statusText}</span>
                 </div>
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-400">
                   {hasResult ? (source === 'live' ? 'Live API' : 'Preview') : 'Not run yet'}
@@ -491,7 +495,7 @@ export default function PlaygroundPage() {
                 ))}
                 {findings.length === 0 ? (
                   <div className="rounded-2xl border border-white/10 bg-background/80 px-4 py-3 text-sm text-slate-400 sm:col-span-3">
-                    Write your prompt or choose a sample, then press Mask prompt.
+                    {hasResult ? (source === 'live' ? 'Entity details are not returned by this live endpoint.' : 'No illustrative matches found. This does not establish that the text is free of sensitive data.') : 'Write your prompt or choose a sample, then press Mask prompt.'}
                   </div>
                 ) : null}
               </div>
@@ -507,7 +511,7 @@ export default function PlaygroundPage() {
               <div className="flex flex-col gap-4 border-b border-white/10 pb-5 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h2 className="font-heading text-2xl font-semibold text-white">Raw prompt</h2>
-                  <p className="mt-2 text-sm text-slate-400">Input stays in your browser until you run the mask request.</p>
+                  <p className="mt-2 text-sm text-slate-400">Use fictional data only. Built-in samples run locally. Other inputs are sent to the NeutralAI gateway when you press Mask prompt on the hosted site; this playground does not send them to an AI model.</p>
                 </div>
                 <div className="flex rounded-2xl border border-white/10 bg-white/[0.03] p-1">
                   {(['irreversible', 'reversible'] as const).map((option) => (
@@ -529,6 +533,7 @@ export default function PlaygroundPage() {
               </div>
 
               <textarea
+                aria-label="Raw prompt"
                 value={prompt}
                 onChange={(event) => {
                   setPrompt(event.target.value)
@@ -633,18 +638,18 @@ export default function PlaygroundPage() {
               <div className="rounded-[28px] border border-white/10 bg-background p-5 md:p-6">
                 <div className="flex flex-col gap-3 border-b border-white/10 pb-5 md:flex-row md:items-center md:justify-between">
                   <div>
-                    <h2 className="font-heading text-2xl font-semibold text-white">Entities and confidence</h2>
-                    <p className="mt-2 text-sm text-slate-400">Each detection is grouped by type so teams can review what was masked.</p>
+                    <h2 className="font-heading text-2xl font-semibold text-white">Detection details</h2>
+                    <p className="mt-2 text-sm text-slate-400">Local previews use illustrative pattern matching, not production detection scores. Live results do not include entity details in this playground.</p>
                   </div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs text-primary-light">
                     <Gauge className="h-3.5 w-3.5" />
-                    {findings.length} findings
+                    {source === 'live' && hasResult ? 'Details unavailable' : `${findings.length} preview matches`}
                   </div>
                 </div>
 
                 <div className="mt-5 grid gap-3">
                   {findings.map((finding) => (
-                    <div key={finding.id} className="grid gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-4 md:grid-cols-[150px_1fr_90px] md:items-center">
+                    <div key={finding.id} className="grid gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-4 md:grid-cols-[150px_1fr] md:items-center">
                       <div className="flex items-center gap-2">
                         <span className={`h-2.5 w-2.5 rounded-full ${entityStyles[finding.entityType].dot}`} />
                         <span className="font-mono text-xs uppercase tracking-[0.18em] text-slate-300">
@@ -652,12 +657,11 @@ export default function PlaygroundPage() {
                         </span>
                       </div>
                       <div className="min-w-0 truncate font-mono text-sm text-slate-200">{finding.text}</div>
-                      <div className="text-sm font-semibold text-primary-light">{Math.round(finding.confidence * 100)}%</div>
                     </div>
                   ))}
                   {findings.length === 0 ? (
                     <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-sm text-slate-400">
-                      Add an email, phone number, person name, card number, IBAN, or NHS number to see entity details.
+                      {hasResult && source === 'live' ? 'Review the returned text above. Local preview matches are not presented as API findings.' : 'Choose a sample to explore illustrative entity matches. No matches is not a safety guarantee.'}
                     </div>
                   ) : null}
                 </div>

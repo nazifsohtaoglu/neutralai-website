@@ -54,7 +54,7 @@ const comparisonRows = [
   {
     capability: 'Deployment model',
     diy: 'You own every production hardening and hosting decision.',
-    neutralai: 'Managed SaaS, private cloud, and on-prem rollout paths are available for different risk postures.',
+    neutralai: 'Managed SaaS is available; private cloud and on-premises requirements are scoped through an enterprise deployment review.',
   },
 ] as const
 

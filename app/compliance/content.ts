@@ -67,19 +67,19 @@ export const guidanceEntries: GuidanceEntry[] = [
     whatItMeans: [
       'A written AI policy alone does not satisfy the guidance if staff can still paste client names into free chatbots — the control needs to reach the point of use.',
       'Tool approval should be based on the provider’s data terms (retention, training, access), not on popularity.',
-      'If client identifiers are masked before a prompt leaves the firm, the confidentiality question changes materially: the public tool never receives the identifying content.',
+      'Masking detected identifiers reduces exposure on supported workflows. Remaining context may still be confidential and requires review before submission.',
       'Consent conversations get easier when you can show clients exactly what does and does not reach an AI provider.',
     ],
     controlMapping: [
       {
         expectation: 'No identifiable client data into public AI tools',
         control: 'Mask before send',
-        how: 'Client names, addresses, NI/NHS numbers, and case references are detected and replaced with placeholders in the browser, before the prompt reaches the AI provider.',
+        how: 'Client names, addresses, NI/NHS numbers, and case references are detected and replaced with placeholders on the configured local or gateway path before model submission.',
       },
       {
         expectation: 'Understand and limit what the provider retains',
         control: 'Reversible vault (15-min TTL)',
-        how: 'Real values never leave the firm; masked tokens are restored locally after the response returns, and vault entries expire in minutes by default.',
+        how: 'Restoration uses the configured local or gateway path. Gateway mappings are encrypted and expire after a configurable TTL, 15 minutes by default.',
       },
       {
         expectation: 'Supervision and accountability for AI use',
@@ -246,7 +246,7 @@ export const guidanceEntries: GuidanceEntry[] = [
       {
         question: 'How does masking relate to the "synthetic data" suggestion?',
         answer:
-          'Masking automates it: real identifiers are replaced with structurally faithful placeholders before the prompt leaves your machine, which is exactly the synthetic stand-in pattern the document suggests — without asking the barrister to build synthetic examples by hand.',
+          'Masking automates it: real identifiers are replaced with structurally faithful placeholders on the configured processing path before model submission, which is exactly the synthetic stand-in pattern the document suggests — without asking the barrister to build synthetic examples by hand.',
       },
     ],
   },
@@ -293,12 +293,12 @@ export const guidanceEntries: GuidanceEntry[] = [
       {
         expectation: 'Nothing non-public into public AI chatbots',
         control: 'Mask before send',
-        how: 'Client-identifiable and confidential specifics are replaced before submission, so the public tool receives only de-identified content.',
+        how: 'Detected identifiers are replaced before model submission. The remaining text may still contain identifying or confidential context.',
       },
       {
         expectation: 'Treat inputs as irreversible publication',
         control: 'Reversible vault (15-min TTL)',
-        how: 'Because real values never leave the firm, there is nothing to "recall" from the provider — restoration happens locally, and vault entries expire by default.',
+        how: 'Detected identifiers can be replaced before model submission; this does not prevent disclosure of the remaining document content. Restoration and retention depend on the configured local or gateway path.',
       },
       {
         expectation: 'Beware hidden content in documents',
@@ -368,7 +368,7 @@ export const guidanceEntries: GuidanceEntry[] = [
       {
         expectation: 'Data minimisation in AI processing',
         control: 'Mask before send',
-        how: 'Identifiers are stripped from prompts by default, so the AI provider processes de-identified content — minimisation applied at the exact point of exposure.',
+        how: 'Detected identifiers can be replaced before model submission. Review the remaining context and data flow; masking does not establish anonymisation.',
       },
       {
         expectation: 'Demonstrable accountability (UK GDPR Art. 5(2))',
@@ -556,7 +556,7 @@ export const guidanceEntries: GuidanceEntry[] = [
 export const controlMapRows: ControlMapRow[] = [
   {
     control: 'Mask before send',
-    description: 'PII detected and replaced in the browser before the prompt or upload leaves the firm.',
+    description: 'Detected identifiers replaced on supported inputs before model submission, using the configured local or gateway path.',
     guidanceLines: [
       { shortName: 'Law Society', slug: 'law-society-generative-ai', line: 'No identifiable client data into public AI tools without safeguards.' },
       { shortName: 'Judiciary', slug: 'judiciary-ai-guidance', line: 'Nothing non-public into a public AI chatbot — inputs are publication.' },
@@ -566,7 +566,7 @@ export const controlMapRows: ControlMapRow[] = [
   },
   {
     control: 'Reversible vault (15-minute TTL)',
-    description: 'Masked tokens restore locally after the response; encrypted vault entries expire in minutes.',
+    description: 'Tokens can be restored through the configured local or gateway path; encrypted gateway mappings expire under the retention policy.',
     guidanceLines: [
       { shortName: 'Judiciary', slug: 'judiciary-ai-guidance', line: 'Inputs are irreversible publication — so real values must never be the input.' },
       { shortName: 'Bar Council', slug: 'bar-council-generative-ai', line: 'Inputs may be retained, used for training, and repeated verbatim later.' },
@@ -585,7 +585,7 @@ export const controlMapRows: ControlMapRow[] = [
   },
   {
     control: 'Whitelist & tenant policy',
-    description: 'Firm-approved terms and per-tenant masking policy applied consistently across every AI tool.',
+    description: 'Firm-approved terms and masking policies applied to supported AI tools and integrations.',
     guidanceLines: [
       { shortName: 'Law Society', slug: 'law-society-generative-ai', line: 'Approve tools deliberately; apply the same confidentiality rules everywhere.' },
       { shortName: 'SRA', slug: 'sra-ai-risk-outlook', line: 'Safe adoption is a firm-level posture, not a per-tool improvisation.' },
@@ -593,7 +593,7 @@ export const controlMapRows: ControlMapRow[] = [
   },
   {
     control: 'BYOK',
-    description: 'Growth/Enterprise tenants use their own LLM provider keys and contracts.',
+    description: 'Provider BYOK uses customer-owned keys and contracts. Contact our sales team to confirm plan availability.',
     guidanceLines: [
       { shortName: 'ICO', slug: 'ico-generative-ai', line: 'Controllership: keep the processing chain under your own contracts.' },
       { shortName: 'FCA', slug: 'fca-ai-approach', line: 'Operational control over data flows within the firm’s documented perimeter.' },

@@ -3,7 +3,7 @@
  *
  * Shows: User/Client → Gateway → [Detect] → [Mask/Tokenize] → forward sanitized prompt → LLM Provider
  * with Token Vault (encrypted, TTL) and Audit Trail as connected side components.
- * Raw PII never leaves the gateway boundary.
+ * Detected identifiers are replaced before model routing.
  */
 export default function EgressFlowDiagram() {
   return (
@@ -22,8 +22,8 @@ export default function EgressFlowDiagram() {
           is: User / Client sends a prompt to the Gateway; within the gateway boundary, Presidio NER
           and pattern matching detect PII entities; detected entities are masked or tokenized and the
           tokens are stored in an AES-256-GCM encrypted Token Vault with a TTL; an immutable Audit
-          Trail records every detection event; and only the sanitized prompt (with no raw PII) is
-          forwarded to the external LLM Provider.
+          Trail records detection metadata; and the permitted prompt is forwarded to the external LLM
+          Provider with detected identifiers replaced.
         </desc>
 
         {/* ── Background ─────────────────────────────────────────────── */}
@@ -56,7 +56,7 @@ export default function EgressFlowDiagram() {
           fill="rgba(6,182,212,0.03)" stroke="#06B6D4" strokeWidth="1.5"
           strokeDasharray="6 4" opacity="0.7" />
         <text x="460" y="58" textAnchor="middle" fill="#22D3EE" fontSize="10" letterSpacing="3" opacity="0.9">
-          NEUTRALAI GATEWAY BOUNDARY — RAW PII DOES NOT CROSS THIS LINE
+          NEUTRALAI GATEWAY BOUNDARY — DETECTED IDENTIFIERS REPLACED BEFORE EGRESS
         </text>
 
         {/* ── Node: User / Client ────────────────────────────────────── */}
@@ -132,10 +132,10 @@ export default function EgressFlowDiagram() {
         <rect x="588" y="260" width="130" height="70" rx="8"
           fill="#050F0A" stroke="#10B981" strokeWidth="1.5" />
         <text x="602" y="280" fill="#10B981" fontSize="12">🚫</text>
-        <text x="620" y="280" fill="#10B981" fontSize="11" fontWeight="600">Raw PII</text>
-        <text x="598" y="295" fill="#94A3B8" fontSize="9">never crosses boundary</text>
+        <text x="620" y="280" fill="#10B981" fontSize="11" fontWeight="600">Detected PII</text>
+        <text x="598" y="295" fill="#94A3B8" fontSize="9">controlled restoration</text>
         <text x="598" y="308" fill="#94A3B8" fontSize="9">masked before egress</text>
-        <text x="598" y="321" fill="#94A3B8" fontSize="9">zero retention default</text>
+        <text x="598" y="321" fill="#94A3B8" fontSize="9">time-limited mappings</text>
 
         {/* ── Legend ────────────────────────────────────────────────── */}
         <line x1="40" y1="410" x2="80" y2="410" stroke="#06B6D4" strokeWidth="1.5" markerEnd="url(#eg-arrow)" />
@@ -149,7 +149,7 @@ export default function EgressFlowDiagram() {
 
         {/* ── Caption ───────────────────────────────────────────────── */}
         <text x="450" y="460" textAnchor="middle" fill="#475569" fontSize="10">
-          Fig 1 — NeutralAI prompt egress: PII detected, tokenized, and audited inside the gateway boundary before LLM forwarding.
+          Fig 1 — NeutralAI prompt egress: detected identifiers are tokenized before LLM forwarding.
         </text>
       </svg>
     </figure>

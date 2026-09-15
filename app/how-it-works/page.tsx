@@ -43,7 +43,7 @@ const egressSteps = [
   {
     title: 'Forward',
     description:
-      'Only the neutralized prompt reaches the external model. The raw value never crosses the boundary.',
+      'The external model receives the permitted prompt with detected values replaced according to policy.',
   },
 ] as const
 
@@ -56,12 +56,12 @@ const ingressSteps = [
   {
     title: 'Resolve',
     description:
-      'Within a short, governed window, tokens resolve to their real values on the user’s side — so the answer reads as a complete, useful reply.',
+      'Within a short, governed window, tokens resolve through the configured restore path so the answer can remain useful.',
   },
   {
     title: 'Record',
     description:
-      'Every event is written to an audit trail as metadata about the decision — never the sensitive value itself.',
+      'Audit events record metadata about the decision rather than storing the sensitive value as the event payload.',
   },
 ] as const
 
@@ -93,8 +93,8 @@ const policyActions = [
 ] as const
 
 const retentionRows = [
-  { data: 'Raw prompt', stored: false, note: 'Processed in memory, never persisted.' },
-  { data: 'Masked prompt', stored: false, note: 'Exists only while the response streams.' },
+  { data: 'Raw prompt', stored: 'policy', note: 'Processed for the masking request; storage depends on the configured deployment path.' },
+  { data: 'Masked prompt', stored: 'policy', note: 'Retention depends on the configured workflow and model provider.' },
   { data: 'Token ↔ value mapping', stored: 'temp', note: 'Encrypted with AES-256-GCM and time-limited.' },
   { data: 'Audit record', stored: true, note: 'Decision metadata — not the sensitive value.' },
   { data: 'Compliance export', stored: true, note: 'Written immutably for tamper-evident evidence.' },
@@ -148,12 +148,12 @@ const deploymentShapes = [
   {
     icon: Building2,
     title: 'On-prem / VPC',
-    description: 'Data never leaves your network. Egress is deny-by-default, installed via Docker or Helm.',
+    description: 'Private cloud and on-premises deployments are scoped with your team. Model routing, permitted egress, and installation requirements are agreed during deployment review.',
   },
   {
     icon: Chrome,
     title: 'Browser extension',
-    description: 'Masking happens locally, at the employee’s point of use, with managed rollout and policy sync.',
+    description: 'Local mode masks supported inputs on the device. Remote mode sends inputs to the configured gateway for masking; coverage and policy behaviour depend on configuration.',
   },
   {
     icon: Code2,
@@ -194,7 +194,7 @@ export default function HowItWorksPage() {
             </h1>
             <p className="mt-6 text-xl text-slate-400">
               NeutralAI detects and neutralizes sensitive values on the way out, resolves them safely on the way back, and
-              leaves an auditable record of every event — so people can keep using AI without their data leaving with the prompt.
+              leaves an auditable record of control decisions — so teams can reduce identifiable data exposure in AI workflows.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link href={contactLinks.demo} className="btn btn-cta px-6 py-3">
@@ -223,8 +223,8 @@ export default function HowItWorksPage() {
             </h2>
             <p className="mt-5 text-lg text-slate-300">
               Banning AI kills productivity and pushes usage underground. Instead, NeutralAI sits in the path like a sheet of
-              glass: outgoing text passes through and its sensitive parts are neutralized; the returning answer is re-opened on
-              the user’s side. Raw data never reaches the external model.
+              glass: outgoing text passes through and detected sensitive parts are neutralized; the returning answer is re-opened
+              through the configured restore path.
             </p>
           </div>
 
@@ -256,7 +256,7 @@ export default function HowItWorksPage() {
               </div>
             </div>
             <p className="mt-5 text-sm leading-6 text-slate-400">
-              The external model never sees the real name, ID, or email — and the employee still gets a complete, meaningful answer.
+              The external model receives placeholders for the detected name, ID, and email — and the employee still gets a complete, meaningful answer.
               In a permitted scenario, the placeholders re-open to the real values on the user’s side.
             </p>
           </motion.div>
@@ -376,8 +376,8 @@ export default function HowItWorksPage() {
               <SectionEyebrow>Retention</SectionEyebrow>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-4xl">What’s stored, and what isn’t</h2>
               <p className="mt-5 text-lg text-slate-300">
-                The design invariant: raw sensitive data is only ever seen at the engine boundary, and it cannot be written to
-                storage, logs, or telemetry. That rule is enforced in code, not just promised in a policy.
+                The design goal: raw sensitive data is constrained to the masking path, while storage, logs, and telemetry should
+                capture control metadata rather than sensitive values. Confirm the configured retention policy before production use.
               </p>
               <div className="mt-6 rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-slate-200">
                 <Database className="mb-3 h-5 w-5 text-primary-light" />
@@ -402,7 +402,7 @@ export default function HowItWorksPage() {
                           : 'bg-rose-500/15 text-rose-200'
                     }`}
                   >
-                    {row.stored === true ? 'Stored' : row.stored === 'temp' ? 'Temporary' : 'Not stored'}
+                    {row.stored === true ? 'Stored' : row.stored === 'temp' ? 'Temporary' : row.stored === 'policy' ? 'Policy-dependent' : 'Not stored'}
                   </span>
                   <span className="col-span-2 text-sm leading-6 text-slate-400 sm:col-span-1">{row.note}</span>
                 </div>
