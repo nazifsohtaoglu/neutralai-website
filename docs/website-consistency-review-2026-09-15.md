@@ -31,3 +31,7 @@ The public benchmark remains a separate, explicitly qualified product evaluation
 - `npm run test:a11y-smoke`
 - `npm run test:visual-smoke`
 - Repository security pre-review and independent diff review before PR; Codex PR review loop after publication.
+
+## Security review disposition
+
+The security pass found additional absolute data-flow wording in How It Works, Security and Trust Center; those fixes were retained. The suggested silent-video conversion was not retained: the existing narration describes the sample workflow, and the newly recorded UI explicitly identifies illustrative local results. Keeping the matching narration/captions avoids an unrelated audio regression. Production confidence scores are absent from the updated recording. Retention badges now say policy-dependent where the accompanying text depends on deployment configuration.

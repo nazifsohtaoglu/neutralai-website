@@ -192,8 +192,8 @@ export default function TrustCenterPage() {
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Data Flow</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-5xl">Where your data goes — and what stays inside.</h2>
             <p className="mt-5 text-base leading-7 text-slate-400">
-              Every prompt passes through the NeutralAI gateway boundary before reaching an external model. Raw PII is detected,
-              tokenized, and audited inside that boundary. Only the sanitized version ever leaves.
+              Supported prompts pass through the NeutralAI gateway boundary before reaching an external model. Detected identifiers
+              are tokenized inside that boundary, and the permitted request is forwarded with those identifiers replaced.
             </p>
           </div>
 

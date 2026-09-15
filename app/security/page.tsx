@@ -184,8 +184,8 @@ export default function SecurityPage() {
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Data Flow</p>
             <h2 className="mt-4 font-heading text-3xl font-bold md:text-4xl">How a prompt is sanitized before it leaves.</h2>
             <p className="mt-4 text-base leading-7 text-slate-400">
-              The gateway intercepts every outbound prompt, runs multi-stage PII detection, tokenizes entities into the encrypted
-              vault, and only forwards the sanitized version to the model provider. Raw PII never crosses the boundary.
+              The gateway processes supported outbound prompts, runs multi-stage PII detection, tokenizes detected entities into
+              the encrypted vault, and forwards the permitted request with detected identifiers replaced.
             </p>
           </div>
           <div className="rounded-lg border border-border bg-background p-6">
