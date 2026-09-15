@@ -47,7 +47,7 @@ const qaAnswers = [
   },
   {
     q: 'Do you support BYOK (Bring Your Own Key)?',
-    a: 'Provider API keys and vault encryption keys serve different purposes. See the current pricing page for provider BYOK availability; vault key custody and rotation requirements are reviewed separately for your deployment.',
+    a: 'Provider API keys and vault encryption keys serve different purposes. Contact our sales or security team to confirm provider BYOK availability for your plan; vault key custody and rotation requirements are reviewed separately for your deployment.',
   },
   {
     q: 'What happens if the gateway is unavailable?',

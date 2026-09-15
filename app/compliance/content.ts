@@ -593,7 +593,7 @@ export const controlMapRows: ControlMapRow[] = [
   },
   {
     control: 'BYOK',
-    description: 'Provider BYOK uses customer-owned keys and contracts. See current pricing for plan availability.',
+    description: 'Provider BYOK uses customer-owned keys and contracts. Contact our sales team to confirm plan availability.',
     guidanceLines: [
       { shortName: 'ICO', slug: 'ico-generative-ai', line: 'Controllership: keep the processing chain under your own contracts.' },
       { shortName: 'FCA', slug: 'fca-ai-approach', line: 'Operational control over data flows within the firm’s documented perimeter.' },

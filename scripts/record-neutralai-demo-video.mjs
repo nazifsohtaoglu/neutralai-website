@@ -122,12 +122,12 @@ const voiceoverCues = [
   {
     start: 23.5,
     end: 31.5,
-    text: 'Paste a real workflow prompt, then run masking.',
+    text: 'Use a fictional sample prompt, then run masking.',
   },
   {
     start: 31.5,
     end: 43,
-    text: 'Names, emails, phone numbers, IBANs, card numbers, and other sensitive spans are detected and replaced with safe tokens.',
+    text: 'Names, emails, phone numbers, IBANs, card numbers, and other detected sensitive spans are replaced with safe tokens.',
   },
   {
     start: 43,
@@ -142,12 +142,12 @@ const voiceoverCues = [
   {
     start: 60,
     end: 68.8,
-    text: 'For workflows that need controlled restoration, reversible tokens can preserve business context without exposing raw identifiers by default.',
+    text: 'For workflows that need controlled restoration, reversible tokens can preserve business context through configured restore paths.',
   },
   {
     start: 68.8,
     end: Math.max(75.3, voiceoverDurationSeconds),
-    text: 'NeutralAI helps regulated teams use AI with clearer boundaries, cleaner evidence, and less sensitive data leaving the business. Try the playground, or book a live walkthrough to map this to your own AI workflow.',
+    text: 'NeutralAI helps regulated teams use AI with clearer boundaries, cleaner evidence, and reduced identifiable data exposure. Try the playground, or book a live walkthrough to map this to your own AI workflow.',
   },
 ]
 
@@ -407,7 +407,7 @@ await page.getByText('Sample preview ready').waitFor({ timeout: 5000 })
 await showCaption(
   'Governed restore',
   'Reversible mode creates scoped demo tokens',
-  'That explains controlled restoration without exposing raw identifiers by default.',
+  'That explains controlled restoration through configured restore paths.',
   11500,
 )
 
@@ -418,7 +418,7 @@ await page.evaluate(() => {
   endCard.innerHTML = `
     <div class="demo-video-end-card__inner">
       <div class="demo-video-end-card__kicker">NeutralAI Gateway</div>
-      <h2>Use AI with clearer boundaries and less sensitive data leaving the business.</h2>
+      <h2>Use AI with clearer boundaries and reduced identifiable data exposure.</h2>
       <p>Try the playground, or book a live walkthrough to map NeutralAI to your own AI workflow.</p>
       <div class="demo-video-end-card__grid">
         <div class="demo-video-end-card__card"><strong>Mask before model calls</strong><span>PII is replaced with typed tokens before prompts are handed onward.</span></div>

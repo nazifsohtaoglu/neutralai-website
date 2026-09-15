@@ -67,13 +67,19 @@ try {
     assert.ok(await page.getByText('Details unavailable', { exact: true }).isVisible())
   })
   let release
+  let markReceived
+  const received = new Promise(resolve => { markReceived = resolve })
   const pending = new Promise(resolve => { release = resolve })
-  await scenario('editing input discards an in-flight response', async route => { await pending; await route.fulfill({ json: { masked_text: 'STALE_RESULT' } }) }, async (page, calls) => {
+  await scenario('editing input discards an in-flight response', async route => { markReceived(); await pending; await route.fulfill({ json: { masked_text: 'STALE_RESULT' } }) }, async (page, calls) => {
     await submit(page)
-    await page.waitForFunction(() => document.querySelector('[role="status"]')?.textContent === 'Masking prompt')
+    await received
     await page.getByRole('textbox', { name: 'Raw prompt' }).fill('Changed fictional input')
+    const responseReceived = page.waitForResponse(response => response.url().includes('/v1/shield/mask'))
     release()
-    await page.waitForTimeout(300)
+    const response = await responseReceived
+    await response.finished()
+    // Let the fetch continuation and React render finish after network delivery.
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))))
     assert.equal(calls(), 1)
     assert.equal(await page.getByText('STALE_RESULT', { exact: true }).count(), 0)
     assert.equal(await page.getByRole('status').innerText(), 'Ready to mask')
