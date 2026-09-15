@@ -29,6 +29,7 @@ Run a focused security hardening pass before PR review:
 - Minimal diff only; no unrelated refactor.
 - Read `docs/ai/RISK_REGISTER.md` for risky changes.
 - Do not commit or push.
+- This is already the security pre-review. Do not invoke `codex-security-pre-review.sh` or start another Codex review from inside this check.
 - If no blocking issue exists, state that explicitly.
 
 ## Finish output

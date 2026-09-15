@@ -3,7 +3,7 @@
  *
  * Shows: User/Client → Gateway → [Detect] → [Mask/Tokenize] → forward sanitized prompt → LLM Provider
  * with Token Vault (encrypted, TTL) and Audit Trail as connected side components.
- * Raw PII never leaves the gateway boundary.
+ * Detected identifiers are replaced before model routing.
  */
 export default function EgressFlowDiagram() {
   return (
@@ -133,9 +133,9 @@ export default function EgressFlowDiagram() {
           fill="#050F0A" stroke="#10B981" strokeWidth="1.5" />
         <text x="602" y="280" fill="#10B981" fontSize="12">🚫</text>
         <text x="620" y="280" fill="#10B981" fontSize="11" fontWeight="600">Raw PII</text>
-        <text x="598" y="295" fill="#94A3B8" fontSize="9">never crosses boundary</text>
+        <text x="598" y="295" fill="#94A3B8" fontSize="9">controlled restoration</text>
         <text x="598" y="308" fill="#94A3B8" fontSize="9">masked before egress</text>
-        <text x="598" y="321" fill="#94A3B8" fontSize="9">zero retention default</text>
+        <text x="598" y="321" fill="#94A3B8" fontSize="9">time-limited mappings</text>
 
         {/* ── Legend ────────────────────────────────────────────────── */}
         <line x1="40" y1="410" x2="80" y2="410" stroke="#06B6D4" strokeWidth="1.5" markerEnd="url(#eg-arrow)" />

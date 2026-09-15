@@ -56,7 +56,7 @@ const controls = [
   {
     icon: DatabaseZap,
     title: 'Data minimization',
-    body: 'The product is designed around masking, tokenization, and zero-retention operating patterns rather than broad prompt storage.',
+    body: 'NeutralAI supports masking and tokenization. Reversible mappings use time-limited encrypted storage; local browser mode and gateway processing have different data-handling boundaries.',
   },
   {
     icon: LockKeyhole,

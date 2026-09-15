@@ -148,12 +148,12 @@ const deploymentShapes = [
   {
     icon: Building2,
     title: 'On-prem / VPC',
-    description: 'Data never leaves your network. Egress is deny-by-default, installed via Docker or Helm.',
+    description: 'Private cloud and on-premises deployments are scoped with your team. Model routing, permitted egress, and installation requirements are agreed during deployment review.',
   },
   {
     icon: Chrome,
     title: 'Browser extension',
-    description: 'Masking happens locally, at the employee’s point of use, with managed rollout and policy sync.',
+    description: 'Local mode masks supported inputs on the device. Remote mode sends inputs to the configured gateway for masking; coverage and policy behaviour depend on configuration.',
   },
   {
     icon: Code2,

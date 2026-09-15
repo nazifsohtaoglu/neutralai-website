@@ -27,7 +27,7 @@ const encryptionControls = [
 const soc2Controls = [
   { domain: 'Security (CC)', status: 'Mapped', note: 'Access control, encryption, incident response, change management' },
   { domain: 'Availability (A)', status: 'Mapped', note: 'Health checks, readiness endpoints, rollback procedures, latency evidence' },
-  { domain: 'Confidentiality (C)', status: 'Mapped', note: 'Data minimisation, masked-only egress, zero-retention operating pattern' },
+  { domain: 'Confidentiality (C)', status: 'Mapped', note: 'Data minimisation, masking before model routing, time-limited encrypted mappings' },
   { domain: 'Processing Integrity (PI)', status: 'Partial', note: 'PII detection accuracy benchmarked; holdout guardrail in place' },
   { domain: 'Privacy (P)', status: 'Partial', note: 'GDPR data-subject workflow in design; DPA template available on request' },
 ] as const
@@ -39,15 +39,15 @@ const qaAnswers = [
   },
   {
     q: 'Where is customer data stored and processed?',
-    a: 'Production runs on Hetzner Cloud (EU). Prompt data is masked before any egress to external LLM providers. Vault tokens are encrypted at rest with AES-256-GCM. Retention defaults to session scope unless tenants configure longer periods.',
+    a: 'Confirm the processing region for your deployment with us before sending production data. In gateway mode, prompts are processed by the gateway before masked output is sent to external LLM providers. Reversible mappings are encrypted at rest with AES-256-GCM and have a default 15-minute TTL, configurable by policy.',
   },
   {
     q: 'What PII is logged?',
-    a: 'Audit events log event type, tenant, timestamp, and masked identifiers — never raw PII. PII masking is enforced before audit write. SIEM-ready event structure is available.',
+    a: 'Audit events are designed to record control metadata rather than raw prompt content. Review the fields and retention policy for your integration; custom metadata must not contain sensitive values.',
   },
   {
     q: 'Do you support BYOK (Bring Your Own Key)?',
-    a: 'Yes. Growth and Enterprise plans support BYOK for LLM provider API keys (OpenAI, Anthropic, Azure OpenAI, Gemini). Vault encryption keys can be rotated without downtime.',
+    a: 'Provider API keys and vault encryption keys serve different purposes. See the current pricing page for provider BYOK availability; vault key custody and rotation requirements are reviewed separately for your deployment.',
   },
   {
     q: 'What happens if the gateway is unavailable?',

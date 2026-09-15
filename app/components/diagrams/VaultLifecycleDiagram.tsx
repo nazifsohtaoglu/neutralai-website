@@ -88,7 +88,7 @@ export default function VaultLifecycleDiagram() {
         <text x="752" y="108" textAnchor="middle" fill="#94A3B8" fontSize="13" fontWeight="600">Auto-purge</text>
         <text x="752" y="126" textAnchor="middle" fill="#94A3B8" fontSize="9">TTL elapses → token deleted</text>
         <text x="752" y="139" textAnchor="middle" fill="#94A3B8" fontSize="9">No recovery after expiry</text>
-        <text x="752" y="152" textAnchor="middle" fill="#475569" fontSize="9">Zero-retention by default</text>
+        <text x="752" y="152" textAnchor="middle" fill="#475569" fontSize="9">Time-limited mappings</text>
 
         {/* ── Caption ───────────────────────────────────────────────── */}
         <text x="450" y="210" textAnchor="middle" fill="#475569" fontSize="10">

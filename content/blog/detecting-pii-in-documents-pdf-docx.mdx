@@ -55,7 +55,7 @@ So a hit in a 50-page document is mapped back as "on page 7," not "somewhere." T
 
 ## 4. Temporary, scoped storage
 
-The sanitized chunks are kept in a store, but with the same zero-retention philosophy as the [vault post](/blog/reversible-pii-masking-ttl-aes-gcm-vault/): a TTL purges the expired ones, and reads go through an owner check.
+The sanitized chunks are kept in a store, but with the same time-limited retention approach as the [vault post](/blog/reversible-pii-masking-ttl-aes-gcm-vault/): a TTL purges the expired ones, and reads go through an owner check.
 
 ```python
 def get(self, document_id, *, owner_id=None) -> StoredSanitizedDocument:

@@ -26,18 +26,18 @@ const walkthroughChapters = [
     icon: ShieldCheck,
   },
   {
-    title: 'Detection evidence and confidence',
-    body: 'Review entity types, masked values, and confidence context so security and legal teams can understand what happened.',
+    title: 'Review detected entities',
+    body: 'Compare the sample input with its masked output and review the entity labels shown in the walkthrough.',
     icon: Gauge,
   },
   {
     title: 'Reversible token governance',
-    body: 'Show how governed restore workflows keep raw identifiers out of normal model traffic while preserving controlled business use.',
+    body: 'Learn how reversible tokens support controlled restoration of detected identifiers after AI processing.',
     icon: FileText,
   },
   {
-    title: 'Browser and rollout path',
-    body: 'Cover extension usage, API handoff, policy controls, and what a regulated rollout needs before teams adopt AI broadly.',
+    title: 'Explore deployment options',
+    body: 'Continue with a live walkthrough to discuss browser workflows, API integration, and deployment requirements for your team.',
     icon: MonitorPlay,
   },
 ] as const
@@ -160,12 +160,12 @@ export default function DemoPage() {
       <section className="section">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">What the demo should cover</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary-light">Explore the demo</p>
             <h2 className="mt-4 font-heading text-3xl font-semibold text-white md:text-5xl">
-              A buyer-ready walkthrough, not a feature dump.
+              See masking and reversible tokens in action.
             </h2>
             <p className="mt-4 text-lg leading-8 text-slate-300">
-              The recording should show real product surfaces and explain why each control matters to security, legal, and operational teams.
+              Follow a sample prompt through masking, review the detected entities, and explore how reversible tokens support controlled restoration.
             </p>
           </div>
 
@@ -182,7 +182,7 @@ export default function DemoPage() {
           <div className="mx-auto mt-10 max-w-3xl rounded-[28px] border border-primary/20 bg-primary/10 p-6 text-center md:p-8">
             <h2 className="font-heading text-2xl font-semibold text-white">Ready to evaluate with your own workflow?</h2>
             <p className="mt-3 text-sm leading-7 text-slate-300">
-              Bring a representative prompt, document, or browser workflow and the team can walk through the control model with you.
+              Bring a synthetic or anonymised example of your prompt, document, or browser workflow and the team can walk through the control model with you.
             </p>
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
                   <Link

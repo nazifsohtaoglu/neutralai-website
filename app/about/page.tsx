@@ -25,9 +25,9 @@ const principles = [
   },
   {
     icon: Sparkles,
-    title: 'Clear product stories matter',
+    title: 'Evidence you can evaluate',
     description:
-      'The website should feel ambitious without inventing customer logos, fake testimonials, or unsupported growth claims.',
+      'Explore our published benchmark methodology, security information, and sample workflows to evaluate NeutralAI for your team.',
   },
 ] as const
 
@@ -81,7 +81,7 @@ export default function AboutPage() {
                   NeutralAI operates as a gateway layer that stands between customer applications, browser-based AI usage, and external model providers. The goal is straightforward: let teams adopt AI while applying policy before sensitive data moves beyond the trusted boundary.
                 </p>
                 <p>
-                  That means the product story has to stay credible. We prefer clear operating posture, governed onboarding, and visible controls over generic enterprise promises.
+                  Evaluate the controls in a scoped workflow, review the available evidence, and agree the onboarding and deployment requirements with us.
                 </p>
               </div>
             </motion.div>

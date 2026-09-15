@@ -350,6 +350,8 @@ async function clickByRole(role, name) {
 
 await page.goto(`${baseUrl}/playground`)
 await page.waitForLoadState('networkidle')
+const declineAnalytics = page.getByRole('button', { name: 'Decline', exact: true })
+if (await declineAnalytics.isVisible()) await declineAnalytics.click()
 await installOverlay()
 await page.mouse.move(1100, 300)
 await showCaption(
@@ -378,7 +380,7 @@ await showCaption(
 )
 
 await clickByRole('button', 'Mask prompt')
-await page.getByText('Demo preview ready').waitFor({ timeout: 5000 })
+await page.getByText('Sample preview ready').waitFor({ timeout: 5000 })
 await showCaption(
   'Masking result',
   'Original and sanitized outputs sit side by side',
@@ -386,12 +388,12 @@ await showCaption(
   12000,
 )
 
-await page.getByText('Entities and confidence').scrollIntoViewIfNeeded()
+await page.getByText('Detection details').scrollIntoViewIfNeeded()
 await pause(700)
 await showCaption(
   'Evidence',
   'Teams can inspect what was found',
-  'Entity type, matched text, and confidence context make the control easier for security and legal teams to review.',
+  'This local preview illustrates entity types and matched text. It does not report production detection scores.',
   9500,
 )
 
@@ -401,7 +403,7 @@ await pause(500)
 await clickByRole('button', 'Reversible')
 await pause(2600)
 await clickByRole('button', 'Mask prompt')
-await page.getByText('Demo preview ready').waitFor({ timeout: 5000 })
+await page.getByText('Sample preview ready').waitFor({ timeout: 5000 })
 await showCaption(
   'Governed restore',
   'Reversible mode creates scoped demo tokens',

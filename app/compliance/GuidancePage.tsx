@@ -236,7 +236,7 @@ export default function GuidancePage({ entry }: { entry: GuidanceEntry }) {
                     <span className="text-slate-400"> → audit</span>
                   </p>
                   <p className="mt-3 text-sm leading-6 text-slate-400">
-                    Reversible vault, 15-minute TTL. The model only ever sees placeholders.
+                    Reversible vault, 15-minute TTL. Detected identifiers are replaced before model processing.
                   </p>
                 </div>
               </div>
