@@ -41,3 +41,7 @@ Use this file for unknowns. Do not guess silently.
 
 - A controlled contact submission was stored exactly once in Sheets while the browser showed an error. The lost response cause remains unverified. JSON acknowledgement validation prevents false success but does not fix this delivery-confirmation failure. Do not auto-retry POSTs or interpret unreadable responses as successful writes.
 - Verify notification delivery independently: deployed handlers contain no email call and the owner-visible project trigger list is empty; separate Sheets rules or another account's triggers have not been audited.
+
+## Internal lead notification activation — 2026-09-16
+
+- Owner: Revenue Operations. The standalone source in `ops/lead-notifications/` is not a deployed notification service. Complete owner Google authorization, append-only Sheet operating agreement, time-trigger/failure monitoring setup, and one approved internal inbox acceptance using `docs/internal-lead-notifications.md`. Keep manual Sheet monitoring until accepted; do not mark notification delivery ready from local tests or website deployment.

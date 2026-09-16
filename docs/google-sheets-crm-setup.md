@@ -62,3 +62,7 @@ Successful submissions should redirect to `/contact/thanks/`.
 - Configure notifications from Sheets/Apps Script or the approved automation layer.
 - Add global tracking only after cookie consent and analytics ownership are approved.
 - Keep non-secret owner roles, endpoint references, and smoke-test status current in `docs/google-sheets-production-verification.md`.
+
+## Internal notification worker
+
+A separate, initially disabled Apps Script worker is versioned in `ops/lead-notifications/`. Follow [internal lead notifications](internal-lead-notifications.md) for authorization, baseline selection, activation, failure reconciliation and receipt acceptance. Website deployment alone does not activate it; the existing ingestion endpoint is unchanged.
