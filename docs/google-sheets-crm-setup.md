@@ -43,6 +43,8 @@ The contact form submission payload should include:
 - `landing_page`
 - `attribution_source`
 
+The same transport applies to the contact form, trust-center security pack form, and compliance checklist form.
+
 ## Form Routing
 
 - Demo requests use `/contact?intent=demo`.

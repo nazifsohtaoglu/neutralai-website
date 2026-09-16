@@ -95,7 +95,8 @@ export default function SecurityPackForm() {
       if (endpoint) {
         const response = await fetch(endpoint, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          // Keep the JSON body without an Apps Script OPTIONS preflight.
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
           body: JSON.stringify(payload),
         })
         if (!response.ok) {
