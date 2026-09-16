@@ -20,7 +20,7 @@ const sections: TermsSection[] = [
     icon: FileText,
     title: '1. Service Description',
     content: [
-      { value: 'NeutralAI provides a specialized security gateway designed to identify and neutralize Personally Identifiable Information (PII) and sensitive data within Generative AI workflows (the "Service"). Our Service acts as a stateless intermediary layer that processes data in real-time to enhance privacy compliance before data is transmitted to third-party Large Language Models (LLMs).' }
+      { value: 'NeutralAI is a product of NS Applied Technologies Ltd. NS Applied Technologies Ltd provides the specialized security gateway designed to identify and neutralize Personally Identifiable Information (PII) and sensitive data within Generative AI workflows (the "Service"). Our Service acts as a stateless intermediary layer that processes data in real-time to enhance privacy compliance before data is transmitted to third-party Large Language Models (LLMs).' }
     ]
   },
   {
@@ -50,7 +50,7 @@ const sections: TermsSection[] = [
     title: '4. Limitation of Liability',
     content: [
       { label: '"As-Is" Basis', value: 'The Service is provided on an "as-is" and "as-available" basis. While NeutralAI utilizes advanced algorithms for data neutralization, no automated system is 100% infallible.' },
-      { label: 'Disclaimer', value: 'NeutralAI Ltd. shall not be liable for any indirect, incidental, special, or consequential damages, including loss of profits, data breaches occurring at the end-user or third-party LLM level, or business interruptions.' },
+      { label: 'Disclaimer', value: 'NS Applied Technologies Ltd. shall not be liable for any indirect, incidental, special, or consequential damages, including loss of profits, data breaches occurring at the end-user or third-party LLM level, or business interruptions.' },
       { label: 'Third-Party Models', value: 'NeutralAI is a security layer. We are not responsible for the outputs, accuracy, or availability of third-party AI models (e.g., OpenAI, Anthropic, Google Gemini) to which the neutralized data is sent.' },
       { label: 'Maximum Liability', value: 'To the maximum extent permitted by law, our total liability for any claim arising out of these Terms shall not exceed the amount paid by you for the Service during the twelve (12) months preceding the claim.' }
     ]
@@ -171,7 +171,7 @@ export default function TermsPage() {
                 Questions about these terms can be sent to hello@neutralai.co.uk.
               </p>
               <p className="text-slate-400 text-sm mt-6">
-                Last updated: March 29, 2026
+                Last updated: September 16, 2026
               </p>
             </div>
           </motion.div>
