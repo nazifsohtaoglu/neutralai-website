@@ -226,7 +226,9 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
       const response = await fetch(submissionEndpoint, {
         method: 'POST',
         headers: {
-          'content-type': 'application/json',
+          // Apps Script does not provide the CORS OPTIONS response required
+          // by application/json. Keep the JSON body with a safelisted MIME type.
+          'content-type': 'text/plain;charset=UTF-8',
         },
         body: JSON.stringify(payload),
       })
