@@ -4,6 +4,7 @@ import { FormEvent, useMemo, useRef, useState } from 'react'
 import { getLeadAttribution, trackAnalyticsEvent } from '../lib/analytics'
 import { getReferralSnapshot, referralSnapshotToFieldMap } from '../lib/referral'
 import { siteConfig } from '../site'
+import { requireLeadAcceptance } from '../lib/lead-response'
 
 type SubmitStatus = 'idle' | 'submitting' | 'failed'
 
@@ -233,9 +234,7 @@ export default function GoogleSheetsLeadForm({ intent, leadSource }: { intent: s
         body: JSON.stringify(payload),
       })
 
-      if (!response.ok) {
-        throw new Error('submit_failed')
-      }
+      await requireLeadAcceptance(response)
 
       trackAnalyticsEvent('lead_submitted', { form_id: 'lead_contact', lead_source: leadSource, intent })
       window.location.assign('/contact/thanks/')
