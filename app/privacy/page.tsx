@@ -47,7 +47,7 @@ export default function PrivacyPage() {
               Browser extension privacy policy
             </h1>
             <p className="mt-6 text-xl text-slate-400">
-              This privacy page exists for browser store review and public reference. It explains how the NeutralAI browser extension operates on supported AI web apps, what service endpoints it contacts, and what telemetry posture the product is designed to maintain.
+              NeutralAI is operated by NS Applied Technologies Ltd. This privacy page exists for browser store review and public reference. It explains how the NeutralAI browser extension operates on supported AI web apps, what service endpoints it contacts, and what telemetry posture the product is designed to maintain.
             </p>
             <p className="mt-4 text-sm text-slate-400">
               Privacy questions can be sent to{' '}
