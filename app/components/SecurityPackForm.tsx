@@ -3,6 +3,7 @@
 import { FormEvent, useRef, useState } from 'react'
 import { CheckCircle2, Download, Loader2 } from 'lucide-react'
 import { siteConfig } from '../site'
+import { requireLeadAcceptance } from '../lib/lead-response'
 import { getLeadAttribution, trackAnalyticsEvent } from '../lib/analytics'
 import { getReferralSnapshot, referralSnapshotToFieldMap } from '../lib/referral'
 
@@ -92,19 +93,14 @@ export default function SecurityPackForm() {
     }
 
     try {
-      if (endpoint) {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          // Keep the JSON body without an Apps Script OPTIONS preflight.
-          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-          body: JSON.stringify(payload),
-        })
-        if (!response.ok) {
-          setStatus('error')
-          trackAnalyticsEvent('form_error', { form_id: 'security_pack' })
-          return
-        }
-      }
+      if (!endpoint) throw new Error('lead_endpoint_missing')
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        // Keep the JSON body without an Apps Script OPTIONS preflight.
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify(payload),
+      })
+      await requireLeadAcceptance(response)
       trackAnalyticsEvent('lead_submitted', { form_id: 'security_pack' })
       trackAnalyticsEvent('security_pack_downloaded', { form_id: 'security_pack' })
       setStatus('success')

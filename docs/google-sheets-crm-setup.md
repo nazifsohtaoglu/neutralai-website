@@ -58,6 +58,7 @@ Successful submissions should redirect to `/contact/thanks/`.
 - Create the Google Sheet with columns matching required lead fields.
 - Deploy a Google Apps Script web app that parses JSON from `e.postData.contents` and appends rows. The browser sends that JSON as `text/plain;charset=UTF-8` to avoid an unsupported CORS OPTIONS preflight; do not require an `application/json` request MIME type.
 - Keep the response readable by the website origin. Do not use `mode: no-cors`: an opaque response cannot prove that the lead was accepted. Verify a real submission and its stored row before marking delivery ready.
+- A successful write must return JSON `{ "ok": true }`. HTTP 200 alone is not acceptance: Apps Script may also return HTML error pages or `{ "ok": false }`. All three forms require the explicit JSON acknowledgement before success UI or conversion events. An unreadable response remains unconfirmed even if a row was stored; do not automatically retry a POST.
 - Configure notifications from Sheets/Apps Script or the approved automation layer.
 - Add global tracking only after cookie consent and analytics ownership are approved.
 - Keep non-secret owner roles, endpoint references, and smoke-test status current in `docs/google-sheets-production-verification.md`.
