@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
 import { advancedPricingPlans, primaryPricingPlans } from '../../data/homepage'
@@ -11,7 +10,6 @@ import PricingComparisonTable from './PricingComparisonTable'
 import PricingFaq from './PricingFaq'
 
 export default function PricingSection() {
-  const [annualBilling, setAnnualBilling] = useState(false)
 
   if (!siteConfig.showPublicPricing) {
     return (
@@ -48,29 +46,10 @@ export default function PricingSection() {
 
         <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-[24px] border border-white/10 bg-white/[0.04] p-3 sm:flex-row">
           <div className="text-center text-sm text-slate-300 sm:text-left">
-            <span className="font-semibold text-slate-100">Annual billing saves 20%</span>
-            <span className="block text-slate-400">Compare monthly list price with annual monthly equivalent.</span>
+            <span className="font-semibold text-slate-100">Monthly self-serve billing</span>
+            <span className="block text-slate-400">Prices below are billed monthly. Annual billing is not available through self-serve checkout.</span>
           </div>
-          <div className="inline-flex rounded-full border border-white/10 bg-background/80 p-1">
-            <button
-              type="button"
-              onClick={() => setAnnualBilling(false)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                annualBilling ? 'text-slate-300 hover:text-slate-100' : 'bg-white text-background'
-              }`}
-            >
-              Monthly
-            </button>
-            <button
-              type="button"
-              onClick={() => setAnnualBilling(true)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                annualBilling ? 'bg-primary text-background' : 'text-slate-300 hover:text-slate-100'
-              }`}
-            >
-              Annual
-            </button>
-          </div>
+
         </div>
 
         <p className="mx-auto mt-5 max-w-4xl text-center text-sm leading-6 text-slate-400">
@@ -105,12 +84,12 @@ export default function PricingSection() {
               <div className="mt-6">
                 <div className="flex items-end gap-2">
                   <span className="font-heading text-4xl font-bold text-slate-50">
-                    {annualBilling ? plan.annualPrice : plan.monthlyPrice}
+                    {plan.monthlyPrice}
                   </span>
                   {plan.name !== 'Enterprise' ? <span className="pb-1 text-sm text-slate-400">GBP</span> : null}
                 </div>
                 <p className="mt-2 text-sm text-slate-300">
-                  {annualBilling && 'annualBilled' in plan ? plan.annualBilled : plan.priceNote}
+                  {plan.priceNote}
                 </p>
                 <p className="mt-3 rounded-2xl border border-primary/15 bg-primary/10 px-3 py-2 text-sm text-primary-light">
                   {plan.usage}
@@ -167,12 +146,12 @@ export default function PricingSection() {
                   <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-1">
                     <h3 className="font-heading text-2xl font-semibold">{plan.name}</h3>
                     <span className="font-heading text-2xl font-bold text-slate-50">
-                      {annualBilling ? plan.annualPrice : plan.monthlyPrice}
+                      {plan.monthlyPrice}
                     </span>
                     {plan.name !== 'Enterprise' ? <span className="pb-1 text-sm text-slate-400">GBP</span> : null}
                   </div>
                   <p className="mt-1 text-sm text-slate-400">
-                    {annualBilling && 'annualBilled' in plan ? plan.annualBilled : plan.priceNote}
+                    {plan.priceNote}
                   </p>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{plan.summary}</p>
                   <PlanBadges planName={plan.name} />

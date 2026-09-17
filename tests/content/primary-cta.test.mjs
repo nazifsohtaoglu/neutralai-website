@@ -181,10 +181,12 @@ test('homepage pricing shows approved GBP pricing and self-serve handoff URLs', 
   assert.doesNotMatch(homeSource, /monthlyPrice: '£749'/)
 })
 
-test('homepage pricing includes annual billing context and buyer FAQ copy', () => {
+test('homepage pricing includes monthly billing context and buyer FAQ copy', () => {
   const homeSource = readHomepageSource()
 
-  assert.match(homeSource, /Annual billing saves 20%/)
+  assert.match(homeSource, /Monthly self-serve billing/)
+  assert.match(homeSource, /Annual billing is not available through self-serve checkout/)
+  assert.doesNotMatch(homeSource, /annualBilling|annualPrice|annualBilled|20% annual billing discount/)
   assert.match(homeSource, /Plans include masking requests/)
   assert.match(homeSource, /Production model usage can run through BYOK/)
   assert.match(homeSource, /FAQ/)
@@ -202,7 +204,7 @@ test('homepage pricing keeps primary plan cards scannable on desktop', () => {
   assert.match(homeSource, /Business and Enterprise add governed rollout features/)
   assert.match(
     homeSource,
-    /advancedPricingPlans\.map[\s\S]*annualBilling && 'annualBilled' in plan \? plan\.annualBilled : plan\.priceNote/
+    /advancedPricingPlans\.map[\s\S]*plan\.priceNote/
   )
   assert.match(homeSource, /Policy controls and evidence exports/)
   assert.match(homeSource, /Full API key lifecycle controls/)
