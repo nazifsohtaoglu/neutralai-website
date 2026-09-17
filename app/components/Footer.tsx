@@ -40,6 +40,7 @@ const legalLinks = [
   { label: 'Trust Center', href: '/trust-center' },
   { label: 'UK Compliance Hub', href: '/compliance' },
   { label: 'About', href: '/about' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/neutralai/' },
 ] as const
 
 function FooterLink({ href, label }: { href: string; label: string }) {
