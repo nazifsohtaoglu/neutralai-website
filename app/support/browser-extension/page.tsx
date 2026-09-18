@@ -223,7 +223,7 @@ export default function BrowserExtensionSupportPage() {
               <h2 className="mt-4 font-heading text-3xl font-bold">Public app and API endpoints</h2>
               <ul className="mt-6 space-y-4">
                 {integrationEndpoints.map((endpoint) => (
-                  <li key={endpoint} className="rounded-2xl border border-border bg-background px-4 py-4 text-sm text-slate-300">
+                  <li key={endpoint} className="rounded-2xl border border-border bg-background px-4 py-4 text-sm text-slate-300 [overflow-wrap:anywhere]">
                     {endpoint}
                   </li>
                 ))}
