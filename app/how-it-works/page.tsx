@@ -93,8 +93,8 @@ const policyActions = [
 ] as const
 
 const retentionRows = [
-  { data: 'Raw prompt', stored: 'policy', note: 'Processed for the masking request; storage depends on the configured deployment path.' },
-  { data: 'Masked prompt', stored: 'policy', note: 'Retention depends on the configured workflow and model provider.' },
+  { data: 'Raw prompt', stored: false, note: 'Processed transiently in memory; the prompt body is not persisted by NeutralAI.' },
+  { data: 'Masked prompt', stored: false, note: 'Processed transiently for the request; the masked prompt body is not persisted by NeutralAI.' },
   { data: 'Token ↔ value mapping', stored: 'temp', note: 'Encrypted with AES-256-GCM and time-limited.' },
   { data: 'Audit record', stored: true, note: 'Decision metadata — not the sensitive value.' },
   { data: 'Compliance export', stored: true, note: 'Written immutably for tamper-evident evidence.' },
@@ -376,8 +376,13 @@ export default function HowItWorksPage() {
               <SectionEyebrow>Retention</SectionEyebrow>
               <h2 className="mt-4 font-heading text-3xl font-bold md:text-4xl">What’s stored, and what isn’t</h2>
               <p className="mt-5 text-lg text-slate-300">
-                The design goal: raw sensitive data is constrained to the masking path, while storage, logs, and telemetry should
-                capture control metadata rather than sensitive values. Confirm the configured retention policy before production use.
+                Raw and masked prompt bodies are processed transiently and are not persisted by NeutralAI in storage, logs, or telemetry.
+                This is an enforced data-handling rule, not an optional retention setting. Reversible token-to-value mappings
+                are encrypted with AES-256-GCM and retained only for their configured TTL.
+              </p>
+              <p className="mt-4 text-sm leading-6 text-slate-400">
+                If a masked prompt is forwarded to a model provider, that provider’s retention is governed separately
+                by the customer’s provider contract and settings.
               </p>
               <div className="mt-6 rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-slate-200">
                 <Database className="mb-3 h-5 w-5 text-primary-light" />
@@ -402,7 +407,7 @@ export default function HowItWorksPage() {
                           : 'bg-rose-500/15 text-rose-200'
                     }`}
                   >
-                    {row.stored === true ? 'Stored' : row.stored === 'temp' ? 'Temporary' : row.stored === 'policy' ? 'Policy-dependent' : 'Not stored'}
+                    {row.stored === true ? 'Stored' : row.stored === 'temp' ? 'Temporary' : 'Not stored by NeutralAI'}
                   </span>
                   <span className="col-span-2 text-sm leading-6 text-slate-400 sm:col-span-1">{row.note}</span>
                 </div>

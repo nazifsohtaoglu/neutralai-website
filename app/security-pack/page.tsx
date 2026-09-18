@@ -43,7 +43,7 @@ const qaAnswers = [
   },
   {
     q: 'What PII is logged?',
-    a: 'Audit events are designed to record control metadata rather than raw prompt content. Review the fields and retention policy for your integration; custom metadata must not contain sensitive values.',
+    a: 'Audit records contain control metadata, not raw prompt text, raw or detected PII values, masked prompt bodies, or token values. Do not put sensitive data in customer-supplied custom metadata.',
   },
   {
     q: 'Do you support BYOK (Bring Your Own Key)?',

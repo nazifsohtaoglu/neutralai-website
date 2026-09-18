@@ -35,7 +35,7 @@ const securitySections = [
     icon: Lock,
     title: 'Data handling posture',
     description:
-      'Reversible mappings are encrypted and retained for a limited period, controlled by the configured retention policy.',
+      'Raw and masked prompt bodies are processed transiently and are not persisted by NeutralAI. Reversible token-to-value mappings are encrypted with AES-256-GCM and retained only for their configured TTL. Model-provider retention of forwarded masked prompts is governed separately by the customer’s provider contract and settings.',
   },
   {
     icon: Database,

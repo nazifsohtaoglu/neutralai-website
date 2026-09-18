@@ -56,7 +56,7 @@ const controls = [
   {
     icon: DatabaseZap,
     title: 'Data minimization',
-    body: 'NeutralAI supports masking and tokenization. Reversible mappings use time-limited encrypted storage; local browser mode and gateway processing have different data-handling boundaries.',
+    body: 'Raw and masked prompt bodies are processed transiently and are not persisted by NeutralAI. Reversible token-to-value mappings are encrypted with AES-256-GCM and retained only for their configured TTL. Model-provider retention of forwarded masked prompts is governed separately by the customer’s provider contract and settings. Local browser mode and gateway processing have different processing boundaries.',
   },
   {
     icon: LockKeyhole,
