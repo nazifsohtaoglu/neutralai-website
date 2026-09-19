@@ -83,10 +83,8 @@ export const trustCards: Card[] = [
   },
 ] as const
 
-// Pricing figures may not be published before accountant+legal review (BUS-020 §10).
-// Direct process.env reference (not siteConfig) so the dead branch — and every price
-// figure in it — is eliminated from the shipped bundle at build time.
-const SHOW_PUBLIC_PRICING = process.env.NEXT_PUBLIC_SHOW_PRICING === 'true'
+// Keep plan cards and FAQs aligned with the shared publication setting.
+const SHOW_PUBLIC_PRICING = siteConfig.showPublicPricing
 
 const allPricingPlans = [
   {
