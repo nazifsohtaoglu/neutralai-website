@@ -1,9 +1,10 @@
+import { siteConfig } from '../../site'
+
 const comparisonTiers = ['Free', 'Developer', 'Starter', 'Team', 'Business', 'Enterprise'] as const
 
-// Direct process.env reference so the price figures below drop out of the bundle
-// entirely while pricing publication is gated (see app/data/homepage.ts).
+// Use the same publication setting as the plan cards and FAQs.
 const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string, string]> =
-  process.env.NEXT_PUBLIC_SHOW_PRICING === 'true'
+  siteConfig.showPublicPricing
     ? [
         ['Masking requests', '1k', '10K', '10K', '100K', '500K', 'Custom'],
         ['Managed AI credit', '£1 trial', 'Bring your own LLM', '£3', '£10', '£25', 'Custom'],
