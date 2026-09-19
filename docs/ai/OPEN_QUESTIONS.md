@@ -35,7 +35,7 @@ Use this file for unknowns. Do not guess silently.
 
 - Owner: Platform/Infra. Confirm the current managed processing/storage region and subprocessors before restoring a named public region claim. Older copy conflicts between Hetzner EU and London/Frankfurt. Public copy now requests deployment-specific confirmation.
 - Owner: Product/Billing. Confirm provider BYOK entitlement against the current backend plan catalogue before publishing a consolidated plan matrix; legacy Growth references removed from review pages. Vault key custody is a separate capability.
-- Owner: Product/Marketing. Confirm the commercial launch flag and supported private-deployment offer before changing the conditional pricing notice or general availability badge. This PR does not change release flags.
+- Owner: Product/Marketing. Monthly pricing publication approved by the owner on 2026-09-19; see [decision, verified Checkout totals, and limits](PRICING_PUBLICATION_2026-09-19.md). Supported private-deployment offers and any general availability badge remain separate confirmation items.
 
 ## Lead delivery acceptance — 2026-09-16
 
