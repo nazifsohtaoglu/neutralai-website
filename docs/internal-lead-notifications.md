@@ -4,7 +4,7 @@ Status: source implementation only. Merging or deploying the website does **not*
 
 ## Scope and separation
 
-`ops/lead-notifications/Notifications.gs` is a **separate standalone Apps Script project**, with no web endpoint. Every five minutes it can send one digest of newly appended rows to the fixed internal address `sales@neutralai.co.uk`. It sends only a count, batch reference and restricted CRM link, never submitted names, addresses or messages. No customer auto-response is sent. The recipient must already have appropriate Sheet access; the link grants no access.
+`ops/lead-notifications/Notifications.gs` is a **separate standalone Apps Script project**, with no web endpoint. Every five minutes it can send one digest of newly appended rows to `sales@neutralai.co.uk`, or to the single address in the optional `LEAD_ALERT_RECIPIENT` script property. Keep personal addresses in that property, never in this public source. Note: if the recipient is an alias of the sending account, Gmail files the digest under Sent only and it never reaches the Inbox. It sends only a count, batch reference and restricted CRM link, never submitted names, addresses or messages. No customer auto-response is sent. The recipient must already have appropriate Sheet access; the link grants no access.
 
 The existing ingestion web app stays unchanged: its successful Sheet write determines `{ok:true}`. Notification failure cannot change the browser acknowledgement. Consolidating the legacy duplicate `doPost` handlers is a separate change: adding mail permission to the public ingestion project would couple authorization and delivery to a working conversion path.
 

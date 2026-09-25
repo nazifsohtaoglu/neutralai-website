@@ -1,6 +1,16 @@
 /* Standalone, time-driven worker. No web deployment or doPost handler. */
 const LEAD_ALERT_STATE_KEY = 'LEAD_ALERT_STATE_V1';
-const LEAD_ALERT_RECIPIENT = 'sales@neutralai.co.uk';
+const LEAD_ALERT_DEFAULT_RECIPIENT = 'sales@neutralai.co.uk';
+
+// Optional owner-set script property. Keeps personal addresses out of this public source.
+function leadAlertRecipient_(properties) {
+  const recipient = properties.getProperty('LEAD_ALERT_RECIPIENT');
+  if (recipient === null || recipient === '') return LEAD_ALERT_DEFAULT_RECIPIENT;
+  if (!/^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/.test(recipient)) {
+    throw new Error('Configure LEAD_ALERT_RECIPIENT as a single email address');
+  }
+  return recipient;
+}
 
 function withLeadAlertLock_(action) {
   const lock = LockService.getScriptLock();
@@ -82,6 +92,7 @@ function notifyNewLeads() {
   return withLeadAlertLock_(function () {
     const properties = PropertiesService.getScriptProperties();
     if (properties.getProperty('LEAD_ALERTS_ENABLED') !== 'true') return { status: 'disabled' };
+    const recipient = leadAlertRecipient_(properties);
     const context = leadAlertContext_();
     const state = loadLeadAlertState_(context);
     if (state.pending) {
@@ -98,7 +109,7 @@ function notifyNewLeads() {
     // Persist intent BEFORE sending. Any crash/exception after this point stops retries.
     saveLeadAlertState_(context, state);
     try {
-      MailApp.sendEmail({ to: LEAD_ALERT_RECIPIENT,
+      MailApp.sendEmail({ to: recipient,
         subject: 'NeutralAI: new website requests [' + pending.id + ']',
         body: pending.count + ' new website request(s) await review.\n' +
           'Open the access-controlled CRM: https://docs.google.com/spreadsheets/d/' +
