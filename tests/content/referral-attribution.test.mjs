@@ -54,3 +54,26 @@ test('demo and contact lead capture can include referral fields without exposing
   assert.doesNotMatch(referralSource, /webhook_secret/i)
   assert.doesNotMatch(referralSource, /stripe_secret/i)
 })
+
+test('sign-up handoff carries campaign parameters even without a partner referral', () => {
+  const referralSource = readSource('app/lib/referral.ts')
+  const providerSource = readSource('app/components/ReferralProvider.tsx')
+
+  // Only the five utm_* parameters the app already accepts are forwarded.
+  assert.match(referralSource, /SIGNUP_ATTRIBUTION_PARAMS = \['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'\]/)
+  assert.match(referralSource, /SIGNUP_ATTRIBUTION_VALUE_REGEX = \/\^\[a-z0-9\]\[a-z0-9\._-\]\{0,63\}\$\/i/)
+  assert.match(referralSource, /getLeadAttribution\(\)/)
+  // Values already on the URL are never overwritten, and malformed ones are left behind.
+  assert.match(referralSource, /url\.searchParams\.has\(param\)/)
+  assert.match(referralSource, /SIGNUP_ATTRIBUTION_VALUE_REGEX\.test\(value\)/)
+
+  // No partner snapshot but campaign parameters attached: a distinct, non-failure status.
+  assert.match(referralSource, /status: 'attribution_only'/)
+  assert.match(providerSource, /resolution\.status === 'attribution_only'/)
+  assert.match(providerSource, /Signup Attribution Handoff/)
+
+  // The partner referral fields still win the full handoff when a snapshot exists.
+  assert.match(referralSource, /applyHandoffParams\(parsed, snapshot\)/)
+  // A visitor with nothing to carry still resolves to the original 'failed' outcome.
+  assert.match(referralSource, /reason: 'missing_snapshot'/)
+})

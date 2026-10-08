@@ -62,6 +62,20 @@ export default function ReferralProvider() {
 
       const baseProperties = eventProperties(anchor, pathname)
 
+      // Visitor without a partner referral, but with campaign parameters: hand
+      // those to the app so the signup keeps its channel.
+      if (resolution.status === 'attribution_only') {
+        trackAnalyticsEvent('Signup Attribution Handoff', baseProperties)
+        anchor.href = resolution.url
+
+        if (isPrimarySameTabNavigation(event, anchor)) {
+          event.preventDefault()
+          window.location.assign(resolution.url)
+        }
+
+        return
+      }
+
       trackAnalyticsEvent('High Intent CTA Redirect To Sign-In', baseProperties)
       trackAnalyticsEvent('Referral Handoff Attempted', {
         ...baseProperties,
