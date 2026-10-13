@@ -8,6 +8,8 @@ import SectionIntro from './SectionIntro'
 import PlanBadges from './PlanBadges'
 import PricingComparisonTable from './PricingComparisonTable'
 import PricingFaq from './PricingFaq'
+import PlanFinder from './PlanFinder'
+import PricingUsageGuide from './PricingUsageGuide'
 
 export default function PricingSection() {
 
@@ -40,9 +42,12 @@ export default function PricingSection() {
         <SectionIntro
           eyebrow="Pricing"
           title="Public pricing for secure AI rollout"
-          description="Plans include NeutralAI masking and governance usage. Managed AI credits are intentionally small for evaluation, while production model usage can run through BYOK or customer-owned provider accounts."
+          description="Choose a plan for your workflow and team. See what is included, what each allowance means, and when model usage is billed separately."
           centered
         />
+
+        <PlanFinder />
+        <PricingUsageGuide />
 
         <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-[24px] border border-white/10 bg-white/[0.04] p-3 sm:flex-row">
           <div className="text-center text-sm text-slate-300 sm:text-left">
@@ -53,7 +58,7 @@ export default function PricingSection() {
         </div>
 
         <p className="mx-auto mt-5 max-w-4xl text-center text-sm leading-6 text-slate-400">
-          Plans include masking requests. Managed AI usage is covered by small included credits for evaluation. Production model usage can run through BYOK, customer provider accounts, or prepaid top-ups.
+          Plans include masking requests, subject to text-volume limits. AI credit is a separate allowance for model usage. Production model usage can run through BYOK or customer provider accounts on supported plans.
         </p>
         <p className="mx-auto mt-2 max-w-4xl text-center text-xs leading-6 text-slate-400">
           All listed GBP prices are excluding VAT. VAT may apply based on billing country and entity status.
@@ -93,6 +98,16 @@ export default function PricingSection() {
                 </p>
                 <p className="mt-3 rounded-2xl border border-primary/15 bg-primary/10 px-3 py-2 text-sm text-primary-light">
                   {plan.usage}
+                </p>
+                <p className="mt-2 text-xs leading-5 text-slate-300">
+                  {plan.name === 'Free' || plan.name === 'Developer' ? 'Request equivalents; longer text can use the allowance sooner. ' : 'Text-volume limits also apply. '}
+                  <a href="#pricing-usage-guide" onClick={() => {
+                    const guide = document.getElementById('pricing-usage-guide')
+                    if (guide instanceof HTMLDetailsElement) {
+                      guide.open = true
+                      guide.querySelector('summary')?.focus()
+                    }
+                  }} className="text-primary-light underline underline-offset-4">How usage is counted</a>
                 </p>
                 <div className="mt-3 space-y-2 text-sm text-slate-300">
                   <p className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2">{plan.managedAiCredit}</p>

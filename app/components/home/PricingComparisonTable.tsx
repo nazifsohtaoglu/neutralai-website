@@ -6,7 +6,7 @@ const comparisonTiers = ['Free', 'Developer', 'Starter', 'Team', 'Business', 'En
 const comparisonRows: ReadonlyArray<readonly [string, string, string, string, string, string, string]> =
   siteConfig.showPublicPricing
     ? [
-        ['Masking requests', '1k', '10K', '10K', '100K', '500K', 'Custom'],
+        ['Masking requests (text-volume limits also apply)', '1K equivalents', '10K equivalents', '10K', '100K', '500K', 'Custom'],
         ['Managed AI credit', '£1 trial', 'Bring your own LLM', '£3', '£10', '£25', 'Custom'],
         ['Provider spend model', 'Managed sandbox', 'BYO LLM (shield-only)', 'Managed eval', 'BYOK recommended', 'BYOK expected', 'Customer-owned'],
         ['API key management', 'Basic', 'Shield API/SDK only', 'Basic', 'Team', 'Full lifecycle', 'Scoped controls'],

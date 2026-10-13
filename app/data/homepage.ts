@@ -19,6 +19,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { contactLinks, siteConfig } from '../site'
+import { aiCreditExplanation, maskingExplanation, maskingLimitsExplanation } from '../lib/plan-finder'
 
 type Card = {
   icon: LucideIcon
@@ -89,8 +90,11 @@ const SHOW_PUBLIC_PRICING = siteConfig.showPublicPricing
 const allPricingPlans = [
   {
     name: 'Free',
+    includedUsers: 1,
+    selfServeUserCap: 1,
+    extraUserMonthlyGbp: null,
     eyebrow: 'Sandbox',
-    summary: 'Free sandbox access for teams validating the masking flow.',
+    summary: 'Free sandbox access for one person evaluating the masking flow.',
     monthlyPrice: '£0',
     priceNote: 'per month, excluding VAT',
     usage: '1,000 masking requests per month',
@@ -108,6 +112,9 @@ const allPricingPlans = [
   },
   {
     name: 'Developer',
+    includedUsers: 1,
+    selfServeUserCap: 1,
+    extraUserMonthlyGbp: null,
     eyebrow: 'API / SDK only',
     summary: 'Shield-only masking API and SDK access for developers who bring their own LLM.',
     monthlyPrice: '£9',
@@ -127,8 +134,11 @@ const allPricingPlans = [
   },
   {
     name: 'Starter',
+    includedUsers: 1,
+    selfServeUserCap: 1,
+    extraUserMonthlyGbp: null,
     eyebrow: 'Start controlled',
-    summary: 'Low-friction paid plan for founders and small regulated teams.',
+    summary: 'App and browser extension access for one person, with personal usage history.',
     monthlyPrice: '£29',
     priceNote: 'per month, excluding VAT',
     usage: '10K masking requests per month',
@@ -146,6 +156,9 @@ const allPricingPlans = [
   },
   {
     name: 'Team',
+    includedUsers: 5,
+    selfServeUserCap: 15,
+    extraUserMonthlyGbp: 15,
     eyebrow: 'Most popular',
     summary: 'Team plan for real usage with audit history and BYOK guidance.',
     monthlyPrice: '£99',
@@ -157,7 +170,7 @@ const allPricingPlans = [
       '100K monthly masking requests',
       'Team usage and audit history',
       'BYOK handoff for production AI spend',
-      'Top-up path for managed AI credits',
+      'Five users included; extra users £15/month each',
     ],
     href: 'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=team&src=website_get_team&callbackUrl=%2Fbilling',
     cta: 'Get Started',
@@ -165,6 +178,9 @@ const allPricingPlans = [
   },
   {
     name: 'Business',
+    includedUsers: 20,
+    selfServeUserCap: 50,
+    extraUserMonthlyGbp: 12,
     eyebrow: 'Scale safely',
     summary: 'Higher-volume governance plan for teams ready to run provider spend through BYOK.',
     monthlyPrice: '£299',
@@ -184,6 +200,9 @@ const allPricingPlans = [
   },
   {
     name: 'Enterprise',
+    includedUsers: null,
+    selfServeUserCap: null,
+    extraUserMonthlyGbp: null,
     eyebrow: 'Governed rollout',
     summary: 'Dedicated enterprise onboarding with commercial review.',
     monthlyPrice: 'Custom',
@@ -222,7 +241,7 @@ const allPricingFaqs = [
   {
     question: 'What happens when managed AI credit runs out?',
     answer:
-      'Managed generation pauses until the team connects BYOK, moves to a customer-owned provider, or buys prepaid managed AI credit. Masking usage is tracked separately.',
+      'The included credit is limited model spend, separate from masking. For continued model use, review the provider options supported by your plan in Billing. Team and Business support customer-owned provider accounts. Developer masking top-ups do not add AI credit.',
   },
   {
     question: 'When should a team move from Business to Enterprise?',
@@ -232,7 +251,11 @@ const allPricingFaqs = [
   {
     question: 'What counts as a masking request?',
     answer:
-      'Each text submission that passes through the NeutralAI shield layer counts as one masking request, regardless of how many PII entities are detected or replaced. Document uploads are counted per submission, not per page.',
+      `${maskingExplanation} ${maskingLimitsExplanation}`,
+  },
+  {
+    question: 'Is AI credit the same as masking allowance?',
+    answer: aiCreditExplanation,
   },
   {
     question: 'Can I bring my own API key (BYOK)?',
@@ -247,7 +270,7 @@ const allPricingFaqs = [
   {
     question: 'What happens if I exceed my monthly masking limit?',
     answer:
-      'Masking requests pause once the monthly limit is reached until the next billing cycle resets the counter. You can upgrade to a higher plan at any time to restore service immediately. Enterprise plans carry a custom volume ceiling agreed commercially.',
+      'Request and text-volume limits are tracked separately. Free and Developer stop when their included token allowance and any purchased masking top-up are exhausted; other request limits still apply. Paid workspace plans can also have token overage charges. Check your Billing usage and limits before continuing. Enterprise volume is agreed commercially.',
   },
   {
     question: 'Does NeutralAI add VAT to my invoice?',
