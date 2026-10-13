@@ -73,4 +73,4 @@ export const maskingLimitsExplanation =
   'Text-volume (token) limits apply as well as request limits. A token is a small piece of text used to measure usage, not one masked name. Free and Developer request figures are equivalents calculated from a token allowance: longer text can use it up in fewer submissions. A document may create several submissions, so the allowance is not a guaranteed number of documents or AI replies. Paid workspace plans can also have token overage charges; check your Billing limits.'
 
 export const aiCreditExplanation =
-  'AI credit is a money allowance for model usage through NeutralAI. It is separate from masking. The model, input length and response length determine how far it goes; it does not buy a fixed number of messages. Your own provider account is billed separately.'
+  'AI credit is a money allowance for model usage through NeutralAI. It is separate from masking. The model, input length and response length determine how far it goes; it does not buy a fixed number of messages. If you use your own AI provider account, you pay that provider separately; BYOK within NeutralAI is available from Team onwards.'
