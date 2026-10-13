@@ -153,7 +153,7 @@ export default function DevelopersPage() {
                   Get your free API key
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <a href={`${siteConfig.apiBaseUrl}/docs`} className="btn btn-secondary w-full px-6 py-4 sm:w-auto">
+                <a href={siteConfig.docsUrl} className="btn btn-secondary w-full px-6 py-4 sm:w-auto">
                   API reference
                   <BookOpen className="h-4 w-4" />
                 </a>
