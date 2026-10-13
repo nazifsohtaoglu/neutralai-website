@@ -9,6 +9,9 @@ Use this file for unknowns. Do not guess silently.
 
 ## Product / Marketing
 
+- 2026-10-13 — Owner: Product/Billing. Status: OPEN. The plan finder explains the existing request and token limits separately. Gateway `usage_metering.resolve_binding_monthly_requests` derives Free/Developer display figures from token allowance / configurable tokens-per-request, while `billing_gate` enforces actual recorded tokens and `check_monthly_request_quota` counts usage rows. Decide whether to sell true request quotas or token-based volume before promising a fixed number of messages/documents. Document ingest is not evidenced as exactly one billable masking submission. No quota/billing behavior changes are included in the website UI work.
+- 2026-10-13 — Owner: Product/Billing. Status: OPEN. Verify the included managed AI credit reset/expiry and purchase flow end to end before publishing monthly renewal, guaranteed message counts or an AI top-up CTA. The observed `/v1/billing/top-up/packs` lists Developer masking packs, not managed AI money credit. The finder uses existing listed credit amounts without adding those promises.
+
 - Resolved on 2026-05-16 in ticket [#76](https://github.com/nazifsohtaoglu/neutralai-website/issues/76): canonical conversion paths, owner roles, destination expectations, analytics signals, and smoke status are now tracked in `docs/conversion-funnel-qa.md` (including signup handoff params `website_start_free_trial`, `website_get_started`, `website_get_team`, `website_get_business`).
 - What is the preferred ICP for the website copy: legal, finance, healthcare, insurance, SaaS support, or broader regulated teams?
 - Resolved on 2026-05-15 in `docs/customer-proof-framework.md`: approved proof types, wording guardrails, and publication gates for customer evidence are now documented; public site posture remains conservative until assets are approved.
