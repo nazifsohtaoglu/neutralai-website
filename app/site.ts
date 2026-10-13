@@ -5,6 +5,7 @@ export const siteConfig = {
   url: 'https://neutralai.co.uk',
   wwwUrl: 'https://www.neutralai.co.uk',
   apiBaseUrl: 'https://api.neutralai.co.uk',
+  docsUrl: 'https://neutralai.co.uk/docs',
   apiHealthUrl: 'https://api.neutralai.co.uk/health',
   apiReadyUrl: 'https://api.neutralai.co.uk/ready',
   appBaseUrl: 'https://app.neutralai.co.uk',
