@@ -138,7 +138,7 @@ const allPricingPlans = [
     selfServeUserCap: 1,
     extraUserMonthlyGbp: null,
     eyebrow: 'Start controlled',
-    summary: 'App and browser extension access for one person, with personal usage history.',
+    summary: 'App and browser extension access for one person.',
     monthlyPrice: '£29',
     priceNote: 'per month, excluding VAT',
     usage: '10K masking requests per month',
@@ -269,7 +269,7 @@ const allPricingFaqs = [
   {
     question: 'What happens if I exceed my monthly masking limit?',
     answer:
-      'Request and text-volume limits are tracked separately. Free and Developer stop when their included token allowance and any purchased masking top-up are exhausted; other request limits still apply. Paid workspace plans can also have token overage charges. Check your Billing usage and limits before continuing. Enterprise volume is agreed commercially.',
+      'Request and text-volume limits are tracked separately. Free stops when its included token allowance is exhausted; check Billing for reset timing or upgrade options. Developer stops when its included token allowance and any purchased Developer masking top-ups are exhausted. Other request limits still apply. Paid workspace plans can also have token overage charges. Check your Billing usage and limits before continuing. Enterprise volume is agreed commercially.',
   },
   {
     question: 'Does NeutralAI add VAT to my invoice?',
