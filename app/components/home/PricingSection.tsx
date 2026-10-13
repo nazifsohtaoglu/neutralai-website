@@ -10,6 +10,17 @@ import PricingComparisonTable from './PricingComparisonTable'
 import PricingFaq from './PricingFaq'
 import PlanFinder from './PlanFinder'
 import PricingUsageGuide from './PricingUsageGuide'
+import type { PlanForRecommendation } from '../../lib/plan-finder'
+
+function UserAllowance({ plan }: { plan: PlanForRecommendation }) {
+  if (plan.includedUsers == null) return null
+  return (
+    <p className="mt-2 text-sm leading-6 text-slate-300">
+      {plan.includedUsers} {plan.includedUsers === 1 ? 'user' : 'users'} included.
+      {plan.extraUserMonthlyGbp != null && <> Extra users £{plan.extraUserMonthlyGbp} each / month, up to {plan.selfServeUserCap} users in total.</>}
+    </p>
+  )
+}
 
 export default function PricingSection() {
 
@@ -96,6 +107,7 @@ export default function PricingSection() {
                 <p className="mt-2 text-sm text-slate-300">
                   {plan.priceNote}
                 </p>
+                <UserAllowance plan={plan} />
                 <p className="mt-3 rounded-2xl border border-primary/15 bg-primary/10 px-3 py-2 text-sm text-primary-light">
                   {plan.usage}
                 </p>
@@ -168,6 +180,7 @@ export default function PricingSection() {
                   <p className="mt-1 text-sm text-slate-400">
                     {plan.priceNote}
                   </p>
+                  <UserAllowance plan={plan} />
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{plan.summary}</p>
                   <PlanBadges planName={plan.name} />
                   <div className="mt-4 flex flex-wrap gap-2 text-sm">

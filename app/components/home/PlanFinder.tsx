@@ -14,7 +14,7 @@ const workflows: { value: Workflow; title: string; detail: string }[] = [
 const controlOptions: { value: Controls; title: string; detail: string }[] = [
   { value: 'personal', title: 'Personal use or a simple integration', detail: 'No shared audit history or reviewer workflow needed.' },
   { value: 'shared', title: 'Shared team history', detail: 'See team usage and audit activity in one workspace.' },
-  { value: 'governed', title: 'Reviewer and policy controls', detail: 'Group work by matter and manage reviews, policies and reporting.' },
+  { value: 'governed', title: 'Policy controls and evidence exports', detail: 'Manage workspace policies and export evidence for reporting.' },
   { value: 'enterprise', title: 'SSO, integrations or private deployment', detail: 'Discuss requirements and a tailored rollout.' },
 ]
 const gbp = (value: number) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 2 }).format(value)

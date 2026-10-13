@@ -36,7 +36,7 @@ export function recommendPlan(answers: PlanAnswers, plans: readonly PlanForRecom
   } else if (answers.controls === 'governed' || answers.people > team.selfServeUserCap) {
     name = 'Business'
     reason = answers.controls === 'governed'
-      ? 'You need matter grouping, reviewer roles and policy controls.'
+      ? 'You need the policy controls and evidence exports included in Business.'
       : `Business supports your workspace size with ${business.includedUsers} users included.`
   } else if (answers.controls === 'shared' || answers.people > 1) {
     name = 'Team'

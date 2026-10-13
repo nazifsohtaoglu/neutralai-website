@@ -170,7 +170,6 @@ const allPricingPlans = [
       '100K monthly masking requests',
       'Team usage and audit history',
       'BYOK handoff for production AI spend',
-      'Five users included; extra users £15/month each',
     ],
     href: 'https://app.neutralai.co.uk/auth/signin?intent=signup&plan=team&src=website_get_team&callbackUrl=%2Fbilling',
     cta: 'Get Started',
