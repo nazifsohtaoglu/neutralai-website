@@ -82,7 +82,7 @@ test('initialization is forbidden while enabled; worker requires explicit baseli
   assert.throws(() => f.initialize(), /Disable/);
   assert.throws(() => f.api.notifyNewLeads(), /Initialize/);
 });
-test('one digest uses only fixed internal recipient, count and trusted link', () => {
+test('one digest uses only default internal recipient, count and trusted link', () => {
   const f = active(); f.add();
   const result = f.api.notifyNewLeads();
   assert.equal(result.status, 'sent'); assert.equal(result.count, 2);
@@ -94,6 +94,19 @@ test('one digest uses only fixed internal recipient, count and trusted link', ()
   assert.doesNotMatch(JSON.stringify(message), /attacker|private message|script>|historical QA/);
   assert.equal(f.state().cursor, 4); assert.equal(f.state().pending, null);
   f.boot(); assert.equal(f.api.notifyNewLeads().status, 'idle'); assert.equal(f.sent.length, 1);
+});
+test('owner-set recipient property overrides the default recipient', () => {
+  const f = active(); f.props.set('LEAD_ALERT_RECIPIENT', 'owner@example.test');
+  assert.equal(f.api.notifyNewLeads().status, 'sent');
+  assert.equal(f.sent[0].to, 'owner@example.test');
+});
+test('malformed recipient property fails before any intent write or send', () => {
+  for (const bad of ['not-an-email', 'a@example.test, b@example.test', 'x@y.test\nBcc: z@example.test']) {
+    const f = active(); f.props.set('LEAD_ALERT_RECIPIENT', bad); const writes = f.writes;
+    assert.throws(() => f.api.notifyNewLeads(), /LEAD_ALERT_RECIPIENT/);
+    assert.equal(f.writes, writes); assert.equal(f.state().pending, null);
+    assert.equal(f.sent.length, 0); assert.equal(f.locked, false);
+  }
 });
 test('lock contention sends nothing and does not release another execution lock', () => {
   const f = active(); f.locked = true; const releases = f.releases;
