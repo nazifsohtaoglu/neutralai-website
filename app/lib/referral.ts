@@ -1,7 +1,7 @@
 'use client'
 
 import { siteConfig } from '../site'
-import { trackAnalyticsEvent, type AnalyticsProperties } from './analytics'
+import { getLeadAttribution, trackAnalyticsEvent, type AnalyticsProperties } from './analytics'
 
 export const REFERRAL_SNAPSHOT_KEY = 'neutralai_referral_snapshot_v1'
 
@@ -9,6 +9,13 @@ const REFERRAL_PARAM = 'ref'
 const REFERRAL_TTL_MS = 1000 * 60 * 60 * 24 * 120
 const REFERRAL_CODE_MAX_LENGTH = 64
 const REFERRAL_CODE_REGEX = /^[a-z0-9][a-z0-9_-]{1,63}$/i
+
+// Campaign parameters handed to the app's sign-up URL so a signup can be tied
+// to the channel that brought the visitor. Values must match the shape the app
+// accepts (frontend/lib/auth-handoff.ts); anything else is left behind rather
+// than triggering "invalid handoff parameter" telemetry in the app.
+const SIGNUP_ATTRIBUTION_PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const
+const SIGNUP_ATTRIBUTION_VALUE_REGEX = /^[a-z0-9][a-z0-9._-]{0,63}$/i
 
 type ReferralSnapshotStorage = {
   schema_version: 1
@@ -29,7 +36,9 @@ export type ReferralCaptureInput = {
 }
 
 export type ReferralHandoffResolution = {
-  status: 'skipped' | 'succeeded' | 'failed'
+  // 'attribution_only': no partner referral on file, but campaign parameters
+  // were attached to the sign-up URL.
+  status: 'skipped' | 'succeeded' | 'failed' | 'attribution_only'
   url: string
   reason?: 'invalid_url' | 'missing_snapshot'
   snapshot?: ReferralSnapshot
@@ -231,6 +240,24 @@ function isHighIntentSignInUrl(url: URL) {
   return url.host === appHost && url.pathname === '/auth/signin' && url.searchParams.get('intent') === 'signup'
 }
 
+function applySignupAttributionParams(url: URL) {
+  const attribution = getLeadAttribution()
+  let applied = false
+
+  for (const param of SIGNUP_ATTRIBUTION_PARAMS) {
+    const value = attribution[param]
+
+    if (typeof value !== 'string' || url.searchParams.has(param) || !SIGNUP_ATTRIBUTION_VALUE_REGEX.test(value)) {
+      continue
+    }
+
+    url.searchParams.set(param, value)
+    applied = true
+  }
+
+  return applied
+}
+
 function applyHandoffParams(url: URL, snapshot: ReferralSnapshot) {
   const fields = referralSnapshotToFieldMap(snapshot)
 
@@ -259,9 +286,17 @@ export function resolveReferralHandoffUrl(rawHref: string): ReferralHandoffResol
     }
   }
 
+  const attributed = applySignupAttributionParams(parsed)
   const snapshot = getReferralSnapshot()
 
   if (!snapshot) {
+    if (attributed) {
+      return {
+        status: 'attribution_only',
+        url: parsed.toString(),
+      }
+    }
+
     return {
       status: 'failed',
       url: parsed.toString(),
