@@ -34,6 +34,18 @@ body {
   overflow-x: hidden;
 }
 
+/*
+  Grid items default to min-width: auto, so a single-column mobile grid grows to
+  the min-content width of its widest child (a nowrap/truncate line, a long URL)
+  and spills past the viewport. Let items shrink to the track instead. Kept in
+  the base layer so min-w-* utilities still win.
+*/
+@layer base {
+  .grid > * {
+    min-width: 0;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
